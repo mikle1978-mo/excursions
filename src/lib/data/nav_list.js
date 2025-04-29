@@ -1,0 +1,51 @@
+export const nav_items = [
+    {
+        title_ru: "О нас",
+        title_en: "About Us",
+        link: "/about",
+        rel: "nofollow",
+        submenu: [],
+    },
+    {
+        title_ru: "Новости",
+        title_en: "News",
+        link: "/news",
+        rel: "nofollow",
+        submenu: [],
+    },
+    {
+        title_ru: "Результаты",
+        title_en: "Results",
+        link: "/results",
+        rel: "nofollow",
+        submenu: [],
+    },
+    {
+        title_ru: "Календарь",
+        title_en: "Schedule",
+        link: "/schedule",
+        rel: "nofollow",
+        submenu: [],
+    },
+    {
+        title_ru: "Услуги",
+        title_en: "Strvices",
+        link: "/services",
+        rel: "nofollow",
+        submenu: [],
+    },
+    {
+        title_ru: "Статьи",
+        title_en: "Blog",
+        link: "/blog",
+        rel: "nofollow",
+        submenu: [],
+    },
+    {
+        title_ru: "Полезное",
+        title_en: "Helpful",
+        link: "/helpful",
+        rel: "nofollow",
+        submenu: [],
+    },
+];
