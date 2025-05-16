@@ -1,11 +1,11 @@
 export const main_page = {
-	title: {
-		ru: `создаём игры, которых вы ещё не видели! `,
-		en: `creating games you've never seen before! `
-	},
-	title_namesubtitle: { ru: `Азимут`, en: `Azimth` },
-	main_text: {
-		ru: `<p>
+    title: {
+        ru: `Незабываемые экскурсии из <span class="highlight">Кемера!</span>`,
+        en: `Unforgettable excursions from <span class="highlight">Kemer!</span>`,
+    },
+    title_namesubtitle: { ru: `Азимут`, en: `Azimth` },
+    main_text: {
+        ru: `<p>
             	Мы не просто разрабатываем игры — мы создаём новые миры, вдохновляющие идеи и уникальные механики, 
             	которых ещё нет на рынке. Наша миссия — делать игры, которые делают мир лучше, проще и увлекательнее. 
             	С каждой игрой мы бросаем вызов привычному и открываем дверь в нечто новое.
@@ -18,7 +18,7 @@ export const main_page = {
 				Готовы к тому, что изменит ваше представление об играх? Добро пожаловать в TapTap Studio — 
 				здесь рождается будущее игровой индустрии!
 			</p>			`,
-		en: `<p>Welcome to TapTap Studio — where the future of the gaming industry is born!</p>
+        en: `<p>Welcome to TapTap Studio — where the future of the gaming industry is born!</p>
         	<p>
             	We don't just develop games — we craft new worlds, inspiring ideas, and unique mechanics 
             	that don't yet exist on the market. Our mission is to create games that make the world better, 
@@ -32,10 +32,10 @@ export const main_page = {
         	<p>
             	Ready for something that will change your perception of gaming? 
             	Welcome to TapTap Studio — where the future of the gaming industry is born!
-        	</p>`
-	},
-	link_text: { ru: 'Подробнее', en: 'Learn More' },
-	link: '/about',
-	games_title: { ru: 'Наши игры', en: 'Our games' },
-	games_link: '/games'
+        	</p>`,
+    },
+    link_text: { ru: "Подробнее", en: "Learn More" },
+    link: "/about",
+    games_title: { ru: "Наши игры", en: "Our games" },
+    games_link: "/games",
 };

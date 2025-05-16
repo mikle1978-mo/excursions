@@ -1,0 +1,296 @@
+<script>
+    import { page } from "$app/stores";
+    import { excursions } from "$lib/data/excursions";
+
+    const { lang, slug } = $page.params;
+    const excursion = excursions.find((e) => e.slug === slug);
+</script>
+
+{#if !excursion}
+    <div class="error-page">
+        <h1>Экскурсия не найдена</h1>
+        <a href="/{lang}/excursions">← Вернуться к списку экскурсий</a>
+    </div>
+{:else}
+    <article class="excursion-detail">
+        <!-- Хлебные крошки -->
+        <nav class="breadcrumbs">
+            <a href="/{lang}">Главная</a>
+            <span> / </span>
+            <a href="/{lang}/excursions">Экскурсии</a>
+            <span> / </span>
+            <span>{excursion.title[lang]}</span>
+        </nav>
+
+        <!-- Заголовок и мета-информация -->
+        <header class="excursion-header">
+            <h1>{excursion.title[lang]}</h1>
+
+            <div class="meta-info">
+                <div class="rating">
+                    <span class="stars"
+                        >{"★".repeat(excursion.rating)}{"☆".repeat(
+                            5 - excursion.rating
+                        )}</span
+                    >
+                    <span>({excursion.reviews} отзывов)</span>
+                </div>
+
+                <div class="badges">
+                    {#if excursion.isPopular}
+                        <span class="badge popular">Популярно</span>
+                    {/if}
+                    <span class="badge duration">{excursion.duration} ч.</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Галерея изображений -->
+        <div class="gallery">
+            {#each excursion.images as image, i}
+                <img
+                    src={image}
+                    alt="{excursion.title[lang]} - фото {i + 1}"
+                    class="gallery-image {i === 0 ? 'primary' : ''}"
+                    loading={i > 2 ? "lazy" : "eager"}
+                />
+            {/each}
+        </div>
+
+        <!-- Основное содержимое -->
+        <div class="content-grid">
+            <section class="description">
+                <h2>Описание</h2>
+                <p>{excursion.description[lang]}</p>
+            </section>
+
+            <aside class="booking-card">
+                <div class="price-block">
+                    <span class="price"
+                        >{new Intl.NumberFormat(lang).format(excursion.price)} ₽</span
+                    >
+                    <span class="per-person">за человека</span>
+                </div>
+
+                <div class="details">
+                    <div class="detail">
+                        <span class="label">Длительность:</span>
+                        <span class="value">{excursion.duration} часа</span>
+                    </div>
+
+                    <div class="detail">
+                        <span class="label">Размер группы:</span>
+                        <span class="value"
+                            >до {excursion.groupSize} человек</span
+                        >
+                    </div>
+                </div>
+
+                <button class="book-button">Забронировать</button>
+            </aside>
+        </div>
+    </article>
+{/if}
+
+<style>
+    /* Базовые стили страницы */
+    .excursion-detail {
+        max-width: var(--max-width-container);
+        margin: 0 auto;
+        padding: var(--space-vertical-lg) var(--space-horizontal-lg);
+    }
+
+    /* Хлебные крошки */
+    .breadcrumbs {
+        font-size: var(--text-sm);
+        color: var(--color-gray-600);
+        margin-bottom: var(--space-vertical-md);
+
+        a {
+            color: var(--color-primary);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    /* Шапка экскурсии */
+    .excursion-header {
+        margin-bottom: var(--space-vertical-lg);
+
+        h1 {
+            font-size: var(--text-xxl);
+            margin-bottom: var(--space-vertical-sm);
+            color: var(--color-text);
+        }
+    }
+
+    .meta-info {
+        display: flex;
+        gap: var(--space-horizontal-md);
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .rating {
+        display: flex;
+        align-items: center;
+        gap: var(--space-horizontal-xs);
+
+        .stars {
+            color: var(--color-warning);
+            font-size: var(--text-lg);
+        }
+    }
+
+    .badges {
+        display: flex;
+        gap: var(--space-horizontal-xs);
+    }
+
+    .badge {
+        padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
+        border-radius: var(--radius-sm);
+        font-size: var(--text-xs);
+        font-weight: 600;
+
+        &.popular {
+            background: var(--color-accent);
+            color: var(--color-light);
+        }
+
+        &.duration {
+            background: var(--color-gray-200);
+            color: var(--color-text);
+        }
+    }
+
+    /* Галерея */
+    .gallery {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--space-vertical-sm);
+        margin-bottom: var(--space-vertical-lg);
+
+        .primary {
+            grid-column: span 2;
+        }
+    }
+
+    .gallery-image {
+        width: 100%;
+        height: auto;
+        border-radius: var(--radius-md);
+        object-fit: cover;
+        aspect-ratio: 16/9;
+        transition: var(--transition-fast);
+
+        &:hover {
+            transform: scale(1.02);
+        }
+    }
+
+    /* Основной контент */
+    .content-grid {
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        gap: var(--space-horizontal-lg);
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .description {
+        h2 {
+            font-size: var(--text-xl);
+            margin-bottom: var(--space-vertical-sm);
+            color: var(--color-text);
+        }
+
+        p {
+            line-height: var(--line-height-base);
+            color: var(--color-gray-700);
+        }
+    }
+
+    /* Блок бронирования */
+    .booking-card {
+        background: var(--color-gray-100);
+        padding: var(--space-vertical-md);
+        border-radius: var(--radius-md);
+        align-self: start;
+        position: sticky;
+        top: var(--space-vertical-md);
+
+        @media (max-width: 768px) {
+            position: static;
+        }
+    }
+
+    .price-block {
+        margin-bottom: var(--space-vertical-md);
+        text-align: center;
+
+        .price {
+            font-size: var(--text-xxl);
+            font-weight: 700;
+            color: var(--color-primary);
+            display: block;
+        }
+
+        .per-person {
+            font-size: var(--text-sm);
+            color: var(--color-gray-600);
+        }
+    }
+
+    .details {
+        display: grid;
+        gap: var(--space-vertical-sm);
+        margin-bottom: var(--space-vertical-md);
+
+        .detail {
+            display: flex;
+            justify-content: space-between;
+
+            .label {
+                color: var(--color-gray-600);
+            }
+
+            .value {
+                font-weight: 500;
+            }
+        }
+    }
+
+    .book-button {
+        width: 100%;
+        padding: var(--space-vertical-sm);
+        background: var(--color-primary);
+        color: var(--color-light);
+        border: none;
+        border-radius: var(--radius-sm);
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition-fast);
+
+        &:hover {
+            background: var(--color-primary-hover);
+        }
+    }
+
+    /* Страница ошибки */
+    .error-page {
+        text-align: center;
+        padding: var(--space-vertical-xl) var(--space-horizontal-md);
+
+        a {
+            color: var(--color-primary);
+            display: inline-block;
+            margin-top: var(--space-vertical-sm);
+        }
+    }
+</style>

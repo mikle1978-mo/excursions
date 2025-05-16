@@ -266,7 +266,9 @@ select {
     height: 1px;
     background-color: var(--color-gray-500);
 }
-
+.highlight {
+    color: var(--color-primary);
+}
 main {
     display: flex;
     flex-direction: column;

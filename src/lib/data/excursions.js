@@ -1,0 +1,51 @@
+export const excursions = [
+    {
+        id: 1,
+        slug: "history",
+        title: {
+            ru: "Обзорная экскурсия по историческому центру",
+            en: "Sightseeing tour of the historical center",
+        },
+        description: {
+            ru: "Погрузитесь в атмосферу старого города с нашим профессиональным гидом.",
+            en: "Immerse yourself in the atmosphere of the old town with our professional guide.",
+        },
+        images: ["/images/excursions/excursion1_1.webp"],
+        duration: 2.5,
+        groupSize: 10,
+        price: 15,
+        rating: 4,
+        reviews: 142,
+        isPopular: true,
+    },
+    {
+        id: 2,
+        title: { ru: "Гастрономический тур", en: "Gastronomic tour" },
+        description: {
+            ru: "Попробуйте лучшие блюда местной кухни в старейших ресторанах города.",
+            en: "Try the best local cuisine in the oldest restaurants in the city.",
+        },
+        images: ["/images/excursions/excursion1_2.webp"],
+        duration: 3,
+        groupSize: 8,
+        price: 25,
+        rating: 5,
+        reviews: 87,
+        isPopular: true,
+    },
+    {
+        id: 3,
+        title: { ru: "Ночная экскурсия по городу", en: "City Night Tour" },
+        description: {
+            ru: "Увидьте город в совершенно новом свете - ночные огни и тайны.",
+            en: "See the city in a whole new light - night lights and mysteries.",
+        },
+        images: ["/images/excursions/excursion1_3.webp"],
+        duration: 2,
+        groupSize: 12,
+        price: 30,
+        rating: 4,
+        reviews: 56,
+        isPopular: false,
+    },
+];

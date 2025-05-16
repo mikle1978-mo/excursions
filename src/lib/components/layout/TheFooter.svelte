@@ -76,14 +76,19 @@
         justify-content: center;
         gap: var(--space-horizontal-sm);
         cursor: pointer;
+        height: 100%;
     }
 
     .icon-wrapper {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: var(--text-md);
-        width: var(--text-md);
+        height: 24px;
+        width: 24px;
+    }
+
+    .menu-item:hover {
+        color: var(--color-primary-hover);
     }
     .menu-item.active {
         color: var(--color-primary);
@@ -106,6 +111,9 @@
         .menu-item {
             flex-direction: column;
             gap: 0;
+        }
+        .menu-item span {
+            font-size: var(--text-xs);
         }
     }
 </style>
