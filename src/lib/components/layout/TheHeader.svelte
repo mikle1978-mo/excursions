@@ -36,13 +36,13 @@
         flex-direction: row;
         flex-wrap: nowrap;
         align-items: center;
-        gap: 1rem;
+        gap: var(--space-horizontal-md);
         height: 100%;
     }
 
     @media (max-width: 480px) {
         .line_right {
-            gap: 0.5rem;
+            gap: var(--space-horizontal-sm);
         }
     }
 </style>

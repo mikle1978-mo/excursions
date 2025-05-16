@@ -317,7 +317,3 @@ summary::-webkit-details-marker {
         --max-font-size: 14px;
     }
 }
-
-* {
-    outline: 1px solid red !important;
-}

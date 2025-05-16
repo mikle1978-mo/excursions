@@ -80,6 +80,7 @@
 
 <style>
     .search-form {
+        width: auto;
         height: 100%;
     }
     .search-container {
