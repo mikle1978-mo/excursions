@@ -32,9 +32,8 @@
     }
 
     .line_right {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: nowrap;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
         align-items: center;
         gap: var(--space-horizontal-md);
         height: 100%;

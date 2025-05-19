@@ -71,6 +71,7 @@
     .menu-item {
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: var(--space-horizontal-sm);
         cursor: pointer;
         height: 100%;

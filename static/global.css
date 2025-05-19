@@ -247,7 +247,7 @@ select {
 
 .page {
     display: grid;
-    grid-template-rows: minmax(32px, 7%) 1fr minmax(42px, 8%);
+    grid-template-rows: minmax(32px, 6%) 1fr minmax(42px, 6%);
     align-items: flex-start;
     padding: 0px;
     gap: var(--space-vertical-md);
@@ -310,7 +310,7 @@ summary::-webkit-details-marker {
         padding: var(--space-vertical-sm) var(--space-horizontal-sm);
     }
     .page {
-        grid-template-rows: minmax(32px, 5%) 1fr minmax(42px, 8%);
+        grid-template-rows: minmax(32px, 5%) 1fr minmax(40px, 5%);
         gap: var(--space-vertical-sm);
     }
 }
