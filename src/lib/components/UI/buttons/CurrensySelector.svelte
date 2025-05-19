@@ -63,6 +63,7 @@
     .currency-container {
         position: relative;
         height: 100%;
+        min-width: 32px;
     }
 
     .currency-button {
@@ -72,6 +73,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
         height: 100%;
         aspect-ratio: 1;
         font-size: var(--text-sm);

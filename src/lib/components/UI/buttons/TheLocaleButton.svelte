@@ -61,6 +61,7 @@
     .locale-container {
         position: relative;
         height: 100%;
+        min-width: 32px;
     }
 
     .locale-button {
