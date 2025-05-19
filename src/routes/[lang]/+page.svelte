@@ -65,6 +65,7 @@
         align-self: stretch;
         flex-grow: 1;
         border-top: 1px solid var(--color-gray-500);
+        border-bottom: 1px solid var(--color-gray-500);
     }
 
     .main_page {
