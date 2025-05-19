@@ -40,7 +40,10 @@
         height: 100%;
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 768px) {
+        .header_row {
+            gap: var(--space-horizontal-sm);
+        }
         .line_right {
             gap: var(--space-horizontal-sm);
         }
