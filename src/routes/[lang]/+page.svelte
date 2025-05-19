@@ -19,7 +19,7 @@
         <TheSidebar />
         <main>
             <div class="main_page">
-                <h1>
+                <h1 class="visually-hidden">
                     {@html main_page.title[$locale]}
                     {#if main_page.subtitle && main_page.subtitle[$locale]}
                         <p>{main_page.subtitle[$locale]}</p>

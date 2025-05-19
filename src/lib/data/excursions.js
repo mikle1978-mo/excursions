@@ -1,7 +1,7 @@
 export const excursions = [
     {
         id: 1,
-        slug: "history",
+        slug: "history-tour",
         title: {
             ru: "Обзорная экскурсия по историческому центру",
             en: "Sightseeing tour of the historical center",
@@ -20,6 +20,7 @@ export const excursions = [
     },
     {
         id: 2,
+        slug: "gastonomic-tour",
         title: { ru: "Гастрономический тур", en: "Gastronomic tour" },
         description: {
             ru: "Попробуйте лучшие блюда местной кухни в старейших ресторанах города.",
@@ -35,6 +36,7 @@ export const excursions = [
     },
     {
         id: 3,
+        slug: "night-tour",
         title: { ru: "Ночная экскурсия по городу", en: "City Night Tour" },
         description: {
             ru: "Увидьте город в совершенно новом свете - ночные огни и тайны.",

@@ -59,8 +59,10 @@
 
         <!-- Основное содержимое -->
         <div class="content-grid">
+            <button class="book-button">Забронировать</button>
             <section class="description">
                 <h2>Описание</h2>
+
                 <p>{excursion.description[lang]}</p>
             </section>
 
@@ -85,8 +87,6 @@
                         >
                     </div>
                 </div>
-
-                <button class="book-button">Забронировать</button>
             </aside>
         </div>
     </article>
@@ -95,16 +95,25 @@
 <style>
     /* Базовые стили страницы */
     .excursion-detail {
-        max-width: var(--max-width-container);
-        margin: 0 auto;
-        padding: var(--space-vertical-lg) var(--space-horizontal-lg);
+        display: flex;
+        flex-direction: column;
+        padding: 0px;
+        gap: var(--space-vertical-md);
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        overflow-x: hidden;
+        flex: none;
+        align-self: stretch;
+        flex-grow: 1;
+        border-top: 1px solid var(--color-gray-500);
+        border-bottom: 1px solid var(--color-gray-500);
     }
 
     /* Хлебные крошки */
     .breadcrumbs {
         font-size: var(--text-sm);
         color: var(--color-gray-600);
-        margin-bottom: var(--space-vertical-md);
 
         a {
             color: var(--color-primary);
@@ -118,11 +127,11 @@
 
     /* Шапка экскурсии */
     .excursion-header {
-        margin-bottom: var(--space-vertical-lg);
-
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-horizontal-sm);
         h1 {
             font-size: var(--text-xxl);
-            margin-bottom: var(--space-vertical-sm);
             color: var(--color-text);
         }
     }
@@ -172,7 +181,6 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: var(--space-vertical-sm);
-        margin-bottom: var(--space-vertical-lg);
 
         .primary {
             grid-column: span 2;
@@ -206,7 +214,6 @@
     .description {
         h2 {
             font-size: var(--text-xl);
-            margin-bottom: var(--space-vertical-sm);
             color: var(--color-text);
         }
 
@@ -231,7 +238,6 @@
     }
 
     .price-block {
-        margin-bottom: var(--space-vertical-md);
         text-align: center;
 
         .price {
@@ -250,7 +256,6 @@
     .details {
         display: grid;
         gap: var(--space-vertical-sm);
-        margin-bottom: var(--space-vertical-md);
 
         .detail {
             display: flex;
@@ -290,7 +295,6 @@
         a {
             color: var(--color-primary);
             display: inline-block;
-            margin-top: var(--space-vertical-sm);
         }
     }
 </style>

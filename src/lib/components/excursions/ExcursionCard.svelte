@@ -17,8 +17,7 @@
 
     export let slug = "/";
     export let title = "Обзорная экскурсия по историческому центру";
-    export let description =
-        "Погрузитесь в атмосферу старого города с нашим профессиональным гидом. Узнайте тайны древних улочек и архитектурных шедевров.";
+    //export let description = "Описание.";
     export let images = ["/images/excursions/excursion_defoult.webp"];
     export let duration = 2.5;
     export let groupSize = 10;
@@ -61,9 +60,9 @@
                 </div>
             </div>
 
-            <p class="excursion-card__description">
+            <!-- <p class="excursion-card__description">
                 {description[$locale]}
-            </p>
+            </p> -->
 
             <div class="excursion-card__footer">
                 <div class="excursion-card__details">
@@ -169,13 +168,13 @@
         color: var(--color-gray-600);
     }
 
-    .excursion-card__description {
+    /* .excursion-card__description {
         margin: 0;
         font-size: var(--text-sm);
         color: var(--color-gray-700);
         line-height: var(--line-height-base);
         flex-grow: 1;
-    }
+    } */
 
     .excursion-card__footer {
         display: flex;
