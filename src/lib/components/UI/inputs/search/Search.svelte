@@ -90,7 +90,6 @@
         align-items: center;
         width: 100%;
         height: 100%;
-        max-width: var(--max-width-text);
         background: var(--color-gray-100);
         border: 1px solid var(--color-gray-300);
         border-radius: var(--radius-full);

@@ -8,8 +8,8 @@
 <header class="header">
     <div class="header_row">
         <TheLogo />
+        <Search />
         <div class="line_right">
-            <Search />
             <CurrensySelector />
             <TheLocaleButton />
         </div>
