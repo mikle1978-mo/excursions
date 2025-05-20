@@ -1,56 +1,57 @@
 <script>
     import { page } from "$app/stores";
-    import { excursions } from "$lib/data/excursions";
+    import { locale } from "$lib/stores/locale";
+    import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
+    export let data;
+    const { tour, reviews } = data;
+    const { slug } = $page.params;
 
-    const { lang, slug } = $page.params;
-    const excursion = excursions.find((e) => e.slug === slug);
+    $: breadcrumbs = [
+        { href: `/${$locale}`, label: "Главная" },
+        { href: `/${$locale}/excursions`, label: "Экскурсии" },
+        tour ? { label: tour.title[$locale] } : { label: "..." },
+    ];
 </script>
 
-{#if !excursion}
+{#if !tour}
     <div class="error-page">
         <h1>Экскурсия не найдена</h1>
-        <a href="/{lang}/excursions">← Вернуться к списку экскурсий</a>
+        <a href="/{$locale}/excursions">← Вернуться к списку экскурсий</a>
     </div>
 {:else}
     <article class="excursion-detail">
         <!-- Хлебные крошки -->
-        <nav class="breadcrumbs">
-            <a href="/{lang}">Главная</a>
-            <span> / </span>
-            <a href="/{lang}/excursions">Экскурсии</a>
-            <span> / </span>
-            <span>{excursion.title[lang]}</span>
-        </nav>
+        <TheBreadcrumbs items={breadcrumbs} />
 
         <!-- Заголовок и мета-информация -->
         <header class="excursion-header">
-            <h1>{excursion.title[lang]}</h1>
+            <h1>{tour.title[$locale]}</h1>
 
             <div class="meta-info">
                 <div class="rating">
                     <span class="stars"
-                        >{"★".repeat(excursion.rating)}{"☆".repeat(
-                            5 - excursion.rating
+                        >{"★".repeat(tour.rating)}{"☆".repeat(
+                            5 - tour.rating
                         )}</span
                     >
-                    <span>({excursion.reviews} отзывов)</span>
+                    <span>({tour.reviews} отзывов)</span>
                 </div>
 
                 <div class="badges">
-                    {#if excursion.isPopular}
+                    {#if tour.isPopular}
                         <span class="badge popular">Популярно</span>
                     {/if}
-                    <span class="badge duration">{excursion.duration} ч.</span>
+                    <span class="badge duration">{tour.duration} ч.</span>
                 </div>
             </div>
         </header>
 
         <!-- Галерея изображений -->
         <div class="gallery">
-            {#each excursion.images as image, i}
+            {#each tour.images as image, i}
                 <img
                     src={image}
-                    alt="{excursion.title[lang]} - фото {i + 1}"
+                    alt="{tour.title[$locale]} - фото {i + 1}"
                     class="gallery-image {i === 0 ? 'primary' : ''}"
                     loading={i > 2 ? "lazy" : "eager"}
                 />
@@ -59,17 +60,16 @@
 
         <!-- Основное содержимое -->
         <div class="content-grid">
-            <button class="book-button">Забронировать</button>
             <section class="description">
                 <h2>Описание</h2>
-
-                <p>{excursion.description[lang]}</p>
+                <p>{tour.description[$locale]}</p>
             </section>
 
             <aside class="booking-card">
                 <div class="price-block">
                     <span class="price"
-                        >{new Intl.NumberFormat(lang).format(excursion.price)} ₽</span
+                        >{new Intl.NumberFormat(locale).format(tour.price)}
+                        ₽</span
                     >
                     <span class="per-person">за человека</span>
                 </div>
@@ -77,16 +77,16 @@
                 <div class="details">
                     <div class="detail">
                         <span class="label">Длительность:</span>
-                        <span class="value">{excursion.duration} часа</span>
+                        <span class="value">{tour.duration} часа</span>
                     </div>
 
                     <div class="detail">
                         <span class="label">Размер группы:</span>
-                        <span class="value"
-                            >до {excursion.groupSize} человек</span
-                        >
+                        <span class="value">до {tour.groupSize} человек</span>
                     </div>
                 </div>
+
+                <button class="book-button">Забронировать</button>
             </aside>
         </div>
     </article>
@@ -97,6 +97,8 @@
     .excursion-detail {
         display: flex;
         flex-direction: column;
+        max-width: var(--max-width-container);
+        margin: 0 auto;
         padding: 0px;
         gap: var(--space-vertical-md);
         width: 100%;
@@ -110,28 +112,11 @@
         border-bottom: 1px solid var(--color-gray-500);
     }
 
-    /* Хлебные крошки */
-    .breadcrumbs {
-        font-size: var(--text-sm);
-        color: var(--color-gray-600);
-
-        a {
-            color: var(--color-primary);
-            text-decoration: none;
-
-            &:hover {
-                text-decoration: underline;
-            }
-        }
-    }
-
     /* Шапка экскурсии */
     .excursion-header {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-horizontal-sm);
         h1 {
             font-size: var(--text-xxl);
+            margin-bottom: var(--space-vertical-sm);
             color: var(--color-text);
         }
     }
@@ -196,7 +181,7 @@
         transition: var(--transition-fast);
 
         &:hover {
-            transform: scale(1.02);
+            filter: brightness(0.8);
         }
     }
 
@@ -214,6 +199,7 @@
     .description {
         h2 {
             font-size: var(--text-xl);
+            margin-bottom: var(--space-vertical-sm);
             color: var(--color-text);
         }
 
@@ -238,6 +224,7 @@
     }
 
     .price-block {
+        margin-bottom: var(--space-vertical-md);
         text-align: center;
 
         .price {
@@ -256,6 +243,7 @@
     .details {
         display: grid;
         gap: var(--space-vertical-sm);
+        margin-bottom: var(--space-vertical-md);
 
         .detail {
             display: flex;
@@ -295,6 +283,7 @@
         a {
             color: var(--color-primary);
             display: inline-block;
+            margin-top: var(--space-vertical-sm);
         }
     }
 </style>

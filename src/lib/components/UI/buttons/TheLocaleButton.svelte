@@ -3,6 +3,7 @@
     import { goto } from "$app/navigation";
     import { fly } from "svelte/transition";
     import { get } from "svelte/store";
+    import { page } from "$app/stores";
 
     const languages = [
         { value: "ru", label: "RU" },
@@ -17,10 +18,16 @@
     });
 
     const changeLanguage = (lang) => {
-        if (lang !== currentLang) {
-            setLocale(lang);
-            goto(`/${lang}`, { replaceState: true });
+        const currentPath = get(page).url.pathname;
+        const segments = currentPath.split("/").filter(Boolean);
+        if (segments.length && (segments[0] === "ru" || segments[0] === "en")) {
+            segments[0] = lang;
+        } else {
+            segments.unshift(lang);
         }
+        const newPath = "/" + segments.join("/");
+        setLocale(lang);
+        goto(newPath, { replaceState: true });
         isOpen = false;
     };
 
