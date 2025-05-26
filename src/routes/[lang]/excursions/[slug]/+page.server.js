@@ -1,5 +1,6 @@
 import { connectToDatabase } from "$lib/server/mongodb";
 import { ObjectId } from "mongodb";
+import { error } from "@sveltejs/kit";
 
 export async function load({ params }) {
     const db = await connectToDatabase();

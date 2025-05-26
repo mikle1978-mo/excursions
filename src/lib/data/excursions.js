@@ -16,6 +16,7 @@ export const excursions = [
         },
         whatYouSee: [],
         images: ["/images/excursions/excursion1_1.webp"],
+        labels: { ru: ["Популярные", "Скидка"], en: ["Popular", "Discount"] },
         start: 8.3,
         duration: 2.5,
         distanse: 20,
@@ -23,7 +24,10 @@ export const excursions = [
         price: 15,
         rating: 4,
         reviews: 142,
-        isPopular: true,
+        categories: {
+            ru: ["Популярные", "Топ 10", "Морские", "Горные"],
+            en: ["Popular", "Top 10", "Sea", "Mountain"],
+        },
         days: [1, 2, 3, 4, 5, 6, 7],
         tags: {
             ru: ["история", "пешеходная экскурсия", "достопримечательности"],
@@ -72,6 +76,7 @@ export const excursions = [
         },
         whatYouSee: [],
         images: ["/images/excursions/excursion1_2.webp"],
+        labels: { ru: ["Популярные", "Скидка"], en: ["Popular", "Discount"] },
         start: 8.3,
         duration: 3,
         distanse: 20,
@@ -79,7 +84,10 @@ export const excursions = [
         price: 25,
         rating: 5,
         reviews: 87,
-        isPopular: true,
+        categories: {
+            ru: ["Популярные", "Топ 10", "Морские", "Горные", "Со скидкой"],
+            en: ["Popular", "Top 10", "Sea", "Mountain", "Discount"],
+        },
         days: [1, 2, 3, 4, 5, 6, 7],
         tags: {
             ru: ["еда", "дегустация", "рестораны", "кулинарный тур"],
@@ -134,6 +142,7 @@ export const excursions = [
         },
         whatYouSee: [],
         images: ["/images/excursions/excursion1_3.webp"],
+        labels: { ru: ["Популярные", "Скидка"], en: ["Popular", "Discount"] },
         start: 8.3,
         duration: 2,
         distanse: 20,
@@ -141,7 +150,10 @@ export const excursions = [
         price: 30,
         rating: 4,
         reviews: 56,
-        isPopular: false,
+        categories: {
+            ru: ["Популярные", "Топ 10", "Морские", "Горные"],
+            en: ["Popular", "Top 10", "Sea", "Mountain"],
+        },
         days: [1, 2, 3, 4, 5],
         tags: {
             ru: ["ночная экскурсия", "панорамы", "городские легенды"],

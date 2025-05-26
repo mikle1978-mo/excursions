@@ -2,13 +2,14 @@
     import { page } from "$app/stores";
     import { locale } from "$lib/stores/locale";
     import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
+    import { breadcrumbs } from "$lib/i18n/breadcrumbs.js";
     export let data;
     const { tour, reviews } = data;
     const { slug } = $page.params;
 
-    $: breadcrumbs = [
-        { href: `/${$locale}`, label: "Главная" },
-        { href: `/${$locale}/excursions`, label: "Экскурсии" },
+    $: breadcrumbsList = [
+        { href: `/${$locale}`, label: breadcrumbs.home[$locale] },
+        { href: `/${$locale}/excursions`, label: breadcrumbs.tours[$locale] },
         tour ? { label: tour.title[$locale] } : { label: "..." },
     ];
 </script>
@@ -21,7 +22,7 @@
 {:else}
     <article class="excursion-detail">
         <!-- Хлебные крошки -->
-        <TheBreadcrumbs items={breadcrumbs} />
+        <TheBreadcrumbs items={breadcrumbsList} />
 
         <!-- Заголовок и мета-информация -->
         <header class="excursion-header">

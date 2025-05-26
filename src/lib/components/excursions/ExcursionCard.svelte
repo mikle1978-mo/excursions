@@ -1,36 +1,29 @@
 <script>
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
-    import IconMessage from "$lib/icons/IconMessage.svelte";
-    import { labels } from "$lib/data/labels";
-    import {
-        initCurrencyService,
-        fetchExchangeRates,
-    } from "$lib/services/currencyService";
-    import { derived } from "svelte/store";
-    import {
-        exchangeRates,
-        selectedCurrency,
-        isLoadingRates,
-    } from "$lib/stores/currency";
+    import { initCurrencyService } from "$lib/services/currencyService";
+    import { excursion_card } from "$lib/i18n/excursion_card";
     import { formatPrice } from "$lib/utils/priceFormatter";
-
-    export let slug = "/";
-    export let title = "Обзорная экскурсия по историческому центру";
-    //export let description = "Описание.";
-    export let images = ["/images/excursions/excursion_defoult.webp"];
-    export let duration = 2.5;
-    export let groupSize = 10;
-    export let price = 1500;
-    export let rating = 4;
-    export let reviews = 142;
-    export let isPopular = true;
-
-    // Генерация звезд рейтинга
-    const stars = "★★★★★".slice(0, rating) + "☆☆☆☆☆".slice(0, 5 - rating);
+    export let excursion;
+    const {
+        slug = "/",
+        title = "Обзорная экскурсия по историческому центру",
+        images = ["/images/excursions/excursion_defoult.webp"],
+        duration = 2.5,
+        groupSize = 10,
+        price = 1500,
+        discount = 0,
+        rating = 4,
+        reviewsCount = 142,
+        meta = {},
+    } = excursion;
 
     let isMounted = false;
     const priceDisplay = formatPrice(price);
+
+    function getLabelByKey(labelsArray, key) {
+        return labelsArray.find((item) => item.key === key);
+    }
 
     onMount(async () => {
         await initCurrencyService();
@@ -42,10 +35,26 @@
     <div class="excursion-card">
         <div class="excursion-card__image-wrapper">
             <img src={images[0]} alt={title} class="excursion-card__image" />
-            {#if isPopular}
-                <span class="excursion-card__badge"
-                    >{labels.popular[$locale]}</span
-                >
+
+            {#if getLabelByKey(meta.labels, "POPULAR")}
+                <span class="excursion-card__badge topright">
+                    {getLabelByKey(meta.labels, "POPULAR").label[$locale]}
+                </span>
+            {/if}
+            {#if getLabelByKey(meta.labels, "DISCOUNT")}
+                <span class="excursion-card__badge bottomleft">
+                    {`-${discount}%`}
+                </span>
+            {/if}
+            {#if getLabelByKey(meta.labels, "NEW")}
+                <span class="excursion-card__badge topleft">
+                    {getLabelByKey(meta.labels, "NEW").label[$locale]}
+                </span>
+            {/if}
+            {#if getLabelByKey(meta.labels, "VIP")}
+                <span class="excursion-card__badge bottomright">
+                    {getLabelByKey(meta.labels, "VIP").label[$locale]}
+                </span>
             {/if}
         </div>
 
@@ -53,9 +62,13 @@
             <div class="excursion-card__header">
                 <h3 class="excursion-card__title">{title[$locale]}</h3>
                 <div class="excursion-card__rating">
-                    <span class="excursion-card__stars">{stars} </span>
+                    <span
+                        class="excursion-card__stars"
+                        style="--rating: {rating};"
+                    >
+                    </span>
                     <span class="excursion-card__reviews"
-                        >{reviews} {labels.reviews[$locale]}</span
+                        >{reviewsCount} {excursion_card.reviews[$locale]}</span
                     >
                 </div>
             </div>
@@ -66,10 +79,13 @@
 
             <div class="excursion-card__footer">
                 <div class="excursion-card__details">
-                    <span class="excursion-card__duration">{duration} часа</span
+                    <span class="excursion-card__duration"
+                        >{duration} {excursion_card.hours[$locale]}</span
                     >
                     <span class="excursion-card__group-size"
-                        >до {groupSize} человек</span
+                        >{excursion_card.before[$locale]}
+                        {groupSize}
+                        {excursion_card.people[$locale]}</span
                     >
                 </div>
 
@@ -78,7 +94,7 @@
                         {$priceDisplay}
                     </span>
                     <span class="excursion-card__price-per"
-                        >{labels.perPerson[$locale]}</span
+                        >{excursion_card.perPerson[$locale]}</span
                     >
                 </div>
             </div>
@@ -121,9 +137,6 @@
 
     .excursion-card__badge {
         position: absolute;
-        top: var(--space-vertical-xs);
-        right: var(--space-horizontal-xs);
-        background-color: var(--color-accent);
         color: var(--color-light);
         padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
         border-radius: var(--radius-sm);
@@ -131,6 +144,26 @@
         font-weight: 600;
     }
 
+    .topleft {
+        top: var(--space-vertical-xs);
+        left: var(--space-horizontal-xs);
+        background-color: var(--color-error);
+    }
+    .topright {
+        top: var(--space-vertical-xs);
+        right: var(--space-horizontal-xs);
+        background-color: var(--color-accent);
+    }
+    .bottomleft {
+        bottom: var(--space-vertical-xs);
+        left: var(--space-horizontal-xs);
+        background-color: var(--color-primary);
+    }
+    .bottomright {
+        bottom: var(--space-vertical-xs);
+        right: var(--space-horizontal-xs);
+        background-color: var(--color-secondary);
+    }
     .excursion-card__content {
         display: flex;
         flex-direction: column;
@@ -142,7 +175,6 @@
     .excursion-card__header {
         display: flex;
         flex-direction: column;
-        gap: var(--space-vertical-xxs);
     }
 
     .excursion-card__title {
@@ -154,13 +186,26 @@
 
     .excursion-card__rating {
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         gap: var(--space-horizontal-xs);
     }
 
     .excursion-card__stars {
-        color: var(--color-warning);
-        font-size: var(--text-sm);
+        --percent: calc(var(--rating) / 5 * 100%);
+        display: inline-block;
+        font-size: 24px;
+        line-height: 1;
+    }
+    .excursion-card__stars::before {
+        content: "★★★★★";
+        background: linear-gradient(
+            90deg,
+            gold var(--percent),
+            lightgray var(--percent)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
     }
 
     .excursion-card__reviews {

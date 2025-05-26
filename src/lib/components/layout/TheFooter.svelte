@@ -1,7 +1,7 @@
 <script>
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
-    import { footer_list } from "$lib/data/footer_list";
+    import { footer_list } from "$lib/i18n/footer_list";
     import { page } from "$app/stores";
 
     let isMounted = false;

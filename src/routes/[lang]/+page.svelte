@@ -1,7 +1,7 @@
 <script>
     import TheButton from "$lib/components/UI/buttons/TheButton.svelte";
     import ExcursionCard from "$lib/components/excursions/ExcursionCard.svelte";
-    import { main_page } from "$lib/data/main_page.js";
+    import { main_page } from "$lib/i18n/main_page.js";
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
     import TheSidebar from "$lib/components/layout/TheSidebar.svelte";
@@ -9,6 +9,8 @@
 
     let isMounted = false;
     export let data;
+    console.log("/*/*/*", data);
+
     const { excursions } = data;
 
     onMount(() => {
@@ -30,18 +32,7 @@
                 <section>
                     <div class="excursions-grid">
                         {#each excursions as excursion}
-                            <ExcursionCard
-                                slug={excursion.slug}
-                                title={excursion.title}
-                                description={excursion.description}
-                                images={excursion.images}
-                                duration={excursion.duration}
-                                groupSize={excursion.groupSize}
-                                price={excursion.price}
-                                rating={excursion.rating}
-                                reviews={excursion.reviews}
-                                isPopular={excursion.isPopular}
-                            />
+                            <ExcursionCard {excursion} />
                         {/each}
                     </div>
                 </section>
