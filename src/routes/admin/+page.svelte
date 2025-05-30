@@ -19,13 +19,14 @@
     onMount(async () => {});
 
     function handleAdd() {
-        console.log("Добавить новую экскурсию");
-        // здесь можно сделать переход, например: goto('/admin/excursions/new');
+     
+        goto("/admin/excursions/new");
     }
 
     function handleEdit(slug) {
-        console.log("Редактировать:", slug);
+       
         // тут может быть переход на страницу редактирования
+        goto(`/admin/excursions/${slug}`);
     }
 
     async function handleDuplicate(slug) {

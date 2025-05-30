@@ -41,7 +41,7 @@ export async function createExcursion(data) {
         throw new Error(err.error || "Ошибка при создании экскурсии");
     }
 
-    return await res.json(); // может вернуться созданная экскурсия
+    return await res.json();
 }
 
 /**

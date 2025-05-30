@@ -6,13 +6,12 @@ export async function load() {
     const tours = await db
         .collection("excursions")
         .find({}, { projection: { _id: 0, slug: 1 } })
-        .sort({ slug: 1 }) // сортируем по алфавиту по слагу
+        .sort({ slug: 1 })
         .toArray();
 
     return {
         excursions: tours.map((t) => ({
             slug: t.slug,
-            // заголовок не нужен, только slug
         })),
     };
 }

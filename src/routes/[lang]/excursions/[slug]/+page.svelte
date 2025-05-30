@@ -7,10 +7,13 @@
     const { tour, reviews } = data;
     const { slug } = $page.params;
 
+    $: currentTranslation =
+        tour.translations.find((t) => t.lang === $locale) ?? {};
+
     $: breadcrumbsList = [
         { href: `/${$locale}`, label: breadcrumbs.home[$locale] },
         { href: `/${$locale}/excursions`, label: breadcrumbs.tours[$locale] },
-        tour ? { label: tour.title[$locale] } : { label: "..." },
+        tour ? { label: currentTranslation.title } : { label: "..." },
     ];
 </script>
 
@@ -26,7 +29,7 @@
 
         <!-- Заголовок и мета-информация -->
         <header class="excursion-header">
-            <h1>{tour.title[$locale]}</h1>
+            <h1>{currentTranslation.title}</h1>
 
             <div class="meta-info">
                 <div class="rating">
@@ -52,7 +55,7 @@
             {#each tour.images as image, i}
                 <img
                     src={image}
-                    alt="{tour.title[$locale]} - фото {i + 1}"
+                    alt="{currentTranslation.title} - фото {i + 1}"
                     class="gallery-image {i === 0 ? 'primary' : ''}"
                     loading={i > 2 ? "lazy" : "eager"}
                 />
@@ -63,13 +66,13 @@
         <div class="content-grid">
             <section class="description">
                 <h2>Описание</h2>
-                <p>{tour.description[$locale]}</p>
+                <p>{currentTranslation.description}</p>
             </section>
 
             <aside class="booking-card">
                 <div class="price-block">
                     <span class="price"
-                        >{new Intl.NumberFormat(locale).format(tour.price)}
+                        >{new Intl.NumberFormat($locale).format(tour.price)}
                         ₽</span
                     >
                     <span class="per-person">за человека</span>

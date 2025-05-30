@@ -9,7 +9,7 @@ export async function load() {
         .aggregate([
             {
                 $lookup: {
-                    from: "excursion_translations",
+                    from: "excursions_translations",
                     localField: "slug",
                     foreignField: "tourSlug",
                     as: "translations",
@@ -105,6 +105,7 @@ export async function load() {
                     description: 1,
                     rating: 1,
                     reviewsCount: 1,
+                    createdAt: 1,
                 },
             },
         ])

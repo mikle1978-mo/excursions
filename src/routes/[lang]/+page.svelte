@@ -5,11 +5,10 @@
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
     import TheSidebar from "$lib/components/layout/TheSidebar.svelte";
-    // import { excursions } from "$lib/data/excursions";
+  
 
     let isMounted = false;
     export let data;
-    console.log("/*/*/*", data);
 
     const { excursions } = data;
 
