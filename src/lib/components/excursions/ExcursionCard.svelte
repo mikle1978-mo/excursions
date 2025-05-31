@@ -194,7 +194,7 @@
     .excursion-card__stars {
         --percent: calc(var(--rating) / 5 * 100%);
         display: inline-block;
-        font-size: 24px;
+        font-size: var(--text-lg);
         line-height: 1;
     }
     .excursion-card__stars::before {

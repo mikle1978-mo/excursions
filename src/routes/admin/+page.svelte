@@ -110,26 +110,6 @@
         align-items: center;
     }
 
-    .add-button {
-        width: calc(var(--text-md) * 2);
-        height: calc(var(--text-md) * 2);
-        background-color: var(--color-secondary);
-        color: white;
-        border: none;
-        border-radius: var(--radius-full);
-        padding: 0.4rem 0.6rem;
-        cursor: pointer;
-        font-size: var(--text-md);
-        transition: background-color var(--transition-fast);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .add-button:hover {
-        background-color: var(--color-gray-600,);
-    }
-
     .excursion-list {
         display: flex;
         flex-direction: column;
@@ -141,9 +121,15 @@
         justify-content: space-between;
         align-items: center;
         padding: var(--space-vertical-xs) var(--space-horizontal-sm);
-        background-color: var(--color-gray-100);
+        background-color: var(--color-bg);
         border-radius: var(--radius-md);
         box-shadow: var(--shadow-sm);
+    }
+    @media (prefers-color-scheme: dark) {
+        .excursion-item {
+            background: var(--color-gray-800);
+            border-color: var(--color-gray-600);
+        }
     }
 
     .excursion-title {
@@ -160,12 +146,14 @@
         height: calc(var(--text-md) * 2);
         gap: 0.5rem;
     }
-
+    .add-button,
     .edit-button,
     .delete-button,
     .copy-button {
+        width: calc(var(--text-md) * 2);
+        height: calc(var(--text-md) * 2);
         background-color: var(--color-warning);
-        color: white;
+        color: var(--color-text);
         border: none;
         border-radius: var(--radius-sm);
         padding: var(--space-horizontal-xxs);
@@ -177,13 +165,18 @@
         justify-content: center;
     }
 
+    .add-button {
+        border-radius: var(--radius-full);
+        background-color: var(--color-secondary);
+    }
+
     .copy-button {
         background-color: var(--color-primary);
     }
     .delete-button {
         background-color: var(--color-error, #e53935);
     }
-
+    .add-button:hover,
     .edit-button:hover,
     .delete-button:hover,
     .copy-button:hover {
