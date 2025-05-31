@@ -19,12 +19,10 @@
     onMount(async () => {});
 
     function handleAdd() {
-     
         goto("/admin/excursions/new");
     }
 
     function handleEdit(slug) {
-       
         // тут может быть переход на страницу редактирования
         goto(`/admin/excursions/${slug}`);
     }
@@ -32,7 +30,7 @@
     async function handleDuplicate(slug) {
         const newSlug = await duplicateExcursion(slug);
         if (newSlug) {
-            goto(`/admin/excursions/${newSlug}`);
+            location.reload();
         }
     }
 
@@ -60,9 +58,12 @@
         <div class="excursion-list">
             {#each excursions as excursion}
                 <div class="excursion-item">
-                    <div class="excursion-title">
+                    <a
+                        class="excursion-title"
+                        href={`/admin/excursions/${excursion.slug}`}
+                    >
                         {excursion.slug}
-                    </div>
+                    </a>
                     <div class="button-group">
                         <button
                             class="edit-button"
@@ -110,10 +111,12 @@
     }
 
     .add-button {
+        width: calc(var(--text-md) * 2);
+        height: calc(var(--text-md) * 2);
         background-color: var(--color-secondary);
         color: white;
         border: none;
-        border-radius: var(--radius-sm);
+        border-radius: var(--radius-full);
         padding: 0.4rem 0.6rem;
         cursor: pointer;
         font-size: var(--text-md);
@@ -147,6 +150,9 @@
         width: 70%;
         font-size: var(--text-md);
         font-weight: 500;
+    }
+    .excursion-title:hover {
+        text-decoration: underline;
     }
 
     .button-group {

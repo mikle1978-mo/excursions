@@ -47,12 +47,16 @@
             </div>
             <span>{footer_list[2].title[$locale]}</span>
         </a>
-        <div class="menu-item">
-            <div class="icon-wrapper">
+        <a class="menu-item" href={`/admin`}>
+            <div
+                class="icon-wrapper {currentPath === `/admin/excursions/`
+                    ? 'active'
+                    : ''}"
+            >
                 <svelte:component this={footer_list[3].icon} />
             </div>
             <span>{footer_list[3].title[$locale]}</span>
-        </div>
+        </a>
     </footer>
 {:else}
     <div></div>

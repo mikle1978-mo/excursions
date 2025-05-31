@@ -38,7 +38,7 @@
                             5 - tour.rating
                         )}</span
                     >
-                    <span>({tour.reviews} отзывов)</span>
+                    <span>({tour.reviews || 0} отзывов)</span>
                 </div>
 
                 <div class="badges">

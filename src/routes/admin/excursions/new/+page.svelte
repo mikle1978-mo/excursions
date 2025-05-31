@@ -55,48 +55,51 @@
 </script>
 
 <div class="new-page">
-    <h1>Создание экскурсии</h1>
+    <h1 class="title">Создание экскурсии</h1>
 
     <form on:submit|preventDefault={handleSubmit}>
-        <label>
-            Slug (уникальный идентификатор):
-            <input type="text" bind:value={formData.slug} required />
-        </label>
+        <fieldset>
+            <legend>Общая информация</legend>
+            <label>
+                Slug (уникальный идентификатор):
+                <input type="text" bind:value={formData.slug} required />
+            </label>
 
-        <label>
-            Длительность (в часах):
-            <input type="number" bind:value={formData.duration} />
-        </label>
+            <label>
+                Длительность (в часах):
+                <input type="number" bind:value={formData.duration} />
+            </label>
 
-        <label>
-            Максимальный размер группы:
-            <input type="number" bind:value={formData.groupSize} />
-        </label>
+            <label>
+                Максимальный размер группы:
+                <input type="number" bind:value={formData.groupSize} />
+            </label>
 
-        <label>
-            Цена (в долларах):
-            <input type="number" bind:value={formData.price} />
-        </label>
+            <label>
+                Цена (в долларах):
+                <input type="number" bind:value={formData.price} />
+            </label>
 
-        <label>
-            Расстояние (км):
-            <input type="number" bind:value={formData.distance} />
-        </label>
+            <label>
+                Расстояние (км):
+                <input type="number" bind:value={formData.distance} />
+            </label>
 
-        <label>
-            Время начала:
-            <input type="text" bind:value={formData.start} />
-        </label>
+            <label>
+                Время начала:
+                <input type="text" bind:value={formData.start} />
+            </label>
 
-        <label>
-            Скидка (%):
-            <input type="number" bind:value={formData.discount} />
-        </label>
+            <label>
+                Скидка (%):
+                <input type="number" bind:value={formData.discount} />
+            </label>
 
-        <label>
-            Изображения (URL через запятую):
-            <input type="text" on:input={handleImageInput} />
-        </label>
+            <label>
+                Изображения (URL через запятую):
+                <input type="text" on:input={handleImageInput} />
+            </label>
+        </fieldset>
 
         <h2>Мультиязычные поля</h2>
         {#each ["ru", "en", "tr"] as lang}
@@ -192,18 +195,20 @@
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-sm);
-        max-width: 700px;
-        padding: var(--space-vertical-md);
         background: var(--color-bg);
         border-radius: var(--radius-md);
         box-shadow: var(--shadow-sm);
-        border: 1px solid var(--color-gray-300);
     }
 
+    .title {
+        margin-top: var(--space-vertical-md);
+        font-size: var(--text-lg);
+        color: var(--color-text);
+    }
     h2 {
         margin-top: var(--space-vertical-md);
         font-size: var(--text-lg);
-        color: var(--color-dark);
+        color: var(--color-text);
     }
 
     label {
@@ -220,7 +225,7 @@
         border: 1px solid var(--color-gray-400);
         border-radius: var(--radius-sm);
         background-color: var(--color-light);
-        color: var(--color-dark);
+        color: var(--color-text);
         transition:
             border var(--transition-fast),
             box-shadow var(--transition-fast);
@@ -233,10 +238,21 @@
         box-shadow: 0 0 0 2px rgba(74, 201, 126, 0.3);
     }
 
+    fieldset {
+        border: 1px solid var(--color-gray-300);
+        padding: var(--space-vertical-sm);
+        border-radius: var(--radius-md);
+        background-color: var(--color-bg);
+    }
+    legend {
+        font-weight: bolder;
+        text-decoration: underline;
+    }
+
     button {
         padding: 0.75rem;
         background-color: var(--color-primary);
-        color: #fff;
+        color: var(--color-text);
         font-size: var(--text-md);
         border: none;
         border-radius: var(--radius-sm);
@@ -256,5 +272,13 @@
     .error {
         color: var(--color-error);
         font-size: var(--text-sm);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        input,
+        textarea {
+            background: var(--color-gray-800);
+            border-color: var(--color-gray-600);
+        }
     }
 </style>

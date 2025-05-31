@@ -64,11 +64,12 @@
                 <div class="excursion-card__rating">
                     <span
                         class="excursion-card__stars"
-                        style="--rating: {rating};"
+                        style="--rating: {rating || 0};"
                     >
                     </span>
                     <span class="excursion-card__reviews"
-                        >{reviewsCount} {excursion_card.reviews[$locale]}</span
+                        >{reviewsCount}
+                        {excursion_card.reviews[$locale]}</span
                     >
                 </div>
             </div>

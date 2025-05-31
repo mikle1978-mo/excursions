@@ -83,6 +83,7 @@
             }));
 
             await updateExcursion(slug, { excursion, translations });
+            alert("Экскурсия успешно обновлена!");
             goto("/admin");
         } catch (e) {
             error = e.message;
@@ -103,12 +104,12 @@
 </script>
 
 <div class="edit-page">
-    <h1>Редактирование экскурсии</h1>
+    <h1 class="title">Редактирование экскурсии</h1>
     {#if formData}
         <form on:submit|preventDefault={handleSubmit}>
             <label>
                 Slug:
-                <input type="text" bind:value={formData.slug} readonly />
+                <input type="text" bind:value={formData.slug} />
             </label>
 
             <label>
@@ -244,18 +245,20 @@
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-sm);
-        max-width: 700px;
-        padding: var(--space-vertical-md);
         background: var(--color-bg);
         border-radius: var(--radius-md);
         box-shadow: var(--shadow-sm);
-        border: 1px solid var(--color-gray-300);
     }
 
+    .title {
+        margin-top: var(--space-vertical-md);
+        font-size: var(--text-lg);
+        color: var(--color-text);
+    }
     h2 {
         margin-top: var(--space-vertical-md);
         font-size: var(--text-lg);
-        color: var(--color-dark);
+        color: var(--color-text);
     }
 
     label {
@@ -272,7 +275,7 @@
         border: 1px solid var(--color-gray-400);
         border-radius: var(--radius-sm);
         background-color: var(--color-light);
-        color: var(--color-dark);
+        color: var(--color-text);
         transition:
             border var(--transition-fast),
             box-shadow var(--transition-fast);
@@ -285,10 +288,21 @@
         box-shadow: 0 0 0 2px rgba(74, 201, 126, 0.3);
     }
 
+    fieldset {
+        border: 1px solid var(--color-gray-300);
+        padding: var(--space-vertical-sm);
+        border-radius: var(--radius-md);
+        background-color: var(--color-bg);
+    }
+    legend {
+        font-weight: bolder;
+        text-decoration: underline;
+    }
+
     button {
         padding: 0.75rem;
         background-color: var(--color-primary);
-        color: #fff;
+        color: var(--color-text);
         font-size: var(--text-md);
         border: none;
         border-radius: var(--radius-sm);
@@ -308,5 +322,13 @@
     .error {
         color: var(--color-error);
         font-size: var(--text-sm);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        input,
+        textarea {
+            background: var(--color-gray-800);
+            border-color: var(--color-gray-600);
+        }
     }
 </style>
