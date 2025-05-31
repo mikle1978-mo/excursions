@@ -143,15 +143,15 @@
 
     .button-group {
         display: flex;
-        height: calc(var(--text-md) * 2);
+        align-items: center;
         gap: 0.5rem;
     }
     .add-button,
     .edit-button,
     .delete-button,
     .copy-button {
-        width: calc(var(--text-md) * 2);
-        height: calc(var(--text-md) * 2);
+        width: 1.75rem;
+        height: 1.75rem;
         background-color: var(--color-warning);
         color: var(--color-text);
         border: none;

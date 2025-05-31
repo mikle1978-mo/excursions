@@ -3,8 +3,6 @@
 
 <svg
     class="icon"
-    width="24"
-    height="24"
     viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -41,8 +39,9 @@
 
 <style>
     .icon {
-        width: 100%;
-        height: 100%;
+        width: 1.2rem;
+        height: 1.2rem;
         object-fit: cover;
+        display: block;
     }
 </style>
