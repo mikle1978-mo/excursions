@@ -132,6 +132,9 @@
         line-height: var(--line-height-base);
         outline: none;
     }
+    input:focus {
+        font-size: 16px;
+    }
 
     input::placeholder {
         color: var(--color-gray-500);
