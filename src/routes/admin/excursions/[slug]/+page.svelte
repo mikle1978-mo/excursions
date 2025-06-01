@@ -94,12 +94,14 @@
 
     function handleArrayInput(e, lang, field) {
         formData[field][lang] = e.target.value
-            .split(",")
+            .split(/[\n,]+/) // Разделить по запятой ИЛИ новой строке
             .map((item) => item.trim());
     }
 
     function handleImageInput(e) {
-        formData.images = e.target.value.split(",").map((img) => img.trim());
+        formData.images = e.target.value
+            .split(/[\n,]+/)
+            .map((img) => img.trim());
     }
 </script>
 
@@ -144,7 +146,10 @@
 
             <label>
                 Изображения (URL через запятую):
-                <input type="text" on:input={handleImageInput} />
+                <textarea
+                    value={formData.images.join("\n")}
+                    on:input={handleImageInput}
+                ></textarea>
             </label>
 
             <h2>Мультиязычные поля</h2>
@@ -172,6 +177,7 @@
                     <label>
                         Что вы увидите (через запятую):
                         <textarea
+                            value={formData.whatYouSee[lang].join("\n")}
                             on:input={(e) =>
                                 handleArrayInput(e, lang, "whatYouSee")}
                         ></textarea>
@@ -180,6 +186,7 @@
                     <label>
                         Что включено (через запятую):
                         <textarea
+                            value={formData.includes[lang].join("\n")}
                             on:input={(e) =>
                                 handleArrayInput(e, lang, "includes")}
                         ></textarea>
@@ -188,6 +195,7 @@
                     <label>
                         Что взять с собой (через запятую):
                         <textarea
+                            value={formData.whatToBring[lang].join("\n")}
                             on:input={(e) =>
                                 handleArrayInput(e, lang, "whatToBring")}
                         ></textarea>
@@ -204,6 +212,7 @@
                     <label>
                         Теги (через запятую):
                         <input
+                            value={formData.tags[lang].join("\n")}
                             type="text"
                             on:input={(e) => handleArrayInput(e, lang, "tags")}
                         />
@@ -280,10 +289,16 @@
             border var(--transition-fast),
             box-shadow var(--transition-fast);
     }
+    textarea {
+        height: auto;
+        overflow-y: hidden;
+        resize: vertical;
+    }
 
     input:focus,
     textarea:focus {
         outline: none;
+        font-size: 16px;
         border-color: var(--color-primary);
         box-shadow: 0 0 0 2px rgba(74, 201, 126, 0.3);
     }
