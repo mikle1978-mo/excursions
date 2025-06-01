@@ -1,12 +1,17 @@
 <script>
     import { page } from "$app/stores";
     import { locale } from "$lib/stores/locale";
+    import { onMount } from "svelte";
     import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
     import { breadcrumbs } from "$lib/i18n/breadcrumbs.js";
     export let data;
     const { tour, reviews } = data;
     const { slug } = $page.params;
+    import { excursion_page } from "$lib/i18n/excursion_pade.js";
+    import { formatPrice } from "$lib/utils/priceFormatter.js";
+    import { initCurrencyService } from "$lib/services/currencyService";
 
+    let isMounted = false;
     $: currentTranslation =
         tour.translations.find((t) => t.lang === $locale) ?? {};
 
@@ -15,6 +20,12 @@
         { href: `/${$locale}/excursions`, label: breadcrumbs.tours[$locale] },
         tour ? { label: currentTranslation.title } : { label: "..." },
     ];
+    let priceDisplay;
+    onMount(async () => {
+        await initCurrencyService();
+        priceDisplay = formatPrice(tour.price);
+        isMounted = true;
+    });
 </script>
 
 {#if !tour}
@@ -38,14 +49,19 @@
                             5 - tour.rating
                         )}</span
                     >
-                    <span>({tour.reviews || 0} отзывов)</span>
+                    <span
+                        >({tour.reviews || 0}
+                        {excursion_page.reviews[$locale]})</span
+                    >
                 </div>
 
                 <div class="badges">
                     {#if tour.isPopular}
                         <span class="badge popular">Популярно</span>
                     {/if}
-                    <span class="badge duration">{tour.duration} ч.</span>
+                    <span class="badge duration"
+                        >{tour.duration} {excursion_page.hours[$locale]}</span
+                    >
                 </div>
             </div>
         </header>
@@ -65,33 +81,68 @@
         <!-- Основное содержимое -->
         <div class="content-grid">
             <section class="description">
-                <h2>Описание</h2>
+                <h2>{excursion_page.description[$locale]}</h2>
                 <p>{currentTranslation.description}</p>
             </section>
 
             <aside class="booking-card">
                 <div class="price-block">
-                    <span class="price"
-                        >{new Intl.NumberFormat($locale).format(tour.price)}
-                        ₽</span
+                    <span class="price">{$priceDisplay}</span>
+                    <span class="per-person">
+                        {excursion_page.perPerson[$locale]}</span
                     >
-                    <span class="per-person">за человека</span>
                 </div>
 
                 <div class="details">
                     <div class="detail">
-                        <span class="label">Длительность:</span>
-                        <span class="value">{tour.duration} часа</span>
+                        <span class="label"
+                            >{excursion_page.duration[$locale]}:</span
+                        >
+                        <span class="value"
+                            >{tour.duration}
+                            {excursion_page.hours[$locale]}</span
+                        >
                     </div>
 
                     <div class="detail">
-                        <span class="label">Размер группы:</span>
-                        <span class="value">до {tour.groupSize} человек</span>
+                        <span class="label">
+                            {excursion_page.groupSize[$locale]}:</span
+                        >
+                        <span class="value"
+                            >{excursion_page.before[$locale]}
+                            {tour.groupSize}
+                            {excursion_page.perPerson[$locale]}</span
+                        >
                     </div>
                 </div>
 
                 <button class="book-button">Забронировать</button>
             </aside>
+            <section class="additional-info">
+                <!-- Что вы увидите -->
+                {#if currentTranslation.whatYouSee.length > 0}
+                    <div class="info-block">
+                        <h2>{excursion_page.whatYouSee[$locale]}</h2>
+                        <ul class="info-list">
+                            {#each currentTranslation.whatYouSee as item}
+                                <li>{item}</li>
+                            {/each}
+                        </ul>
+                    </div>
+                {/if}
+
+                <!-- Что взять с собой -->
+                {#if currentTranslation.whatToBring.length > 0}
+                    <div class="info-block">
+                        <h2>{excursion_page.whatToBring[$locale]}</h2>
+                        <ul class="info-list">
+                            {#each currentTranslation.whatToBring as item}
+                                <li>{item}</li>
+                            {/each}
+                        </ul>
+                    </div>
+                {/if}
+            </section>
         </div>
     </article>
 {/if}
@@ -160,7 +211,7 @@
         }
 
         &.duration {
-            background: var(--color-gray-200);
+            background: var(--color-primary);
             color: var(--color-text);
         }
     }
@@ -168,7 +219,7 @@
     /* Галерея */
     .gallery {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(minmax(250px, 1fr));
         gap: var(--space-vertical-sm);
 
         .primary {
@@ -183,6 +234,7 @@
         object-fit: cover;
         aspect-ratio: 16/9;
         transition: var(--transition-fast);
+        grid-column: span 1;
 
         &:hover {
             filter: brightness(0.8);
@@ -215,7 +267,7 @@
 
     /* Блок бронирования */
     .booking-card {
-        background: var(--color-gray-100);
+        background: var(--color-bg);
         padding: var(--space-vertical-md);
         border-radius: var(--radius-md);
         align-self: start;
@@ -289,5 +341,30 @@
             display: inline-block;
             margin-top: var(--space-vertical-sm);
         }
+    }
+
+    .additional-info {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-vertical-lg);
+    }
+
+    .info-block {
+        background: var(--color-bg);
+        padding: var(--space-vertical-md);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-gray-300);
+    }
+
+    .info-block h2 {
+        font-size: var(--text-lg);
+        margin-bottom: var(--space-vertical-sm);
+        color: var(--color-text);
+    }
+
+    .info-list {
+        list-style: disc inside;
+        color: var(--color-gray-700);
+        line-height: var(--line-height-base);
     }
 </style>

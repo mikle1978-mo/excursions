@@ -8,7 +8,7 @@ export const excursion_card = {
         en: "reviews",
     },
     hours: {
-        ru: "часа",
+        ru: "часа(ов)",
         en: "hours",
     },
     people: {
