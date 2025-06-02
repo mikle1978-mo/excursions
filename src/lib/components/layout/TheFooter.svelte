@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
     import { footer_list } from "$lib/i18n/footer_list";
     import { page } from "$app/stores";
+    import { sidebarOpen } from "$lib/stores/sidebar";
 
     let isMounted = false;
     $: currentPath = $page.url.pathname;
@@ -25,14 +26,15 @@
             </div>
             <span>{footer_list[0].title[$locale]}</span>
         </a>
-        <div
+        <button
             class="menu-item {currentPath !== `/${$locale}` ? 'disabled' : ''}"
+            on:click={() => sidebarOpen.set(true)}
         >
             <div class="icon-wrapper">
                 <svelte:component this={footer_list[1].icon} />
             </div>
             <span>{footer_list[1].title[$locale]}</span>
-        </div>
+        </button>
         <a
             class="menu-item {currentPath ===
             `/${$locale}/${footer_list[2].link}`
@@ -79,6 +81,7 @@
         gap: var(--space-horizontal-sm);
         cursor: pointer;
         height: 100%;
+        border: none;
     }
 
     .icon-wrapper {

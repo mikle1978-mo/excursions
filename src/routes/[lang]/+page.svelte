@@ -5,7 +5,6 @@
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
     import TheSidebar from "$lib/components/layout/TheSidebar.svelte";
-  
 
     let isMounted = false;
     export let data;
@@ -19,7 +18,7 @@
 
 {#if isMounted}
     <div class="content">
-        <TheSidebar />
+        <TheSidebar {excursions} />
         <main>
             <div class="main_page">
                 <h1 class="visually-hidden">
@@ -76,6 +75,7 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding: var(--space-vertical-md) 0;
         width: 100%;
         transition: all 0.4s ease-in;
     }

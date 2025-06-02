@@ -32,7 +32,7 @@
 </script>
 
 {#if isMounted}
-    <div class="excursion-card">
+    <a class="excursion-card" href="/{$locale}/excursions/{slug}">
         <div class="excursion-card__image-wrapper">
             <img src={images[0]} alt={title} class="excursion-card__image" />
 
@@ -58,7 +58,7 @@
             {/if}
         </div>
 
-        <a href="/{$locale}/excursions/{slug}" class="excursion-card__content">
+        <div class="excursion-card__content">
             <div class="excursion-card__header">
                 <h3 class="excursion-card__title">{title[$locale]}</h3>
                 <div class="excursion-card__rating">
@@ -101,8 +101,8 @@
             </div>
 
             <!-- <button class="excursion-card__button">Забронировать</button> -->
-        </a>
-    </div>
+        </div>
+    </a>
 {:else}
     <div></div>
 {/if}

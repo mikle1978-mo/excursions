@@ -1,17 +1,27 @@
 <script>
     import { locale } from "$lib/stores/locale.js";
-    import { excursions } from "$lib/data/excursions";
 
+    import { sidebarOpen } from "$lib/stores/sidebar";
+    import { onMount, createEventDispatcher } from "svelte";
+    export let excursions;
+
+    const dispatch = createEventDispatcher();
     // Фильтры
     let durationFilter = [];
     let priceRange = [0, 5000];
     let groupSizeFilter = [];
     let ratingFilter = 0;
 
-    // Уникальные значения для фильтров
-    $: durations = [...new Set(excursions.map((e) => e.duration))];
-    $: groupSizes = [...new Set(excursions.map((e) => e.groupSize))];
+    // Уникальные значения для фильтров с сортировкой
+    $: durations = [...new Set(excursions.map((e) => e.duration))].sort(
+        (a, b) => a - b
+    );
+    $: groupSizes = [...new Set(excursions.map((e) => e.groupSize))].sort(
+        (a, b) => a - b
+    );
     $: maxPrice = Math.max(...excursions.map((e) => e.price));
+
+    console.log(maxPrice);
 
     // Обновление цены
     $: priceRange = [0, maxPrice];
@@ -27,9 +37,50 @@
             ? groupSizeFilter.filter((s) => s !== size)
             : [...groupSizeFilter, size];
     };
+
+    let isMobile = false;
+
+    onMount(() => {
+        const checkMobile = () => {
+            isMobile = window.innerWidth < 768;
+            if (!isMobile) {
+                sidebarOpen.set(false);
+            }
+        };
+
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+
+        return () => window.removeEventListener("resize", checkMobile);
+    });
+
+    const closeSidebar = () => {
+        sidebarOpen.set(false);
+    };
+
+    function handleKeydown(event) {
+        if (event.key === "Escape" && $sidebarOpen && isMobile) {
+            closeSidebar();
+        }
+    }
+
+    function handleBackdropClick() {
+        closeSidebar();
+    }
 </script>
 
-<side class="sidebar">
+<svelte:window on:keydown={handleKeydown} />
+
+{#if $sidebarOpen && isMobile}
+    <div
+        class="sidebar-overlay"
+        role="presentation"
+        on:click={handleBackdropClick}
+        on:keydown={(e) => e.key === "Enter" && closeSidebar()}
+    ></div>
+{/if}
+
+<side class="sidebar" class:active={$sidebarOpen && isMobile}>
     <div class="sidebar-content">
         <h3 class="sidebar-title">Фильтры экскурсий</h3>
 
@@ -43,10 +94,11 @@
                             type="checkbox"
                             bind:group={durationFilter}
                             value={duration}
-                            on:change={() => toggleDuration(duration)}
                         />
-                        <span class="custom-checkbox"></span>
-                        {duration}
+                        <span class="checkbox-container">
+                            <span class="custom-checkbox"></span>
+                        </span>
+                        <span class="filter-label">{duration} ч</span>
                     </label>
                 {/each}
             </div>
@@ -54,13 +106,13 @@
 
         <!-- Фильтр по цене -->
         <div class="filter-group">
-            <h4 class="filter-title">Цена, ₽</h4>
+            <h4 class="filter-title">Цена</h4>
             <div class="price-range">
                 <input
                     type="range"
                     min="0"
                     max={maxPrice}
-                    step="100"
+                    step="10"
                     bind:value={priceRange[0]}
                     class="range-slider"
                 />
@@ -68,14 +120,14 @@
                     type="range"
                     min="0"
                     max={maxPrice}
-                    step="100"
+                    step="10"
                     bind:value={priceRange[1]}
                     class="range-slider"
                 />
             </div>
             <div class="price-values">
-                <span>{priceRange[0]} ₽</span>
-                <span>{priceRange[1]} ₽</span>
+                <span>{priceRange[0]} </span>
+                <span>{priceRange[1]} </span>
             </div>
         </div>
 
@@ -89,10 +141,11 @@
                             type="checkbox"
                             bind:group={groupSizeFilter}
                             value={size}
-                            on:change={() => toggleGroupSize(size)}
                         />
-                        <span class="custom-checkbox"></span>
-                        {size}
+                        <span class="checkbox-container">
+                            <span class="custom-checkbox"></span>
+                        </span>
+                        <span class="filter-label">{size} чел</span>
                     </label>
                 {/each}
             </div>
@@ -134,6 +187,11 @@
             Сбросить все фильтры
         </button>
     </div>
+
+    <!-- Кнопка закрытия для мобильных -->
+    {#if isMobile}
+        <button class="close-button" on:click={closeSidebar}> ✕ </button>
+    {/if}
 </side>
 
 <style>
@@ -151,7 +209,7 @@
     .sidebar-content {
         display: flex;
         flex-direction: column;
-        gap: var(--space-vertical-lg);
+        gap: var(--space-vertical-md);
     }
 
     .sidebar-title {
@@ -165,8 +223,6 @@
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-sm);
-        padding-bottom: var(--space-vertical-md);
-        border-bottom: 1px solid var(--color-gray-200);
     }
 
     .filter-title {
@@ -181,52 +237,97 @@
         gap: var(--space-vertical-xs);
     }
 
+    /* Общие стили для чекбоксов */
     .filter-option {
         display: flex;
         align-items: center;
-        gap: var(--space-horizontal-xs);
-        font-size: var(--text-sm);
+        gap: 8px;
         cursor: pointer;
-        padding: var(--space-vertical-xxs) 0;
-        transition: var(--transition-fast);
-
-        &:hover {
-            color: var(--color-primary);
-        }
+        position: relative;
+        padding-left: 28px;
+        user-select: none;
+        min-height: 24px; /* Добавим минимальную высоту */
     }
 
-    .custom-checkbox {
-        width: 16px;
-        height: 16px;
-        border: 1px solid var(--color-gray-400);
-        border-radius: var(--radius-sm);
-        display: inline-flex;
+    /* Скрываем нативные чекбоксы */
+    .filter-option input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    /* Контейнер для кастомного чекбокса */
+    .checkbox-container {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        display: flex;
         align-items: center;
         justify-content: center;
-        transition: var(--transition-fast);
+    }
 
-        input:checked + & {
-            background-color: var(--color-primary);
-            border-color: var(--color-primary);
-        }
+    /* Визуальная часть чекбокса */
+    .custom-checkbox {
+        width: 18px;
+        height: 18px;
+        border: 2px solid var(--color-gray-400);
+        border-radius: 3px;
+        background-color: var(--color-bg);
+        transition: all 0.2s ease;
+        position: relative;
+        box-sizing: border-box;
+    }
 
-        &::after {
-            content: "✓";
-            color: white;
-            font-size: 10px;
-            opacity: 0;
-            transition: var(--transition-fast);
-        }
+    /* Галочка - теперь идеально по центру */
+    .custom-checkbox::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 5px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 2px 2px 0;
+        transform: translate(-50%, -60%) rotate(45deg); /* Точное позиционирование */
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
 
-        input:checked + &::after {
-            opacity: 1;
-        }
+    /* Состояние отмеченного чекбокса */
+    .filter-option input:checked ~ .checkbox-container .custom-checkbox {
+        background-color: var(--color-primary);
+        border-color: var(--color-primary);
+    }
+
+    .filter-option input:checked ~ .checkbox-container .custom-checkbox::after {
+        opacity: 1;
+    }
+
+    /* Состояния взаимодействия */
+    .filter-option:hover .custom-checkbox {
+        border-color: var(--color-primary);
+    }
+
+    .filter-option input:focus-visible ~ .checkbox-container .custom-checkbox {
+        box-shadow: 0 0 0 2px rgba(74, 201, 126, 0.3);
+        outline: none;
+    }
+
+    /* Текст метки */
+    .filter-label {
+        font-size: var(--text-sm);
+        color: var(--color-text);
+        line-height: 1.4;
     }
 
     .price-range {
         display: flex;
         flex-direction: column;
-        gap: var(--space-vertical-xs);
+        gap: var(--space-vertical-md);
         position: relative;
         height: 40px;
     }
@@ -239,20 +340,20 @@
         background: var(--color-gray-300);
         outline: none;
         border-radius: var(--radius-full);
+    }
 
-        &::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 16px;
-            height: 16px;
-            background: var(--color-primary);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: var(--transition-fast);
+    .range-slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 16px;
+        height: 16px;
+        background: var(--color-primary);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: var(--transition-fast);
+    }
 
-            &:hover {
-                transform: scale(1.2);
-            }
-        }
+    .range-slider::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
     }
 
     .price-values {
@@ -276,14 +377,14 @@
         cursor: pointer;
         padding: 0;
         transition: var(--transition-fast);
+    }
 
-        /* &.active {
-            color: var(--color-warning);
-        }
+    .star.active {
+        color: var(--color-warning);
+    }
 
-        &:hover {
-            transform: scale(1.2);
-        } */
+    .star:hover {
+        transform: scale(1.2);
     }
 
     .clear-rating {
@@ -294,10 +395,10 @@
         border: none;
         cursor: pointer;
         opacity: 0.7;
+    }
 
-        &:hover {
-            opacity: 1;
-        }
+    .clear-rating:hover {
+        opacity: 1;
     }
 
     .reset-filters {
@@ -310,11 +411,27 @@
         cursor: pointer;
         transition: var(--transition-fast);
         font-size: var(--text-sm);
+    }
 
-        &:hover {
-            border-color: var(--color-error);
-            color: var(--color-error);
-            background-color: rgba(208, 48, 47, 0.05);
+    .reset-filters:hover {
+        border-color: var(--color-error);
+        color: var(--color-error);
+        background-color: rgba(208, 48, 47, 0.05);
+    }
+
+    .sidebar-overlay {
+        position: fixed;
+        inset: 0;
+        background-color: rgba(var(--color-dark-rgb), 0.5);
+        z-index: 999;
+        backdrop-filter: blur(2px);
+        transition: opacity 0.3s ease;
+        cursor: pointer;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .sidebar-overlay {
+            background-color: rgba(var(--color-dark-rgb), 0.7);
         }
     }
 
@@ -322,14 +439,26 @@
         .sidebar {
             position: fixed;
             top: 0;
-            left: -280px;
-            z-index: var(--z-index-modal);
-            box-shadow: var(--shadow-lg);
+            left: -300px;
+            width: 280px;
             height: 100vh;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
 
-            /* &.active {
-                left: 0;
-            } */
+        .sidebar.active {
+            transform: translateX(300px);
+        }
+
+        .close-button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--color-text);
+            cursor: pointer;
         }
     }
 </style>
