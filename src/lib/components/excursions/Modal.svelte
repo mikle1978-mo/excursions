@@ -2,43 +2,42 @@
     import { createEventDispatcher, onMount } from "svelte";
 
     const dispatch = createEventDispatcher();
+    let modalContent;
 
-    // Закрываем модалку (вызываем событие "close")
     function close() {
         dispatch("close");
     }
 
-    // Обработка Escape для закрытия
     function handleKeydown(event) {
         if (event.key === "Escape") {
             close();
         }
     }
 
-    let modalContent;
+    function handleBackdropClick(e) {
+        if (e.target === e.currentTarget) {
+            close();
+        }
+    }
 
-    // При монтировании фокусируем модалку
     onMount(() => {
         modalContent?.focus();
+        document.body.style.overflow = "hidden";
+        return () => {
+            document.body.style.overflow = "";
+        };
     });
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
 
-<!-- Фон модалки без клика, только визуальный -->
-<div class="modal-backdrop" aria-hidden="true"></div>
-
-<!-- Контент модалки с ролью dialog, фокусируем -->
 <div
-    class="modal-content"
-    role="dialog"
-    aria-modal="true"
-    aria-label="Модальное окно"
-    tabindex="0"
-    bind:this={modalContent}
+    class="modal-backdrop"
+    role="presentation"
+    on:click={handleBackdropClick}
+    on:keydown={(e) => e.key === "Enter" && close()}
 >
-    <slot />
-
+    <!-- Кнопка закрытия теперь вне контента модалки -->
     <button
         type="button"
         class="modal-close"
@@ -47,38 +46,80 @@
     >
         ×
     </button>
+
+    <!-- Контент модалки -->
+    <div
+        class="modal-content"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
+        tabindex="-1"
+        bind:this={modalContent}
+    >
+        <h2 id="modal-title" class="visually-hidden">Модальное окно</h2>
+        <slot />
+    </div>
 </div>
 
 <style>
     .modal-backdrop {
         position: fixed;
         inset: 0;
-        background-color: rgba(0, 0, 0, 0.5);
+        display: grid;
+        place-items: center;
+        background-color: rgba(var(--color-light-rgb), 0.9);
         z-index: 1000;
+        cursor: pointer;
     }
 
     .modal-content {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: transparent;
-        padding: var(--space-vertical-sm);
+        position: relative;
+        background: var(--color-bg);
         border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
         z-index: 1001;
         outline: none;
-        max-width: 95vw;
+        max-width: min(95vw, 800px);
         max-height: 80vh;
         overflow-y: auto;
+        cursor: auto;
+        margin: var(--space-vertical-md);
     }
 
     .modal-close {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
+        position: fixed; /* Изменено с absolute на fixed */
+        top: 1.5rem;
+        right: 1.5rem;
         background: transparent;
         border: none;
-        font-size: 1.5rem;
+        color: var(--color-text);
+        font-size: 1.8rem;
+        line-height: 1;
         cursor: pointer;
+        padding: 0.5rem;
+        z-index: 1002; /* Выше чем контент модалки */
+        transition: color 0.2s ease;
+    }
+
+    .modal-close:hover {
+        color: var(--color-primary);
+    }
+
+    .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .modal-backdrop {
+            background-color: rgba(var(--color-dark-rgb), 0.9);
+        }
     }
 </style>

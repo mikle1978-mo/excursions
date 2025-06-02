@@ -3,6 +3,8 @@
     /* Светлая тема по умолчанию */
     --color-light: #ffffff;
     --color-dark: #131619;
+    --color-light-rgb: 255, 255, 255; /* RGB для #ffffff */
+    --color-dark-rgb: 19, 22, 25; /* RGB для #131619 */
 
     /* Основная цветовая схема */
     --color-bg: var(--color-light);
