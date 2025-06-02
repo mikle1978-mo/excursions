@@ -127,7 +127,7 @@
     .excursion-card__image-wrapper {
         position: relative;
         width: 100%;
-        aspect-ratio: 16/9;
+        aspect-ratio: 16 / 9;
     }
 
     .excursion-card__image {
