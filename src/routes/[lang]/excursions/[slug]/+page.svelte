@@ -10,6 +10,7 @@
     import { excursion_page } from "$lib/i18n/excursion_pade.js";
     import { formatPrice } from "$lib/utils/priceFormatter.js";
     import { initCurrencyService } from "$lib/services/currencyService";
+    import ExcursionGalery from "$lib/components/excursions/ExcursionGalery.svelte";
 
     let isMounted = false;
     $: currentTranslation =
@@ -67,16 +68,7 @@
         </header>
 
         <!-- Галерея изображений -->
-        <div class="gallery">
-            {#each tour.images as image, i}
-                <img
-                    src={image}
-                    alt="{currentTranslation.title} - фото {i + 1}"
-                    class="gallery-image {i === 0 ? 'primary' : ''}"
-                    loading={i > 2 ? "lazy" : "eager"}
-                />
-            {/each}
-        </div>
+        <ExcursionGalery images={tour.images} titles={tour.title} />
 
         <!-- Основное содержимое -->
         <div class="content-grid">
@@ -111,7 +103,7 @@
                         <span class="value"
                             >{excursion_page.before[$locale]}
                             {tour.groupSize}
-                            {excursion_page.perPerson[$locale]}</span
+                            {excursion_page.people[$locale]}</span
                         >
                     </div>
                 </div>
@@ -213,31 +205,6 @@
         &.duration {
             background: var(--color-primary);
             color: var(--color-text);
-        }
-    }
-
-    /* Галерея */
-    .gallery {
-        display: grid;
-        grid-template-columns: repeat(minmax(250px, 1fr));
-        gap: var(--space-vertical-sm);
-
-        .primary {
-            grid-column: span 2;
-        }
-    }
-
-    .gallery-image {
-        width: 100%;
-        height: auto;
-        border-radius: var(--radius-md);
-        object-fit: cover;
-        aspect-ratio: 16/9;
-        transition: var(--transition-fast);
-        grid-column: span 1;
-
-        &:hover {
-            filter: brightness(0.8);
         }
     }
 

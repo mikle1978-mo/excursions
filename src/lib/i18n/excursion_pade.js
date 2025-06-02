@@ -4,7 +4,7 @@ export const excursion_page = {
         en: "Tour description",
     },
     duration: {
-        ru: "Продолжительность",
+        ru: "Длительность",
         en: "Tour duration",
     },
 
