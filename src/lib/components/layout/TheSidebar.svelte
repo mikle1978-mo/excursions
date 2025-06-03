@@ -1,18 +1,21 @@
 <script>
     import { locale } from "$lib/stores/locale.js";
-
     import { sidebarOpen } from "$lib/stores/sidebar";
     import { onMount, createEventDispatcher } from "svelte";
+
     export let excursions;
 
     const dispatch = createEventDispatcher();
-    // Фильтры
-    let durationFilter = [];
-    let priceRange = [0, 5000];
-    let groupSizeFilter = [];
-    let ratingFilter = 0;
 
-    // Уникальные значения для фильтров с сортировкой
+    // Состояние фильтров
+    let filters = {
+        durations: [],
+        priceRange: [0, 5000],
+        groupSizes: [],
+        minRating: 0,
+    };
+
+    // Уникальные значения для фильтров
     $: durations = [...new Set(excursions.map((e) => e.duration))].sort(
         (a, b) => a - b
     );
@@ -21,52 +24,56 @@
     );
     $: maxPrice = Math.max(...excursions.map((e) => e.price));
 
-    console.log(maxPrice);
+    // Инициализация диапазона цен
+    $: filters.priceRange = [0, maxPrice];
 
-    // Обновление цены
-    $: priceRange = [0, maxPrice];
+    // Отправка изменений фильтров
+    $: dispatch("filtersChanged", filters);
 
+    // Методы для управления фильтрами
     const toggleDuration = (duration) => {
-        durationFilter = durationFilter.includes(duration)
-            ? durationFilter.filter((d) => d !== duration)
-            : [...durationFilter, duration];
+        filters.durations = filters.durations.includes(duration)
+            ? filters.durations.filter((d) => d !== duration)
+            : [...filters.durations, duration];
     };
 
     const toggleGroupSize = (size) => {
-        groupSizeFilter = groupSizeFilter.includes(size)
-            ? groupSizeFilter.filter((s) => s !== size)
-            : [...groupSizeFilter, size];
+        filters.groupSizes = filters.groupSizes.includes(size)
+            ? filters.groupSizes.filter((s) => s !== size)
+            : [...filters.groupSizes, size];
     };
 
+    const setRating = (rating) => {
+        filters.minRating = rating;
+    };
+
+    const resetFilters = () => {
+        filters = {
+            durations: [],
+            priceRange: [0, maxPrice],
+            groupSizes: [],
+            minRating: 0,
+        };
+    };
+
+    // Адаптивность
     let isMobile = false;
 
     onMount(() => {
         const checkMobile = () => {
             isMobile = window.innerWidth < 768;
-            if (!isMobile) {
-                sidebarOpen.set(false);
-            }
+            if (!isMobile) sidebarOpen.set(false);
         };
 
         checkMobile();
         window.addEventListener("resize", checkMobile);
-
         return () => window.removeEventListener("resize", checkMobile);
     });
 
-    const closeSidebar = () => {
-        sidebarOpen.set(false);
-    };
-
-    function handleKeydown(event) {
-        if (event.key === "Escape" && $sidebarOpen && isMobile) {
-            closeSidebar();
-        }
-    }
-
-    function handleBackdropClick() {
-        closeSidebar();
-    }
+    const closeSidebar = () => sidebarOpen.set(false);
+    const handleKeydown = (e) =>
+        e.key === "Escape" && $sidebarOpen && isMobile && closeSidebar();
+    const handleBackdropClick = () => closeSidebar();
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
@@ -84,26 +91,6 @@
     <div class="sidebar-content">
         <h3 class="sidebar-title">Фильтры экскурсий</h3>
 
-        <!-- Фильтр по продолжительности -->
-        <div class="filter-group">
-            <h4 class="filter-title">Продолжительность</h4>
-            <div class="filter-options">
-                {#each durations as duration}
-                    <label class="filter-option">
-                        <input
-                            type="checkbox"
-                            bind:group={durationFilter}
-                            value={duration}
-                        />
-                        <span class="checkbox-container">
-                            <span class="custom-checkbox"></span>
-                        </span>
-                        <span class="filter-label">{duration} ч</span>
-                    </label>
-                {/each}
-            </div>
-        </div>
-
         <!-- Фильтр по цене -->
         <div class="filter-group">
             <h4 class="filter-title">Цена</h4>
@@ -113,7 +100,7 @@
                     min="0"
                     max={maxPrice}
                     step="10"
-                    bind:value={priceRange[0]}
+                    bind:value={filters.priceRange[0]}
                     class="range-slider"
                 />
                 <input
@@ -121,13 +108,13 @@
                     min="0"
                     max={maxPrice}
                     step="10"
-                    bind:value={priceRange[1]}
+                    bind:value={filters.priceRange[1]}
                     class="range-slider"
                 />
             </div>
             <div class="price-values">
-                <span>{priceRange[0]} </span>
-                <span>{priceRange[1]} </span>
+                <span>{filters.priceRange[0]} ₽</span>
+                <span>{filters.priceRange[1]} ₽</span>
             </div>
         </div>
 
@@ -139,8 +126,8 @@
                     <label class="filter-option">
                         <input
                             type="checkbox"
-                            bind:group={groupSizeFilter}
-                            value={size}
+                            checked={filters.groupSizes.includes(size)}
+                            on:change={() => toggleGroupSize(size)}
                         />
                         <span class="checkbox-container">
                             <span class="custom-checkbox"></span>
@@ -151,46 +138,58 @@
             </div>
         </div>
 
+        <!-- Фильтр по продолжительности -->
+        <div class="filter-group">
+            <h4 class="filter-title">Продолжительность</h4>
+            <div class="filter-options">
+                {#each durations as duration}
+                    <label class="filter-option">
+                        <input
+                            type="checkbox"
+                            checked={filters.durations.includes(duration)}
+                            on:change={() => toggleDuration(duration)}
+                        />
+                        <span class="checkbox-container">
+                            <span class="custom-checkbox"></span>
+                        </span>
+                        <span class="filter-label">{duration} ч</span>
+                    </label>
+                {/each}
+            </div>
+        </div>
         <!-- Фильтр по рейтингу -->
         <div class="filter-group">
             <h4 class="filter-title">Рейтинг</h4>
             <div class="rating-stars">
                 {#each [1, 2, 3, 4, 5] as star}
                     <button
-                        class="star {ratingFilter >= star ? 'active' : ''}"
-                        on:click={() => (ratingFilter = star)}
+                        class="star {filters.minRating >= star ? 'active' : ''}"
+                        on:click={() => setRating(star)}
                     >
                         ★
                     </button>
                 {/each}
-                {#if ratingFilter > 0}
-                    <button
-                        class="clear-rating"
-                        on:click={() => (ratingFilter = 0)}
-                    >
+                {#if filters.minRating > 0}
+                    <button class="clear-rating" on:click={() => setRating(0)}>
                         &times;
                     </button>
                 {/if}
             </div>
         </div>
 
-        <!-- Кнопка сброса фильтров -->
-        <button
-            class="reset-filters"
-            on:click={() => {
-                durationFilter = [];
-                priceRange = [0, maxPrice];
-                groupSizeFilter = [];
-                ratingFilter = 0;
-            }}
-        >
-            Сбросить все фильтры
-        </button>
+        <!-- Кнопка сброса -->
+        <div class="buttons">
+            <button class="confirm-filters" on:click={closeSidebar}>
+                Применить
+            </button>
+            <button class="reset-filters" on:click={resetFilters}>
+                Сбросить
+            </button>
+        </div>
     </div>
 
-    <!-- Кнопка закрытия для мобильных -->
     {#if isMobile}
-        <button class="close-button" on:click={closeSidebar}> ✕ </button>
+        <button class="close-button" on:click={closeSidebar}>✕</button>
     {/if}
 </side>
 
@@ -400,9 +399,13 @@
     .clear-rating:hover {
         opacity: 1;
     }
-
+    .buttons {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-vertical-xs);
+    }
+    .confirm-filters,
     .reset-filters {
-        margin-top: var(--space-vertical-sm);
         padding: var(--space-vertical-xs) var(--space-horizontal-sm);
         background: none;
         border: 1px solid var(--color-gray-400);
@@ -413,6 +416,15 @@
         font-size: var(--text-sm);
     }
 
+    .confirm-filters {
+        border-color: var(--color-success);
+        color: var(--color-success);
+    }
+    .confirm-filters:hover {
+        border-color: var(--color-success);
+        color: var(--color-success);
+        background-color: rgba(208, 48, 47, 0.05);
+    }
     .reset-filters:hover {
         border-color: var(--color-error);
         color: var(--color-error);

@@ -9,7 +9,31 @@
     let isMounted = false;
     export let data;
 
-    const { excursions } = data;
+    const { excursions: allExcursions } = data;
+    let filteredExcursions = [...allExcursions];
+
+    console.log(filteredExcursions);
+
+    function handleFiltersChange(event) {
+        const { durations, priceRange, groupSizes, minRating } = event.detail;
+
+        filteredExcursions = allExcursions.filter((excursion) => {
+            if (durations.length > 0 && !durations.includes(excursion.duration))
+                return false;
+            if (
+                excursion.price < priceRange[0] ||
+                excursion.price > priceRange[1]
+            )
+                return false;
+            if (
+                groupSizes.length > 0 &&
+                !groupSizes.includes(excursion.groupSize)
+            )
+                return false;
+            if (minRating > 0 && excursion.rating < minRating) return false;
+            return true;
+        });
+    }
 
     onMount(() => {
         isMounted = true;
@@ -18,7 +42,11 @@
 
 {#if isMounted}
     <div class="content">
-        <TheSidebar {excursions} />
+        <!-- <TheSidebar excursions={allExcursions} /> -->
+        <TheSidebar
+            excursions={allExcursions}
+            on:filtersChanged={handleFiltersChange}
+        />
         <main>
             <div class="main_page">
                 <h1 class="visually-hidden">
@@ -29,7 +57,7 @@
                 </h1>
                 <section>
                     <div class="excursions-grid">
-                        {#each excursions as excursion}
+                        {#each filteredExcursions as excursion}
                             <ExcursionCard {excursion} />
                         {/each}
                     </div>

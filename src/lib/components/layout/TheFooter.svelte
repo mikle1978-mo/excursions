@@ -79,6 +79,8 @@
         align-items: center;
         justify-content: center;
         gap: var(--space-horizontal-sm);
+        background-color: inherit;
+        color: var(--color-text);
         cursor: pointer;
         height: 100%;
         border: none;
