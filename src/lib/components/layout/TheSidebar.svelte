@@ -90,94 +90,100 @@
 <side class="sidebar" class:active={$sidebarOpen && isMobile}>
     <div class="sidebar-content">
         <h3 class="sidebar-title">Фильтры экскурсий</h3>
-
-        <!-- Фильтр по цене -->
-        <div class="filter-group">
-            <h4 class="filter-title">Цена</h4>
-            <div class="price-range">
-                <input
-                    type="range"
-                    min="0"
-                    max={maxPrice}
-                    step="10"
-                    bind:value={filters.priceRange[0]}
-                    class="range-slider"
-                />
-                <input
-                    type="range"
-                    min="0"
-                    max={maxPrice}
-                    step="10"
-                    bind:value={filters.priceRange[1]}
-                    class="range-slider"
-                />
+        <div class="filters">
+            <!-- Фильтр по цене -->
+            <div class="filter-group">
+                <h4 class="filter-title">Цена</h4>
+                <div class="price-range">
+                    <input
+                        type="range"
+                        min="0"
+                        max={maxPrice}
+                        step="10"
+                        bind:value={filters.priceRange[0]}
+                        class="range-slider"
+                    />
+                    <input
+                        type="range"
+                        min="0"
+                        max={maxPrice}
+                        step="10"
+                        bind:value={filters.priceRange[1]}
+                        class="range-slider"
+                    />
+                </div>
+                <div class="price-values">
+                    <span>{filters.priceRange[0]} ₽</span>
+                    <span>{filters.priceRange[1]} ₽</span>
+                </div>
             </div>
-            <div class="price-values">
-                <span>{filters.priceRange[0]} ₽</span>
-                <span>{filters.priceRange[1]} ₽</span>
+
+            <!-- Фильтр по размеру группы -->
+            <div class="filter-group">
+                <h4 class="filter-title">Размер группы</h4>
+                <div class="filter-options">
+                    {#each groupSizes as size}
+                        <label class="filter-option">
+                            <input
+                                type="checkbox"
+                                checked={filters.groupSizes.includes(size)}
+                                on:change={() => toggleGroupSize(size)}
+                            />
+                            <span class="checkbox-container">
+                                <span class="custom-checkbox"></span>
+                            </span>
+                            <span class="filter-label">{size} чел</span>
+                        </label>
+                    {/each}
+                </div>
+            </div>
+
+            <!-- Фильтр по продолжительности -->
+            <div class="filter-group">
+                <h4 class="filter-title">Продолжительность</h4>
+                <div class="filter-options">
+                    {#each durations as duration}
+                        <label class="filter-option">
+                            <input
+                                type="checkbox"
+                                checked={filters.durations.includes(duration)}
+                                on:change={() => toggleDuration(duration)}
+                            />
+                            <span class="checkbox-container">
+                                <span class="custom-checkbox"></span>
+                            </span>
+                            <span class="filter-label">{duration} ч</span>
+                        </label>
+                    {/each}
+                </div>
+            </div>
+            <!-- Фильтр по рейтингу -->
+            <div class="filter-group">
+                <h4 class="filter-title">Рейтинг</h4>
+                <div class="rating-stars">
+                    {#each [1, 2, 3, 4, 5] as star}
+                        <button
+                            class="star {filters.minRating >= star
+                                ? 'active'
+                                : ''}"
+                            on:click={() => setRating(star)}
+                        >
+                            ★
+                        </button>
+                    {/each}
+                    {#if filters.minRating > 0}
+                        <button
+                            class="clear-rating"
+                            on:click={() => setRating(0)}
+                        >
+                            &times;
+                        </button>
+                    {/if}
+                </div>
             </div>
         </div>
 
-        <!-- Фильтр по размеру группы -->
-        <div class="filter-group">
-            <h4 class="filter-title">Размер группы</h4>
-            <div class="filter-options">
-                {#each groupSizes as size}
-                    <label class="filter-option">
-                        <input
-                            type="checkbox"
-                            checked={filters.groupSizes.includes(size)}
-                            on:change={() => toggleGroupSize(size)}
-                        />
-                        <span class="checkbox-container">
-                            <span class="custom-checkbox"></span>
-                        </span>
-                        <span class="filter-label">{size} чел</span>
-                    </label>
-                {/each}
-            </div>
-        </div>
-
-        <!-- Фильтр по продолжительности -->
-        <div class="filter-group">
-            <h4 class="filter-title">Продолжительность</h4>
-            <div class="filter-options">
-                {#each durations as duration}
-                    <label class="filter-option">
-                        <input
-                            type="checkbox"
-                            checked={filters.durations.includes(duration)}
-                            on:change={() => toggleDuration(duration)}
-                        />
-                        <span class="checkbox-container">
-                            <span class="custom-checkbox"></span>
-                        </span>
-                        <span class="filter-label">{duration} ч</span>
-                    </label>
-                {/each}
-            </div>
-        </div>
-        <!-- Фильтр по рейтингу -->
-        <div class="filter-group">
-            <h4 class="filter-title">Рейтинг</h4>
-            <div class="rating-stars">
-                {#each [1, 2, 3, 4, 5] as star}
-                    <button
-                        class="star {filters.minRating >= star ? 'active' : ''}"
-                        on:click={() => setRating(star)}
-                    >
-                        ★
-                    </button>
-                {/each}
-                {#if filters.minRating > 0}
-                    <button class="clear-rating" on:click={() => setRating(0)}>
-                        &times;
-                    </button>
-                {/if}
-            </div>
-        </div>
-
-        <!-- Кнопка сброса -->
+        <!-- Кнопки -->
         <div class="buttons">
             <button class="confirm-filters" on:click={closeSidebar}>
                 Применить
@@ -195,18 +201,20 @@
 
 <style>
     .sidebar {
-        height: 100%;
+        height: 100svh;
         padding: var(--space-vertical-md) var(--space-horizontal-md);
         background-color: var(--color-bg);
         border-right: 1px solid var(--color-gray-300);
-        overflow-y: auto;
+        overflow: hidden;
         position: sticky;
         top: 0;
         transition: var(--transition-normal);
     }
 
     .sidebar-content {
-        display: flex;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        height: 100%;
         flex-direction: column;
         gap: var(--space-vertical-md);
     }
@@ -216,6 +224,15 @@
         font-weight: 600;
         margin-bottom: var(--space-vertical-sm);
         color: var(--color-primary);
+    }
+    .filters {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-vertical-sm);
+        overflow-y: auto;
+        max-height: calc(
+            100svh - 200px
+        ); /* Учитываем высоту заголовка и кнопок */
     }
 
     .filter-group {
