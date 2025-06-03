@@ -7,8 +7,9 @@ const url =
 // Кеш для хранения последних курсов
 let ratesCache = {
     USD: 1,
-    RUB: 90,
-    EUR: 0.92,
+    RUB: 79.13,
+    EUR: 0.88,
+    TRY: 39.16,
 };
 
 export async function fetchExchangeRates() {

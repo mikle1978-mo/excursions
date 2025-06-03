@@ -2,69 +2,122 @@
     import { locale } from "$lib/stores/locale.js";
     import { sidebarOpen } from "$lib/stores/sidebar";
     import { onMount, createEventDispatcher } from "svelte";
+    import { selectedCurrency, exchangeRates } from "$lib/stores/currency";
 
     export let excursions;
+    let initialized = false;
 
     const dispatch = createEventDispatcher();
 
-    // Состояние фильтров
+    // Фильтры (все значения в USD)
     let filters = {
         durations: [],
-        priceRange: [0, 5000],
+        priceRange: [0, 0],
         groupSizes: [],
         minRating: 0,
     };
 
-    // Уникальные значения для фильтров
+    // Валюта и курс
+    $: currentCurrency = $selectedCurrency;
+    $: currentRate = $exchangeRates[currentCurrency] || 1;
+
+    // Уникальные значения
     $: durations = [...new Set(excursions.map((e) => e.duration))].sort(
         (a, b) => a - b
     );
     $: groupSizes = [...new Set(excursions.map((e) => e.groupSize))].sort(
         (a, b) => a - b
     );
-    $: maxPrice = Math.max(...excursions.map((e) => e.price));
+    $: maxPriceUSD = Math.max(...excursions.map((e) => e.priceUSD || e.price));
 
-    // Инициализация диапазона цен
-    $: filters.priceRange = [0, maxPrice];
+    // Отображаемый диапазон цен в текущей валюте
+    let displayPriceRange = [0, 0];
+    $: displayMaxPrice = convertToCurrent(maxPriceUSD);
 
-    // Отправка изменений фильтров
-    $: dispatch("filtersChanged", filters);
+    // Функции конвертации
+    function convertToCurrent(priceUSD) {
+        return priceUSD * currentRate;
+    }
 
-    // Методы для управления фильтрами
+    function convertToUSD(priceInCurrent) {
+        return priceInCurrent / currentRate;
+    }
+
+    // При изменении курса валюты обновляем отображаемый диапазон и фильтр
+
+    $: if (initialized && currentRate && maxPriceUSD) {
+        displayPriceRange = filters.priceRange.map(convertToCurrent);
+    }
+
+    // Обработчик изменения цены
+    function handlePriceInput(index, value) {
+        displayPriceRange[index] = Number(value);
+        displayPriceRange = [...displayPriceRange];
+
+        // Поддерживаем порядок
+        if (displayPriceRange[0] > displayPriceRange[1]) {
+            displayPriceRange[1] = displayPriceRange[0];
+        }
+        if (displayPriceRange[1] < displayPriceRange[0]) {
+            displayPriceRange[0] = displayPriceRange[1];
+        }
+
+        // Обновляем фильтр в USD и диспатчим
+
+        filters = {
+            ...filters,
+            priceRange: displayPriceRange.map(convertToUSD),
+        };
+        dispatch("filtersChanged", { ...filters });
+    }
+
+    // Управление другими фильтрами
     const toggleDuration = (duration) => {
-        filters.durations = filters.durations.includes(duration)
+        const newDurations = filters.durations.includes(duration)
             ? filters.durations.filter((d) => d !== duration)
             : [...filters.durations, duration];
+        filters = { ...filters, durations: newDurations };
+        dispatch("filtersChanged", { ...filters });
     };
 
     const toggleGroupSize = (size) => {
-        filters.groupSizes = filters.groupSizes.includes(size)
+        const newGroupSizes = filters.groupSizes.includes(size)
             ? filters.groupSizes.filter((s) => s !== size)
             : [...filters.groupSizes, size];
+        filters = { ...filters, groupSizes: newGroupSizes };
+        dispatch("filtersChanged", { ...filters });
     };
 
     const setRating = (rating) => {
-        filters.minRating = rating;
+        filters = { ...filters, minRating: rating };
+        dispatch("filtersChanged", { ...filters });
     };
 
     const resetFilters = () => {
         filters = {
             durations: [],
-            priceRange: [0, maxPrice],
+            priceRange: [0, maxPriceUSD],
             groupSizes: [],
             minRating: 0,
         };
+        displayPriceRange = [0, convertToCurrent(maxPriceUSD)];
+        dispatch("filtersChanged", { ...filters });
     };
 
-    // Адаптивность
+    // Мобильная адаптивность
     let isMobile = false;
 
     onMount(() => {
+        filters.priceRange = [0, maxPriceUSD];
+        displayPriceRange = [0, convertToCurrent(maxPriceUSD)];
+        dispatch("filtersChanged", { ...filters });
+
+        initialized = true; // <-- флаг, чтобы реактивный блок больше не мешал
+
         const checkMobile = () => {
             isMobile = window.innerWidth < 768;
             if (!isMobile) sidebarOpen.set(false);
         };
-
         checkMobile();
         window.addEventListener("resize", checkMobile);
         return () => window.removeEventListener("resize", checkMobile);
@@ -93,28 +146,36 @@
         <div class="filters">
             <!-- Фильтр по цене -->
             <div class="filter-group">
-                <h4 class="filter-title">Цена</h4>
+                <h4 class="filter-title">Цена ({currentCurrency})</h4>
                 <div class="price-range">
                     <input
                         type="range"
                         min="0"
-                        max={maxPrice}
-                        step="10"
-                        bind:value={filters.priceRange[0]}
+                        max={displayMaxPrice}
+                        step="1"
+                        value={displayPriceRange[0]}
+                        on:input={(e) => handlePriceInput(0, e.target.value)}
                         class="range-slider"
                     />
                     <input
                         type="range"
                         min="0"
-                        max={maxPrice}
-                        step="10"
-                        bind:value={filters.priceRange[1]}
+                        max={displayMaxPrice}
+                        step="1"
+                        value={displayPriceRange[1]}
+                        on:input={(e) => handlePriceInput(1, e.target.value)}
                         class="range-slider"
                     />
                 </div>
                 <div class="price-values">
-                    <span>{filters.priceRange[0]} ₽</span>
-                    <span>{filters.priceRange[1]} ₽</span>
+                    <span
+                        >{displayPriceRange[0].toFixed(0)}
+                        {currentCurrency}</span
+                    >
+                    <span
+                        >{displayPriceRange[1].toFixed(0)}
+                        {currentCurrency}</span
+                    >
                 </div>
             </div>
 

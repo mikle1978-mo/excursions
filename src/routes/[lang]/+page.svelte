@@ -8,31 +8,41 @@
 
     let isMounted = false;
     export let data;
+    let updateKey = 0;
 
-    const { excursions: allExcursions } = data;
+    let { excursions: allExcursions } = data;
     let filteredExcursions = [...allExcursions];
-
-    console.log(filteredExcursions);
 
     function handleFiltersChange(event) {
         const { durations, priceRange, groupSizes, minRating } = event.detail;
 
-        filteredExcursions = allExcursions.filter((excursion) => {
-            if (durations.length > 0 && !durations.includes(excursion.duration))
-                return false;
-            if (
-                excursion.price < priceRange[0] ||
-                excursion.price > priceRange[1]
-            )
-                return false;
-            if (
-                groupSizes.length > 0 &&
-                !groupSizes.includes(excursion.groupSize)
-            )
-                return false;
-            if (minRating > 0 && excursion.rating < minRating) return false;
-            return true;
+        filteredExcursions = allExcursions.filter((excursion, index) => {
+            const excursionPriceUSD = excursion.price;
+
+            const priceInRange =
+                excursionPriceUSD >= priceRange[0] &&
+                excursionPriceUSD <= priceRange[1];
+
+            // Остальные фильтры оставляем, но не логируем здесь, чтобы не засорять
+            const durationMatch =
+                durations.length === 0 ||
+                durations.includes(excursion.duration);
+            const groupSizeMatch =
+                groupSizes.length === 0 ||
+                groupSizes.includes(excursion.groupSize);
+            const ratingMatch =
+                minRating === 0 ||
+                (excursion.rating !== null && excursion.rating >= minRating);
+
+            const passesAll =
+                priceInRange && durationMatch && groupSizeMatch && ratingMatch;
+
+            return passesAll;
         });
+
+        updateKey++;
+
+        const filteredPrices = filteredExcursions.map((e) => e.price);
     }
 
     onMount(() => {
@@ -42,7 +52,6 @@
 
 {#if isMounted}
     <div class="content">
-        <!-- <TheSidebar excursions={allExcursions} /> -->
         <TheSidebar
             excursions={allExcursions}
             on:filtersChanged={handleFiltersChange}
@@ -57,7 +66,7 @@
                 </h1>
                 <section>
                     <div class="excursions-grid">
-                        {#each filteredExcursions as excursion}
+                        {#each filteredExcursions as excursion (excursion.slug + updateKey)}
                             <ExcursionCard {excursion} />
                         {/each}
                     </div>
