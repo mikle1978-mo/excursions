@@ -16,7 +16,7 @@
     }
 </script>
 
-<form role="search" on:submit|preventDefault={handleSearch} class="search-form">
+<form role="search" on:submit|preventDefault={handleInput} class="search-form">
     <div class="search-container {isFocused ? 'focused' : ''}">
         <button
             type="submit"
