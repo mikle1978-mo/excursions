@@ -5,44 +5,83 @@
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
     import TheSidebar from "$lib/components/layout/TheSidebar.svelte";
+    import { searchQuery } from "$lib/stores/searchQuery.js";
 
-    let isMounted = false;
+    let search = "";
+    let currentLocale = null;
+
+    let allExcursions = [];
+    let filteredExcursions = [];
+
     export let data;
+
+    locale.subscribe((value) => {
+        currentLocale = value;
+        applyFilters();
+    });
+
+    searchQuery.subscribe((value) => {
+        search = value.toLowerCase();
+        applyFilters();
+    });
+
+    let currentFilters = {
+        durations: [],
+        priceRange: [0, Infinity],
+        groupSizes: [],
+        minRating: 0,
+    };
+
     let updateKey = 0;
+    let isMounted = false;
 
-    let { excursions: allExcursions } = data;
-    let filteredExcursions = [...allExcursions];
+    $: if (data?.excursions) {
+        allExcursions = data.excursions;
+        filteredExcursions = [...allExcursions];
+        applyFilters();
+    }
 
-    function handleFiltersChange(event) {
-        const { durations, priceRange, groupSizes, minRating } = event.detail;
+    function applyFilters() {
+        if (!allExcursions.length) return;
 
-        filteredExcursions = allExcursions.filter((excursion, index) => {
+        filteredExcursions = allExcursions.filter((excursion) => {
             const excursionPriceUSD = excursion.price;
 
             const priceInRange =
-                excursionPriceUSD >= priceRange[0] &&
-                excursionPriceUSD <= priceRange[1];
+                excursionPriceUSD >= currentFilters.priceRange[0] &&
+                excursionPriceUSD <= currentFilters.priceRange[1];
 
-            // Остальные фильтры оставляем, но не логируем здесь, чтобы не засорять
             const durationMatch =
-                durations.length === 0 ||
-                durations.includes(excursion.duration);
+                currentFilters.durations.length === 0 ||
+                currentFilters.durations.includes(excursion.duration);
+
             const groupSizeMatch =
-                groupSizes.length === 0 ||
-                groupSizes.includes(excursion.groupSize);
+                currentFilters.groupSizes.length === 0 ||
+                currentFilters.groupSizes.includes(excursion.groupSize);
+
             const ratingMatch =
-                minRating === 0 ||
-                (excursion.rating !== null && excursion.rating >= minRating);
+                currentFilters.minRating === 0 ||
+                (excursion.rating !== null &&
+                    excursion.rating >= currentFilters.minRating);
 
-            const passesAll =
-                priceInRange && durationMatch && groupSizeMatch && ratingMatch;
+            const matchesSearch =
+                !search ||
+                excursion.title[currentLocale]?.toLowerCase().includes(search);
 
-            return passesAll;
+            return (
+                priceInRange &&
+                durationMatch &&
+                groupSizeMatch &&
+                ratingMatch &&
+                matchesSearch
+            );
         });
-
         updateKey++;
+    }
 
-        const filteredPrices = filteredExcursions.map((e) => e.price);
+    function handleFiltersChange(event) {
+        currentFilters = event.detail;
+        applyFilters();
     }
 
     onMount(() => {

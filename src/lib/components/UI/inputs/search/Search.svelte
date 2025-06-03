@@ -1,15 +1,18 @@
 <script>
+    import { searchQuery } from "$lib/stores/searchQuery.js";
     let query = "";
+
     let isFocused = false;
+
+    import { tick } from "svelte";
+
+    function handleInput() {
+        searchQuery.set(query.trim());
+    }
 
     function clearInput() {
         query = "";
-    }
-
-    function handleSearch() {
-        if (query.trim()) {
-            console.log("Searching for:", query);
-        }
+        searchQuery.set("");
     }
 </script>
 
@@ -49,6 +52,7 @@
             bind:value={query}
             on:focus={() => (isFocused = true)}
             on:blur={() => (isFocused = false)}
+            on:input={handleInput}
             placeholder="Поиск..."
             aria-label="Поиск"
             required
