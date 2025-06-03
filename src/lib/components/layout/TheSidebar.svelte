@@ -201,7 +201,7 @@
 
 <style>
     .sidebar {
-        height: 100dvh;
+        height: 100svh;
         padding: var(--space-vertical-md) var(--space-horizontal-md);
         background-color: var(--color-bg);
         border-right: 1px solid var(--color-gray-300);
@@ -470,7 +470,7 @@
             top: 0;
             left: -300px;
             width: 280px;
-            height: 100vh;
+            height: 100svh;
             z-index: 1000;
             transition: transform 0.3s ease;
         }
