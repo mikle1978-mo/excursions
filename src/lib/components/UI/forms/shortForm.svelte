@@ -2,6 +2,8 @@
     import { onMount } from "svelte";
     import TGMessage from "$lib/helpers/tgMessage";
     import { goto } from "$app/navigation";
+    import { locale } from "$lib/stores/locale";
+    import { get } from "svelte/store";
 
     export let slug;
     let currentUrl = "";
@@ -11,7 +13,7 @@
     });
 
     const handleSubmit = async (event) => {
-        event.preventDefault(); // предотврати стандартную отправку формы
+        event.preventDefault();
 
         const form = event.target;
         const formData = new FormData(form);
@@ -26,7 +28,8 @@
         TGMessage(data);
 
         alert("Спасибо! Ваша заявка отправлена.");
-        goto("/thank-you"); // перенаправление на страницу благодарности
+        const currentLocale = get(locale);
+        goto(`/${currentLocale}/thanks`);
     };
 </script>
 
