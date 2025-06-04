@@ -99,8 +99,6 @@
                     >
                 </div>
             </div>
-
-            <!-- <button class="excursion-card__button">Забронировать</button> -->
         </div>
     </a>
 {:else}
@@ -259,25 +257,6 @@
         font-size: var(--text-xs);
         color: var(--color-gray-600);
     }
-
-    /* .excursion-card__button {
-        font-family: inherit;
-        width: 100%;
-        padding: var(--space-vertical-sm) var(--space-horizontal-md);
-        background-color: var(--color-primary);
-        color: var(--color-light);
-        border: none;
-        border-radius: var(--radius-sm);
-        font-size: var(--text-md);
-        font-weight: 600;
-        cursor: pointer;
-        transition: var(--transition-fast);
-        margin-top: var(--space-vertical-xs);
-    }
-
-    .excursion-card__button:hover {
-        background-color: var(--color-primary-hover);
-    } */
 
     @media (max-width: 768px) {
         .excursion-card {

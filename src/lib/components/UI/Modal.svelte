@@ -73,6 +73,7 @@
     }
 
     .modal-content {
+        width: auto;
         position: relative;
         background: var(--color-bg);
         border-radius: var(--radius-md);
@@ -96,7 +97,6 @@
         font-size: 1.8rem;
         line-height: 1;
         cursor: pointer;
-        padding: 0.5rem;
         z-index: 1002; /* Выше чем контент модалки */
         transition: color 0.2s ease;
     }

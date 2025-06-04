@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import Modal from "$lib/components/excursions/Modal.svelte";
+    import Modal from "$lib/components/UI/Modal.svelte";
 
     export let images = [];
     export let titles = [];

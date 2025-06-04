@@ -12,8 +12,19 @@
     import { initCurrencyService } from "$lib/services/currencyService";
     import ExcursionGalery from "$lib/components/excursions/ExcursionGalery.svelte";
     import ReviewsList from "$lib/components/excursions/ReviewsList.svelte";
+    import Modal from "$lib/components/UI/Modal.svelte";
+    import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
 
-    console.log(reviewsCount, rating);
+    let isModalOpen = false;
+
+    const openModal = () => {
+        isModalOpen = true;
+    };
+
+    const closeModal = () => {
+        isModalOpen = false;
+    };
+
     let isMounted = false;
     $: currentTranslation =
         tour.translations.find((t) => t.lang === $locale) ?? {};
@@ -30,6 +41,12 @@
         isMounted = true;
     });
 </script>
+
+{#if isModalOpen}
+    <Modal on:close={closeModal}>
+        <ShortForm slug={tour.slug} />
+    </Modal>
+{/if}
 
 {#if !tour}
     <div class="error-page">
@@ -108,7 +125,9 @@
                     </div>
                 </div>
 
-                <button class="book-button">Забронировать</button>
+                <button class="book-button" on:click={openModal}
+                    >Забронировать</button
+                >
             </aside>
             <section class="additional-info">
                 <!-- Что вы увидите -->
