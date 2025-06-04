@@ -166,8 +166,7 @@
 
 <style>
     .reviews-section {
-        border-top: 1px solid var(--color-gray-500);
-        border-bottom: 1px solid var(--color-gray-500);
+        padding-bottom: var(--space-vertical-md);
         max-width: var(--max-width-container);
     }
 

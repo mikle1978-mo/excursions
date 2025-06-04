@@ -5,7 +5,7 @@
     import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
     import { breadcrumbs } from "$lib/i18n/breadcrumbs.js";
     export let data;
-    const { tour, reviews } = data;
+    const { tour, reviewsCount, rating } = data;
     const { slug } = $page.params;
     import { excursion_page } from "$lib/i18n/excursion_pade.js";
     import { formatPrice } from "$lib/utils/priceFormatter.js";
@@ -13,6 +13,7 @@
     import ExcursionGalery from "$lib/components/excursions/ExcursionGalery.svelte";
     import ReviewsList from "$lib/components/excursions/ReviewsList.svelte";
 
+    console.log(reviewsCount, rating);
     let isMounted = false;
     $: currentTranslation =
         tour.translations.find((t) => t.lang === $locale) ?? {};
@@ -47,12 +48,10 @@
             <div class="meta-info">
                 <div class="rating">
                     <span class="stars"
-                        >{"★".repeat(tour.rating)}{"☆".repeat(
-                            5 - tour.rating
-                        )}</span
+                        >{"★".repeat(rating)}{"☆".repeat(5 - rating)}</span
                     >
                     <span
-                        >({tour.reviews || 0}
+                        >({reviewsCount || 0}
                         {excursion_page.reviews[$locale]})</span
                     >
                 </div>

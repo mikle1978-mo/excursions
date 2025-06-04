@@ -19,7 +19,7 @@ export async function load({ params }) {
         .toArray();
 
     const reviews = await reviewsCollection
-        .find({ tourId: tour._id })
+        .find({ tourSlug: slug })
         .sort({ date: -1 })
         .toArray();
 
@@ -28,12 +28,29 @@ export async function load({ params }) {
         _id: t._id.toString(),
     }));
 
+    const safeReviews = reviews.map((review) => ({
+        ...review,
+        _id: review._id.toString(),
+    }));
+
+    const reviewsCount = safeReviews.length;
+
+    const rating =
+        reviewsCount > 0
+            ? Math.round(
+                  (reviews.reduce((sum, r) => sum + (r.rating || 0), 0) /
+                      reviewsCount) *
+                      10
+              ) / 10
+            : null;
+
     return {
         tour: {
             ...tour,
             _id: tour._id.toString(),
             translations: safeTranslations,
         },
-        reviews,
+        reviewsCount,
+        rating,
     };
 }

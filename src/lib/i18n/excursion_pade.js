@@ -9,7 +9,7 @@ export const excursion_page = {
     },
 
     reviews: {
-        ru: "отзывов",
+        ru: "отзыв(ов)",
         en: "reviews",
     },
     hours: {
