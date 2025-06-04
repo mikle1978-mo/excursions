@@ -76,7 +76,7 @@ export async function getExcursion(slug) {
 }
 
 /**
- * Дублорование одной экскурсии
+ * Дублирование одной экскурсии
  */
 
 export async function duplicateExcursion(slug) {
