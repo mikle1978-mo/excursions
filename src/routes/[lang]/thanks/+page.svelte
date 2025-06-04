@@ -5,22 +5,22 @@
     let countdown = 10;
     let interval;
 
-    // onMount(() => {
-    //     interval = setInterval(() => {
-    //         if (countdown > 0) {
-    //             countdown -= 1;
-    //         } else {
-    //             clearInterval(interval);
-    //             // Переход на главную
-    //             window.location.href = "/";
-    //         }
-    //     }, 1000);
-    // });
+    onMount(() => {
+        interval = setInterval(() => {
+            if (countdown > 0) {
+                countdown -= 1;
+            } else {
+                clearInterval(interval);
+                // Переход на главную
+                window.location.href = "/";
+            }
+        }, 1000);
+    });
 
-    // // Очистка таймера при размонтировании (хорошая практика)
-    // onDestroy(() => {
-    //     clearInterval(interval);
-    // });
+    // Очистка таймера при размонтировании (хорошая практика)
+    onDestroy(() => {
+        clearInterval(interval);
+    });
 </script>
 
 <main>
