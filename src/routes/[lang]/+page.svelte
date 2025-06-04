@@ -6,6 +6,7 @@
     import { onMount } from "svelte";
     import TheSidebar from "$lib/components/layout/TheSidebar.svelte";
     import { searchQuery } from "$lib/stores/searchQuery.js";
+    import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
 
     let search = "";
     let currentLocale = null;
@@ -91,6 +92,7 @@
 
 {#if isMounted}
     <div class="content">
+        <WhatsApp />
         <TheSidebar
             excursions={allExcursions}
             on:filtersChanged={handleFiltersChange}

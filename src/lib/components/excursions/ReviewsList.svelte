@@ -2,10 +2,6 @@
     import { onMount } from "svelte";
     import { locale } from "$lib/stores/locale";
 
-    console.log("====================================");
-    console.log(locale);
-    console.log("====================================");
-
     export let tourSlug = "";
 
     let reviews = [];
