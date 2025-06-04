@@ -11,6 +11,7 @@
     import { formatPrice } from "$lib/utils/priceFormatter.js";
     import { initCurrencyService } from "$lib/services/currencyService";
     import ExcursionGalery from "$lib/components/excursions/ExcursionGalery.svelte";
+    import ReviewsList from "$lib/components/excursions/ReviewsList.svelte";
 
     let isMounted = false;
     $: currentTranslation =
@@ -136,6 +137,8 @@
                 {/if}
             </section>
         </div>
+
+        <ReviewsList tourSlug={tour.slug} />
     </article>
 {/if}
 
