@@ -7,6 +7,7 @@
     import TheSidebar from "$lib/components/layout/TheSidebar.svelte";
     import { searchQuery } from "$lib/stores/searchQuery.js";
     import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
+    import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
 
     let search = "";
     let currentLocale = null;
@@ -97,6 +98,7 @@
             excursions={allExcursions}
             on:filtersChanged={handleFiltersChange}
         />
+        <TheMobileMenu />
         <main>
             <div class="main_page">
                 <h1 class="visually-hidden">

@@ -40,6 +40,10 @@ export const excursion_page = {
         ru: "Что взять с собой",
         en: "What to bring",
     },
+    includes: {
+        ru: "Что включено",
+        en: "What is included",
+    },
     button: {
         ru: "Забронировать",
         en: "Book now",

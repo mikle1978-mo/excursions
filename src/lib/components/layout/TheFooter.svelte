@@ -4,6 +4,7 @@
     import { footer_list } from "$lib/i18n/footer_list";
     import { page } from "$app/stores";
     import { sidebarOpen } from "$lib/stores/sidebar";
+    import { mobileMenuOpen } from "$lib/stores/mobileMenu";
 
     let isMounted = false;
     $: currentPath = $page.url.pathname;
@@ -49,16 +50,13 @@
             </div>
             <span>{footer_list[2].title[$locale]}</span>
         </a>
-        <a class="menu-item" href={`/admin`}>
-            <div
-                class="icon-wrapper {currentPath === `/admin/excursions/`
-                    ? 'active'
-                    : ''}"
-            >
+
+        <button class="menu-item" on:click={() => mobileMenuOpen.set(true)}>
+            <div class="icon-wrapper">
                 <svelte:component this={footer_list[3].icon} />
             </div>
             <span>{footer_list[3].title[$locale]}</span>
-        </a>
+        </button>
     </footer>
 {:else}
     <div></div>

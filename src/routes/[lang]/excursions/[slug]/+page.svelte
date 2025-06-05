@@ -130,6 +130,17 @@
                 >
             </aside>
             <section class="additional-info">
+                <!-- Что включено -->
+                {#if currentTranslation.includes.length > 0}
+                    <div class="info-block">
+                        <h2>{excursion_page.includes[$locale]}</h2>
+                        <ul class="info-list">
+                            {#each currentTranslation.includes as item}
+                                <li>{item}</li>
+                            {/each}
+                        </ul>
+                    </div>
+                {/if}
                 <!-- Что вы увидите -->
                 {#if currentTranslation.whatYouSee.length > 0}
                     <div class="info-block">
