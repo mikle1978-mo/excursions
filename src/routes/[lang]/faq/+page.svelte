@@ -1,4 +1,5 @@
 <script>
+    import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import { faq_list } from "$lib/i18n/faq_list.js";
     import { locale } from "$lib/stores/locale.js";
     export let data;
@@ -9,6 +10,7 @@
 </svelte:head>
 
 <main class="faq-page">
+    <TheMobileMenu />
     <h1 class="faq-title">
         {@html faq_list.title[$locale]}
     </h1>

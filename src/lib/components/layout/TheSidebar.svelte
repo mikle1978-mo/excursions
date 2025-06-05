@@ -262,7 +262,7 @@
 
 <style>
     .sidebar {
-        height: 100svh;
+        height: 100%;
         padding: var(--space-vertical-md) var(--space-horizontal-md);
         background-color: var(--color-bg);
         border-right: 1px solid var(--color-gray-300);

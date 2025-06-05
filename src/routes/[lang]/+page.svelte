@@ -123,8 +123,7 @@
 
 <style>
     .content {
-        display: grid;
-        grid-template-columns: 25% 1fr;
+        display: flex;
         align-items: flex-start;
         padding: 0px;
         gap: var(--space-vertical-md);

@@ -46,6 +46,7 @@
 
 <style>
     .sidebar {
+        display: none;
         height: 100svh;
         padding: var(--space-vertical-md) var(--space-horizontal-md);
         background-color: var(--color-bg);
@@ -89,6 +90,7 @@
 
     @media (max-width: 768px) {
         .sidebar {
+            display: block;
             position: fixed;
             top: 0;
             right: -300px;
