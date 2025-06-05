@@ -1,14 +1,16 @@
 <script>
+    import { faq_list } from "$lib/i18n/faq_list.js";
+    import { locale } from "$lib/stores/locale.js";
     export let data;
 </script>
 
 <svelte:head>
-    <title>Часто задаваемые вопросы | FAQ</title>
+    <title>{faq_list.meta_title[$locale]}</title>
 </svelte:head>
 
 <main class="faq-page">
     <h1 class="faq-title">
-        Часто задаваемые <span class="highlight">вопросы</span>
+        {@html faq_list.title[$locale]}
     </h1>
 
     <div class="faq-list">

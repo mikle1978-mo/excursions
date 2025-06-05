@@ -1,5 +1,7 @@
 <script>
     import { onMount, onDestroy } from "svelte";
+    import { locale } from "$lib/stores/locale.js";
+    import { thanks_page } from "$lib/i18n/thanks_page";
 
     // По желанию — автопереход через 10 секунд
     let countdown = 10;
@@ -25,17 +27,18 @@
 
 <main>
     <div class="thankyou-box">
-        <h1>Спасибо за заявку!</h1>
+        <h1>{thanks_page.title[$locale]}</h1>
         <p>
-            Мы свяжемся с вами в ближайшее время. Обычно это занимает не более
-            15 минут.
+            {thanks_page.text[$locale]}
         </p>
-        <a class="button" href="/">Вернуться на главную</a>
+        <a class="button" href="/"> {thanks_page.back_button[$locale]}</a>
         <p
             style="margin-top: var(--space-vertical-sm); font-size: var(--text-sm); color: var(--color-gray-700);"
         >
-            Автоматический переход на главную через <br />{countdown}
-            {countdown === 1 ? "секунду" : "секунд"}
+            {thanks_page.redirect_note[$locale]} <br />{countdown}
+            {countdown === 1
+                ? thanks_page.seconds[$locale]
+                : thanks_page.seconds[$locale]}
         </p>
     </div>
 </main>
@@ -43,7 +46,7 @@
 <style>
     .thankyou-box {
         margin: auto;
-        background-color: var(--color-gray-100);
+        background-color: var(--color-bg);
         border-radius: var(--radius-lg);
         padding: var(--space-vertical-lg) var(--space-horizontal-lg);
         max-width: 500px;
@@ -52,6 +55,7 @@
         box-shadow: var(--shadow-lg);
         opacity: 0;
         animation: fadeIn 0.5s forwards;
+        color: var(--color-text);
     }
 
     h1 {

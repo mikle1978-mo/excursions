@@ -4,6 +4,7 @@
     import { goto } from "$app/navigation";
     import { locale } from "$lib/stores/locale";
     import { get } from "svelte/store";
+    import { form_list } from "$lib/i18n/form_list";
 
     export let slug;
     let currentUrl = "";
@@ -27,28 +28,28 @@
 
         TGMessage(data);
 
-        alert("Спасибо! Ваша заявка отправлена.");
+        alert(form_list.alert[$locale]);
         const currentLocale = get(locale);
         goto(`/${currentLocale}/thanks`);
     };
 </script>
 
 <form class="form-request" on:submit={handleSubmit}>
-    <h2 class="form-title">Оставить заявку</h2>
+    <h2 class="form-title">{form_list.title[$locale]}</h2>
 
     <label class="form-label">
-        <span>Имя</span>
+        <span>{form_list.form_name[$locale]}</span>
         <input
             type="text"
             name="name"
             required
             class="form-input"
-            placeholder="Ваше имя"
+            placeholder={form_list.name_placeholder[$locale]}
         />
     </label>
 
     <label class="form-label">
-        <span>Телефон</span>
+        <span>{form_list.form_phone[$locale]}</span>
         <input
             type="tel"
             name="phone"
@@ -62,7 +63,9 @@
     <input type="hidden" name="slug" value={slug} />
     <input type="hidden" name="url" value={currentUrl} />
 
-    <button type="submit" class="form-button">Отправить</button>
+    <button type="submit" class="form-button"
+        >{form_list.submit[$locale]}</button
+    >
 </form>
 
 <style>
@@ -92,18 +95,22 @@
     }
 
     .form-input {
-        padding: 0.75rem 1rem;
+        padding: 0.5rem 0.75rem;
+        font-size: var(--text-md);
         border: 1px solid var(--color-gray-400);
         border-radius: var(--radius-sm);
-        font-size: var(--text-md);
         background-color: var(--color-light);
-        color: var(--color-dark);
-        transition: border-color var(--transition-fast);
+        color: var(--color-text);
+        transition:
+            border var(--transition-fast),
+            box-shadow var(--transition-fast);
     }
 
     .form-input:focus {
-        border-color: var(--color-primary);
+        font-size: 16px;
         outline: none;
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 2px rgba(74, 201, 126, 0.3);
     }
 
     .form-button {
@@ -119,5 +126,12 @@
 
     .form-button:hover {
         background-color: var(--color-primary-hover);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .form-input {
+            background: var(--color-gray-800);
+            border-color: var(--color-gray-600);
+        }
     }
 </style>

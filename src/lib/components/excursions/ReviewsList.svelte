@@ -1,11 +1,13 @@
 <script>
-    import { onMount } from "svelte";
+    import { onMount, tick } from "svelte";
     import { locale } from "$lib/stores/locale";
+    import { reviews_list } from "$lib/i18n/reviews_list";
 
     export let tourSlug = "";
 
     let reviews = [];
     let showForm = false;
+    let formEl;
     let name = "";
     let rating = 5;
     let comment = "";
@@ -77,10 +79,19 @@
     function setRating(value) {
         rating = value;
     }
+
+    async function toggleForm() {
+        showForm = !showForm;
+
+        if (showForm) {
+            await tick();
+            formEl?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    }
 </script>
 
 <section class="reviews-section">
-    <h2 class="section-title">Отзывы</h2>
+    <h2 class="section-title">{reviews_list.title[$locale]}</h2>
 
     {#if reviews.length > 0}
         <ul class="review-list">
@@ -105,28 +116,34 @@
             {/each}
         </ul>
     {:else}
-        <p class="no-reviews">Пока нет отзывов.</p>
+        <p class="no-reviews">{reviews_list.no_reviews[$locale]}</p>
     {/if}
 
-    <button class="add-review-btn" on:click={() => (showForm = !showForm)}>
-        {showForm ? "Отменить" : "Оставить отзыв"}
+    <button class="add-review-btn" on:click={toggleForm}>
+        {showForm ? reviews_list.cancel[$locale] : reviews_list.take[$locale]}
     </button>
 
     {#if showForm}
-        <form class="review-form" on:submit|preventDefault={handleSubmit}>
+        <form
+            class="review-form"
+            on:submit|preventDefault={handleSubmit}
+            bind:this={formEl}
+        >
             <label class="form-label">
-                Имя
+                {reviews_list.form_name[$locale]}
                 <input
                     type="text"
                     bind:value={name}
-                    placeholder="Ваше имя"
+                    placeholder={reviews_list.name_placeholder[$locale]}
                     required
                     class="form-input"
                 />
             </label>
 
             <div>
-                <label class="form-label" for="rating">Оценка</label>
+                <label class="form-label" for="rating"
+                    >{reviews_list.rating[$locale]}</label
+                >
                 <div
                     class="stars"
                     id="rating"
@@ -149,17 +166,19 @@
             </div>
 
             <label class="form-label">
-                Комментарий
+                {reviews_list.comment[$locale]}
                 <textarea
                     bind:value={comment}
-                    placeholder="Комментарий"
+                    placeholder={reviews_list.comment_placeholder[$locale]}
                     rows="4"
                     required
                     class="form-textarea"
                 ></textarea>
             </label>
 
-            <button type="submit" class="submit-btn">Отправить</button>
+            <button type="submit" class="submit-btn"
+                >{reviews_list.submit[$locale]}</button
+            >
         </form>
     {/if}
 </section>
@@ -211,6 +230,7 @@
     .no-reviews {
         color: var(--color-gray-500);
         font-style: italic;
+        padding-bottom: var(--space-vertical-md);
     }
     .review-date {
         font-size: 0.875rem;
