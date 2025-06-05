@@ -277,6 +277,10 @@
         color: var(--color-text);
         resize: vertical;
     }
+    .form-input:focus,
+    .form-textarea:focus {
+        font-size: 16px;
+    }
 
     .stars {
         font-size: var(--text-xxl);
