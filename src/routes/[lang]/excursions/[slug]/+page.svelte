@@ -1,5 +1,7 @@
 <script>
     import { page } from "$app/stores";
+    import SeoSchemaTour from "$lib/components/SEO/SeoSchemaTour.svelte";
+    import { selectedCurrency } from "$lib/stores/currency.js";
     import { locale } from "$lib/stores/locale";
     import { onMount } from "svelte";
     import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
@@ -14,6 +16,9 @@
     import ReviewsList from "$lib/components/excursions/ReviewsList.svelte";
     import Modal from "$lib/components/UI/Modal.svelte";
     import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
+
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const baseName = import.meta.env.VITE_BASE_NAME;
 
     let isModalOpen = false;
 
@@ -41,6 +46,54 @@
         isMounted = true;
     });
 </script>
+
+<svelte:head>
+    <title>{`${currentTranslation.title} | ${baseName}`}</title>
+    <meta name="description" content={currentTranslation.metaDescription} />
+
+    <!-- Адаптивность для мобильных -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Управление индексацией -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph (у тебя уже есть основные) -->
+    <meta property="og:title" content={currentTranslation.title} />
+    <meta
+        property="og:description"
+        content={currentTranslation.metaDescription}
+    />
+    <meta property="og:image" content={tour.images[0]} />
+    <meta property="og:type" content="product" />
+    <meta property="og:url" content={`${baseUrl}${$page.url.pathname}`} />
+    <meta property="og:locale" content={locale} />
+    <meta property="og:site_name" content={`${baseName}`} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={currentTranslation.title} />
+    <meta
+        name="twitter:description"
+        content={currentTranslation.metaDescription}
+    />
+    <meta name="twitter:image" content={tour.images[0]} />
+    <!-- <meta name="twitter:site" content="@YourTwitterHandle" /> -->
+
+    <!-- Канонический URL -->
+    <link rel="canonical" href={`${baseUrl}${$page.url.pathname}`} />
+</svelte:head>
+
+<SeoSchemaTour
+    title={currentTranslation.title}
+    description={currentTranslation.metaDescription}
+    image={tour.images[0]}
+    url={`${baseUrl}${$page.url.pathname}`}
+    price={tour.price}
+    currency="USD"
+    {rating}
+    reviewCount={reviewsCount}
+    language={$locale}
+/>
 
 {#if isModalOpen}
     <Modal on:close={closeModal}>

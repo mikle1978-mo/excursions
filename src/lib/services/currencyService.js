@@ -1,47 +1,26 @@
-// src/lib/services/currencyService.js
 import { exchangeRates, isLoadingRates } from "$lib/stores/currency";
 
-const url =
-    "https://v6.exchangerate-api.com/v6/41a85a00c5d3e34940ff0f77/latest/USD";
-
-// Кеш для хранения последних курсов
-let ratesCache = {
-    USD: 1,
-    RUB: 79.13,
-    EUR: 0.88,
-    TRY: 39.16,
-};
+// Инициализация при первом вызове
+let initialized = false;
 
 export async function fetchExchangeRates() {
     isLoadingRates.set(true);
 
     try {
-        // Пытаемся получить свежие курсы
-        const response = await fetch(url);
+        const res = await fetch("/api/currency");
+        if (!res.ok) throw new Error(`Failed to load rates: ${res.status}`);
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        const data = await res.json();
 
-        const data = await response.json();
-
-        ratesCache = data.conversion_rates || ratesCache;
-
-        exchangeRates.set(ratesCache);
-    } catch (error) {
-        console.error(
-            "Failed to fetch exchange rates, using cached values:",
-            error
-        );
-        // Используем кешированные значения при ошибке
-        exchangeRates.set(ratesCache);
+        // Обновляем состояние
+        exchangeRates.set(data.rates);
+    } catch (err) {
+        console.error("Failed to fetch exchange rates:", err);
+        // Не меняем exchangeRates — можно добавить дефолтные значения при необходимости
     } finally {
         isLoadingRates.set(false);
     }
 }
-
-// Инициализация при первом вызове
-let initialized = false;
 
 export async function initCurrencyService() {
     if (!initialized) {

@@ -1,7 +1,6 @@
 <script>
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
-    import { initCurrencyService } from "$lib/services/currencyService";
     import { excursion_card } from "$lib/i18n/excursion_card";
     import { formatPrice } from "$lib/utils/priceFormatter";
     export let excursion;
@@ -26,7 +25,6 @@
     }
 
     onMount(async () => {
-        await initCurrencyService();
         isMounted = true;
     });
 </script>
