@@ -1,6 +1,6 @@
 import { VITE_BASE_URL } from "$env/static/private";
 
-const SUPPORTED_LOCALES = ["ru", "en", "tr"];
+const SUPPORTED_LOCALES = ["ru", "en"];
 
 export async function GET() {
     const res = await fetch(`${VITE_BASE_URL}/api/slugs`);
