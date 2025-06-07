@@ -1,24 +1,28 @@
-import { getAllExcursionsSlugs } from "$lib/utils/excursionsActions";
 import { VITE_BASE_URL } from "$env/static/private";
+
 const SUPPORTED_LOCALES = ["ru", "en", "tr"];
 
 export async function GET() {
-    const excursions = await getAllExcursionsSlugs();
+    const res = await fetch(`${VITE_BASE_URL}/api/slugs`);
+    if (!res.ok) {
+        return new Response("Ошибка при получении данных", { status: 500 });
+    }
 
-    const pages = excursions.map((exc) => `excursions/${exc.slug}`);
+    const slugs = await res.json();
 
-    const urls = pages
-        .map((path) => {
+    const urls = slugs
+        .map((slug) => {
+            const path = `excursions/${slug}`;
             const links = SUPPORTED_LOCALES.map(
                 (lang) =>
-                    `<xhtml:link rel="alternate" hreflang="${lang}" href="${BASE_URL}/${lang}/${path}" />`
+                    `<xhtml:link rel="alternate" hreflang="${lang}" href="${VITE_BASE_URL}/${lang}/${path}" />`
             ).join("\n");
 
-            const xDefault = `<xhtml:link rel="alternate" hreflang="x-default" href="${BASE_URL}/en/${path}" />`;
+            const xDefault = `<xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en/${path}" />`;
 
             return `
   <url>
-    <loc>${BASE_URL}/en/${path}</loc>
+    <loc>${VITE_BASE_URL}/en/${path}</loc>
     ${links}
     ${xDefault}
     <changefreq>weekly</changefreq>

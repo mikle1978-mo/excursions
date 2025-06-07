@@ -99,12 +99,3 @@ export async function duplicateExcursion(slug) {
     const { newSlug } = await res.json();
     return newSlug;
 }
-
-export async function getAllExcursionsSlugs() {
-    const db = await connectToDatabase();
-    const excursions = await db
-        .collection("excursions")
-        .find({}, { projection: { slug: 1 } })
-        .toArray();
-    return excursions.map((e) => e.slug);
-}
