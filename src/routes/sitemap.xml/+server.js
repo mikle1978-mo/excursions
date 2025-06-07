@@ -1,9 +1,9 @@
-import { getAllExcursions } from "$lib/server/excursionsActions";
+import { getAllExcursionsSlugs } from "$lib/utils/excursionsActions";
 import { VITE_BASE_URL } from "$env/static/private";
 const SUPPORTED_LOCALES = ["ru", "en", "tr"];
 
 export async function GET() {
-    const excursions = await getAllExcursions();
+    const excursions = await getAllExcursionsSlugs();
 
     const pages = excursions.map((exc) => `excursions/${exc.slug}`);
 
