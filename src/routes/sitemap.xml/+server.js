@@ -9,6 +9,9 @@ export async function GET() {
     }
 
     const slugs = await res.json();
+    console.log("====================================");
+    console.log(slugs);
+    console.log("====================================");
 
     const urls = slugs
         .map((slug) => {
