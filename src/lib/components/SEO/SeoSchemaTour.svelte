@@ -9,20 +9,6 @@
     export let reviewCount;
     export let language;
 
-    console.log("====================================");
-    console.log(
-        language,
-        title,
-        description,
-        image,
-        url,
-        price,
-        currency,
-        rating,
-        reviewCount
-    );
-    console.log("====================================");
-
     const jsonLd = {
         "@context": "https://schema.org",
         "@type": "TouristTrip",
@@ -39,8 +25,8 @@
         },
         aggregateRating: {
             "@type": "AggregateRating",
-            ratingValue: rating.toString(),
-            reviewCount: reviewCount.toString(),
+            ratingValue: (rating ?? 0).toString(),
+            reviewCount: (reviewCount ?? 0).toString(),
         },
     };
 
@@ -49,7 +35,7 @@
             "@type": "Review",
             reviewRating: {
                 "@type": "Rating",
-                ratingValue: rating.toString(),
+                ratingValue: (rating ?? 0).toString(),
             },
             author: {
                 "@type": "Person",

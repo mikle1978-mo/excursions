@@ -86,7 +86,7 @@
 <SeoSchemaTour
     title={currentTranslation.title}
     description={currentTranslation.metaDescription}
-    image={tour.images[0]}
+    image={tour.images?.[0] || "/images/excursions/excursion_defoult.webp"}
     url={`${baseUrl}${$page.url.pathname}`}
     price={tour.price}
     currency="USD"
