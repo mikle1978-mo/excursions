@@ -7,6 +7,7 @@
     viewBox="0 0 96 96"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    class="icon"
 >
     <g clip-path="url(#clip0_711_13)">
         <path
@@ -18,15 +19,15 @@
     </g>
     <defs>
         <clipPath id="clip0_711_13">
-            <rect width="96" height="96" fill="white" />
+            <rect width="96" height="96" fill="currentColor" />
         </clipPath>
     </defs>
 </svg>
 
 <style>
     .icon {
-        width: 1.2rem;
-        height: 1.2rem;
+        width: 100%;
+        height: 100%;
         object-fit: cover;
     }
 </style>

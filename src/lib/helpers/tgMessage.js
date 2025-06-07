@@ -1,6 +1,8 @@
+import { CHAT_ID, URI_API_TG } from "$env/static/private";
+
 const TGMessage = function (data) {
-    const chat_id = import.meta.env.VITE_CHAT_ID;
-    const uri = import.meta.env.VITE_URI_API_TG;
+    const chat_id = CHAT_ID;
+    const uri = URI_API_TG;
 
     if (typeof data !== "object" || data === null) return;
 
