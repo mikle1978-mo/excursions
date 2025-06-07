@@ -96,7 +96,7 @@
         content={`${baseUrl}/images/excursions/excursion_default.webp`}
     />
     <meta name="yandex-verification" content="62268aabdebfd6ad" />
-    <meta name="yandex-verification" content="2d9d922adb1a6ebf" />
+    <!-- <meta name="yandex-verification" content="2d9d922adb1a6ebf" /> -->
 
     <!-- Google tag (gtag.js) -->
 
