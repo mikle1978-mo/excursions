@@ -50,6 +50,8 @@
 <svelte:head>
     <title>{`${currentTranslation.title} | ${baseName}`}</title>
     <meta name="description" content={currentTranslation.metaDescription} />
+    <meta name="author" content="Excursions Site" />
+    <meta name="keywords" content={currentTranslation.title} />
 
     <!-- Адаптивность для мобильных -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -64,10 +66,14 @@
         content={currentTranslation.metaDescription}
     />
     <meta property="og:image" content={tour.images[0]} />
+    <meta
+        property="og:image:alt"
+        content={`Tuor photo: ${currentTranslation.title}`}
+    />
     <meta property="og:type" content="product" />
     <meta property="og:url" content={`${baseUrl}${$page.url.pathname}`} />
     <meta property="og:locale" content={locale} />
-    <meta property="og:site_name" content={`${baseName}`} />
+    <meta property="og:site_name" content={baseName} />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />

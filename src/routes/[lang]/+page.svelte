@@ -9,6 +9,9 @@
     import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
 
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const baseName = import.meta.env.VITE_BASE_NAME;
+
     let search = "";
     let currentLocale = null;
 
