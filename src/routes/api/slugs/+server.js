@@ -1,4 +1,4 @@
-import { connectToDatabase } from "$lib/server/db";
+import { connectToDatabase } from "$lib/server/mongodb";
 export async function GET() {
     try {
         const db = await connectToDatabase();
