@@ -19,6 +19,7 @@
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
+    let lang = $page.params.lang || "en";
 
     let isModalOpen = false;
 
@@ -72,7 +73,7 @@
     />
     <meta property="og:type" content="product" />
     <meta property="og:url" content={`${baseUrl}${$page.url.pathname}`} />
-    <meta property="og:locale" content={locale} />
+    <meta property="og:locale" content={lang} />
     <meta property="og:site_name" content={baseName} />
 
     <!-- Twitter Card -->
@@ -98,7 +99,7 @@
     currency="USD"
     {rating}
     reviewCount={reviewsCount}
-    language={$locale}
+    language={lang}
 />
 
 {#if isModalOpen}

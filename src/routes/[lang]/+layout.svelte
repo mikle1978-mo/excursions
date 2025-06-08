@@ -2,11 +2,11 @@
     import TheFooter from "$lib/components/layout/TheFooter.svelte";
     import TheHeader from "$lib/components/layout/TheHeader.svelte";
     import { onMount } from "svelte";
-    import { locale } from "$lib/stores/locale";
+
     import { initCurrencyService } from "$lib/services/currencyService";
-    import { browser } from "$app/environment";
     import { page } from "$app/stores";
-    let lang = $page.params.lang || "en"; // Берём язык из URL
+
+    let lang = $page.params.lang || "en";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -48,16 +48,16 @@
 </script>
 
 <svelte:head>
-    <title>{SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title} | {baseName}</title>
+    <title>{SEO_TEXT[lang]?.title ?? SEO_TEXT.en.title} | {baseName}</title>
     <meta
         name="description"
-        content={SEO_TEXT[$locale]?.description ?? SEO_TEXT.en.description}
+        content={SEO_TEXT[lang]?.description ?? SEO_TEXT.en.description}
     />
     <meta
         name="keywords"
-        content={SEO_TEXT[$locale]?.keywords ?? SEO_TEXT.en.keywords}
+        content={SEO_TEXT[lang]?.keywords ?? SEO_TEXT.en.keywords}
     />
-    <meta name="author" content="Excursions Site" />
+    <meta name="author" content={baseName} />
     <meta name="robots" content="index, follow" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
@@ -68,32 +68,32 @@
     <meta property="og:site_name" content={baseName} />
     <meta
         property="og:title"
-        content={SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title}
+        content={SEO_TEXT[lang]?.title ?? SEO_TEXT.en.title}
     />
     <meta
         property="og:description"
-        content={SEO_TEXT[$locale]?.description ?? SEO_TEXT.en.description}
+        content={SEO_TEXT[lang]?.description ?? SEO_TEXT.en.description}
     />
     <meta
         property="og:image"
-        content={`${baseUrl}/images/excursions/excursion_default.webp`}
+        content={`${baseUrl}/images/excursions/excursion_defoult.webp`}
     />
-    <meta property="og:url" content={`${baseUrl}/${$locale}`} />
-    <meta property="og:locale" content={$locale} />
+    <meta property="og:url" content={`${baseUrl}/${lang}`} />
+    <meta property="og:locale" content={lang} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
         name="twitter:title"
-        content={SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title}
+        content={SEO_TEXT[lang]?.title ?? SEO_TEXT.en.title}
     />
     <meta
         name="twitter:description"
-        content={SEO_TEXT[$locale]?.twitter ?? SEO_TEXT.en.twitter}
+        content={SEO_TEXT[lang]?.twitter ?? SEO_TEXT.en.twitter}
     />
     <meta
         name="twitter:image"
-        content={`${baseUrl}/images/excursions/excursion_default.webp`}
+        content={`${baseUrl}/images/excursions/excursion_defoult.webp`}
     />
 
     <!-- Google tag (gtag.js) -->
