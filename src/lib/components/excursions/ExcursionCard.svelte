@@ -7,7 +7,7 @@
     const {
         slug = "/",
         title = "Обзорная экскурсия по историческому центру",
-        images = ["/images/excursions/excursion_defoult.webp"],
+        images = ["/images/excursions/excursion_default.webp"],
         duration = 2.5,
         groupSize = 10,
         price = 1500,
@@ -32,7 +32,11 @@
 {#if isMounted}
     <a class="excursion-card" href="/{$locale}/excursions/{slug}">
         <div class="excursion-card__image-wrapper">
-            <img src={images[0]} alt={title} class="excursion-card__image" />
+            <img
+                src={images[0]}
+                alt={title[$locale]}
+                class="excursion-card__image"
+            />
 
             {#if getLabelByKey(meta.labels, "POPULAR")}
                 <span class="excursion-card__badge topright">
@@ -58,7 +62,7 @@
 
         <div class="excursion-card__content">
             <div class="excursion-card__header">
-                <h3 class="excursion-card__title">{title[$locale]}</h3>
+                <h2 class="excursion-card__title">{title[$locale]}</h2>
                 <div class="excursion-card__rating">
                     <span
                         class="excursion-card__stars"

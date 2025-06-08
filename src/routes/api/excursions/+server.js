@@ -26,7 +26,7 @@ export async function POST({ request }) {
         images:
             Array.isArray(data.images) && data.images.length > 0
                 ? data.images
-                : ["/images/excursions/excursion_defoult.webp"],
+                : ["/images/excursions/excursion_default.webp"],
         rating: 0,
         reviewsCount: 0,
         createdAt: new Date(),

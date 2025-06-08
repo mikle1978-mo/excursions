@@ -76,7 +76,7 @@
     />
     <meta
         property="og:image"
-        content={`${baseUrl}/images/excursions/excursion_defoult.webp`}
+        content={`${baseUrl}/images/excursions/excursion_default.webp`}
     />
     <meta property="og:url" content={`${baseUrl}/${lang}`} />
     <meta property="og:locale" content={lang} />
@@ -93,7 +93,7 @@
     />
     <meta
         name="twitter:image"
-        content={`${baseUrl}/images/excursions/excursion_defoult.webp`}
+        content={`${baseUrl}/images/excursions/excursion_default.webp`}
     />
 
     <!-- Google tag (gtag.js) -->

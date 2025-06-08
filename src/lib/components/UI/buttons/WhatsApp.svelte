@@ -27,7 +27,7 @@
         gap: 8px;
         background-color: var(--color-primary);
         z-index: 999;
-        color: #ffffff;
+        color: #000000;
         padding: 9px 4px;
         border-radius: 0 6px 6px 0;
         transform: rotate(180deg);

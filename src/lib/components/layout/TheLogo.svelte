@@ -11,8 +11,12 @@
 </a>
 
 <style>
+    .logo_title {
+        font-size: var(--text-lg);
+    }
     .logo {
         position: relative;
+
         display: flex;
         align-items: center;
         column-gap: 0.5rem;
@@ -27,8 +31,8 @@
 
     .target {
         position: relative;
-        height: 100%;
-        aspect-ratio: 1 / 1;
+        width: calc(var(--text-md) * 2);
+        height: calc(var(--text-md) * 2);
     }
     .ring {
         position: absolute;
