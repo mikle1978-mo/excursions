@@ -37,7 +37,7 @@
 
     $: breadcrumbsList = [
         { href: `/${$locale}`, label: breadcrumbs.home[$locale] },
-        { href: `/${$locale}`, label: breadcrumbs.tours[$locale] },
+        { href: `/${$locale}/excursions`, label: breadcrumbs.tours[$locale] },
         tour ? { label: currentTranslation.title } : { label: "..." },
     ];
     let priceDisplay;
