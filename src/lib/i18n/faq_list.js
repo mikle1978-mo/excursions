@@ -8,7 +8,7 @@ export const faq_list = {
         en: `Here you will find answers to frequently asked questions about our service.`,
     },
     meta_title: {
-        ru: `Часто задаваемые вопросы - ${import.meta.env.VITE_APP_NAME}`,
-        en: `Frequently Asked Questions - ${import.meta.env.VITE_APP_NAME}`,
+        ru: `Часто задаваемые вопросы`,
+        en: `Frequently Asked Questions`,
     },
 };

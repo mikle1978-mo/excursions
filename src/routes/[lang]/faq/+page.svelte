@@ -3,10 +3,13 @@
     import { faq_list } from "$lib/i18n/faq_list.js";
     import { locale } from "$lib/stores/locale.js";
     export let data;
+
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const baseName = import.meta.env.VITE_BASE_NAME;
 </script>
 
 <svelte:head>
-    <title>{faq_list.meta_title[$locale]}</title>
+    <title>{`${faq_list.meta_title[$locale]} | ${baseName}`}</title>
 </svelte:head>
 
 <main class="faq-page">
