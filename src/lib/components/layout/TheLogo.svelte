@@ -16,7 +16,6 @@
     }
     .logo {
         position: relative;
-
         display: flex;
         align-items: center;
         column-gap: 0.5rem;
@@ -33,6 +32,8 @@
         position: relative;
         width: calc(var(--text-md) * 2);
         height: calc(var(--text-md) * 2);
+        max-height: 100%;
+        aspect-ratio: 1;
     }
     .ring {
         position: absolute;

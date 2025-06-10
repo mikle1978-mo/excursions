@@ -3,12 +3,16 @@
     import Search from "$lib/components/UI/inputs/search/Search.svelte";
     import CurrensySelector from "$lib/components/UI/buttons/CurrensySelector.svelte";
     import TheLocaleButton from "$lib/components/UI/buttons/TheLocaleButton.svelte";
+    import { page } from "$app/stores";
+    const showSearchOn = ["/excursions"];
 </script>
 
 <header class="header">
     <div class="header_row">
         <TheLogo />
-        <Search />
+        {#if showSearchOn.some((p) => $page.url.pathname.includes(p))}
+            <Search />
+        {/if}
         <div class="line_right">
             <CurrensySelector />
             <TheLocaleButton />

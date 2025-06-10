@@ -7,7 +7,9 @@
     import { mobileMenuOpen } from "$lib/stores/mobileMenu";
 
     let isMounted = false;
-    $: currentPath = $page.url.pathname;
+    let currentPath = $page.url.pathname;
+
+    console.log("Current path in footer:", currentPath);
 
     onMount(() => {
         isMounted = true;
@@ -27,15 +29,15 @@
             </div>
             <span>{footer_list[0].title[$locale]}</span>
         </a>
-        <button
-            class="menu-item {currentPath !== `/${$locale}` ? 'disabled' : ''}"
-            on:click={() => sidebarOpen.set(true)}
-        >
-            <div class="icon-wrapper">
-                <svelte:component this={footer_list[1].icon} />
-            </div>
-            <span>{footer_list[1].title[$locale]}</span>
-        </button>
+        {#if currentPath.includes("excursions")}
+            <button class="menu-item" on:click={() => sidebarOpen.set(true)}>
+                <div class="icon-wrapper">
+                    <svelte:component this={footer_list[1].icon} />
+                </div>
+                <span>{footer_list[1].title[$locale]}</span>
+            </button>
+        {/if}
+
         <a
             class="menu-item {currentPath ===
             `/${$locale}/${footer_list[2].link}`
@@ -101,12 +103,6 @@
 
     .menu-item.active .icon-wrapper {
         color: var(--color-primary);
-    }
-
-    .menu-item.disabled {
-        opacity: 0.5;
-        pointer-events: none;
-        cursor: default;
     }
 
     @media (max-width: 768px) {
