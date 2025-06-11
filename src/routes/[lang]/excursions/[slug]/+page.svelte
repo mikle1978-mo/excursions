@@ -51,7 +51,7 @@
 <svelte:head>
     <title>{`${currentTranslation.title} | ${baseName}`}</title>
     <meta name="description" content={currentTranslation.metaDescription} />
-    <meta name="author" content="Excursions Site" />
+    <meta name="author" content="Kemer.app" />
     <meta name="keywords" content={currentTranslation.title} />
 
     <!-- Адаптивность для мобильных -->

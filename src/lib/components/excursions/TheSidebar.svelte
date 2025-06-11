@@ -1,19 +1,39 @@
 <script>
     import { locale } from "$lib/stores/locale.js";
     import { sidebarOpen } from "$lib/stores/sidebar";
-    import { onMount, createEventDispatcher } from "svelte";
     import { selectedCurrency, exchangeRates } from "$lib/stores/currency";
+
+    import { createEventDispatcher, onMount } from "svelte";
+
+    const dispatch = createEventDispatcher();
+
+    import PriceFilter from "./PriceFilter.svelte";
+    import DurationFilter from "./DurationFilter.svelte";
+    import RatingFilter from "./RatingFilter.svelte";
 
     export let excursions;
     let initialized = false;
 
-    const dispatch = createEventDispatcher();
+    const labels = {
+        title: {
+            en: "Excursion Filters",
+            ru: "Фильтры экскурсий",
+        },
 
-    // Фильтры (все значения в USD)
+        apply: {
+            en: "Apply",
+            ru: "Применить",
+        },
+        reset: {
+            en: "Reset",
+            ru: "Сбросить",
+        },
+    };
+
+    // Фильтры
     let filters = {
-        durations: [],
-        priceRange: [0, 0],
-        groupSizes: [],
+        durationRange: null,
+        priceRange: null,
         minRating: 0,
     };
 
@@ -21,18 +41,39 @@
     $: currentCurrency = $selectedCurrency;
     $: currentRate = $exchangeRates[currentCurrency] || 1;
 
-    // Уникальные значения
+    // Данные для фильтров
     $: durations = [...new Set(excursions.map((e) => e.duration))].sort(
         (a, b) => a - b
     );
-    $: groupSizes = [...new Set(excursions.map((e) => e.groupSize))].sort(
-        (a, b) => a - b
-    );
     $: maxPriceUSD = Math.max(...excursions.map((e) => e.priceUSD || e.price));
+    $: displayMaxPrice = maxPriceUSD * currentRate;
+    $: displayPriceRange = filters.priceRange
+        ? filters.priceRange.map((p) => p * currentRate)
+        : [0, convertToCurrent(maxPriceUSD)];
 
-    // Отображаемый диапазон цен в текущей валюте
-    let displayPriceRange = [0, 0];
-    $: displayMaxPrice = convertToCurrent(maxPriceUSD);
+    function handlePriceChange(e) {
+        filters.priceRange = e.detail.map((p) => p / currentRate);
+        dispatchFilters();
+    }
+
+    function handleDurationChange(e) {
+        filters.durationRange = e.detail.length ? e.detail : null;
+        dispatchFilters();
+    }
+
+    function handleRatingChange(e) {
+        filters.minRating = e.detail;
+        dispatchFilters();
+    }
+
+    function dispatchFilters() {
+        dispatch("filtersChanged", filters);
+    }
+
+    const setRating = (rating) => {
+        filters = { ...filters, minRating: rating };
+        dispatch("filtersChanged", { ...filters });
+    };
 
     // Функции конвертации
     function convertToCurrent(priceUSD) {
@@ -43,61 +84,10 @@
         return priceInCurrent / currentRate;
     }
 
-    // При изменении курса валюты обновляем отображаемый диапазон и фильтр
-
-    $: if (initialized && currentRate && maxPriceUSD) {
-        displayPriceRange = filters.priceRange.map(convertToCurrent);
-    }
-
-    // Обработчик изменения цены
-    function handlePriceInput(index, value) {
-        displayPriceRange[index] = Number(value);
-        displayPriceRange = [...displayPriceRange];
-
-        // Поддерживаем порядок
-        if (displayPriceRange[0] > displayPriceRange[1]) {
-            displayPriceRange[1] = displayPriceRange[0];
-        }
-        if (displayPriceRange[1] < displayPriceRange[0]) {
-            displayPriceRange[0] = displayPriceRange[1];
-        }
-
-        // Обновляем фильтр в USD и диспатчим
-
-        filters = {
-            ...filters,
-            priceRange: displayPriceRange.map(convertToUSD),
-        };
-        dispatch("filtersChanged", { ...filters });
-    }
-
-    // Управление другими фильтрами
-    const toggleDuration = (duration) => {
-        const newDurations = filters.durations.includes(duration)
-            ? filters.durations.filter((d) => d !== duration)
-            : [...filters.durations, duration];
-        filters = { ...filters, durations: newDurations };
-        dispatch("filtersChanged", { ...filters });
-    };
-
-    const toggleGroupSize = (size) => {
-        const newGroupSizes = filters.groupSizes.includes(size)
-            ? filters.groupSizes.filter((s) => s !== size)
-            : [...filters.groupSizes, size];
-        filters = { ...filters, groupSizes: newGroupSizes };
-        dispatch("filtersChanged", { ...filters });
-    };
-
-    const setRating = (rating) => {
-        filters = { ...filters, minRating: rating };
-        dispatch("filtersChanged", { ...filters });
-    };
-
     const resetFilters = () => {
         filters = {
-            durations: [],
-            priceRange: [0, maxPriceUSD],
-            groupSizes: [],
+            durationRange: null,
+            priceRange: null,
             minRating: 0,
         };
         displayPriceRange = [0, convertToCurrent(maxPriceUSD)];
@@ -105,11 +95,18 @@
     };
 
     onMount(() => {
-        filters.priceRange = [0, maxPriceUSD];
+        filters = {
+            durationRange: null,
+            priceRange: null,
+            minRating: 0,
+        };
         displayPriceRange = [0, convertToCurrent(maxPriceUSD)];
-        dispatch("filtersChanged", { ...filters });
-
-        initialized = true; // <-- флаг, чтобы реактивный блок больше не мешал
+        dispatch("filtersChanged", {
+            durationRange: null,
+            priceRange: [0, maxPriceUSD],
+            minRating: 0,
+        });
+        initialized = true;
     });
 
     const closeSidebar = () => sidebarOpen.set(false);
@@ -131,115 +128,37 @@
 
 <side class="sidebar" class:active={$sidebarOpen}>
     <div class="sidebar-content">
-        <h3 class="sidebar-title">Фильтры экскурсий</h3>
+        <h3 class="sidebar-title">{labels.title[$locale]}</h3>
         <div class="filters">
-            <!-- Фильтр по цене -->
-            <div class="filter-group">
-                <h4 class="filter-title">Цена ({currentCurrency})</h4>
-                <div class="price-range">
-                    <input
-                        type="range"
-                        min="0"
-                        max={displayMaxPrice}
-                        step="1"
-                        value={displayPriceRange[0]}
-                        on:input={(e) => handlePriceInput(0, e.target.value)}
-                        class="range-slider"
-                    />
-                    <input
-                        type="range"
-                        min="0"
-                        max={displayMaxPrice}
-                        step="1"
-                        value={displayPriceRange[1]}
-                        on:input={(e) => handlePriceInput(1, e.target.value)}
-                        class="range-slider"
-                    />
-                </div>
-                <div class="price-values">
-                    <span
-                        >{displayPriceRange[0].toFixed(0)}
-                        {currentCurrency}</span
-                    >
-                    <span
-                        >{displayPriceRange[1].toFixed(0)}
-                        {currentCurrency}</span
-                    >
-                </div>
-            </div>
-            <div class="filter-group">
-                <h4 class="filter-title">Рейтинг</h4>
-                <div class="rating-stars">
-                    {#each [1, 2, 3, 4, 5] as star}
-                        <button
-                            class="star {filters.minRating >= star
-                                ? 'active'
-                                : ''}"
-                            on:click={() => setRating(star)}
-                        >
-                            ★
-                        </button>
-                    {/each}
-                    {#if filters.minRating > 0}
-                        <button
-                            class="clear-rating"
-                            on:click={() => setRating(0)}
-                        >
-                            &times;
-                        </button>
-                    {/if}
-                </div>
-            </div>
+            <PriceFilter
+                currency={currentCurrency}
+                maxPrice={displayMaxPrice}
+                currentRange={displayPriceRange}
+                on:change={handlePriceChange}
+            />
 
-            <!-- Фильтр по размеру группы -->
-            <div class="filter-group">
-                <h4 class="filter-title">Размер группы</h4>
-                <div class="filter-options">
-                    {#each groupSizes as size}
-                        <label class="filter-option">
-                            <input
-                                type="checkbox"
-                                checked={filters.groupSizes.includes(size)}
-                                on:change={() => toggleGroupSize(size)}
-                            />
-                            <span class="checkbox-container">
-                                <span class="custom-checkbox"></span>
-                            </span>
-                            <span class="filter-label">{size} чел</span>
-                        </label>
-                    {/each}
-                </div>
-            </div>
+            <RatingFilter
+                minRating={filters.minRating}
+                on:change={handleRatingChange}
+            />
 
-            <!-- Фильтр по продолжительности -->
-            <div class="filter-group">
-                <h4 class="filter-title">Продолжительность</h4>
-                <div class="filter-options">
-                    {#each durations as duration}
-                        <label class="filter-option">
-                            <input
-                                type="checkbox"
-                                checked={filters.durations.includes(duration)}
-                                on:change={() => toggleDuration(duration)}
-                            />
-                            <span class="checkbox-container">
-                                <span class="custom-checkbox"></span>
-                            </span>
-                            <span class="filter-label">{duration} ч</span>
-                        </label>
-                    {/each}
-                </div>
-            </div>
-            <!-- Фильтр по рейтингу -->
+            <DurationFilter
+                {durations}
+                currentRange={filters.durationRange || [
+                    Math.min(...durations),
+                    Math.max(...durations),
+                ]}
+                on:change={handleDurationChange}
+            />
         </div>
 
         <!-- Кнопки -->
         <div class="buttons">
             <button class="confirm-filters" on:click={closeSidebar}>
-                Применить
+                {labels.apply[$locale]}
             </button>
             <button class="reset-filters" on:click={resetFilters}>
-                Сбросить
+                {labels.reset[$locale]}
             </button>
         </div>
     </div>
@@ -292,187 +211,6 @@
         ); /* Учитываем высоту заголовка и кнопок */
     }
 
-    .filter-group {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-vertical-sm);
-    }
-
-    .filter-title {
-        font-size: var(--text-md);
-        font-weight: 500;
-        color: var(--color-text);
-    }
-
-    .filter-options {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-vertical-xs);
-    }
-
-    /* Общие стили для чекбоксов */
-    .filter-option {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        position: relative;
-        padding-left: 28px;
-        user-select: none;
-        min-height: 24px; /* Добавим минимальную высоту */
-    }
-
-    /* Скрываем нативные чекбоксы */
-    .filter-option input[type="checkbox"] {
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    /* Контейнер для кастомного чекбокса */
-    .checkbox-container {
-        position: absolute;
-        left: 0;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 20px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    /* Визуальная часть чекбокса */
-    .custom-checkbox {
-        width: 18px;
-        height: 18px;
-        border: 2px solid var(--color-gray-400);
-        border-radius: 3px;
-        background-color: var(--color-bg);
-        transition: all 0.2s ease;
-        position: relative;
-        box-sizing: border-box;
-    }
-
-    /* Галочка - теперь идеально по центру */
-    .custom-checkbox::after {
-        content: "";
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        width: 5px;
-        height: 10px;
-        border: solid white;
-        border-width: 0 2px 2px 0;
-        transform: translate(-50%, -60%) rotate(45deg); /* Точное позиционирование */
-        opacity: 0;
-        transition: opacity 0.2s ease;
-    }
-
-    /* Состояние отмеченного чекбокса */
-    .filter-option input:checked ~ .checkbox-container .custom-checkbox {
-        background-color: var(--color-primary);
-        border-color: var(--color-primary);
-    }
-
-    .filter-option input:checked ~ .checkbox-container .custom-checkbox::after {
-        opacity: 1;
-    }
-
-    /* Состояния взаимодействия */
-    .filter-option:hover .custom-checkbox {
-        border-color: var(--color-primary);
-    }
-
-    .filter-option input:focus-visible ~ .checkbox-container .custom-checkbox {
-        box-shadow: 0 0 0 2px rgba(74, 201, 126, 0.3);
-        outline: none;
-    }
-
-    /* Текст метки */
-    .filter-label {
-        font-size: var(--text-sm);
-        color: var(--color-text);
-        line-height: 1.4;
-    }
-
-    .price-range {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-vertical-md);
-        position: relative;
-        height: 40px;
-    }
-
-    .range-slider {
-        width: 100%;
-        height: 4px;
-        appearance: none;
-        -webkit-appearance: none;
-        background: var(--color-gray-300);
-        outline: none;
-        border-radius: var(--radius-full);
-    }
-
-    .range-slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 16px;
-        height: 16px;
-        background: var(--color-primary);
-        border-radius: 50%;
-        cursor: pointer;
-        transition: var(--transition-fast);
-    }
-
-    .range-slider::-webkit-slider-thumb:hover {
-        transform: scale(1.2);
-    }
-
-    .price-values {
-        display: flex;
-        justify-content: space-between;
-        font-size: var(--text-sm);
-        color: var(--color-gray-600);
-    }
-
-    .rating-stars {
-        display: flex;
-        gap: var(--space-horizontal-xs);
-        align-items: center;
-    }
-
-    .star {
-        font-size: var(--text-lg);
-        color: var(--color-gray-400);
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        transition: var(--transition-fast);
-    }
-
-    .star.active {
-        color: var(--color-warning);
-    }
-
-    .star:hover {
-        transform: scale(1.2);
-    }
-
-    .clear-rating {
-        margin-left: var(--space-horizontal-sm);
-        font-size: var(--text-sm);
-        color: var(--color-error);
-        background: none;
-        border: none;
-        cursor: pointer;
-        opacity: 0.7;
-    }
-
-    .clear-rating:hover {
-        opacity: 1;
-    }
     .buttons {
         display: flex;
         flex-direction: column;

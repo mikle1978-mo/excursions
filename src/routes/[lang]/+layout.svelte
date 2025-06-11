@@ -53,54 +53,14 @@
 </script>
 
 <svelte:head>
-    <title>{SEO_TEXT[lang]?.title ?? SEO_TEXT.en.title} | {baseName}</title>
-    <meta
-        name="description"
-        content={SEO_TEXT[lang]?.description ?? SEO_TEXT.en.description}
-    />
-    <meta
-        name="keywords"
-        content={SEO_TEXT[lang]?.keywords ?? SEO_TEXT.en.keywords}
-    />
-    <meta name="author" content={baseName} />
-    <meta name="robots" content="index, follow" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Автор сайта -->
+    <meta name="author" content="Kemer.app" />
+
+    <!-- Manifest и фавиконки -->
     <link rel="manifest" href="/manifest.json" />
-
-    <link rel="canonical" href={`${baseUrl}/${lang}`} />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={baseName} />
-    <meta
-        property="og:title"
-        content={SEO_TEXT[lang]?.title ?? SEO_TEXT.en.title}
-    />
-    <meta
-        property="og:description"
-        content={SEO_TEXT[lang]?.description ?? SEO_TEXT.en.description}
-    />
-    <meta
-        property="og:image"
-        content={`${baseUrl}/images/excursions/excursion_default.webp`}
-    />
-    <meta property="og:url" content={`${baseUrl}/${lang}`} />
-    <meta property="og:locale" content={lang} />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-        name="twitter:title"
-        content={SEO_TEXT[lang]?.title ?? SEO_TEXT.en.title}
-    />
-    <meta
-        name="twitter:description"
-        content={SEO_TEXT[lang]?.twitter ?? SEO_TEXT.en.twitter}
-    />
-    <meta
-        name="twitter:image"
-        content={`${baseUrl}/images/excursions/excursion_default.webp`}
-    />
+    <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <meta name="theme-color" content="#ffffff" />
 
     <!-- Google tag (gtag.js) -->
 

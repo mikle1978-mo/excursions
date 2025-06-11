@@ -31,9 +31,8 @@
     });
 
     let currentFilters = {
-        durations: [],
-        priceRange: [0, Infinity],
-        groupSizes: [],
+        durationRange: null, // изменено на null вместо []
+        priceRange: null, // изменено на null вместо [0, Infinity]
         minRating: 0,
     };
 
@@ -52,40 +51,45 @@
         filteredExcursions = allExcursions.filter((excursion) => {
             const excursionPriceUSD = excursion.price;
 
-            const priceInRange =
-                excursionPriceUSD >= currentFilters.priceRange[0] &&
-                excursionPriceUSD <= currentFilters.priceRange[1];
+            // Фильтр по цене
+            const priceInRange = currentFilters.priceRange
+                ? excursionPriceUSD >= currentFilters.priceRange[0] &&
+                  excursionPriceUSD <= currentFilters.priceRange[1]
+                : true;
 
-            const durationMatch =
-                currentFilters.durations.length === 0 ||
-                currentFilters.durations.includes(excursion.duration);
+            // Фильтр по длительности
+            const durationMatch = currentFilters.durationRange
+                ? excursion.duration >= currentFilters.durationRange[0] &&
+                  excursion.duration <= currentFilters.durationRange[1]
+                : true;
 
-            const groupSizeMatch =
-                currentFilters.groupSizes.length === 0 ||
-                currentFilters.groupSizes.includes(excursion.groupSize);
-
+            // Фильтр по рейтингу
             const ratingMatch =
                 currentFilters.minRating === 0 ||
                 (excursion.rating !== null &&
                     excursion.rating >= currentFilters.minRating);
 
+            // Поиск по названию
             const matchesSearch =
                 !search ||
                 excursion.title[currentLocale]?.toLowerCase().includes(search);
 
             return (
-                priceInRange &&
-                durationMatch &&
-                groupSizeMatch &&
-                ratingMatch &&
-                matchesSearch
+                priceInRange && durationMatch && ratingMatch && matchesSearch
             );
         });
         updateKey++;
     }
 
     function handleFiltersChange(event) {
-        currentFilters = event.detail;
+        currentFilters = {
+            ...event.detail,
+            // Обеспечиваем обратную совместимость
+            durationRange: event.detail.durationRange?.length
+                ? event.detail.durationRange
+                : null,
+            priceRange: event.detail.priceRange || null,
+        };
         applyFilters();
     }
 
