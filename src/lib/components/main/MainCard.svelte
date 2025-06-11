@@ -2,9 +2,8 @@
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
 
-    export let item; // явно объявляем пропс item
+    export let item;
 
-    // Деструктурируем с дефолтными значениями
     const {
         title = { ru: "", en: "" },
         img: image = "/images/excursions/excursion_default.webp",
@@ -58,6 +57,7 @@
     .excursion-card__image-wrapper {
         position: relative;
         width: 100%;
+        height: 100%;
         aspect-ratio: 16 / 9;
     }
 

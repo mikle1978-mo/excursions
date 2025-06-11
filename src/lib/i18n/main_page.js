@@ -6,8 +6,8 @@ export const main_page = {
     pages: [
         {
             title: {
-                ru: "Лучшие экскурсии из Кемера",
-                en: "Best Excursions from Kemer",
+                ru: "Лучшие экскурсии",
+                en: "Best Excursions",
             },
             link: "excursions",
             img: "/images/excursions/excursion_default.webp",
@@ -15,16 +15,16 @@ export const main_page = {
 
         {
             title: {
-                ru: "Прогулки на яхте из Кемера",
-                en: "Yacht Tours from Kemer",
+                ru: "Прогулки на яхте",
+                en: "Yacht Tours",
             },
             link: "yachts",
             img: "/images/yachts/yacht_default.webp",
         },
         {
             title: {
-                ru: "Аренда автомобилей в Кемере",
-                en: "Car Rentals in Kemer",
+                ru: "Аренда автомобилей",
+                en: "Car Rentals",
             },
             link: "cars",
             img: "/images/cars/car_default.webp",

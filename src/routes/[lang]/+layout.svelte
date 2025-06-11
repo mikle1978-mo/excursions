@@ -7,35 +7,38 @@
     import { initCurrencyService } from "$lib/services/currencyService";
     import { page } from "$app/stores";
 
-    let lang = $page.params.lang || "en";
+    let lang = $page.params.lang;
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
 
     const SEO_TEXT = {
         ru: {
-            title: "Экскурсии по Турции",
+            title: "Отдых в Кемере — экскурсии, аренда яхт и авто, трансфер",
             description:
-                "Увлекательные экскурсии по Турции. Гиды, трансфер, комфорт и уникальные маршруты.",
-            keywords: "экскурсии в Турции, туры, гиды, отдых, Стамбул, Анталия",
+                "Все для комфортного отдыха в Кемере: увлекательные экскурсии, аренда яхт и автомобилей, трансферы. Индивидуальный подход, лучшие маршруты и сервис.",
+            keywords:
+                "Кемер, отдых в Кемере, экскурсии Кемер, аренда яхт Кемер, аренда авто Кемер, трансфер Кемер, туры Турция",
             twitter:
-                "Экскурсии по Турции от местных гидов. Онлайн бронирование.",
+                "Комфортный отдых в Кемере — экскурсии, аренда яхт и авто, трансферы. Онлайн-бронирование на Kemer.app",
         },
         en: {
-            title: "Excursions in Turkey",
+            title: "Kemer Vacation — Tours, Yacht & Car Rentals, Transfers",
             description:
-                "Exciting tours around Turkey. Guides, transfer, comfort and unique routes.",
+                "Everything for a comfortable stay in Kemer: exciting excursions, yacht and car rentals, and transfers. Personalized service and the best routes.",
             keywords:
-                "excursions in Turkey, tours, guides, vacation, Istanbul, Antalya",
-            twitter: "Tours in Turkey with local guides. Book online now.",
+                "Kemer, Kemer tours, yacht rental Kemer, car rental Kemer, transfers Kemer, vacation Turkey",
+            twitter:
+                "Comfortable vacation in Kemer — excursions, yacht and car rentals, transfers. Book online at Kemer.app",
         },
         tr: {
-            title: "Türkiye'de Turlar",
+            title: "Kemer Tatili — Turlar, Yat ve Araba Kiralama, Transfer",
             description:
-                "Türkiye'de heyecan verici turlar. Rehberler, transfer, konfor ve eşsiz rotalar.",
-            keywords: "Türkiye'de turlar, rehberler, tatil, İstanbul, Antalya",
+                "Kemer'de konforlu tatil için her şey: heyecan verici turlar, yat ve araç kiralama, transfer hizmetleri. Kişisel yaklaşim ve en iyi rotalar.",
+            keywords:
+                "Kemer, Kemer turlari, yat kiralama Kemer, araba kiralama Kemer, transfer Kemer, Türkiye tatili",
             twitter:
-                "Yerel rehberlerle Türkiye'de turlar. Hemen çevrimiçi rezervasyon yapin.",
+                "Kemer'de konforlu tatil — turlar, yat ve araba kiralama, transferler. Kemer.app'te çevrimiçi rezervasyon yapin.",
         },
     };
 
