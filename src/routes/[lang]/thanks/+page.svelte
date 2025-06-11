@@ -25,6 +25,22 @@
     });
 </script>
 
+<svelte:head>
+    <title>{thanks_page.title[lang] ?? thanks_page.title.en} | {baseName}</title
+    >
+    <meta
+        name="description"
+        content={thanks_page.text[lang] ?? thanks_page.text.en}
+    />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content={baseName} />
+    <meta name="theme-color" content="#0066cc" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+</svelte:head>
+
 <main>
     <div class="thankyou-box">
         <h1>{thanks_page.title[$locale]}</h1>

@@ -2,18 +2,27 @@
     import { main_page } from "$lib/i18n/main_page";
     import { locale } from "$lib/stores/locale";
     import MainCard from "$lib/components/main/MainCard.svelte";
+    import { onMount } from "svelte";
+
+    let isMounted = false;
+
+    onMount(() => {
+        isMounted = true;
+    });
 </script>
 
-<div class="content">
-    <div class="main_page">
-        <h1>{@html main_page.title[$locale]}</h1>
-        <div class="main-grid">
-            {#each main_page.pages as item}
-                <MainCard {item} />
-            {/each}
+{#if isMounted}
+    <div class="content">
+        <div class="main_page">
+            <h1>{@html main_page.title[$locale]}</h1>
+            <div class="main-grid">
+                {#each main_page.pages as item}
+                    <MainCard {item} />
+                {/each}
+            </div>
         </div>
     </div>
-</div>
+{/if}
 
 <style>
     .content {

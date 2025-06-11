@@ -11,9 +11,6 @@
 </a>
 
 <style>
-    .logo_title {
-        font-size: var(--text-lg);
-    }
     .logo {
         position: relative;
         display: flex;
@@ -23,59 +20,71 @@
         transition: all var(--transition-normal);
         height: 100%;
         color: var(--color-secondary);
+        text-decoration: none;
     }
+
     .logo:hover {
         color: var(--color-primary-hover);
     }
 
+    .logo_title {
+        font-size: var(--text-lg);
+    }
+
     .target {
         position: relative;
-        width: calc(var(--text-md) * 2);
-        height: calc(var(--text-md) * 2);
-        max-height: 100%;
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        min-height: 32px;
         aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
+
     .ring {
         position: absolute;
         border-radius: 50%;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
+        background-color: var(--color-secondary);
         transition: background-color var(--transition-normal);
     }
 
     .ring1 {
         width: 100%;
         height: 100%;
-        background: var(--color-secondary);
     }
+
     .ring2 {
         width: 80%;
         height: 80%;
-        background: var(--color-bg);
+        background-color: var(--color-bg);
     }
+
     .ring3 {
         width: 60%;
         height: 60%;
-        background: var(--color-secondary);
     }
+
     .ring4 {
         width: 40%;
         height: 40%;
-        background: var(--color-bg);
+        background-color: var(--color-bg);
     }
+
     .ring5 {
         width: 20%;
         height: 20%;
-        background: var(--color-secondary);
     }
 
+    /* Ховер-анимация */
     .logo:hover .ring1,
     .logo:hover .ring3,
     .logo:hover .ring5 {
         background-color: var(--color-primary-hover);
     }
 
+    /* Скрываем текст на узких экранах */
     @media (max-width: 570px) {
         .logo_title {
             display: none;

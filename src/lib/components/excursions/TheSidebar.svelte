@@ -167,6 +167,29 @@
                     >
                 </div>
             </div>
+            <div class="filter-group">
+                <h4 class="filter-title">Рейтинг</h4>
+                <div class="rating-stars">
+                    {#each [1, 2, 3, 4, 5] as star}
+                        <button
+                            class="star {filters.minRating >= star
+                                ? 'active'
+                                : ''}"
+                            on:click={() => setRating(star)}
+                        >
+                            ★
+                        </button>
+                    {/each}
+                    {#if filters.minRating > 0}
+                        <button
+                            class="clear-rating"
+                            on:click={() => setRating(0)}
+                        >
+                            &times;
+                        </button>
+                    {/if}
+                </div>
+            </div>
 
             <!-- Фильтр по размеру группы -->
             <div class="filter-group">
@@ -208,29 +231,6 @@
                 </div>
             </div>
             <!-- Фильтр по рейтингу -->
-            <div class="filter-group">
-                <h4 class="filter-title">Рейтинг</h4>
-                <div class="rating-stars">
-                    {#each [1, 2, 3, 4, 5] as star}
-                        <button
-                            class="star {filters.minRating >= star
-                                ? 'active'
-                                : ''}"
-                            on:click={() => setRating(star)}
-                        >
-                            ★
-                        </button>
-                    {/each}
-                    {#if filters.minRating > 0}
-                        <button
-                            class="clear-rating"
-                            on:click={() => setRating(0)}
-                        >
-                            &times;
-                        </button>
-                    {/if}
-                </div>
-            </div>
         </div>
 
         <!-- Кнопки -->

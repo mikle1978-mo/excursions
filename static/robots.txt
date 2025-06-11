@@ -1,0 +1,13 @@
+User-agent: *
+
+# Запретить индексацию служебных страниц
+Disallow: /admin/
+Disallow: /thanks
+Disallow: /error
+Disallow: /api/
+
+# Разрешить всё остальное
+Allow: /
+
+# Указать путь к карте сайта
+Sitemap: https://kemer.app/sitemap.xml

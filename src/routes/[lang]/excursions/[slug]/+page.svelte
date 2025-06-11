@@ -56,7 +56,7 @@
 
     <!-- Адаптивность для мобильных -->
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
+    <link rel="manifest" href="/manifest.json" />
     <!-- Управление индексацией -->
     <meta name="robots" content="index, follow" />
 
