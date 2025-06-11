@@ -46,4 +46,7 @@
         align-items: center;
         justify-content: space-evenly;
     }
+    h1 {
+        font-size: var(--text-xxl);
+    }
 </style>

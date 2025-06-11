@@ -36,7 +36,7 @@
         tour.translations.find((t) => t.lang === $locale) ?? {};
 
     $: breadcrumbsList = [
-        { href: `/${$locale}`, label: breadcrumbs.home[$locale] },
+        { href: `/`, label: breadcrumbs.home[$locale] },
         { href: `/${$locale}/excursions`, label: breadcrumbs.tours[$locale] },
         tour ? { label: currentTranslation.title } : { label: "..." },
     ];

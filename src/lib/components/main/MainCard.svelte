@@ -47,6 +47,7 @@
         box-shadow: var(--shadow-md);
         transition: var(--transition-normal);
         height: 100%;
+        min-height: 245px;
     }
 
     .excursion-card:hover {
