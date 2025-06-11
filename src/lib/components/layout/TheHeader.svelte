@@ -4,7 +4,7 @@
     import CurrensySelector from "$lib/components/UI/buttons/CurrensySelector.svelte";
     import TheLocaleButton from "$lib/components/UI/buttons/TheLocaleButton.svelte";
     import { page } from "$app/stores";
-    const showSearchOn = ["/excursions"];
+    const showSearchOn = ["/excursions", "yachts", "cars"];
 </script>
 
 <header class="header">

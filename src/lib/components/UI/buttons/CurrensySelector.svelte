@@ -52,7 +52,7 @@
                         : ''}"
                     onclick={() => changeCurrency(currency.value)}
                 >
-                    {currency.label}
+                    <span>{currency.label}</span>
                 </button>
             {/each}
         </div>
@@ -73,7 +73,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-
         height: 100%;
         aspect-ratio: 1;
         font-size: var(--text-sm);
@@ -85,6 +84,10 @@
         box-shadow: var(--shadow-sm);
         transition: all var(--transition-normal);
         cursor: pointer;
+    }
+
+    .currency-button span {
+        font-size: 0.8rem;
     }
 
     .currency-button:hover,
@@ -123,6 +126,10 @@
         border-radius: var(--radius-full);
         cursor: pointer;
         transition: all var(--transition-fast);
+    }
+
+    .currency-option span {
+        font-size: 0.8rem;
     }
 
     .currency-option:hover {

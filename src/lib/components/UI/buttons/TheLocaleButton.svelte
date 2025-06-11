@@ -57,7 +57,7 @@
                         : ''}"
                     onclick={() => changeLanguage(lang.value)}
                 >
-                    {lang.label}
+                    <span>{lang.label}</span>
                 </button>
             {/each}
         </div>
@@ -78,7 +78,6 @@
         justify-content: center;
         height: 100%;
         aspect-ratio: 1;
-        font-size: var(--text-sm);
         color: var(--color-text);
         background: var(--color-gray-100);
         border: 1px solid var(--color-gray-300);
@@ -87,6 +86,10 @@
         box-shadow: var(--shadow-sm);
         transition: all var(--transition-normal);
         cursor: pointer;
+    }
+
+    .locale-button span {
+        font-size: 0.8rem;
     }
 
     .locale-button:hover,
@@ -125,6 +128,10 @@
         border-radius: var(--radius-full);
         cursor: pointer;
         transition: all var(--transition-fast);
+    }
+
+    .locale-option span {
+        font-size: 0.8rem;
     }
 
     .locale-option:hover,

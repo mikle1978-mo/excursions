@@ -104,34 +104,23 @@
         dispatch("filtersChanged", { ...filters });
     };
 
-    // Мобильная адаптивность
-    let isMobile = false;
-
     onMount(() => {
         filters.priceRange = [0, maxPriceUSD];
         displayPriceRange = [0, convertToCurrent(maxPriceUSD)];
         dispatch("filtersChanged", { ...filters });
 
         initialized = true; // <-- флаг, чтобы реактивный блок больше не мешал
-
-        const checkMobile = () => {
-            isMobile = window.innerWidth < 768;
-            if (!isMobile) sidebarOpen.set(false);
-        };
-        checkMobile();
-        window.addEventListener("resize", checkMobile);
-        return () => window.removeEventListener("resize", checkMobile);
     });
 
     const closeSidebar = () => sidebarOpen.set(false);
     const handleKeydown = (e) =>
-        e.key === "Escape" && $sidebarOpen && isMobile && closeSidebar();
+        e.key === "Escape" && $sidebarOpen && closeSidebar();
     const handleBackdropClick = () => closeSidebar();
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
 
-{#if $sidebarOpen && isMobile}
+{#if $sidebarOpen}
     <div
         class="sidebar-overlay"
         role="presentation"
@@ -140,7 +129,7 @@
     ></div>
 {/if}
 
-<side class="sidebar" class:active={$sidebarOpen && isMobile}>
+<side class="sidebar" class:active={$sidebarOpen}>
     <div class="sidebar-content">
         <h3 class="sidebar-title">Фильтры экскурсий</h3>
         <div class="filters">
@@ -255,9 +244,7 @@
         </div>
     </div>
 
-    {#if isMobile}
-        <button class="close-button" on:click={closeSidebar}>✕</button>
-    {/if}
+    <button class="close-button" on:click={closeSidebar}>✕</button>
 </side>
 
 <style>
@@ -267,9 +254,18 @@
         background-color: var(--color-bg);
         border-right: 1px solid var(--color-gray-300);
         overflow: hidden;
-        position: sticky;
         top: 0;
         transition: var(--transition-normal);
+        position: fixed;
+        top: 0;
+        left: -300px;
+        width: 280px;
+        height: 100svh;
+        z-index: 1000;
+    }
+
+    .sidebar.active {
+        transform: translateX(300px);
     }
 
     .sidebar-content {
@@ -518,37 +514,20 @@
         transition: opacity 0.3s ease;
         cursor: pointer;
     }
+    .close-button {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: transparent;
+        border: none;
+        font-size: 1.5rem;
+        color: var(--color-text);
+        cursor: pointer;
+    }
 
     @media (prefers-color-scheme: dark) {
         .sidebar-overlay {
             background-color: rgba(var(--color-dark-rgb), 0.7);
-        }
-    }
-
-    @media (max-width: 768px) {
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -300px;
-            width: 280px;
-            height: 100svh;
-            z-index: 1000;
-            transition: transform 0.3s ease;
-        }
-
-        .sidebar.active {
-            transform: translateX(300px);
-        }
-
-        .close-button {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: transparent;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--color-text);
-            cursor: pointer;
         }
     }
 </style>

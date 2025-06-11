@@ -2,6 +2,7 @@
     import TheFooter from "$lib/components/layout/TheFooter.svelte";
     import TheHeader from "$lib/components/layout/TheHeader.svelte";
     import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
+    import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import { onMount } from "svelte";
 
     import { initCurrencyService } from "$lib/services/currencyService";
@@ -159,6 +160,7 @@
 <div class="container">
     <div class="page">
         <WhatsApp />
+        <TheMobileMenu />
         <TheHeader />
         {@render children()}
         <TheFooter />

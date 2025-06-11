@@ -8,8 +8,6 @@
     import { searchQuery } from "$lib/stores/searchQuery.js";
     import { page } from "$app/stores";
 
-    import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
-
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
     let lang = $page.params.lang;
@@ -178,7 +176,6 @@
             excursions={allExcursions}
             on:filtersChanged={handleFiltersChange}
         />
-        <TheMobileMenu />
         <main>
             <div class="main_page">
                 <h1 class="visually-hidden">
