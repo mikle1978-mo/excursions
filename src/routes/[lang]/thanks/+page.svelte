@@ -2,6 +2,12 @@
     import { onMount, onDestroy } from "svelte";
     import { locale } from "$lib/stores/locale.js";
     import { thanks_page } from "$lib/i18n/thanks_page";
+    import { page } from "$app/stores";
+
+    let lang = $page.params.lang;
+
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const baseName = import.meta.env.VITE_BASE_NAME;
 
     // По желанию — автопереход через 10 секунд
     let countdown = 10;
