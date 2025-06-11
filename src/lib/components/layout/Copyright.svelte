@@ -3,7 +3,7 @@
 </script>
 
 <div class="copyright">
-    Copyright © 2020-{currentYear} Kemer.app | All rights reserved.
+    Copyright © 2020-{currentYear} Kemer.app
 </div>
 
 <style>

@@ -124,9 +124,8 @@
 
             <div class="meta-info">
                 <div class="rating">
-                    <span class="stars"
-                        >{"★".repeat(rating)}{"☆".repeat(5 - rating)}</span
-                    >
+                    <span class="stars" style="--rating: {rating}"></span>
+                    <span>{rating}</span>
                     <span
                         >({reviewsCount || 0}
                         {excursion_page.reviews[$locale]})</span
@@ -269,13 +268,25 @@
 
     .rating {
         display: flex;
-        align-items: center;
+        align-items: сenter;
         gap: var(--space-horizontal-xs);
-
-        .stars {
-            color: var(--color-warning);
-            font-size: var(--text-lg);
-        }
+    }
+    .stars {
+        --percent: calc(var(--rating) / 5 * 100%);
+        display: inline-block;
+        font-size: var(--text-lg);
+        line-height: 1;
+    }
+    .stars::before {
+        content: "★★★★★";
+        background: linear-gradient(
+            90deg,
+            gold var(--percent),
+            lightgray var(--percent)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
     }
 
     .badges {
