@@ -124,7 +124,7 @@
 
             <div class="meta-info">
                 <div class="rating">
-                    <span class="stars" style="--rating: {rating}"></span>
+                    <span class="stars" style="--rating: {rating || 0}"></span>
                     <span>{rating}</span>
                     <span
                         >({reviewsCount || 0}

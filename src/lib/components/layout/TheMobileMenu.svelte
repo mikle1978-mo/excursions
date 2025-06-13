@@ -11,7 +11,6 @@
     const handleBackdropClick = () => closeMobileMenu();
 
     const labels = { menu: { ru: "меню", en: "menu" } };
-    console.log("nav_items", nav_items);
 
     // Функция для безопасного получения локализованного заголовка
     const getTitle = (item) => {
