@@ -6,8 +6,12 @@ Disallow: /thanks
 Disallow: /error
 Disallow: /api/
 
-# Разрешить всё остальное
-Allow: /
+# Запретить только корень /
+Disallow: /$
+
+# Разрешить языковые разделы
+Allow: /ru/
+Allow: /en/
 
 # Указать путь к карте сайта
 Sitemap: https://kemer.app/sitemap.xml

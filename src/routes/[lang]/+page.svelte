@@ -3,13 +3,41 @@
     import { locale } from "$lib/stores/locale";
     import MainCard from "$lib/components/main/MainCard.svelte";
     import { onMount } from "svelte";
+    import { page } from "$app/stores";
+
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const baseName = import.meta.env.VITE_BASE_NAME;
+    let lang = $page.params.lang;
+    let canonicalUrl = `${baseUrl}/${lang}/`;
 
     let isMounted = false;
 
     onMount(() => {
         isMounted = true;
     });
+
+    const SEO = {
+        title: {
+            ru: "Отдых в Кемере — экскурсии, аренда яхт и авто, трансфер",
+            en: "Kemer Vacation — Tours, Yacht & Car Rentals, Transfers",
+        },
+        description: {
+            ru: "Все для комфортного отдыха в Кемере: экскурсии, аренда яхт и автомобилей, трансферы.",
+            en: "Everything for a comfortable stay in Kemer: excursions, yacht and car rentals, and transfers.",
+        },
+    };
 </script>
+
+<svelte:head>
+    <title>{SEO.title[lang]}</title>
+    <meta name="description" content={SEO.description[lang]} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <!-- hreflang -->
+    <link rel="alternate" hreflang="ru" href={`${baseUrl}/ru/`} />
+    <link rel="alternate" hreflang="en" href={`${baseUrl}/en/`} />
+    <link rel="alternate" hreflang="x-default" href={`${baseUrl}/en/`} />
+</svelte:head>
 
 {#if isMounted}
     <div class="content">

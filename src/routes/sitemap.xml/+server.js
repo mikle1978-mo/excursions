@@ -10,21 +10,31 @@ export async function GET() {
 
     const slugs = await res.json();
 
-    const urls = slugs
+    // Главные страницы
+    const homepageEntries = `
+  <url>
+    <loc>${VITE_BASE_URL}/en/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="${VITE_BASE_URL}/ru/" />
+    <xhtml:link rel="alternate" hreflang="en" href="${VITE_BASE_URL}/en/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en/" />
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>`;
+
+    // Экскурсии
+    const excursionEntries = slugs
         .map((slug) => {
             const path = `excursions/${slug}`;
-            const links = SUPPORTED_LOCALES.map(
+            const hreflangs = SUPPORTED_LOCALES.map(
                 (lang) =>
                     `<xhtml:link rel="alternate" hreflang="${lang}" href="${VITE_BASE_URL}/${lang}/${path}" />`
             ).join("\n");
 
-            const xDefault = `<xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en/${path}" />`;
-
             return `
   <url>
     <loc>${VITE_BASE_URL}/en/${path}</loc>
-    ${links}
-    ${xDefault}
+    ${hreflangs}
+    <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en/${path}" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
@@ -36,7 +46,8 @@ export async function GET() {
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
 >
-${urls}
+${homepageEntries}
+${excursionEntries}
 </urlset>`;
 
     return new Response(xml, {

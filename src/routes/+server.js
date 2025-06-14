@@ -13,6 +13,6 @@ export function GET({ request }) {
     const currentPath = url.pathname;
 
     if (!currentPath.startsWith(`/${lang}`)) {
-        throw redirect(302, `/${lang}`);
+        throw redirect(301, `/${lang}`);
     }
 }
