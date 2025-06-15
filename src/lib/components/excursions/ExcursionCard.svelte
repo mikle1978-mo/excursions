@@ -29,83 +29,84 @@
     });
 </script>
 
-{#if isMounted}
-    <a class="excursion-card" href="/{$locale}/excursions/{slug}">
-        <div class="excursion-card__image-wrapper">
-            <img
-                src={images[0]}
-                alt={title[$locale]}
-                class="excursion-card__image"
-            />
+<!-- {#if isMounted} -->
+<a class="excursion-card" href="/{$locale}/excursions/{slug}">
+    <div class="excursion-card__image-wrapper">
+        <img
+            src={images[0]}
+            alt={title[$locale]}
+            class="excursion-card__image"
+        />
 
-            {#if getLabelByKey(meta.labels, "POPULAR")}
-                <span class="excursion-card__badge topright">
-                    {getLabelByKey(meta.labels, "POPULAR").label[$locale]}
+        {#if getLabelByKey(meta.labels, "POPULAR")}
+            <span class="excursion-card__badge topright">
+                {getLabelByKey(meta.labels, "POPULAR").label[$locale]}
+            </span>
+        {/if}
+        {#if getLabelByKey(meta.labels, "DISCOUNT")}
+            <span class="excursion-card__badge bottomleft">
+                {`-${discount}%`}
+            </span>
+        {/if}
+        {#if getLabelByKey(meta.labels, "NEW")}
+            <span class="excursion-card__badge topleft">
+                {getLabelByKey(meta.labels, "NEW").label[$locale]}
+            </span>
+        {/if}
+        {#if getLabelByKey(meta.labels, "VIP")}
+            <span class="excursion-card__badge bottomright">
+                {getLabelByKey(meta.labels, "VIP").label[$locale]}
+            </span>
+        {/if}
+    </div>
+
+    <div class="excursion-card__content">
+        <div class="excursion-card__header">
+            <h2 class="excursion-card__title">{title[$locale]}</h2>
+            <div class="excursion-card__rating">
+                <span
+                    class="excursion-card__stars"
+                    style="--rating: {rating || 0};"
+                >
                 </span>
-            {/if}
-            {#if getLabelByKey(meta.labels, "DISCOUNT")}
-                <span class="excursion-card__badge bottomleft">
-                    {`-${discount}%`}
-                </span>
-            {/if}
-            {#if getLabelByKey(meta.labels, "NEW")}
-                <span class="excursion-card__badge topleft">
-                    {getLabelByKey(meta.labels, "NEW").label[$locale]}
-                </span>
-            {/if}
-            {#if getLabelByKey(meta.labels, "VIP")}
-                <span class="excursion-card__badge bottomright">
-                    {getLabelByKey(meta.labels, "VIP").label[$locale]}
-                </span>
-            {/if}
+                <span class="excursion-card__reviews"
+                    >{reviewsCount}
+                    {excursion_card.reviews[$locale]}</span
+                >
+            </div>
         </div>
 
-        <div class="excursion-card__content">
-            <div class="excursion-card__header">
-                <h2 class="excursion-card__title">{title[$locale]}</h2>
-                <div class="excursion-card__rating">
-                    <span
-                        class="excursion-card__stars"
-                        style="--rating: {rating || 0};"
-                    >
-                    </span>
-                    <span class="excursion-card__reviews"
-                        >{reviewsCount}
-                        {excursion_card.reviews[$locale]}</span
-                    >
-                </div>
-            </div>
-
-            <!-- <p class="excursion-card__description">
+        <!-- <p class="excursion-card__description">
                 {description[$locale]}
             </p> -->
 
-            <div class="excursion-card__footer">
-                <div class="excursion-card__details">
-                    <span class="excursion-card__duration"
-                        >{duration} {excursion_card.hours[$locale]}</span
-                    >
-                    <span class="excursion-card__group-size"
-                        >{excursion_card.before[$locale]}
-                        {groupSize}
-                        {excursion_card.people[$locale]}</span
-                    >
-                </div>
+        <div class="excursion-card__footer">
+            <div class="excursion-card__details">
+                <span class="excursion-card__duration"
+                    >{duration} {excursion_card.hours[$locale]}</span
+                >
+                <span class="excursion-card__group-size"
+                    >{excursion_card.before[$locale]}
+                    {groupSize}
+                    {excursion_card.people[$locale]}</span
+                >
+            </div>
 
-                <div class="excursion-card__price">
-                    <span class="excursion-card__price-value">
-                        {$priceDisplay}
-                    </span>
-                    <span class="excursion-card__price-per"
-                        >{excursion_card.perPerson[$locale]}</span
-                    >
-                </div>
+            <div class="excursion-card__price">
+                <span class="excursion-card__price-value">
+                    {$priceDisplay}
+                </span>
+                <span class="excursion-card__price-per"
+                    >{excursion_card.perPerson[$locale]}</span
+                >
             </div>
         </div>
-    </a>
-{:else}
+    </div>
+</a>
+
+<!-- {:else}
     <div></div>
-{/if}
+{/if} -->
 
 <style>
     .excursion-card {
