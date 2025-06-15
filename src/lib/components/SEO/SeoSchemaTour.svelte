@@ -5,9 +5,13 @@
     export let url;
     export let price;
     export let currency;
-    export let rating;
-    export let reviewCount;
+    export let rating; // ожидается число от 1 до 5 или undefined
+    export let reviewCount; // ожидается число >= 0 или undefined
     export let language;
+
+    const hasValidRating =
+        typeof rating === "number" && rating >= 1 && rating <= 5;
+    const hasValidReviews = typeof reviewCount === "number" && reviewCount > 0;
 
     const jsonLd = {
         "@context": "https://schema.org",
@@ -23,25 +27,31 @@
             priceCurrency: currency,
             availability: "https://schema.org/InStock",
         },
-        aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: (rating ?? 0).toString(),
-            reviewCount: (reviewCount ?? 0).toString(),
-        },
     };
 
-    if (reviewCount > 0) {
+    if (hasValidRating && hasValidReviews) {
+        jsonLd.aggregateRating = {
+            "@type": "AggregateRating",
+            ratingValue: rating.toString(),
+            reviewCount: reviewCount.toString(),
+        };
+
         jsonLd.review = {
             "@type": "Review",
             reviewRating: {
                 "@type": "Rating",
-                ratingValue: (rating ?? 0).toString(),
+                ratingValue: rating.toString(),
             },
             author: {
                 "@type": "Person",
                 name: language === "ru" ? "Пользователи" : "Users",
             },
             inLanguage: language,
+            itemReviewed: {
+                "@type": "TouristTrip",
+                name: title,
+                url: url,
+            },
         };
     }
 
