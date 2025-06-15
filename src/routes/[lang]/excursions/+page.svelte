@@ -132,7 +132,7 @@
         name="keywords"
         content={SEO_TEXT[$locale]?.keywords ?? SEO_TEXT.en.keywords}
     />
-    <link rel="canonical" href={`${baseUrl}/${$locale}`} />
+    <link rel="canonical" href={`${baseUrl}/${$locale}/excursions`} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -149,7 +149,7 @@
         property="og:image"
         content={`${baseUrl}/images/excursions/excursion_default.webp`}
     />
-    <meta property="og:url" content={`${baseUrl}/${$locale}`} />
+    <meta property="og:url" content={`${baseUrl}/${$locale}/excursions`} />
     <meta property="og:locale" content={$locale} />
 
     <!-- Twitter -->
