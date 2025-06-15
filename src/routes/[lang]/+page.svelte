@@ -48,13 +48,12 @@
         <h1>
             {@html main_page.title[$locale]}
         </h1>
-        {#if isMounted}
-            <div class="main-grid">
-                {#each main_page.pages as item}
-                    <MainCard {item} />
-                {/each}
-            </div>
-        {/if}
+
+        <div class="main-grid">
+            {#each main_page.pages as item}
+                <MainCard {item} />
+            {/each}
+        </div>
     </div>
 </div>
 
