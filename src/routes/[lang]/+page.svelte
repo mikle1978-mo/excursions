@@ -9,7 +9,7 @@
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
     $: lang = $page.params.lang;
-    let canonicalUrl = `${baseUrl}/${lang}/`;
+    $: canonicalUrl = `${baseUrl}/${lang}/`;
 
     let isMounted = false;
 
