@@ -43,21 +43,20 @@
     <link rel="alternate" hreflang="x-default" href={`${baseUrl}/en`} />
 </svelte:head>
 
-{#if isMounted}
-    <div class="content">
-        <div class="main_page">
-            <h1>
-                {@html main_page.title[$locale]}
-            </h1>
-
+<div class="content">
+    <div class="main_page">
+        <h1>
+            {@html main_page.title[$locale]}
+        </h1>
+        {#if isMounted}
             <div class="main-grid">
                 {#each main_page.pages as item}
                     <MainCard {item} />
                 {/each}
             </div>
-        </div>
+        {/if}
     </div>
-{/if}
+</div>
 
 <style>
     .content {
