@@ -29,7 +29,8 @@
     let countdown = 10;
     let interval;
 
-    $: lang = $page.params.lang || "en";
+    const { params } = $page;
+    const lang = params.lang ?? "en";
 
     onMount(() => {
         interval = setInterval(() => {

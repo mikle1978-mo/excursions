@@ -6,10 +6,13 @@
     import { page } from "$app/stores";
     import { fly, slide } from "svelte/transition";
 
+    const { params } = $page;
+    const lang = params.lang ?? "en";
+
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
-    $: lang = $page.params.lang;
-    $: canonicalUrl = `${baseUrl}/${lang}/`;
+
+    const canonicalUrl = `${baseUrl}/${lang}/`;
 
     let isMounted = false;
 
