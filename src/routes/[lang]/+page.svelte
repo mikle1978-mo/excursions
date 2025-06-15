@@ -4,6 +4,7 @@
     import MainCard from "$lib/components/main/MainCard.svelte";
     import { onMount } from "svelte";
     import { page } from "$app/stores";
+    import { fly, slide } from "svelte/transition";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -42,7 +43,10 @@
 {#if isMounted}
     <div class="content">
         <div class="main_page">
-            <h1>{@html main_page.title[$locale]}</h1>
+            <h1>
+                {@html main_page.title[$locale]}
+            </h1>
+
             <div class="main-grid">
                 {#each main_page.pages as item}
                     <MainCard {item} />

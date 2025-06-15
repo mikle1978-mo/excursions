@@ -4,7 +4,6 @@
     import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import { onMount } from "svelte";
-
     import { initCurrencyService } from "$lib/services/currencyService";
     import { page } from "$app/stores";
 
@@ -44,8 +43,47 @@
     };
 
     onMount(() => {
+        // Инициализация сервиса валют
         initCurrencyService();
         const interval = setInterval(initCurrencyService, 30 * 60 * 1000);
+
+        // Google Analytics (gtag.js)
+        const gtagScript = document.createElement("script");
+        gtagScript.async = true;
+        gtagScript.src =
+            "https://www.googletagmanager.com/gtag/js?id=G-RBNVCFN9DR";
+        document.head.appendChild(gtagScript);
+
+        gtagScript.onload = () => {
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                window.dataLayer.push(arguments);
+            }
+            window.gtag = gtag;
+            gtag("js", new Date());
+            gtag("config", "G-RBNVCFN9DR");
+        };
+
+        // Яндекс.Метрика
+        const ymScript = document.createElement("script");
+        ymScript.async = true;
+        ymScript.src = "https://mc.yandex.ru/metrika/tag.js";
+        document.head.appendChild(ymScript);
+
+        ymScript.onload = () => {
+            window.ym =
+                window.ym ||
+                function () {
+                    (window.ym.a = window.ym.a || []).push(arguments);
+                };
+            window.ym.l = 1 * new Date();
+            window.ym(97637253, "init", {
+                clickmap: true,
+                trackLinks: true,
+                accurateTrackBounce: true,
+            });
+        };
+
         return () => clearInterval(interval);
     });
 
@@ -58,54 +96,10 @@
 
     <!-- Manifest и фавиконки -->
     <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <meta name="theme-color" content="#ffffff" />
-
-    <!-- Google tag (gtag.js) -->
-
-    <script
-        async
-        src="https://www.googletagmanager.com/gtag/js?id=G-RBNVCFN9DR"
-    ></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-        gtag("js", new Date());
-        gtag("config", "G-RBNVCFN9DR");
-    </script>
-
-    <!-- Yandex Metrika -->
-
-    <script>
-        (function (m, e, t, r, i, k, a) {
-            m[i] =
-                m[i] ||
-                function () {
-                    (m[i].a = m[i].a || []).push(arguments);
-                };
-            m[i].l = 1 * new Date();
-            (k = e.createElement(t)),
-                (a = e.getElementsByTagName(t)[0]),
-                (k.async = 1),
-                (k.src = r),
-                a.parentNode.insertBefore(k, a);
-        })(
-            window,
-            document,
-            "script",
-            "https://mc.yandex.ru/metrika/tag.js",
-            "ym"
-        );
-
-        ym(97637253, "init", {
-            clickmap: true,
-            trackLinks: true,
-            accurateTrackBounce: true,
-        });
-    </script>
 </svelte:head>
 
 <noscript>

@@ -51,14 +51,7 @@
 <svelte:head>
     <title>{`${currentTranslation.title} | ${baseName}`}</title>
     <meta name="description" content={currentTranslation.metaDescription} />
-    <meta name="author" content="Kemer.app" />
     <meta name="keywords" content={currentTranslation.title} />
-
-    <!-- Адаптивность для мобильных -->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="manifest" href="/manifest.json" />
-    <!-- Управление индексацией -->
-    <meta name="robots" content="index, follow" />
 
     <!-- Open Graph (у тебя уже есть основные) -->
     <meta property="og:title" content={currentTranslation.title} />
