@@ -9,7 +9,7 @@
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
 
-    $: canonicalUrl = `${baseUrl}/${$locale}/`;
+    $: canonicalUrl = `${baseUrl}/${$locale}`;
     $: {
         console.log("Текущая локаль:", canonicalUrl);
     }
