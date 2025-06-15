@@ -17,7 +17,7 @@
 </script>
 
 <div class="filter-group">
-    <h4 class="filter-title">{labels.rating[$locale]}</h4>
+    <span class="filter-title">{labels.rating[$locale]}</span>
     <div class="rating-stars">
         {#each [1, 2, 3, 4, 5] as star}
             <button

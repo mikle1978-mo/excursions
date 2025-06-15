@@ -30,7 +30,7 @@
 </script>
 
 <div class="filter-group">
-    <h4 class="filter-title">{labels.duration[$locale]}</h4>
+    <span class="filter-title">{labels.duration[$locale]}</span>
     <RangeSlider
         min={minDuration}
         max={maxDuration}

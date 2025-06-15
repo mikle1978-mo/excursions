@@ -17,25 +17,17 @@
     });
 </script>
 
-{#if isMounted}
-    <a class="excursion-card" href="/{$locale}/{slug}">
-        <div class="excursion-card__image-wrapper">
-            <img
-                src={image}
-                alt={title[$locale]}
-                class="excursion-card__image"
-            />
-        </div>
+<a class="excursion-card" href="/{$locale}/{slug}">
+    <div class="excursion-card__image-wrapper">
+        <img src={image} alt={title[$locale]} class="excursion-card__image" />
+    </div>
 
-        <div class="excursion-card__content">
-            <div class="excursion-card__header">
-                <h2 class="excursion-card__title">{title[$locale]}</h2>
-            </div>
+    <div class="excursion-card__content">
+        <div class="excursion-card__header">
+            <h2 class="excursion-card__title">{title[$locale]}</h2>
         </div>
-    </a>
-{:else}
-    <div></div>
-{/if}
+    </div>
+</a>
 
 <style>
     .excursion-card {

@@ -21,7 +21,7 @@
 </script>
 
 <div class="filter-group">
-    <h4 class="filter-title">{labels.price[$locale]} ({currency})</h4>
+    <span class="filter-title">{labels.price[$locale]} ({currency})</span>
     <RangeSlider
         min={0}
         max={maxPrice}

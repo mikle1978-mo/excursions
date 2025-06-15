@@ -128,7 +128,7 @@
 
 <side class="sidebar" class:active={$sidebarOpen}>
     <div class="sidebar-content">
-        <h3 class="sidebar-title">{labels.title[$locale]}</h3>
+        <span class="sidebar-title">{labels.title[$locale]}</span>
         <div class="filters">
             <PriceFilter
                 currency={currentCurrency}

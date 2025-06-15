@@ -35,7 +35,7 @@
 
 <aside class="sidebar" class:active={$mobileMenuOpen}>
     <div class="sidebar-content">
-        <h3 class="sidebar-title">{labels.menu[$locale]}</h3>
+        <span class="sidebar-title">{labels.menu[$locale]}</span>
         <nav class="navigation" aria-label="Main navigation">
             {#each nav_items as item}
                 {#if isValidLink(item.link)}
