@@ -5,14 +5,19 @@
     import { onMount } from "svelte";
     import { page } from "$app/stores";
     import { fly, slide } from "svelte/transition";
-
+    let lang = $locale;
     const { params } = $page;
-    const lang = params.lang ?? "en";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
 
-    const canonicalUrl = `${baseUrl}/${lang}/`;
+    let canonicalUrl = `${baseUrl}/${$locale}/`;
+    console.log("====================================");
+    console.log(canonicalUrl.with(console.trace));
+    console.log("====================================");
+    console.log("canonicalUrl:", canonicalUrl);
+    console.log("trace:");
+    console.trace();
 
     let isMounted = false;
 
