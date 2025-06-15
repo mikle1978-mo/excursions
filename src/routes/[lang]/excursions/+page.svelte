@@ -168,33 +168,33 @@
     />
 </svelte:head>
 
-{#if isMounted}
-    <div class="content">
+<div class="content">
+    {#if isMounted}
         <TheSidebar
             excursions={allExcursions}
             on:filtersChanged={handleFiltersChange}
         />
-        <main>
-            <div class="main_page">
-                <h1 class="visually-hidden">
-                    {@html main_page.title[$locale]}
-                    {#if main_page.subtitle && main_page.subtitle[$locale]}
-                        <p>{main_page.subtitle[$locale]}</p>
-                    {/if}
-                </h1>
-                <section>
-                    <div class="excursions-grid">
-                        {#each filteredExcursions as excursion (excursion.slug + updateKey)}
-                            <ExcursionCard {excursion} />
-                        {/each}
-                    </div>
-                </section>
-            </div>
-        </main>
-    </div>
-{:else}
-    <div></div>
-{/if}
+    {:else}
+        <div></div>
+    {/if}
+    <main>
+        <div class="main_page">
+            <h1 class="visually-hidden">
+                {@html main_page.title[$locale]}
+                {#if main_page.subtitle && main_page.subtitle[$locale]}
+                    <p>{main_page.subtitle[$locale]}</p>
+                {/if}
+            </h1>
+            <section>
+                <div class="excursions-grid">
+                    {#each filteredExcursions as excursion (excursion.slug + updateKey)}
+                        <ExcursionCard {excursion} />
+                    {/each}
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
 
 <style>
     .content {
