@@ -26,6 +26,38 @@
             price: price,
             priceCurrency: currency,
             availability: "https://schema.org/InStock",
+
+            // 🚚 Условная доставка (например, не требуется)
+            shippingDetails: {
+                "@type": "OfferShippingDetails",
+                shippingRate: {
+                    "@type": "MonetaryAmount",
+                    value: 0,
+                    currency: currency,
+                },
+                deliveryTime: {
+                    "@type": "ShippingDeliveryTime",
+                    handlingTime: {
+                        "@type": "QuantitativeValue",
+                        minValue: 0,
+                        maxValue: 0,
+                        unitCode: "d",
+                    },
+                    transitTime: {
+                        "@type": "QuantitativeValue",
+                        minValue: 0,
+                        maxValue: 0,
+                        unitCode: "d",
+                    },
+                },
+            },
+
+            // 🔁 Политика возврата
+            hasMerchantReturnPolicy: {
+                "@type": "MerchantReturnPolicy",
+                applicableCountry: "TR", // Турция
+                returnPolicyCategory: "https://schema.org/NoReturns",
+            },
         },
     };
 
