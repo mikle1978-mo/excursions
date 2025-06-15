@@ -19,7 +19,16 @@ export async function GET() {
     <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en" />
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>`;
+  </url>
+  <url>
+    <loc>${VITE_BASE_URL}/ru/</loc>
+    <xhtml:link rel="alternate" hreflang="ru" href="${VITE_BASE_URL}/ru" />
+    <xhtml:link rel="alternate" hreflang="en" href="${VITE_BASE_URL}/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en" />
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>   
+  `;
 
     // Страница списка экскурсий
     const excursionsListEntries = SUPPORTED_LOCALES.map(
@@ -70,19 +79,21 @@ export async function GET() {
     const excursionEntries = slugs
         .map((slug) => {
             const path = `excursions/${slug}`;
-            const hreflangs = SUPPORTED_LOCALES.map(
-                (lang) =>
-                    `<xhtml:link rel="alternate" hreflang="${lang}" href="${VITE_BASE_URL}/${lang}/${path}" />`
-            ).join("\n");
+            return SUPPORTED_LOCALES.map((lang) => {
+                const hreflangs = SUPPORTED_LOCALES.map(
+                    (altLang) =>
+                        `<xhtml:link rel="alternate" hreflang="${altLang}" href="${VITE_BASE_URL}/${altLang}/${path}" />`
+                ).join("\n");
 
-            return `
+                return `
   <url>
-    <loc>${VITE_BASE_URL}/en/${path}</loc>
+    <loc>${VITE_BASE_URL}/${lang}/${path}</loc>
     ${hreflangs}
     <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en/${path}" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
+            }).join("");
         })
         .join("");
 
