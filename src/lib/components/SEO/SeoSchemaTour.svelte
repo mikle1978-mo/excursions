@@ -56,7 +56,7 @@
             hasMerchantReturnPolicy: {
                 "@type": "MerchantReturnPolicy",
                 applicableCountry: "TR", // Турция
-                returnPolicyCategory: "https://schema.org/NoReturns",
+                returnPolicyCategory: "NoReturns",
             },
         },
     };
