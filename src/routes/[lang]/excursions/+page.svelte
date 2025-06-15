@@ -6,11 +6,9 @@
     import { onMount } from "svelte";
     import TheSidebar from "$lib/components/excursions/TheSidebar.svelte";
     import { searchQuery } from "$lib/stores/searchQuery.js";
-    import { page } from "$app/stores";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
-    let lang = $page.params.lang;
 
     let search = "";
     let currentLocale = null;
@@ -125,44 +123,44 @@
 </script>
 
 <svelte:head>
-    <title>{SEO_TEXT[lang]?.title ?? SEO_TEXT.en.title} | {baseName}</title>
+    <title>{SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title} | {baseName}</title>
     <meta
         name="description"
-        content={SEO_TEXT[lang]?.description ?? SEO_TEXT.en.description}
+        content={SEO_TEXT[$locale]?.description ?? SEO_TEXT.en.description}
     />
     <meta
         name="keywords"
-        content={SEO_TEXT[lang]?.keywords ?? SEO_TEXT.en.keywords}
+        content={SEO_TEXT[$locale]?.keywords ?? SEO_TEXT.en.keywords}
     />
-    <link rel="canonical" href={`${baseUrl}/${lang}`} />
+    <link rel="canonical" href={`${baseUrl}/${$locale}`} />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={baseName} />
     <meta
         property="og:title"
-        content={SEO_TEXT[lang]?.title ?? SEO_TEXT.en.title}
+        content={SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title}
     />
     <meta
         property="og:description"
-        content={SEO_TEXT[lang]?.description ?? SEO_TEXT.en.description}
+        content={SEO_TEXT[$locale]?.description ?? SEO_TEXT.en.description}
     />
     <meta
         property="og:image"
         content={`${baseUrl}/images/excursions/excursion_default.webp`}
     />
-    <meta property="og:url" content={`${baseUrl}/${lang}`} />
-    <meta property="og:locale" content={lang} />
+    <meta property="og:url" content={`${baseUrl}/${$locale}`} />
+    <meta property="og:locale" content={$locale} />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
         name="twitter:title"
-        content={SEO_TEXT[lang]?.title ?? SEO_TEXT.en.title}
+        content={SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title}
     />
     <meta
         name="twitter:description"
-        content={SEO_TEXT[lang]?.twitter ?? SEO_TEXT.en.twitter}
+        content={SEO_TEXT[$locale]?.twitter ?? SEO_TEXT.en.twitter}
     />
     <meta
         name="twitter:image"
