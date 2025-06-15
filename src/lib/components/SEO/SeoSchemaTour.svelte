@@ -5,8 +5,8 @@
     export let url;
     export let price;
     export let currency;
-    export let rating; // ожидается число от 1 до 5 или undefined
-    export let reviewCount; // ожидается число >= 0 или undefined
+    export let rating; // число от 1 до 5 или undefined
+    export let reviewCount; // число >= 0 или undefined
     export let language;
 
     const hasValidRating =
@@ -15,14 +15,14 @@
 
     const jsonLd = {
         "@context": "https://schema.org",
-        "@type": "TouristTrip",
+        "@type": "Product",
         name: title,
         description: description,
         image: image,
         url: url,
-        inLanguage: language,
         offers: {
             "@type": "Offer",
+            url: url,
             price: price,
             priceCurrency: currency,
             availability: "https://schema.org/InStock",
@@ -41,17 +41,14 @@
             reviewRating: {
                 "@type": "Rating",
                 ratingValue: rating.toString(),
+                bestRating: "5",
+                worstRating: "1",
             },
             author: {
                 "@type": "Person",
-                name: language === "ru" ? "Пользователи" : "Users",
+                name: language === "ru" ? "Пользователь" : "User",
             },
             inLanguage: language,
-            itemReviewed: {
-                "@type": "TouristTrip",
-                name: title,
-                url: url,
-            },
         };
     }
 
