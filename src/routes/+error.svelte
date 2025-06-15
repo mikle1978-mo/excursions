@@ -1,7 +1,6 @@
 <script>
     import { onMount } from "svelte";
     import { page } from "$app/stores";
-    import { locale } from "$lib/stores/locale.js";
 
     // Локализация для 404 — можно вынести в отдельный файл, как у тебя thanks_page
     const error_404 = {
@@ -30,7 +29,7 @@
     let countdown = 10;
     let interval;
 
-    let lang = $page.params.lang;
+    $: lang = $page.params.lang || "en";
 
     onMount(() => {
         interval = setInterval(() => {
