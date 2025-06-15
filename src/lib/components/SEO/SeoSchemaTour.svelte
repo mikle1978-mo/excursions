@@ -51,29 +51,6 @@
                     },
                 },
             },
-
-            // 🔁 Политика возврата
-            hasMerchantReturnPolicy: {
-                "@type": "MerchantReturnPolicy",
-                applicableCountry: "TR",
-                returnPolicyCategory: "https://schema.org/LimitedRefund",
-                returnPolicySeasonalOverride: [
-                    {
-                        "@type": "MerchantReturnPolicySeasonalOverride",
-                        startDate: "2025-01-01",
-                        endDate: "2025-12-31",
-                        returnPolicyCategory:
-                            "https://schema.org/LimitedRefund",
-                        additionalProperty: [
-                            {
-                                "@type": "PropertyValue",
-                                name: "Возврат",
-                                value: "Не предусмотрен",
-                            },
-                        ],
-                    },
-                ],
-            },
         },
     };
 
