@@ -38,9 +38,9 @@
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- hreflang -->
-    <link rel="alternate" hreflang="ru" href={`${baseUrl}/ru/`} />
-    <link rel="alternate" hreflang="en" href={`${baseUrl}/en/`} />
-    <link rel="alternate" hreflang="x-default" href={`${baseUrl}/en/`} />
+    <link rel="alternate" hreflang="ru" href={`${baseUrl}/ru`} />
+    <link rel="alternate" hreflang="en" href={`${baseUrl}/en`} />
+    <link rel="alternate" hreflang="x-default" href={`${baseUrl}/en`} />
 </svelte:head>
 
 {#if isMounted}
