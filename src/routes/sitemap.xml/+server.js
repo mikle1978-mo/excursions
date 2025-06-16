@@ -13,7 +13,7 @@ export async function GET() {
     // Главные страницы
     const homepageEntries = `
   <url>
-    <loc>${VITE_BASE_URL}/en/</loc>
+    <loc>${VITE_BASE_URL}/en</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="${VITE_BASE_URL}/ru" />
     <xhtml:link rel="alternate" hreflang="en" href="${VITE_BASE_URL}/en" />
     <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en" />
@@ -21,7 +21,7 @@ export async function GET() {
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>${VITE_BASE_URL}/ru/</loc>
+    <loc>${VITE_BASE_URL}/ru</loc>
     <xhtml:link rel="alternate" hreflang="ru" href="${VITE_BASE_URL}/ru" />
     <xhtml:link rel="alternate" hreflang="en" href="${VITE_BASE_URL}/en" />
     <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en" />

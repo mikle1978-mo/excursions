@@ -10,9 +10,9 @@
     const baseName = import.meta.env.VITE_BASE_NAME;
 
     $: canonicalUrl = `${baseUrl}/${$locale}`;
-    // $: {
-    //     console.log("Текущая локаль:", canonicalUrl);
-    // }
+    $: {
+        console.log("Текущая локаль:", canonicalUrl);
+    }
 
     let isMounted = false;
 
