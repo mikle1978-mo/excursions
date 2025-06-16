@@ -84,10 +84,21 @@ export async function handle({ event, resolve }) {
     return resolve(event);
 }
 
-// src/routes/api/warmup/+server.js
+// Прогрев MongoDB при первом запросе
+
+let warmedUp = false;
 
 export async function handle({ event, resolve }) {
-    console.log("Прогрев MongoDB!!!!!");
-    await connectToDatabase(); // прогреваем
+    if (!warmedUp) {
+        console.log("⏱ Прогреваем MongoDB на первом запросе");
+        warmedUp = true;
+        await connectToDatabase();
+    }
+
+    // 410 Gone check
+    if (removedUrls.has(event.url.pathname)) {
+        return new Response("Gone", { status: 410 });
+    }
+
     return resolve(event);
 }
