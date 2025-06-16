@@ -6,17 +6,10 @@
     import { onMount } from "svelte";
     import { initCurrencyService } from "$lib/services/currencyService";
     import { locale as localeStore } from "$lib/stores/locale.js";
-    import { browser } from "$app/environment";
 
     let { data, children } = $props();
 
     // Синхронизация локали
-    if (browser) {
-        localeStore.set(data.locale);
-        $effect(() => {
-            console.log($localeStore);
-        });
-    }
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -52,6 +45,10 @@
     };
 
     onMount(() => {
+        localeStore.set(data.locale);
+        $effect(() => {
+            console.log($localeStore);
+        });
         // Инициализация сервиса валют
         initCurrencyService();
         const interval = setInterval(initCurrencyService, 30 * 60 * 1000);
