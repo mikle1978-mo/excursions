@@ -1,4 +1,5 @@
 // src/hooks.server.js
+import { connectToDatabase } from "$lib/server/mongodb";
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
@@ -81,4 +82,15 @@ export async function handle({ event, resolve }) {
     }
 
     return resolve(event);
+}
+
+// src/routes/api/warmup/+server.js
+
+export async function GET() {
+    try {
+        await connectToDatabase();
+        return new Response("Warmup OK");
+    } catch (e) {
+        return new Response("Warmup failed", { status: 500 });
+    }
 }

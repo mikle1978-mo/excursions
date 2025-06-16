@@ -5,10 +5,10 @@ import { fileURLToPath } from "url";
 
 // Абсолютный путь к текущей папке
 const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Путь к файлу кэша — внутри src/lib/server/cache
-const CACHE_FILE = path.resolve(__dirname, "cache", "currencyCache.json");
+const CACHE_FILE = path.resolve("/tmp", "currencyCache.json");
+console.log("📦 Путь к кэшу:", CACHE_FILE);
 
 async function ensureCacheDir() {
     try {
