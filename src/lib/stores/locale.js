@@ -1,30 +1,16 @@
 import { writable } from "svelte/store";
 
-const getStoredLang = () => {
-    if (typeof window !== "undefined") {
-        const lang = localStorage.getItem("locale");
-        if (lang) return lang;
-    }
-    return null;
-};
+// Просто начальное значение, будет перезаписано из data.locale
+export const locale = writable("ru");
 
-const getBrowserLang = () => {
-    if (typeof navigator !== "undefined") {
-        return navigator.language.startsWith("en") ? "en" : "ru";
-    }
-    return "ru";
-};
-
-const initialLang = getStoredLang() || getBrowserLang();
-
-export const locale = writable(initialLang);
-
-locale.subscribe((lang) => {
-    if (typeof window !== "undefined") {
-        localStorage.setItem("locale", lang);
-    }
-});
-
+// Обновление с сохранением в localStorage при ручной смене
 export function setLocale(lang) {
     locale.set(lang);
+
+    if (typeof window !== "undefined") {
+        localStorage.setItem("locale", lang);
+        document.cookie = `locale=${lang}; path=/; max-age=${
+            60 * 60 * 24 * 30
+        }; SameSite=Lax`;
+    }
 }

@@ -27,9 +27,6 @@
         }
         const newPath = "/" + segments.join("/");
         setLocale(lang);
-
-        // Записываем куки на клиенте
-        document.cookie = `locale=${lang}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
         goto(newPath, { replaceState: true });
         isOpen = false;
     };

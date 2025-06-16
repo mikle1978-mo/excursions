@@ -1,14 +1,25 @@
-// src/routes/[lang=ru|en]/+layout.server.js
-export async function load({ locals, params }) {
-    // Если lang в пути не совпадает с локалью из куки, можно сделать редирект
-    if (params.lang !== locals.locale) {
-        return {
-            status: 301,
-            redirect: `/${locals.locale}`,
-        };
+import { redirect } from "@sveltejs/kit";
+
+/** @type {import('./$types').LayoutServerLoad} */
+export function load({ cookies, params }) {
+    const cookieLocale = cookies.get("locale");
+
+    // Если куки есть и не совпадают с URL
+    if (cookieLocale && cookieLocale !== params.lang) {
+        throw redirect(307, `/${cookieLocale}`);
+    }
+
+    // Если куки нет — записываем текущую локаль
+    if (!cookieLocale) {
+        cookies.set("locale", params.lang, {
+            path: "/",
+            httpOnly: false,
+            sameSite: "lax",
+            maxAge: 60 * 60 * 24 * 30, // 30 дней
+        });
     }
 
     return {
-        locale: locals.locale,
+        locale: params.lang,
     };
 }
