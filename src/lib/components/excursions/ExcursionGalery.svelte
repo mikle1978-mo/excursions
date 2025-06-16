@@ -3,7 +3,7 @@
     import Modal from "$lib/components/UI/Modal.svelte";
 
     export let images = [];
-    export let titles = [];
+    export let title = "";
 
     let selectedIndex = 0;
     let isModalOpen = false;
@@ -28,7 +28,10 @@
         on:click={openModal}
         aria-label="Открыть галерею"
     >
-        <img src={images[selectedIndex]} alt={titles[selectedIndex] || ""} />
+        <img
+            src={images[selectedIndex]}
+            alt={title ? `${title}_${selectedIndex}` : "gallery"}
+        />
     </button>
 
     <div class="thumbnails">

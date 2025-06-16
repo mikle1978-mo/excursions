@@ -137,7 +137,7 @@
         </header>
 
         <!-- Галерея изображений -->
-        <ExcursionGalery images={tour.images} titles={tour.title} />
+        <ExcursionGalery images={tour.images} title={tour.title} />
 
         <!-- Основное содержимое -->
         <div class="content-grid">

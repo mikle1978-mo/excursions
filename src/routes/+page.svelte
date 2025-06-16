@@ -2,9 +2,8 @@
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
     import { locale } from "$lib/stores/locale.js";
-    fetch("/api/warmup");
-
     onMount(() => {
+        fetch("/api/warmup");
         const storedLang =
             localStorage.getItem("locale") ||
             (navigator.language.startsWith("ru") ? "ru" : "en");

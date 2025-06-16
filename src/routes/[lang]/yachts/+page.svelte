@@ -25,6 +25,11 @@
     });
 </script>
 
+<svelte:head>
+    <title>{development_page.title[$locale]}</title>
+    <meta name="description" content="СТраница в разработке" />
+</svelte:head>
+
 <main>
     <div class="thankyou-box">
         <h1>{development_page.title[$locale]}</h1>
