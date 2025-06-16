@@ -47,10 +47,6 @@
     onMount(() => {
         localeStore.set(data.locale);
 
-        console.log($localeStore);
-        console.log(data);
-        console.log(data.locale);
-
         // Инициализация сервиса валют
         initCurrencyService();
         const interval = setInterval(initCurrencyService, 30 * 60 * 1000);

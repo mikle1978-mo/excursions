@@ -10,9 +10,6 @@
     const baseName = import.meta.env.VITE_BASE_NAME;
 
     $: canonicalUrl = `${baseUrl}/${$locale}`;
-    $: {
-        console.log("Текущая локаль:", canonicalUrl);
-    }
 
     let isMounted = false;
 
@@ -41,6 +38,10 @@
     <link rel="alternate" hreflang="ru" href={`${baseUrl}/ru`} />
     <link rel="alternate" hreflang="en" href={`${baseUrl}/en`} />
     <link rel="alternate" hreflang="x-default" href={`${baseUrl}/en`} />
+
+    {#each main_page.pages.slice(0, 3) as item}
+        <link rel="preload" as="image" href={item.img} type="image/webp" />
+    {/each}
 </svelte:head>
 
 <div class="content">
@@ -50,8 +51,8 @@
         </h1>
 
         <div class="main-grid">
-            {#each main_page.pages as item}
-                <MainCard {item} />
+            {#each main_page.pages as item, i}
+                <MainCard {item} loading={i < 3 ? "eager" : "lazy"} />
             {/each}
         </div>
     </div>

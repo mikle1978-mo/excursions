@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
 
     export let item;
+    export let loading = "lazy"; // по умолчанию
 
     const {
         title = { ru: "", en: "" },
@@ -19,7 +20,15 @@
 
 <a class="excursion-card" href="/{$locale}/{slug}">
     <div class="excursion-card__image-wrapper">
-        <img src={image} alt={title[$locale]} class="excursion-card__image" />
+        <img
+            src={image}
+            alt={title[$locale]}
+            class="excursion-card__image"
+            width="980"
+            height="551"
+            {loading}
+            fetchpriority={loading === "eager" ? "high" : "auto"}
+        />
     </div>
 
     <div class="excursion-card__content">
