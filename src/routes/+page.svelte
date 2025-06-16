@@ -8,6 +8,10 @@
             localStorage.getItem("locale") ||
             (navigator.language.startsWith("ru") ? "ru" : "en");
         locale.set(storedLang);
+
+        // Записать куки, срок, путь
+        document.cookie = `locale=${storedLang}; path=/; max-age=${60 * 60 * 24 * 30}; SameSite=Lax`;
+
         const currentPath = window.location.pathname;
         const langPrefix = `/${storedLang}`;
         if (!currentPath.startsWith(langPrefix)) {

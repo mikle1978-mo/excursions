@@ -5,9 +5,16 @@
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import { onMount } from "svelte";
     import { initCurrencyService } from "$lib/services/currencyService";
-    import { page } from "$app/stores";
+    import { locale as localeStore } from "$lib/stores/locale.js";
 
-    let lang = $page.params.lang;
+    let { data, children } = $props();
+
+    // Синхронизация локали
+    localeStore.set(data.locale);
+
+    $effect(() => {
+        console.log($localeStore);
+    });
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -86,8 +93,6 @@
 
         return () => clearInterval(interval);
     });
-
-    let { children } = $props();
 </script>
 
 <svelte:head>

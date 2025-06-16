@@ -77,6 +77,12 @@ const removedUrls = new Set([
 
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
+    // Проверка локали в куки
+    const cookieLocale = event.cookies.get("locale");
+
+    // Проверяем, чтобы была либо ru, либо en, иначе дефолт en
+    event.locals.locale = cookieLocale === "ru" ? "ru" : "en";
+
     // 410 Gone check
     if (removedUrls.has(event.url.pathname)) {
         return new Response("Gone", { status: 410 });
