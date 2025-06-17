@@ -47,7 +47,7 @@
 <div class="content">
     <div class="main_page">
         <h1>
-            {@html main_page.title[$locale]}
+            {main_page.title[$locale]}
         </h1>
 
         <div class="main-grid">
@@ -91,5 +91,6 @@
     }
     h1 {
         font-size: var(--text-xxl);
+        text-align: center;
     }
 </style>

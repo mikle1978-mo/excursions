@@ -1,7 +1,7 @@
 export const main_page = {
     title: {
-        ru: `Все, что нужно для комфортного отдыха в <span class="highlight">Кемере!</span>`,
-        en: `Everything you need for a comfortable vacation in <span class="highlight">Kemer!</span>`,
+        ru: `Все, что нужно для комфортного отдыха в Кемере!`,
+        en: `Everything you need for a comfortable vacation in Kemer!`,
     },
     pages: [
         {
@@ -12,7 +12,6 @@ export const main_page = {
             link: "excursions",
             img: "/images/excursions/excursion_default.webp",
         },
-
         {
             title: {
                 ru: "Прогулки на яхте",
@@ -28,6 +27,32 @@ export const main_page = {
             },
             link: "cars",
             img: "/images/cars/car_default.webp",
+        },
+        {
+            title: {
+                ru: "Аренда недвижимости",
+                en: "Property Rental",
+            },
+            // link: "property",
+            link: "cars",
+            img: "/images/property/property_default.webp",
+        },
+        {
+            title: {
+                ru: "Трансфер",
+                en: "Transfer",
+            },
+            // link: "transfer",
+            link: "cars",
+            img: "/images/transfer/transfer_default.webp",
+        },
+        {
+            title: {
+                ru: "Места",
+                en: "Places",
+            },
+            link: "places",
+            img: "/images/places/place_default.webp",
         },
     ],
 };
