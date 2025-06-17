@@ -17,7 +17,8 @@ export const main_page = {
                 ru: "Прогулки на яхте",
                 en: "Yacht Tours",
             },
-            link: "yachts",
+            // link: "yachts",
+            link: "development",
             img: "/images/yachts/yacht_default.webp",
         },
         {
@@ -25,7 +26,8 @@ export const main_page = {
                 ru: "Аренда автомобилей",
                 en: "Car Rentals",
             },
-            link: "cars",
+            // link: "cars",
+            link: "development",
             img: "/images/cars/car_default.webp",
         },
         {
@@ -34,7 +36,7 @@ export const main_page = {
                 en: "Property Rental",
             },
             // link: "property",
-            link: "cars",
+            link: "development",
             img: "/images/property/property_default.webp",
         },
         {
@@ -43,7 +45,7 @@ export const main_page = {
                 en: "Transfer",
             },
             // link: "transfer",
-            link: "cars",
+            link: "development",
             img: "/images/transfer/transfer_default.webp",
         },
         {
@@ -51,7 +53,8 @@ export const main_page = {
                 ru: "Места",
                 en: "Places",
             },
-            link: "places",
+            // link: "places",
+            link: "development",
             img: "/images/places/place_default.webp",
         },
     ],

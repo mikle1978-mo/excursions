@@ -7,6 +7,7 @@ export async function load() {
     const toursDb = await db
         .collection("excursions")
         .aggregate([
+            { $sample: { size: 100 } },
             {
                 $lookup: {
                     from: "excursions_translations",

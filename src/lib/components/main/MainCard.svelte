@@ -22,7 +22,7 @@
     <div class="excursion-card__image-wrapper">
         <img
             src={image}
-            alt={title[$locale]}
+            alt=""
             class="excursion-card__image"
             width="980"
             height="551"
@@ -88,6 +88,10 @@
         margin: 0;
         color: var(--color-text);
         text-align: center;
+
+        white-space: nowrap; /* Не переносить текст */
+        overflow: hidden; /* Скрыть выходящий за пределы текст */
+        text-overflow: ellipsis;
     }
 
     @media (max-width: 768px) {

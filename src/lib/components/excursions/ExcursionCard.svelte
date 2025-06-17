@@ -4,6 +4,7 @@
     import { excursion_card } from "$lib/i18n/excursion_card";
     import { formatPrice } from "$lib/utils/priceFormatter";
     export let excursion;
+    export let loading = "lazy";
     const {
         slug = "/",
         title = "Обзорная экскурсия по историческому центру",
@@ -34,8 +35,12 @@
     <div class="excursion-card__image-wrapper">
         <img
             src={images[0]}
-            alt={title[$locale]}
+            alt=""
             class="excursion-card__image"
+            width="980"
+            height="551"
+            {loading}
+            fetchpriority={loading === "eager" ? "high" : "auto"}
         />
 
         {#if getLabelByKey(meta.labels, "POPULAR")}
@@ -76,10 +81,6 @@
             </div>
         </div>
 
-        <!-- <p class="excursion-card__description">
-                {description[$locale]}
-            </p> -->
-
         <div class="excursion-card__footer">
             <div class="excursion-card__details">
                 <span class="excursion-card__duration"
@@ -118,6 +119,7 @@
         box-shadow: var(--shadow-md);
         transition: var(--transition-normal);
         height: 100%;
+        min-height: 245px;
     }
 
     .excursion-card:hover {
@@ -128,6 +130,7 @@
     .excursion-card__image-wrapper {
         position: relative;
         width: 100%;
+        height: 100%;
         aspect-ratio: 16 / 9;
     }
 
@@ -184,6 +187,10 @@
         font-weight: 600;
         margin: 0;
         color: var(--color-text);
+
+        white-space: nowrap; /* Не переносить текст */
+        overflow: hidden; /* Скрыть выходящий за пределы текст */
+        text-overflow: ellipsis;
     }
 
     .excursion-card__rating {

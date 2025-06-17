@@ -39,6 +39,7 @@
 
     $: if (data?.excursions) {
         allExcursions = data.excursions;
+
         filteredExcursions = [...allExcursions];
         applyFilters();
     }
@@ -166,17 +167,27 @@
         name="twitter:image"
         content={`${baseUrl}/images/excursions/excursion_default.webp`}
     />
+    {#each allExcursions.slice(0, 5) as item}
+        {#if item.images && item.images.length > 0}
+            <link
+                rel="preload"
+                as="image"
+                href={item.images[0]}
+                type="image/webp"
+            />
+        {/if}
+    {/each}
 </svelte:head>
 
 <div class="content">
-    {#if isMounted}
-        <TheSidebar
-            excursions={allExcursions}
-            on:filtersChanged={handleFiltersChange}
-        />
-    {:else}
+    <!-- {#if isMounted} -->
+    <TheSidebar
+        excursions={allExcursions}
+        on:filtersChanged={handleFiltersChange}
+    />
+    <!-- {:else}
         <div></div>
-    {/if}
+    {/if} -->
     <main>
         <div class="main_page">
             <h1 class="visually-hidden">
@@ -185,13 +196,15 @@
                     <p>{main_page.subtitle[$locale]}</p>
                 {/if}
             </h1>
-            <section>
-                <div class="excursions-grid">
-                    {#each filteredExcursions as excursion (excursion.slug + updateKey)}
-                        <ExcursionCard {excursion} />
-                    {/each}
-                </div>
-            </section>
+
+            <div class="excursions-grid">
+                {#each filteredExcursions as excursion, i (excursion.slug + updateKey)}
+                    <ExcursionCard
+                        {excursion}
+                        loading={i < 5 ? "eager" : "lazy"}
+                    />
+                {/each}
+            </div>
         </div>
     </main>
 </div>
@@ -205,7 +218,7 @@
         width: 100%;
         height: 100%;
         max-height: 100%;
-        overflow: hidden;
+        overflow-x: hidden;
         flex: none;
         align-self: stretch;
         flex-grow: 1;
@@ -218,20 +231,12 @@
         flex-direction: column;
         gap: var(--space-vertical-md);
         width: 100%;
+        padding: var(--space-vertical-md) 0;
     }
 
     h1 {
         text-align: center;
         font-size: var(--text-xl);
-    }
-
-    section {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: var(--space-vertical-md) 0;
-        width: 100%;
-        transition: all 0.4s ease-in;
     }
 
     .excursions-grid {
@@ -241,29 +246,5 @@
         width: 100%;
         align-items: center;
         justify-content: space-evenly;
-    }
-
-    @media (max-width: 1024px) {
-        .excursions-grid {
-            grid-template-columns: repeat(auto-fill, 270px);
-        }
-    }
-
-    @media (max-width: 768px) {
-        .content {
-            grid-template-columns: 1fr;
-        }
-        .main_page {
-            gap: 2rem;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .main_page {
-            gap: var(--space-vertical-sm);
-        }
-        .excursions-grid {
-            grid-template-columns: 1fr;
-        }
     }
 </style>

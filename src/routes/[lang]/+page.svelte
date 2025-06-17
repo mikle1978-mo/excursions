@@ -79,6 +79,12 @@
         flex-direction: column;
         gap: var(--space-vertical-md);
         width: 100%;
+        padding: var(--space-vertical-md) 0;
+    }
+
+    h1 {
+        font-size: var(--text-xxl);
+        text-align: center;
     }
 
     .main-grid {
@@ -88,9 +94,5 @@
         width: 100%;
         align-items: center;
         justify-content: space-evenly;
-    }
-    h1 {
-        font-size: var(--text-xxl);
-        text-align: center;
     }
 </style>
