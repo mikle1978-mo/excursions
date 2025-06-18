@@ -1,10 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { page } from "$app/stores";
-    import {
-        updateExcursion,
-        getExcursion,
-    } from "$lib/utils/excursionsActions";
+    import { updateYacht, getYacht } from "$lib/utils/yachtsActions";
     import { goto } from "$app/navigation";
 
     let formData = null;
@@ -15,7 +12,7 @@
 
     onMount(async () => {
         try {
-            const { excursion, translation } = await getExcursion(slug);
+            const { yacht, translation } = await getYacht(slug);
 
             // Инициализируем поля с поддержкой языков
             const initLangFields = (field, defaultValue = "") => {
@@ -38,7 +35,7 @@
             };
 
             formData = {
-                ...excursion,
+                ...yacht,
                 title: initLangFields("title"),
                 metaDescription: initLangFields("metaDescription"),
                 description: initLangFields("description"),
@@ -58,7 +55,7 @@
         isLoading = true;
         try {
             // Подготовим данные для отправки
-            const excursion = {
+            const yacht = {
                 slug: formData.slug,
                 duration: formData.duration,
                 groupSize: formData.groupSize,
@@ -82,8 +79,8 @@
                 tags: formData.tags[lang],
             }));
 
-            await updateExcursion(slug, { excursion, translations });
-            alert("Экскурсия успешно обновлена!");
+            await updateYacht(slug, { yacht, translations });
+            alert("Яхта успешно обновлена!");
             goto("/admin");
         } catch (e) {
             error = e.message;
@@ -106,7 +103,7 @@
 </script>
 
 <div class="edit-page">
-    <h1 class="title">Редактирование экскурсии</h1>
+    <h1 class="title">Редактирование яхты</h1>
     {#if formData}
         <form on:submit|preventDefault={handleSubmit}>
             <label>

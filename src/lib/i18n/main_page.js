@@ -17,8 +17,7 @@ export const main_page = {
                 ru: "Прогулки на яхте",
                 en: "Yacht Tours",
             },
-            // link: "yachts",
-            link: "development",
+            link: "yachts",
             img: "/images/yachts/yacht_default.webp",
         },
         {

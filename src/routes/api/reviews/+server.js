@@ -6,9 +6,9 @@ export async function POST({ request, getClientAddress }) {
     try {
         const ip = getClientAddress();
 
-        const { tourSlug, name, rating, comment } = await request.json();
+        const { itemSlug, name, rating, comment } = await request.json();
 
-        if (!tourSlug || !name || !comment || !rating) {
+        if (!itemSlug || !name || !comment || !rating) {
             return json(
                 { error: "Отсутствуют обязательные поля" },
                 { status: 400 }
@@ -21,7 +21,7 @@ export async function POST({ request, getClientAddress }) {
 
         // Проверяем, есть ли уже отзыв с этим IP для данного тура
         const existingReview = await reviewsCollection.findOne({
-            tourSlug,
+            itemSlug,
             ip,
         });
 
@@ -36,7 +36,7 @@ export async function POST({ request, getClientAddress }) {
 
         // Создаем новый отзыв
         const newReview = {
-            tourSlug,
+            itemSlug,
             name,
             rating,
             comment,

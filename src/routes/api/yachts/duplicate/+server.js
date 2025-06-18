@@ -5,24 +5,24 @@ export async function POST({ request }) {
     const db = await connectToDatabase();
 
     // Получаем оригинальную экскурсию
-    const excursion = await db.collection("excursions").findOne({ slug });
-    if (!excursion) {
-        return new Response(JSON.stringify({ error: "Экскурсия не найдена" }), {
+    const yacht = await db.collection("yachts").findOne({ slug });
+    if (!yacht) {
+        return new Response(JSON.stringify({ error: "Яхта не найдена" }), {
             status: 404,
         });
     }
 
     // Генерация нового slug
     const newSlug = `${slug}-copy-${Date.now()}`;
-    const newExcursion = { ...excursion, slug: newSlug };
-    delete newExcursion._id;
+    const newYacht = { ...yacht, slug: newSlug };
+    delete newYacht._id;
 
-    // Вставка новой экскурсии
-    await db.collection("excursions").insertOne(newExcursion);
+    // Вставка новой яхты
+    await db.collection("yachts").insertOne(newYacht);
 
     // Получение переводов
     const translations = await db
-        .collection("excursions_translations")
+        .collection("yachts_translations")
         .find({ itemSlug: slug })
         .toArray();
 
@@ -34,9 +34,7 @@ export async function POST({ request }) {
 
     // Вставка переводов
     if (newTranslations.length > 0) {
-        await db
-            .collection("excursions_translations")
-            .insertMany(newTranslations);
+        await db.collection("yachts_translations").insertMany(newTranslations);
     }
 
     return new Response(JSON.stringify({ success: true, newSlug }), {

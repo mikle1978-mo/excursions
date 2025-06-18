@@ -4,13 +4,13 @@ import { enrichTours } from "$lib/helpers/process-tours";
 export async function load() {
     const db = await connectToDatabase();
 
-    const toursDb = await db
-        .collection("excursions")
+    const yachtsDb = await db
+        .collection("yachts")
         .aggregate([
             { $sample: { size: 100 } },
             {
                 $lookup: {
-                    from: "excursions_translations",
+                    from: "yachts_translations",
                     localField: "slug",
                     foreignField: "itemSlug",
                     as: "translations",
@@ -47,11 +47,11 @@ export async function load() {
             {
                 $lookup: {
                     from: "reviews",
-                    let: { tour_slug: "$slug" },
+                    let: { yacht_slug: "$slug" },
                     pipeline: [
                         {
                             $match: {
-                                $expr: { $eq: ["$itemSlug", "$$tour_slug"] },
+                                $expr: { $eq: ["$itemSlug", "$$yacht_slug"] },
                             },
                         },
                         {
@@ -112,9 +112,10 @@ export async function load() {
         ])
         .toArray();
 
-    const tours = enrichTours(toursDb);
+    const yachts = enrichTours(yachtsDb);
+    console.log(yachts);
 
     return {
-        excursions: tours,
+        yachts: yachts,
     };
 }

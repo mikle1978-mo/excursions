@@ -7,6 +7,7 @@
     <nav class="admin-links">
         <a href="/admin/excursions" class="admin-link">Управление экскурсиями</a
         >
+        <a href="/admin/yachts" class="admin-link">Управление яхтами</a>
         <a href="/admin/faq" class="admin-link">Управление FAQ</a>
     </nav>
 </main>

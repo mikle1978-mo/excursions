@@ -3,7 +3,7 @@
     import { locale } from "$lib/stores/locale";
     import { reviews_list } from "$lib/i18n/reviews_list";
 
-    export let tourSlug = "";
+    export let itemSlug = "";
 
     let reviews = [];
     let showForm = false;
@@ -14,11 +14,11 @@
     let isSubmitting = false;
     let error = "";
 
-    // Загрузить отзывы по tourSlug при инициализации
+    // Загрузить отзывы по itemSlug при инициализации
     onMount(async () => {
-        if (tourSlug) {
+        if (itemSlug) {
             try {
-                const res = await fetch(`/api/reviews/${tourSlug}`);
+                const res = await fetch(`/api/reviews/${itemSlug}`);
                 if (res.ok) {
                     reviews = await res.json();
                 } else {
@@ -44,7 +44,7 @@
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    tourSlug,
+                    itemSlug,
                     name,
                     rating,
                     comment,

@@ -2,8 +2,8 @@ import { connectToDatabase } from "$lib/server/mongodb";
 
 export async function GET() {
     const db = await connectToDatabase();
-    const excursions = await db.collection("excursions").find({}).toArray();
-    return new Response(JSON.stringify(excursions), { status: 200 });
+    const yachts = await db.collection("yachts").find({}).toArray();
+    return new Response(JSON.stringify(yachts), { status: 200 });
 }
 
 export async function POST({ request }) {
@@ -26,14 +26,14 @@ export async function POST({ request }) {
         images:
             Array.isArray(data.images) && data.images.length > 0
                 ? data.images
-                : ["/images/excursions/excursion_default.webp"],
+                : ["/images/yachts/yacht_default.webp"],
         rating: 0,
         reviewsCount: 0,
         createdAt: new Date(),
     };
 
     // Вставка основного документа
-    const result = await db.collection("excursions").insertOne(cleaned);
+    const result = await db.collection("yachts").insertOne(cleaned);
 
     // Подготовка переводов
     const translations = ["ru", "en", "tr"].map((lang) => ({
@@ -63,7 +63,7 @@ export async function POST({ request }) {
             : [],
     }));
 
-    await db.collection("excursions_translations").insertMany(translations);
+    await db.collection("yachts_translations").insertMany(translations);
 
     return new Response(JSON.stringify({ success: true, slug: cleaned.slug }), {
         status: 201,

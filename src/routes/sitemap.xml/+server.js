@@ -3,7 +3,7 @@ import { VITE_BASE_URL } from "$env/static/private";
 const SUPPORTED_LOCALES = ["ru", "en"];
 
 export async function GET() {
-    const res = await fetch(`${VITE_BASE_URL}/api/slugs`);
+    const res = await fetch(`${VITE_BASE_URL}/api/excursions-slugs`);
     if (!res.ok) {
         return new Response("Ошибка при получении данных", { status: 500 });
     }

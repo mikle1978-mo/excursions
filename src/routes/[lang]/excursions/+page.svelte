@@ -4,7 +4,7 @@
     import { main_page } from "$lib/i18n/main_page.js";
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
-    import TheSidebar from "$lib/components/excursions/TheSidebar.svelte";
+    import EcxursionsSidebar from "$lib/components/excursions/EcxursionsSidebar.svelte";
     import { searchQuery } from "$lib/stores/searchQuery.js";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -181,7 +181,7 @@
 
 <div class="content">
     <!-- {#if isMounted} -->
-    <TheSidebar
+    <EcxursionsSidebar
         excursions={allExcursions}
         on:filtersChanged={handleFiltersChange}
     />

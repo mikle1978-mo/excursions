@@ -8,6 +8,10 @@
     import { breadcrumbs } from "$lib/i18n/breadcrumbs.js";
     export let data;
     const { tour, reviewsCount, rating } = data;
+
+    console.log("====================================");
+    console.log(data);
+    console.log("====================================");
     const { slug } = $page.params;
     import { excursion_page } from "$lib/i18n/excursion_pade.js";
     import { formatPrice } from "$lib/utils/priceFormatter.js";

@@ -26,14 +26,14 @@ export async function POST({ request }) {
 
     for (const faq of faqs) {
         // Валидация
-        if (!faq.question || !faq.answer || typeof faq.tourSlug !== "string") {
+        if (!faq.question || !faq.answer || typeof faq.itemSlug !== "string") {
             skippedCount++;
             continue;
         }
 
         // Убедимся, что все языки заданы
         const normalizedFaq = {
-            tourSlug: faq.tourSlug,
+            itemSlug: faq.itemSlug,
             question: {
                 ru: faq.question?.ru ?? "",
                 en: faq.question?.en ?? "",

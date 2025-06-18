@@ -7,9 +7,9 @@
 
     const dispatch = createEventDispatcher();
 
-    import PriceFilter from "./PriceFilter.svelte";
-    import DurationFilter from "./DurationFilter.svelte";
-    import RatingFilter from "./RatingFilter.svelte";
+    import PriceFilter from "$lib/components/filters/PriceFilter.svelte";
+    import DurationFilter from "$lib/components/filters/DurationFilter.svelte";
+    import RatingFilter from "$lib/components/filters/RatingFilter.svelte";
 
     export let excursions;
     let initialized = false;

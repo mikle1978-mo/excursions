@@ -6,7 +6,7 @@ export async function GET({ params }) {
         const db = await connectToDatabase();
         const reviews = await db
             .collection("reviews")
-            .find({ tourSlug: params.slug })
+            .find({ itemSlug: params.slug })
             .sort({ createdAt: -1 }) // сортировка по дате, по желанию
             .toArray();
 

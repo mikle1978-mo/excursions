@@ -16,7 +16,7 @@
 
             formData = {
                 id: faq._id,
-                tourSlug: faq.tourSlug,
+                itemSlug: faq.itemSlug,
                 question: {
                     ru: faq.question?.ru ?? "",
                     en: faq.question?.en ?? "",
@@ -41,7 +41,7 @@
 
         try {
             await updateFaq(formData.id, {
-                tourSlug: formData.tourSlug,
+                itemSlug: formData.itemSlug,
                 question: formData.question,
                 answer: formData.answer,
                 order: formData.order ?? 0,

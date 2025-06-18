@@ -27,11 +27,6 @@ export const enrichTours = (tours, lang = "en") => {
             meta: {
                 categories,
                 labels,
-                // // Флаги для удобства
-                // isPopular: categories.includes(
-                //     TOUR_CATEGORIES.POPULAR.label[lang]
-                // ),
-                // hasDiscount: labels.includes(TOUR_LABELS.DISCOUNT.label[lang]),
             },
         };
     });

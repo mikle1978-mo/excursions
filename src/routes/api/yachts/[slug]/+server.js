@@ -2,36 +2,32 @@ import { connectToDatabase } from "$lib/server/mongodb";
 
 export async function GET({ params }) {
     const db = await connectToDatabase();
-    const excursion = await db
-        .collection("excursions")
-        .findOne({ slug: params.slug });
+    const yacht = await db.collection("yachts").findOne({ slug: params.slug });
     const translation = await db
-        .collection("excursions_translations")
+        .collection("yachts_translations")
         .find({ itemSlug: params.slug })
         .toArray();
 
-    if (!excursion) return new Response(null, { status: 404 });
+    if (!yacht) return new Response(null, { status: 404 });
 
-    return new Response(JSON.stringify({ excursion, translation }), {
+    return new Response(JSON.stringify({ yacht, translation }), {
         status: 200,
     });
 }
 
 export async function PUT({ request, params }) {
     const db = await connectToDatabase();
-    const { excursion, translations } = await request.json();
+    const { yacht, translations } = await request.json();
 
     const oldSlug = params.slug;
-    const newSlug = excursion.slug;
+    const newSlug = yacht.slug;
 
     // Обновим основной документ
-    await db
-        .collection("excursions")
-        .updateOne({ slug: oldSlug }, { $set: excursion });
+    await db.collection("yachts").updateOne({ slug: oldSlug }, { $set: yacht });
 
     // Удалим переводы по старому slug
     await db
-        .collection("excursions_translations")
+        .collection("yachts_translations")
         .deleteMany({ itemSlug: oldSlug });
 
     // Подготовим переводы для нового slug
@@ -51,14 +47,12 @@ export async function PUT({ request, params }) {
         };
     });
 
-    await db
-        .collection("excursions_translations")
-        .insertMany(preparedTranslations);
+    await db.collection("yachts_translations").insertMany(preparedTranslations);
 
     // Также можно обновить slug в основном документе, если он изменился
     if (oldSlug !== newSlug) {
         await db
-            .collection("excursions")
+            .collection("yachts")
             .updateOne({ slug: oldSlug }, { $set: { slug: newSlug } });
     }
 
@@ -69,11 +63,11 @@ export async function DELETE({ params }) {
     const db = await connectToDatabase();
 
     // Удалим саму экскурсию
-    await db.collection("excursions").deleteOne({ slug: params.slug });
+    await db.collection("yachts").deleteOne({ slug: params.slug });
 
     // Удалим переводы этой экскурсии
     await db
-        .collection("excursions_translations")
+        .collection("yachts_translations")
         .deleteMany({ itemSlug: params.slug });
 
     return new Response(JSON.stringify({ success: true }), {
