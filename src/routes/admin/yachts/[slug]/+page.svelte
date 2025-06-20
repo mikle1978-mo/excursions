@@ -144,6 +144,7 @@
             <label>
                 Изображения (URL через запятую):
                 <textarea
+                    rows="5"
                     value={formData.images.join("\n")}
                     on:input={handleImageInput}
                 ></textarea>
@@ -161,19 +162,24 @@
 
                     <label>
                         Meta-описание:
-                        <textarea bind:value={formData.metaDescription[lang]}
+                        <textarea
+                            rows="5"
+                            bind:value={formData.metaDescription[lang]}
                         ></textarea>
                     </label>
 
                     <label>
                         Описание:
-                        <textarea bind:value={formData.description[lang]}
+                        <textarea
+                            rows="5"
+                            bind:value={formData.description[lang]}
                         ></textarea>
                     </label>
 
                     <label>
                         Что вы увидите (через запятую):
                         <textarea
+                            rows="5"
                             value={formData.whatYouSee[lang].join("\n")}
                             on:input={(e) =>
                                 handleArrayInput(e, lang, "whatYouSee")}
@@ -183,6 +189,7 @@
                     <label>
                         Что включено (через запятую):
                         <textarea
+                            rows="5"
                             value={formData.includes[lang].join("\n")}
                             on:input={(e) =>
                                 handleArrayInput(e, lang, "includes")}
@@ -192,6 +199,7 @@
                     <label>
                         Что взять с собой (через запятую):
                         <textarea
+                            rows="5"
                             value={formData.whatToBring[lang].join("\n")}
                             on:input={(e) =>
                                 handleArrayInput(e, lang, "whatToBring")}

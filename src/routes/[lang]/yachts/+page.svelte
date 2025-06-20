@@ -17,9 +17,6 @@
     let filteredYachts = [];
 
     export let data;
-    console.log("1111111====================================");
-    console.log(data);
-    console.log("====================================");
 
     locale.subscribe((value) => {
         currentLocale = value;

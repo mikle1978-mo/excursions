@@ -5,9 +5,7 @@
     import { formatPrice } from "$lib/utils/priceFormatter";
     export let yacht;
     export let loading = "lazy";
-    console.log("2222222====================================");
-    console.log(123);
-    console.log("====================================");
+
     const {
         slug = "/",
         title = "Обзорная экскурсия по историческому центру",
@@ -20,10 +18,6 @@
         reviewsCount = 142,
         meta = {},
     } = yacht;
-
-    console.log("33333====================================");
-    console.log("yacht", yacht);
-    console.log("====================================");
 
     let isMounted = false;
     const priceDisplay = formatPrice(price);

@@ -8,6 +8,10 @@ export async function GET() {
 
 export async function POST({ request }) {
     const data = await request.json();
+    console.log("Пришло на сервер====================================");
+    console.log(data);
+    console.log("====================================");
+
     const db = await connectToDatabase();
 
     // Очистка и дефолты

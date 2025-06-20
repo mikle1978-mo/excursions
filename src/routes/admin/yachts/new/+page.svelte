@@ -1,6 +1,7 @@
 <script>
     import { goto } from "$app/navigation";
     import { createYacht } from "$lib/utils/yachtsActions";
+    import { onMount } from "svelte";
 
     let formData = {
         slug: "",
@@ -16,11 +17,11 @@
         title: { ru: "", en: "", tr: "" },
         metaDescription: { ru: "", en: "", tr: "" },
         description: { ru: "", en: "", tr: "" },
-        whatYouSee: { ru: "", en: "", tr: "" },
-        includes: { ru: "", en: "", tr: "" },
-        whatToBring: { ru: "", en: "", tr: "" },
+        whatYouSee: { ru: [], en: [], tr: [] },
+        includes: { ru: [], en: [], tr: [] },
+        whatToBring: { ru: [], en: [], tr: [] },
         meetingPoint: { ru: "", en: "", tr: "" },
-        tags: { ru: "", en: "", tr: "" },
+        tags: { ru: [], en: [], tr: [] },
     };
 
     let error = "";
@@ -29,7 +30,9 @@
     async function handleSubmit() {
         isLoading = true;
         try {
+            console.log("Отправляемые данные:", formData);
             const result = await createYacht(formData);
+            console.log("Результат создания яхты:", result);
             alert("Яхта создана");
             goto(`/admin`);
         } catch (e) {
@@ -42,16 +45,28 @@
     function handleArrayInput(event, lang, field) {
         formData[field][lang] = event.target.value
             .split(",")
-            .map((item) => item.trim())
+            .map((item) =>
+                item
+                    .trim()
+                    .replace(/^"(.*)"$/, "$1")
+                    .replace(/^'(.*)'$/, "$1")
+            )
             .filter(Boolean);
     }
 
     function handleImageInput(event) {
         formData.images = event.target.value
-            .split(",")
+            .split(/[\n,]+/)
             .map((img) => img.trim())
             .filter(Boolean);
     }
+
+    onMount(() => {
+        const savedData = localStorage.getItem("yachtFormDraft");
+        if (savedData) formData = JSON.parse(savedData);
+    });
+
+    $: localStorage.setItem("yachtFormDraft", JSON.stringify(formData));
 </script>
 
 <div class="new-page">
@@ -97,7 +112,12 @@
 
             <label>
                 Изображения (URL через запятую):
-                <input type="text" on:input={handleImageInput} />
+                <textarea
+                    type="text"
+                    on:input={handleImageInput}
+                    rows="5"
+                    value={formData.images.join(", ")}
+                ></textarea>
             </label>
         </fieldset>
 
@@ -113,19 +133,22 @@
 
                 <label>
                     Meta-описание:
-                    <textarea bind:value={formData.metaDescription[lang]}
+                    <textarea
+                        rows="5"
+                        bind:value={formData.metaDescription[lang]}
                     ></textarea>
                 </label>
 
                 <label>
                     Описание:
-                    <textarea bind:value={formData.description[lang]}
+                    <textarea rows="5" bind:value={formData.description[lang]}
                     ></textarea>
                 </label>
 
                 <label>
                     Что вы увидите (через запятую):
                     <textarea
+                        rows="5"
                         on:input={(e) =>
                             handleArrayInput(e, lang, "whatYouSee")}
                     ></textarea>
@@ -134,6 +157,7 @@
                 <label>
                     Что включено (через запятую):
                     <textarea
+                        rows="5"
                         on:input={(e) => handleArrayInput(e, lang, "includes")}
                     ></textarea>
                 </label>
@@ -141,6 +165,7 @@
                 <label>
                     Что взять с собой (через запятую):
                     <textarea
+                        rows="5"
                         on:input={(e) =>
                             handleArrayInput(e, lang, "whatToBring")}
                     ></textarea>

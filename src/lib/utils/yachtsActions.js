@@ -28,6 +28,8 @@ export async function deleteYacht(slug) {
  * Создание новой яхты
  */
 export async function createYacht(data) {
+    console.log("Пришлов обработчик:", data);
+
     const res = await fetch(API_URL, {
         method: "POST",
         headers: {
@@ -35,6 +37,10 @@ export async function createYacht(data) {
         },
         body: JSON.stringify(data),
     });
+
+    console.log("====================================");
+    console.log("Ответ от сервера:", res);
+    console.log("====================================");
 
     if (!res.ok) {
         const err = await res.json();

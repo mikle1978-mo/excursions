@@ -16,11 +16,11 @@
         title: { ru: "", en: "", tr: "" },
         metaDescription: { ru: "", en: "", tr: "" },
         description: { ru: "", en: "", tr: "" },
-        whatYouSee: { ru: "", en: "", tr: "" },
-        includes: { ru: "", en: "", tr: "" },
-        whatToBring: { ru: "", en: "", tr: "" },
+        whatYouSee: { ru: [], en: [], tr: [] },
+        includes: { ru: [], en: [], tr: [] },
+        whatToBring: { ru: [], en: [], tr: [] },
         meetingPoint: { ru: "", en: "", tr: "" },
-        tags: { ru: "", en: "", tr: "" },
+        tags: { ru: [], en: [], tr: [] },
     };
 
     let error = "";
@@ -41,14 +41,14 @@
 
     function handleArrayInput(event, lang, field) {
         formData[field][lang] = event.target.value
-            .split(",")
+            .split(/[\n,]+/)
             .map((item) => item.trim())
             .filter(Boolean);
     }
 
     function handleImageInput(event) {
         formData.images = event.target.value
-            .split(",")
+            .split(/[\n,]+/)
             .map((img) => img.trim())
             .filter(Boolean);
     }
@@ -97,7 +97,7 @@
 
             <label>
                 Изображения (URL через запятую):
-                <input type="text" on:input={handleImageInput} />
+                <textarea type="text" on:input={handleImageInput}></textarea>
             </label>
         </fieldset>
 
@@ -128,6 +128,7 @@
                     <textarea
                         on:input={(e) =>
                             handleArrayInput(e, lang, "whatYouSee")}
+                        value={formData.whatYouSee[lang].join(", ")}
                     ></textarea>
                 </label>
 
@@ -135,6 +136,7 @@
                     Что включено (через запятую):
                     <textarea
                         on:input={(e) => handleArrayInput(e, lang, "includes")}
+                        value={formData.includes[lang].join(", ")}
                     ></textarea>
                 </label>
 
@@ -143,6 +145,7 @@
                     <textarea
                         on:input={(e) =>
                             handleArrayInput(e, lang, "whatToBring")}
+                        value={formData.whatToBring[lang].join(", ")}
                     ></textarea>
                 </label>
 
@@ -159,6 +162,7 @@
                     <input
                         type="text"
                         on:input={(e) => handleArrayInput(e, lang, "tags")}
+                        value={formData.tags[lang].join(", ")}
                     />
                 </label>
             </fieldset>
