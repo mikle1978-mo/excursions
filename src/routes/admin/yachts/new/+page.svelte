@@ -2,6 +2,8 @@
     import { goto } from "$app/navigation";
     import { createYacht } from "$lib/utils/yachtsActions";
     import { onMount } from "svelte";
+    import { browser } from "$app/environment";
+    import ArrayInput from "$lib/components/UI/inputs/arrayInput/ArrayInput.svelte";
 
     let formData = {
         slug: "",
@@ -42,31 +44,68 @@
         }
     }
 
-    function handleArrayInput(event, lang, field) {
-        formData[field][lang] = event.target.value
-            .split(",")
-            .map((item) =>
-                item
-                    .trim()
-                    .replace(/^"(.*)"$/, "$1")
-                    .replace(/^'(.*)'$/, "$1")
-            )
-            .filter(Boolean);
-    }
-
-    function handleImageInput(event) {
-        formData.images = event.target.value
-            .split(/[\n,]+/)
-            .map((img) => img.trim())
-            .filter(Boolean);
-    }
-
     onMount(() => {
-        const savedData = localStorage.getItem("yachtFormDraft");
-        if (savedData) formData = JSON.parse(savedData);
+        if (browser) {
+            try {
+                const savedData = localStorage.getItem("yachtFormDraft");
+                if (savedData) {
+                    const parsed = JSON.parse(savedData);
+                    if (parsed && typeof parsed === "object") {
+                        // Обновляем поля вручную, чтобы сохранить реактивность
+                        Object.assign(formData, parsed);
+
+                        // Вложенные объекты тоже обновляем вручную
+                        for (const key of [
+                            "title",
+                            "metaDescription",
+                            "description",
+                            "meetingPoint",
+                        ]) {
+                            if (parsed[key]) {
+                                Object.assign(formData[key], parsed[key]);
+                            }
+                        }
+
+                        for (const key of [
+                            "whatYouSee",
+                            "includes",
+                            "whatToBring",
+                            "tags",
+                        ]) {
+                            if (parsed[key]) {
+                                for (const lang of ["ru", "en", "tr"]) {
+                                    formData[key][lang] =
+                                        parsed[key][lang] ?? [];
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error("Ошибка загрузки из localStorage", e);
+                localStorage.removeItem("yachtFormDraft");
+            }
+        }
     });
 
-    $: localStorage.setItem("yachtFormDraft", JSON.stringify(formData));
+    $: {
+        if (browser) {
+            try {
+                localStorage.setItem(
+                    "yachtFormDraft",
+                    JSON.stringify(formData)
+                );
+            } catch (e) {
+                console.error("Ошибка сохранения в localStorage", e);
+            }
+        }
+    }
+
+    $: {
+        console.log("--- Current formData.images ---");
+
+        console.log(JSON.parse(JSON.stringify(formData)));
+    }
 </script>
 
 <div class="new-page">
@@ -110,15 +149,11 @@
                 <input type="number" bind:value={formData.discount} />
             </label>
 
-            <label>
-                Изображения (URL через запятую):
-                <textarea
-                    type="text"
-                    on:input={handleImageInput}
-                    rows="5"
-                    value={formData.images.join(", ")}
-                ></textarea>
-            </label>
+            <ArrayInput
+                bind:value={formData.images}
+                placeholder="Введите URL изображений через запятую или с новой строки"
+                label="Изображения (URL через запятую или с новой строки)"
+            />
         </fieldset>
 
         <h2>Мультиязычные поля</h2>
@@ -145,31 +180,23 @@
                     ></textarea>
                 </label>
 
-                <label>
-                    Что вы увидите (через запятую):
-                    <textarea
-                        rows="5"
-                        on:input={(e) =>
-                            handleArrayInput(e, lang, "whatYouSee")}
-                    ></textarea>
-                </label>
+                <ArrayInput
+                    bind:value={formData.whatYouSee[lang]}
+                    placeholder="Введите пункты через запятую или с новой строки"
+                    label="Что вы увидите:"
+                />
 
-                <label>
-                    Что включено (через запятую):
-                    <textarea
-                        rows="5"
-                        on:input={(e) => handleArrayInput(e, lang, "includes")}
-                    ></textarea>
-                </label>
+                <ArrayInput
+                    bind:value={formData.includes[lang]}
+                    placeholder="Введите пункты через запятую или с новой строки"
+                    label="Что включено:"
+                />
 
-                <label>
-                    Что взять с собой (через запятую):
-                    <textarea
-                        rows="5"
-                        on:input={(e) =>
-                            handleArrayInput(e, lang, "whatToBring")}
-                    ></textarea>
-                </label>
+                <ArrayInput
+                    bind:value={formData.whatToBring[lang]}
+                    placeholder="Введите пункты через запятую или с новой строки"
+                    label="Что взять с собой:"
+                />
 
                 <label>
                     Место встречи:
