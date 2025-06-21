@@ -10,7 +10,7 @@
         // Улучшенный парсинг с учетом всех случаев
         const items = inputValue
             .split("\n")
-            .map((item) => item.trim().replace(/^["'`]|["'`]$/g, ""))
+            .map((item) => item.trim())
             .filter((item) => item.length > 0);
 
         if (items.length > 0) {
@@ -30,6 +30,12 @@
 <div class="label">
     <slot>{label}</slot>
     <div class="array-input">
+        <div class="input-group">
+            <textarea bind:value={inputValue} {placeholder}></textarea>
+            <button on:click={addItems} type="button" class="button">
+                Добавить
+            </button>
+        </div>
         <div class="items-list">
             {#each value as item, index (index)}
                 <div class="item">
@@ -45,12 +51,6 @@
                     </div>
                 </div>
             {/each}
-        </div>
-        <div class="input-group">
-            <textarea bind:value={inputValue} {placeholder}></textarea>
-            <button on:click={addItems} type="button" class="button">
-                Добавить
-            </button>
         </div>
     </div>
 </div>
@@ -119,13 +119,14 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.3rem;
-        padding: var(--space-vertical-md) 0;
+        padding: var(--space-vertical-md) var(--space-vertical-sm);
         border: 1px solid var(--color-gray-400);
         border-radius: var(--radius-sm);
+        background-color: var(--color-gray-200);
     }
 
     .item {
-        background: #f0f0f0;
+        background: var(--color-bg);
         padding: 0.3rem 0.6rem;
         border-radius: 4px;
         display: flex;
@@ -138,6 +139,8 @@
         justify-content: center;
         background: none;
         font-size: 1.5rem;
+        width: calc(var(--text-md) * 1.5);
+        height: calc(var(--text-md) * 1.5);
         border: none;
         padding: 0;
         border-radius: var(--radius-full);

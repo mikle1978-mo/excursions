@@ -21,7 +21,7 @@ export const yachtSchema = z.object({
     start: z.string().optional(),
     discount: z.union([z.string(), z.number()]).transform(Number).optional(),
     images: z.array(z.string()).optional(),
-    days: z.array(z.string()).optional(),
+    days: z.array(z.union([z.string(), z.number()])).optional(),
 
     title: i18nString.optional(),
     metaDescription: i18nString.optional(),

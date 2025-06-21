@@ -45,6 +45,14 @@ if (typeof localStorage !== "undefined") {
     });
 }
 
+// 👇 Добавляем setYachtForm — устанавливает всё сразу
+export function setYachtForm(data) {
+    yachtForm.set({
+        ...createInitialYachtForm(), // на случай отсутствующих полей
+        ...data,
+    });
+}
+
 // Функция сброса
 export function resetYachtForm() {
     yachtForm.set(createInitialYachtForm());

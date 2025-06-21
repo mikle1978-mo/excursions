@@ -1,13 +1,15 @@
 <script>
     import { page } from "$app/stores";
-    import SeoSchemaTour from "$lib/components/SEO/SeoSchemaTour.svelte";
+    import SeoSchemayacht from "$lib/components/SEO/SeoSchemaYacht.svelte";
     import { selectedCurrency } from "$lib/stores/currency.js";
     import { locale } from "$lib/stores/locale";
     import { onMount } from "svelte";
     import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
     import { breadcrumbs } from "$lib/i18n/breadcrumbs.js";
     export let data;
-    const { tour, reviewsCount, rating } = data;
+    const { yacht, reviewsCount, rating } = data;
+
+    console.log("Yacht data:", yacht);
 
     const { slug } = $page.params;
     import { excursion_page } from "$lib/i18n/excursion_pade.js";
@@ -34,17 +36,17 @@
 
     let isMounted = false;
     $: currentTranslation =
-        tour.translations.find((t) => t.lang === $locale) ?? {};
+        yacht.translations.find((t) => t.lang === $locale) ?? {};
 
     $: breadcrumbsList = [
         { href: `/`, label: breadcrumbs.home[$locale] },
-        { href: `/${$locale}/excursions`, label: breadcrumbs.tours[$locale] },
-        tour ? { label: currentTranslation.title } : { label: "..." },
+        { href: `/${$locale}/yachts`, label: breadcrumbs.yachts[$locale] },
+        yacht ? { label: currentTranslation.title } : { label: "..." },
     ];
     let priceDisplay;
     onMount(async () => {
         await initCurrencyService();
-        priceDisplay = formatPrice(tour.price);
+        priceDisplay = formatPrice(yacht.price);
         isMounted = true;
     });
 </script>
@@ -60,7 +62,7 @@
         property="og:description"
         content={currentTranslation.metaDescription}
     />
-    <meta property="og:image" content={tour.images[0]} />
+    <meta property="og:image" content={yacht.images[0]} />
     <meta
         property="og:image:alt"
         content={`Tuor photo: ${currentTranslation.title}`}
@@ -77,19 +79,19 @@
         name="twitter:description"
         content={currentTranslation.metaDescription}
     />
-    <meta name="twitter:image" content={tour.images[0]} />
+    <meta name="twitter:image" content={yacht.images[0]} />
     <!-- <meta name="twitter:site" content="@YourTwitterHandle" /> -->
 
     <!-- Канонический URL -->
     <link rel="canonical" href={`${baseUrl}${$page.url.pathname}`} />
 </svelte:head>
 
-<SeoSchemaTour
+<SeoSchemayacht
     title={currentTranslation.title}
     description={currentTranslation.metaDescription}
-    image={tour.images?.[0] || "/images/excursions/excursion_default.webp"}
+    image={yacht.images?.[0] || "/images/excursions/excursion_default.webp"}
     url={`${baseUrl}${$page.url.pathname}`}
-    price={tour.price}
+    price={yacht.price}
     currency="USD"
     {rating}
     reviewCount={reviewsCount}
@@ -98,11 +100,11 @@
 
 {#if isModalOpen}
     <Modal on:close={closeModal}>
-        <ShortForm slug={tour.slug} />
+        <ShortForm slug={yacht.slug} />
     </Modal>
 {/if}
 
-{#if !tour}
+{#if !yacht}
     <div class="error-page">
         <h1>Экскурсия не найдена</h1>
         <a href="/{$locale}/excursions">← Вернуться к списку экскурсий</a>
@@ -127,18 +129,18 @@
                 </div>
 
                 <div class="badges">
-                    {#if tour.isPopular}
+                    {#if yacht.isPopular}
                         <span class="badge popular">Популярно</span>
                     {/if}
                     <span class="badge duration"
-                        >{tour.duration} {excursion_page.hours[$locale]}</span
+                        >{yacht.duration} {excursion_page.hours[$locale]}</span
                     >
                 </div>
             </div>
         </header>
 
         <!-- Галерея изображений -->
-        <Galery images={tour.images} title={tour.title} />
+        <Galery images={yacht.images} title={yacht.title} />
 
         <!-- Основное содержимое -->
         <div class="content-grid">
@@ -161,7 +163,7 @@
                             >{excursion_page.duration[$locale]}:</span
                         >
                         <span class="value"
-                            >{tour.duration}
+                            >{yacht.duration}
                             {excursion_page.hours[$locale]}</span
                         >
                     </div>
@@ -172,7 +174,7 @@
                         >
                         <span class="value"
                             >{excursion_page.before[$locale]}
-                            {tour.groupSize}
+                            {yacht.groupSize}
                             {excursion_page.people[$locale]}</span
                         >
                     </div>
@@ -220,7 +222,7 @@
             </section>
         </div>
 
-        <ReviewsList itemSlug={tour.slug} />
+        <ReviewsList itemSlug={yacht.slug} />
     </article>
 {/if}
 

@@ -7,4 +7,8 @@ export const breadcrumbs = {
         ru: "Экскурсии",
         en: "Excursions",
     },
+    yachts: {
+        ru: "Яхты",
+        en: "Yachts",
+    },
 };
