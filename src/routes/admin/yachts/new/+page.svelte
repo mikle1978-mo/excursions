@@ -1,111 +1,45 @@
 <script>
     import { goto } from "$app/navigation";
     import { createYacht } from "$lib/utils/yachtsActions";
-    import { onMount } from "svelte";
-    import { browser } from "$app/environment";
     import ArrayInput from "$lib/components/UI/inputs/arrayInput/ArrayInput.svelte";
-
-    let formData = {
-        slug: "",
-        duration: "",
-        groupSize: "",
-        price: "",
-        distance: "",
-        start: "",
-        discount: "",
-        images: [],
-        days: [],
-
-        title: { ru: "", en: "", tr: "" },
-        metaDescription: { ru: "", en: "", tr: "" },
-        description: { ru: "", en: "", tr: "" },
-        whatYouSee: { ru: [], en: [], tr: [] },
-        includes: { ru: [], en: [], tr: [] },
-        whatToBring: { ru: [], en: [], tr: [] },
-        meetingPoint: { ru: "", en: "", tr: "" },
-        tags: { ru: [], en: [], tr: [] },
-    };
+    import { yachtForm } from "$lib/stores/yachtForm";
+    import { createInitialYachtForm } from "$lib/stores/yachtForm";
+    import { yachtSchema } from "$lib/schemas/yachtSchema";
 
     let error = "";
     let isLoading = false;
 
     async function handleSubmit() {
         isLoading = true;
+        error = "";
+
         try {
-            console.log("Отправляемые данные:", formData);
-            const result = await createYacht(formData);
-            console.log("Результат создания яхты:", result);
+            // Валидируем текущие данные из стора
+            const validData = yachtSchema.parse($yachtForm);
+
+            console.log("Валидные данные:", validData);
+
+            const result = await createYacht(validData);
+
             alert("Яхта создана");
-            goto(`/admin`);
-        } catch (e) {
-            error = e.message;
+            goto("/admin");
+
+            yachtForm.set(createInitialYachtForm());
+        } catch (err) {
+            if (err.errors) {
+                error = err.errors.map((e) => e.message).join("; ");
+            } else {
+                error = err.message || "Ошибка при сохранении";
+            }
         } finally {
             isLoading = false;
         }
     }
 
-    onMount(() => {
-        if (browser) {
-            try {
-                const savedData = localStorage.getItem("yachtFormDraft");
-                if (savedData) {
-                    const parsed = JSON.parse(savedData);
-                    if (parsed && typeof parsed === "object") {
-                        // Обновляем поля вручную, чтобы сохранить реактивность
-                        Object.assign(formData, parsed);
-
-                        // Вложенные объекты тоже обновляем вручную
-                        for (const key of [
-                            "title",
-                            "metaDescription",
-                            "description",
-                            "meetingPoint",
-                        ]) {
-                            if (parsed[key]) {
-                                Object.assign(formData[key], parsed[key]);
-                            }
-                        }
-
-                        for (const key of [
-                            "whatYouSee",
-                            "includes",
-                            "whatToBring",
-                            "tags",
-                        ]) {
-                            if (parsed[key]) {
-                                for (const lang of ["ru", "en", "tr"]) {
-                                    formData[key][lang] =
-                                        parsed[key][lang] ?? [];
-                                }
-                            }
-                        }
-                    }
-                }
-            } catch (e) {
-                console.error("Ошибка загрузки из localStorage", e);
-                localStorage.removeItem("yachtFormDraft");
-            }
-        }
-    });
-
-    $: {
-        if (browser) {
-            try {
-                localStorage.setItem(
-                    "yachtFormDraft",
-                    JSON.stringify(formData)
-                );
-            } catch (e) {
-                console.error("Ошибка сохранения в localStorage", e);
-            }
-        }
-    }
-
-    $: {
-        console.log("--- Current formData.images ---");
-
-        console.log(JSON.parse(JSON.stringify(formData)));
-    }
+    $: console.log(
+        "--- Current formData ---",
+        JSON.parse(JSON.stringify($yachtForm))
+    );
 </script>
 
 <div class="new-page">
@@ -116,42 +50,42 @@
             <legend>Общая информация</legend>
             <label>
                 Slug (уникальный идентификатор):
-                <input type="text" bind:value={formData.slug} required />
+                <input type="text" bind:value={$yachtForm.slug} required />
             </label>
 
             <label>
                 Длительность (в часах):
-                <input type="number" bind:value={formData.duration} />
+                <input type="number" bind:value={$yachtForm.duration} />
             </label>
 
             <label>
                 Вместительность:
-                <input type="number" bind:value={formData.groupSize} />
+                <input type="number" bind:value={$yachtForm.groupSize} />
             </label>
 
             <label>
                 Цена прогулки (в долларах):
-                <input type="number" bind:value={formData.price} />
+                <input type="number" bind:value={$yachtForm.price} />
             </label>
 
             <label>
                 Расстояние (км):
-                <input type="number" bind:value={formData.distance} />
+                <input type="number" bind:value={$yachtForm.distance} />
             </label>
 
             <label>
                 Время начала:
-                <input type="text" bind:value={formData.start} />
+                <input type="text" bind:value={$yachtForm.start} />
             </label>
 
             <label>
                 Скидка (%):
-                <input type="number" bind:value={formData.discount} />
+                <input type="number" bind:value={$yachtForm.discount} />
             </label>
 
             <ArrayInput
-                bind:value={formData.images}
-                placeholder="Введите URL изображений через запятую или с новой строки"
+                bind:value={$yachtForm.images}
+                placeholder="Введите URL изображений каждый с новой строки"
                 label="Изображения (URL через запятую или с новой строки)"
             />
         </fieldset>
@@ -163,38 +97,38 @@
 
                 <label>
                     Название яхты:
-                    <input type="text" bind:value={formData.title[lang]} />
+                    <input type="text" bind:value={$yachtForm.title[lang]} />
                 </label>
 
                 <label>
                     Meta-описание:
                     <textarea
                         rows="5"
-                        bind:value={formData.metaDescription[lang]}
+                        bind:value={$yachtForm.metaDescription[lang]}
                     ></textarea>
                 </label>
 
                 <label>
                     Описание:
-                    <textarea rows="5" bind:value={formData.description[lang]}
+                    <textarea rows="5" bind:value={$yachtForm.description[lang]}
                     ></textarea>
                 </label>
 
                 <ArrayInput
-                    bind:value={formData.whatYouSee[lang]}
-                    placeholder="Введите пункты через запятую или с новой строки"
+                    bind:value={$yachtForm.whatYouSee[lang]}
+                    placeholder="Введите пункты каждый с новой строки"
                     label="Что вы увидите:"
                 />
 
                 <ArrayInput
-                    bind:value={formData.includes[lang]}
-                    placeholder="Введите пункты через запятую или с новой строки"
+                    bind:value={$yachtForm.includes[lang]}
+                    placeholder="Введите пункты каждый с новой строки"
                     label="Что включено:"
                 />
 
                 <ArrayInput
-                    bind:value={formData.whatToBring[lang]}
-                    placeholder="Введите пункты через запятую или с новой строки"
+                    bind:value={$yachtForm.whatToBring[lang]}
+                    placeholder="Введите пункты каждый с новой строки"
                     label="Что взять с собой:"
                 />
 
@@ -202,16 +136,13 @@
                     Место встречи:
                     <input
                         type="text"
-                        bind:value={formData.meetingPoint[lang]}
+                        bind:value={$yachtForm.meetingPoint[lang]}
                     />
                 </label>
 
                 <label>
                     Теги (через запятую):
-                    <input
-                        type="text"
-                        on:input={(e) => handleArrayInput(e, lang, "tags")}
-                    />
+                    <input type="text" bind:value={$yachtForm.tags[lang]} />
                 </label>
             </fieldset>
         {/each}
@@ -221,7 +152,7 @@
         {/if}
 
         <button type="submit" disabled={isLoading}>
-            {isLoading ? "Создание..." : "Создать экскурсию"}
+            {isLoading ? "Создание..." : "Создать яхту"}
         </button>
     </form>
 </div>

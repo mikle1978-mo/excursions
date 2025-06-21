@@ -1,7 +1,6 @@
 <script>
     export let value = [];
-    export let placeholder =
-        "Введите элементы (через запятую или с новой строки)";
+    export let placeholder = "Введите элементы (каждый с новой строки)";
     // export let delimiter = /[,;\n]+/;
     export let label = "Элементы:";
 
@@ -10,12 +9,8 @@
     function addItems() {
         // Улучшенный парсинг с учетом всех случаев
         const items = inputValue
-            .split("\n") // Сначала делим по строкам
-            .flatMap((line) =>
-                line
-                    .split(/[,;]+/) // Затем по запятым/точкам с запятой
-                    .map((item) => item.trim().replace(/^["'`]|["'`]$/g, ""))
-            )
+            .split("\n")
+            .map((item) => item.trim().replace(/^["'`]|["'`]$/g, ""))
             .filter((item) => item.length > 0);
 
         if (items.length > 0) {
@@ -32,7 +27,7 @@
     }
 </script>
 
-<div>
+<div class="label">
     <slot>{label}</slot>
     <div class="array-input">
         <div class="items-list">
@@ -51,15 +46,34 @@
                 </div>
             {/each}
         </div>
-        <textarea bind:value={inputValue} {placeholder} rows="2"></textarea>
-        <button on:click={addItems} type="button" class="button">
-            Добавить
-        </button>
+        <div class="input-group">
+            <textarea bind:value={inputValue} {placeholder}></textarea>
+            <button on:click={addItems} type="button" class="button">
+                Добавить
+            </button>
+        </div>
     </div>
 </div>
 
 <style>
+    .label {
+        display: flex;
+        flex-direction: column;
+        font-size: var(--text-sm);
+        gap: 0.3rem;
+    }
+    .array-input {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .input-group {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+    }
     textarea {
+        width: 100%;
         padding: 0.5rem 0.75rem;
         font-size: var(--text-md);
         border: 1px solid var(--color-gray-400);
@@ -78,8 +92,9 @@
         box-shadow: 0 0 0 2px rgba(74, 201, 126, 0.3);
     }
     .button {
-        padding: 1rem 2rem;
+        padding: var(--space-vertical-xs) var(--space-horizontal-sm);
         max-width: 20rem;
+        max-height: calc(var(--text-md) * 2);
         font-size: inherit;
         border: none;
         border-radius: 3rem;
@@ -100,17 +115,15 @@
         background-color: #ccc;
         cursor: not-allowed;
     }
-    .array-input {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
     .items-list {
         display: flex;
         flex-wrap: wrap;
         gap: 0.3rem;
         padding: var(--space-vertical-md) 0;
+        border: 1px solid var(--color-gray-400);
+        border-radius: var(--radius-sm);
     }
+
     .item {
         background: #f0f0f0;
         padding: 0.3rem 0.6rem;
