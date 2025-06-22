@@ -71,10 +71,10 @@ export async function POST({ request }) {
             title: data.title?.[lang] || "",
             metaDescription: data.metaDescription?.[lang] || "",
             description: data.description?.[lang] || "",
+            meetingPoint: data.meetingPoint?.[lang] || "",
             whatYouSee: data.whatYouSee?.[lang] || [],
             includes: data.includes?.[lang] || [],
             whatToBring: data.whatToBring?.[lang] || [],
-            meetingPoint: data.meetingPoint?.[lang] || "",
             tags: data.tags?.[lang] || [],
         }));
 

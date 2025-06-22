@@ -1,84 +1,67 @@
 <script>
     import {
-        yachtForm,
-        setYachtForm,
-        createInitialYachtForm,
-    } from "$lib/stores/yachtForm";
-    import { yachtSchema } from "$lib/schemas/yachtSchema";
+        excursionForm,
+        setExcursionForm,
+        createInitialExcursionForm,
+    } from "$lib/stores/excursionForm";
+    import { excursionSchema } from "$lib/schemas/excursionSchema";
     import ArrayInput from "$lib/components/UI/inputs/arrayInput/ArrayInput.svelte";
     import { goto } from "$app/navigation";
-    import { createYacht, updateYacht } from "$lib/utils/yachtsActions";
+    import {
+        createExcursion,
+        updateExcursion,
+    } from "$lib/utils/excursionsActions";
+    import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
 
     export let mode = "create"; // "create" или "edit"
     export let slug = ""; // для режима "edit"
 
-    let error = "";
+    let errors = {};
+    let generalError = "";
     let isLoading = false;
 
     async function handleSubmit() {
         isLoading = true;
-        error = "";
+        errors = {};
 
         try {
-            const validData = yachtSchema.parse($yachtForm);
+            const validData = excursionSchema.parse($excursionForm);
 
             if (mode === "create") {
-                await createYacht(validData);
-                alert("Яхта создана");
-                yachtForm.set(createInitialYachtForm());
+                await createExcursion(validData);
+                alert("Экскурсия создана");
+                excursionForm.set(createInitialExcursionForm());
             } else {
-                await updateYacht(slug, validData);
+                await updateExcursion(slug, validData);
                 alert("Изменения сохранены");
             }
 
             goto("/admin");
         } catch (err) {
             if (err.errors) {
-                error = err.errors.map((e) => e.message).join("; ");
+                // Преобразуем zod-ошибки в объект { field: message }
+                errors = err.errors.reduce((acc, e) => {
+                    const field = e.path.join(".");
+                    acc[field] = e.message;
+                    return acc;
+                }, {});
             } else {
-                error = err.message || "Ошибка при сохранении";
+                generalError = err.message || "Ошибка при сохранении";
             }
         } finally {
             isLoading = false;
         }
     }
 
-    // async function handleSubmit() {
-    //     isLoading = true;
-    //     error = "";
-
-    //     try {
-    //         // Валидируем текущие данные из стора
-    //         const validData = yachtSchema.parse($yachtForm);
-
-    //         console.log("Валидные данные:", validData);
-
-    //         const result = await createYacht(validData);
-
-    //         alert("Яхта создана");
-    //         goto("/admin");
-
-    //         yachtForm.set(createInitialYachtForm());
-    //     } catch (err) {
-    //         if (err.errors) {
-    //             error = err.errors.map((e) => e.message).join("; ");
-    //         } else {
-    //             error = err.message || "Ошибка при сохранении";
-    //         }
-    //     } finally {
-    //         isLoading = false;
-    //     }
-    // }
-
     $: console.log(
         "--- Current formData ---",
-        JSON.parse(JSON.stringify($yachtForm))
+        JSON.parse(JSON.stringify($excursionForm))
     );
 </script>
 
 <div class="new-page">
     <h1 class="title">
-        {mode === "create" ? "Создание яхты" : "Редактирование яхты"}
+        {mode === "create" ? "Создание экскурсии" : "Редактирование экскурсии"}
     </h1>
 
     <form on:submit|preventDefault={handleSubmit}>
@@ -86,44 +69,52 @@
             <legend>Общая информация</legend>
             <label>
                 Slug (уникальный идентификатор):
-                <input type="text" bind:value={$yachtForm.slug} required />
+                <input type="text" bind:value={$excursionForm.slug} required />
+                <ErrorMessage field="slug" {errors} />
             </label>
 
             <label>
                 Длительность (в часах):
-                <input type="number" bind:value={$yachtForm.duration} />
+                <input type="number" bind:value={$excursionForm.duration} />
+                <ErrorMessage field="duration" {errors} />
             </label>
 
             <label>
-                Вместительность:
-                <input type="number" bind:value={$yachtForm.groupSize} />
+                Размер группы (макс. количество человек):
+                <input type="number" bind:value={$excursionForm.groupSize} />
+                <ErrorMessage field="groupSize" {errors} />
             </label>
 
             <label>
                 Цена прогулки (в долларах):
-                <input type="number" bind:value={$yachtForm.price} />
+                <input type="number" bind:value={$excursionForm.price} />
+                <ErrorMessage field="price" {errors} />
             </label>
 
             <label>
                 Расстояние (км):
-                <input type="number" bind:value={$yachtForm.distance} />
+                <input type="number" bind:value={$excursionForm.distance} />
+                <ErrorMessage field="distance" {errors} />
             </label>
 
             <label>
                 Время начала:
-                <input type="text" bind:value={$yachtForm.start} />
+                <input type="text" bind:value={$excursionForm.start} />
+                <ErrorMessage field="start" {errors} />
             </label>
 
             <label>
                 Скидка (%):
-                <input type="number" bind:value={$yachtForm.discount} />
+                <input type="number" bind:value={$excursionForm.discount} />
+                <ErrorMessage field="discount" {errors} />
             </label>
 
             <ArrayInput
-                bind:value={$yachtForm.images}
+                bind:value={$excursionForm.images}
                 placeholder="Введите URL изображений каждый с новой строки"
                 label="Изображения (URL через запятую или с новой строки)"
             />
+            <ErrorMessage field="images" {errors} />
         </fieldset>
 
         <h2>Мультиязычные поля</h2>
@@ -132,59 +123,75 @@
                 <legend>{lang.toUpperCase()}</legend>
 
                 <label>
-                    Название яхты:
-                    <input type="text" bind:value={$yachtForm.title[lang]} />
+                    Название экскурсии:
+                    <input
+                        type="text"
+                        bind:value={$excursionForm.title[lang]}
+                    />
+                    <ErrorMessage field={`title.${lang}`} {errors} />
                 </label>
 
                 <label>
                     Meta-описание:
                     <textarea
                         rows="5"
-                        bind:value={$yachtForm.metaDescription[lang]}
+                        bind:value={$excursionForm.metaDescription[lang]}
                     ></textarea>
+                    <ErrorMessage field={`metaDescription.${lang}`} {errors} />
                 </label>
 
                 <label>
                     Описание:
-                    <textarea rows="5" bind:value={$yachtForm.description[lang]}
+                    <textarea
+                        rows="5"
+                        bind:value={$excursionForm.description[lang]}
                     ></textarea>
+                    <ErrorMessage field={`description.${lang}`} {errors} />
                 </label>
 
                 <label>
                     Место встречи:
                     <input
                         type="text"
-                        bind:value={$yachtForm.meetingPoint[lang]}
-                    />
+                        bind:value={$excursionForm.meetingPoint[lang]}
+                    /><ErrorMessage field={`meetingPoint.${lang}`} {errors} />
                 </label>
 
                 <ArrayInput
-                    bind:value={$yachtForm.whatYouSee[lang]}
+                    bind:value={$excursionForm.whatYouSee[lang]}
                     placeholder="Введите пункты каждый с новой строки"
                     label="Что вы увидите:"
+                    field={`whatYouSee.${lang}`}
+                    {errors}
                 />
 
                 <ArrayInput
-                    bind:value={$yachtForm.includes[lang]}
+                    bind:value={$excursionForm.includes[lang]}
                     placeholder="Введите пункты каждый с новой строки"
                     label="Что включено:"
+                    field={`includes.${lang}`}
+                    {errors}
                 />
 
                 <ArrayInput
-                    bind:value={$yachtForm.whatToBring[lang]}
+                    bind:value={$excursionForm.whatToBring[lang]}
                     placeholder="Введите пункты каждый с новой строки"
                     label="Что взять с собой:"
+                    field={`whatToBring.${lang}`}
+                    {errors}
                 />
                 <ArrayInput
-                    bind:value={$yachtForm.tags[lang]}
+                    bind:value={$excursionForm.tags[lang]}
                     placeholder="Введите пункты каждый с новой строки"
                     label="Теги (через запятую):"
+                    field={`tags.${lang}`}
+                    {errors}
                 />
             </fieldset>
         {/each}
 
-        {#if error}
-            <p class="error">{error}</p>
+        {#if generalError}
+            <p class="error">{generalError}</p>
         {/if}
 
         <button type="submit" disabled={isLoading}>
@@ -193,7 +200,7 @@
                     ? "Создание..."
                     : "Сохранение..."
                 : mode === "create"
-                  ? "Создать яхту"
+                  ? "Создать экскурсию"
                   : "Сохранить изменения"}
         </button>
     </form>

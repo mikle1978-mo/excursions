@@ -1,16 +1,16 @@
-import { VITE_BASE_URL } from "$env/static/private";
+import { GET as getSlugs } from "../api/sitemap-slugs/+server.js";
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5173";
 
 const SUPPORTED_LOCALES = ["ru", "en"];
 
 export async function GET() {
-    const res = await fetch(`${VITE_BASE_URL}/api/excursions-slugs`);
-    if (!res.ok) {
-        return new Response("Ошибка при получении данных", { status: 500 });
-    }
+    const res = await getSlugs();
+    const allSlugs = await res.json();
 
-    const slugs = await res.json();
+    const excursions = allSlugs.filter((item) => item.type === "excursion");
+    const yachts = allSlugs.filter((item) => item.type === "yacht");
+    const cars = allSlugs.filter((item) => item.type === "car");
 
-    // Главные страницы
     const homepageEntries = `
   <url>
     <loc>${VITE_BASE_URL}/en</loc>
@@ -30,72 +30,41 @@ export async function GET() {
   </url>   
   `;
 
-    // Страница списка экскурсий
-    const excursionsListEntries = SUPPORTED_LOCALES.map(
-        (lang) => `
+    const listEntries = (segment) =>
+        SUPPORTED_LOCALES.map(
+            (lang) => `
   <url>
-    <loc>${VITE_BASE_URL}/${lang}/excursions</loc>
+    <loc>${VITE_BASE_URL}/${lang}/${segment}</loc>
     ${SUPPORTED_LOCALES.map(
         (altLang) =>
-            `<xhtml:link rel="alternate" hreflang="${altLang}" href="${VITE_BASE_URL}/${altLang}/excursions" />`
+            `<xhtml:link rel="alternate" hreflang="${altLang}" href="${VITE_BASE_URL}/${altLang}/${segment}" />`
     ).join("\n")}
-    <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en/excursions" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en/${segment}" />
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>`
-    ).join("");
+        ).join("");
 
-    // Страница списка яхт
-    const yachtsListEntries = SUPPORTED_LOCALES.map(
-        (lang) => `
+    const dynamicEntries = (items, segment) =>
+        items
+            .map((item) =>
+                SUPPORTED_LOCALES.map((lang) => {
+                    const hrefs = SUPPORTED_LOCALES.map(
+                        (altLang) =>
+                            `<xhtml:link rel="alternate" hreflang="${altLang}" href="${VITE_BASE_URL}/${altLang}/${segment}/${item.slug}" />`
+                    ).join("\n");
+
+                    return `
   <url>
-    <loc>${VITE_BASE_URL}/${lang}/yachts</loc>
-    ${SUPPORTED_LOCALES.map(
-        (altLang) =>
-            `<xhtml:link rel="alternate" hreflang="${altLang}" href="${VITE_BASE_URL}/${altLang}/yachts" />`
-    ).join("\n")}
-    <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en/yachts" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>`
-    ).join("");
-
-    // Страница списка яхт
-    const carsListEntries = SUPPORTED_LOCALES.map(
-        (lang) => `
-  <url>
-    <loc>${VITE_BASE_URL}/${lang}/cars</loc>
-    ${SUPPORTED_LOCALES.map(
-        (altLang) =>
-            `<xhtml:link rel="alternate" hreflang="${altLang}" href="${VITE_BASE_URL}/${altLang}/cars" />`
-    ).join("\n")}
-    <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en/cars" />
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>`
-    ).join("");
-
-    // Экскурсии
-    const excursionEntries = slugs
-        .map((slug) => {
-            const path = `excursions/${slug}`;
-            return SUPPORTED_LOCALES.map((lang) => {
-                const hreflangs = SUPPORTED_LOCALES.map(
-                    (altLang) =>
-                        `<xhtml:link rel="alternate" hreflang="${altLang}" href="${VITE_BASE_URL}/${altLang}/${path}" />`
-                ).join("\n");
-
-                return `
-  <url>
-    <loc>${VITE_BASE_URL}/${lang}/${path}</loc>
-    ${hreflangs}
-    <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en/${path}" />
+    <loc>${VITE_BASE_URL}/${lang}/${segment}/${item.slug}</loc>
+    ${hrefs}
+    <xhtml:link rel="alternate" hreflang="x-default" href="${VITE_BASE_URL}/en/${segment}/${item.slug}" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
-            }).join("");
-        })
-        .join("");
+                }).join("")
+            )
+            .join("");
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset
@@ -103,10 +72,12 @@ export async function GET() {
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
 >
 ${homepageEntries}
-${excursionsListEntries}
-${yachtsListEntries}
-${carsListEntries}
-${excursionEntries}
+${listEntries("excursions")}
+${listEntries("yachts")}
+${listEntries("cars")}
+${dynamicEntries(excursions, "excursions")}
+${dynamicEntries(yachts, "yachts")}
+${dynamicEntries(cars, "cars")}
 </urlset>`;
 
     return new Response(xml, {

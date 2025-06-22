@@ -38,10 +38,6 @@ export async function createYacht(data) {
         body: JSON.stringify(data),
     });
 
-    console.log("====================================");
-    console.log("Ответ от сервера:", res);
-    console.log("====================================");
-
     if (!res.ok) {
         const err = await res.json();
         throw new Error(err.error || "Ошибка при создании яхты");

@@ -19,49 +19,64 @@ export async function GET({ params }) {
 
 export async function PUT({ request, params }) {
     const db = await connectToDatabase();
-    const { excursion, translations } = await request.json();
 
+    // Получаем полный объект яхты с клиента (включая мультиязычные поля)
+    const excursionData = await request.json();
+
+    // Старый и новый slug (идентификаторы яхты)
     const oldSlug = params.slug;
-    const newSlug = excursion.slug;
+    const newSlug = excursionData.slug;
 
-    // Обновим основной документ
+    // Формируем массив переводов для коллекции excursions_translations,
+    // извлекая языковые поля из excursionData по каждому языку
+    const preparedTranslations = ["ru", "en", "tr"].map((lang) => ({
+        itemSlug: newSlug, // связываем перевод с новым slug
+        lang, // язык перевода
+        title: excursionData.title?.[lang] ?? "",
+        description: excursionData.description?.[lang] ?? "",
+        metaDescription: excursionData.metaDescription?.[lang] ?? "",
+        whatYouSee: excursionData.whatYouSee?.[lang] ?? [],
+        tags: excursionData.tags?.[lang] ?? [],
+        meetingPoint: excursionData.meetingPoint?.[lang] ?? "",
+        includes: excursionData.includes?.[lang] ?? [],
+        whatToBring: excursionData.whatToBring?.[lang] ?? [],
+    }));
+
+    // Создаём объект для основной коллекции excursions —
+    // копируем все поля, кроме мультиязычных
+    const excursion = { ...excursionData };
+    delete excursion.title;
+    delete excursion.description;
+    delete excursion.metaDescription;
+    delete excursion.whatYouSee;
+    delete excursion.includes;
+    delete excursion.whatToBring;
+    delete excursion.meetingPoint;
+    delete excursion.tags;
+
+    // Обновляем основной документ в коллекции excursions по старому slug
     await db
         .collection("excursions")
         .updateOne({ slug: oldSlug }, { $set: excursion });
 
-    // Удалим переводы по старому slug
+    // Удаляем все старые переводы из коллекции excursions_translations
     await db
         .collection("excursions_translations")
         .deleteMany({ itemSlug: oldSlug });
 
-    // Подготовим переводы для нового slug
-    const preparedTranslations = ["ru", "en", "tr"].map((lang) => {
-        const t = translations.find((t) => t.lang === lang) ?? {};
-        return {
-            itemSlug: newSlug,
-            lang,
-            title: t.title ?? "",
-            description: t.description ?? "",
-            metaDescription: t.metaDescription ?? "",
-            whatYouSee: t.whatYouSee ?? [],
-            tags: t.tags ?? [],
-            meetingPoint: t.meetingPoint ?? "",
-            includes: t.includes ?? [],
-            whatToBring: t.whatToBring ?? [],
-        };
-    });
-
+    // Вставляем новые переводы
     await db
         .collection("excursions_translations")
         .insertMany(preparedTranslations);
 
-    // Также можно обновить slug в основном документе, если он изменился
+    // Если slug изменился, обновляем его в основном документе
     if (oldSlug !== newSlug) {
         await db
             .collection("excursions")
             .updateOne({ slug: oldSlug }, { $set: { slug: newSlug } });
     }
 
+    // Возвращаем успех
     return new Response(JSON.stringify({ success: true }));
 }
 

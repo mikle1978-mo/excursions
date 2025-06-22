@@ -1,8 +1,11 @@
 <script>
+    import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
     export let value = [];
     export let placeholder = "Введите элементы (каждый с новой строки)";
     // export let delimiter = /[,;\n]+/;
     export let label = "Элементы:";
+    export let field = "";
+    export let errors = {};
 
     let inputValue = "";
 
@@ -54,6 +57,7 @@
         </div>
     </div>
 </div>
+<ErrorMessage {field} {errors} />
 
 <style>
     .label {
