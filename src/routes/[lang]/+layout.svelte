@@ -51,23 +51,6 @@
         initCurrencyService();
         const interval = setInterval(initCurrencyService, 30 * 60 * 1000);
 
-        // Google Analytics (gtag.js)
-        const gtagScript = document.createElement("script");
-        gtagScript.async = true;
-        gtagScript.src =
-            "https://www.googletagmanager.com/gtag/js?id=G-RBNVCFN9DR";
-        document.head.appendChild(gtagScript);
-
-        gtagScript.onload = () => {
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-                window.dataLayer.push(arguments);
-            }
-            window.gtag = gtag;
-            gtag("js", new Date());
-            gtag("config", "G-RBNVCFN9DR");
-        };
-
         return () => clearInterval(interval);
     });
 </script>
@@ -116,6 +99,23 @@
             accurateTrackBounce: true,
             webvisor: true,
         });
+
+        // Google Analytics (gtag.js)
+        const gtagScript = document.createElement("script");
+        gtagScript.async = true;
+        gtagScript.src =
+            "https://www.googletagmanager.com/gtag/js?id=G-RBNVCFN9DR";
+        document.head.appendChild(gtagScript);
+
+        gtagScript.onload = () => {
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                window.dataLayer.push(arguments);
+            }
+            window.gtag = gtag;
+            gtag("js", new Date());
+            gtag("config", "G-RBNVCFN9DR");
+        };
     </script>
     <noscript
         ><div>
