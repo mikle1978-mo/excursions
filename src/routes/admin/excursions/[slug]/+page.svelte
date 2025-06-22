@@ -6,7 +6,7 @@
     import {
         setExcursionForm,
         createInitialExcursionForm,
-    } from "$lib/stores/ExcursionForm";
+    } from "$lib/stores/excursionForm";
 
     let isLoading = true;
     let error = "";
