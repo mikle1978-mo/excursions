@@ -68,26 +68,6 @@
             gtag("config", "G-RBNVCFN9DR");
         };
 
-        // Яндекс.Метрика
-        const ymScript = document.createElement("script");
-        ymScript.async = true;
-        ymScript.src = "https://mc.yandex.ru/metrika/tag.js";
-        document.head.appendChild(ymScript);
-
-        ymScript.onload = () => {
-            window.ym =
-                window.ym ||
-                function () {
-                    (window.ym.a = window.ym.a || []).push(arguments);
-                };
-            window.ym.l = 1 * new Date();
-            window.ym(97637253, "init", {
-                clickmap: true,
-                trackLinks: true,
-                accurateTrackBounce: true,
-            });
-        };
-
         return () => clearInterval(interval);
     });
 </script>
