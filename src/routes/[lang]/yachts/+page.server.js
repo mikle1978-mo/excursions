@@ -113,7 +113,6 @@ export async function load() {
         .toArray();
 
     const yachts = enrichTours(yachtsDb);
-    console.log(yachts);
 
     return {
         yachts: yachts,

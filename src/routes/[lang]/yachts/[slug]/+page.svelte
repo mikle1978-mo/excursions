@@ -9,8 +9,6 @@
     export let data;
     const { yacht, reviewsCount, rating } = data;
 
-    console.log("Yacht data:", yacht);
-
     const { slug } = $page.params;
     import { excursion_page } from "$lib/i18n/excursion_pade.js";
     import { formatPrice } from "$lib/utils/priceFormatter.js";

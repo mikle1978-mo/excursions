@@ -2,10 +2,12 @@ import { writable } from "svelte/store";
 
 // Шаблон формы
 export const createInitialYachtForm = () => ({
+    active: true, // Добавлено поле для активности
     slug: "",
     duration: "",
     groupSize: "",
     price: "",
+    priceType: "", // Добавлено поле для типа цены
     distance: "",
     start: "",
     discount: "",

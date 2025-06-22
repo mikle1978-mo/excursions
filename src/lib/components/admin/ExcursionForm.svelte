@@ -3,6 +3,7 @@
         excursionForm,
         setExcursionForm,
         createInitialExcursionForm,
+        resetExcursionForm,
     } from "$lib/stores/excursionForm";
     import { excursionSchema } from "$lib/schemas/excursionSchema";
     import ArrayInput from "$lib/components/UI/inputs/arrayInput/ArrayInput.svelte";
@@ -12,6 +13,7 @@
         updateExcursion,
     } from "$lib/utils/excursionsActions";
     import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
+    import { onMount } from "svelte";
 
     export let mode = "create"; // "create" или "edit"
     export let slug = ""; // для режима "edit"
@@ -36,7 +38,7 @@
                 alert("Изменения сохранены");
             }
 
-            goto("/admin");
+            goto("/admin/excursions");
         } catch (err) {
             if (err.errors) {
                 // Преобразуем zod-ошибки в объект { field: message }
@@ -53,6 +55,18 @@
         }
     }
 
+    function handleReset() {
+        if (confirm("Вы уверены, что хотите очистить форму?")) {
+            resetExcursionForm();
+        }
+    }
+
+    onMount(() => {
+        if (mode === "create") {
+            resetExcursionForm(); // сбрасываем всё к начальному состоянию
+        }
+    });
+
     $: console.log(
         "--- Current formData ---",
         JSON.parse(JSON.stringify($excursionForm))
@@ -60,13 +74,26 @@
 </script>
 
 <div class="new-page">
-    <h1 class="title">
-        {mode === "create" ? "Создание экскурсии" : "Редактирование экскурсии"}
-    </h1>
+    <div class="title-row">
+        <h1 class="title">
+            {mode === "create"
+                ? "Создание экскурсии"
+                : "Редактирование экскурсии"}
+        </h1>
+        <button
+            type="button"
+            style="background: var(--color-error);"
+            on:click={handleReset}>Очистить</button
+        >
+    </div>
 
     <form on:submit|preventDefault={handleSubmit}>
         <fieldset>
             <legend>Общая информация</legend>
+            <label class="checkbox">
+                <input type="checkbox" bind:checked={$excursionForm.active} />
+                Активна (отображать на сайте)
+            </label>
             <label>
                 Slug (уникальный идентификатор):
                 <input type="text" bind:value={$excursionForm.slug} required />
@@ -89,6 +116,17 @@
                 Цена прогулки (в долларах):
                 <input type="number" bind:value={$excursionForm.price} />
                 <ErrorMessage field="price" {errors} />
+            </label>
+
+            <label>
+                Тип цены:
+                <select bind:value={$excursionForm.priceType}>
+                    <option value="" disabled selected>Выберите тип</option>
+                    <option value="per_person">за человека</option>
+                    <option value="per_trip">за прогулку</option>
+                    <option value="per_hour">за час</option>
+                </select>
+                <ErrorMessage field="priceType" {errors} />
             </label>
 
             <label>
@@ -232,6 +270,14 @@
         box-shadow: var(--shadow-sm);
     }
 
+    .title-row {
+        margin-top: var(--space-vertical-md);
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
     .title {
         margin-top: var(--space-vertical-md);
         font-size: var(--text-lg);
@@ -249,7 +295,8 @@
         font-size: var(--text-sm);
         gap: 0.3rem;
     }
-
+    select,
+    option,
     input,
     textarea {
         padding: 0.5rem 0.75rem;
@@ -305,6 +352,25 @@
     .error {
         color: var(--color-error);
         font-size: var(--text-sm);
+    }
+    .checkbox {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: var(--text-md);
+        color: var(--color-text);
+        padding: 0.3rem 0;
+    }
+
+    .checkbox input[type="checkbox"] {
+        width: 1.1rem;
+        height: 1.1rem;
+        accent-color: var(
+            --color-primary
+        ); /* поддерживается во всех современных браузерах */
+        border: 1px solid var(--color-gray-400);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
     }
 
     @media (prefers-color-scheme: dark) {

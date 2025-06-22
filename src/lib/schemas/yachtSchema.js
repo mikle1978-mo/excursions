@@ -13,10 +13,12 @@ const i18nArray = z.object({
 });
 
 export const yachtSchema = z.object({
+    active: z.boolean().optional(),
     slug: z.string().min(1, "Slug обязателен"), // 🔐 единственное обязательное
     duration: z.union([z.string(), z.number()]).transform(Number).optional(),
     groupSize: z.union([z.string(), z.number()]).transform(Number).optional(),
     price: z.union([z.string(), z.number()]).transform(Number).optional(),
+    priceType: z.enum(["per_person", "per_trip", "per_hour"]).optional(),
     distance: z.union([z.string(), z.number()]).transform(Number).optional(),
     start: z.string().optional(),
     discount: z.union([z.string(), z.number()]).transform(Number).optional(),
