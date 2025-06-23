@@ -23,13 +23,19 @@
     async function handleToggle(index) {
         const item = excursions[index];
         const newActive = !item.active;
+        const actionText = newActive ? "включить" : "выключить";
+
+        const confirmed = confirm(
+            `Ты точно хочешь ${actionText} экскурсию "${item.slug}"?`
+        );
+        if (!confirmed) return;
 
         try {
             await toggleExcursionActive(item.slug, newActive);
             excursions[index].active = newActive;
             excursions = [...excursions]; // триггерим реактивность
         } catch (err) {
-            alert(err.message);
+            alert(`Ошибка: ${err.message}`);
         }
     }
 

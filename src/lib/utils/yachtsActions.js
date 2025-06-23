@@ -101,3 +101,23 @@ export async function duplicateYacht(slug) {
     const { newSlug } = await res.json();
     return newSlug;
 }
+
+/**
+ * Обновление статуса "active"
+ */
+export async function toggleYachtActive(slug, active) {
+    const res = await fetch("/api/yachts/toggle-active", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ slug, active }),
+    });
+
+    if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Ошибка при обновлении статуса");
+    }
+
+    return true;
+}

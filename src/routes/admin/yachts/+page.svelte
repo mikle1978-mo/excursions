@@ -6,14 +6,37 @@
     import IconDelete from "$lib/icons/IconDelete.svelte";
     import IconEdit from "$lib/icons/IconEdit.svelte";
     import IconCopy from "$lib/icons/IconCopy.svelte";
-    import { deleteYacht, duplicateYacht } from "$lib/utils/yachtsActions.js";
+    import {
+        deleteYacht,
+        duplicateYacht,
+        toggleYachtActive,
+    } from "$lib/utils/yachtsActions.js";
 
     export let data;
-    const { yachts } = data;
+    let yachts = structuredClone(data.yachts);
 
     let isLoading = false;
 
     onMount(async () => {});
+
+    async function handleToggle(index) {
+        const item = yachts[index];
+        const newActive = !item.active;
+        const actionText = newActive ? "включить" : "выключить";
+
+        const confirmed = confirm(
+            `Ты точно хочешь ${actionText} яхту "${item.slug}"?`
+        );
+        if (!confirmed) return;
+
+        try {
+            await toggleYachtActive(item.slug, newActive);
+            yachts[index].active = newActive;
+            yachts = [...yachts]; // триггерим реактивность
+        } catch (err) {
+            alert(`Ошибка: ${err.message}`);
+        }
+    }
 
     function handleAdd() {
         goto("/admin/yachts/new");
@@ -55,9 +78,15 @@
         <div class="list">
             {#each yachts as yacht}
                 <div class="item">
+                    <input
+                        type="checkbox"
+                        checked={yacht.active}
+                        on:change={() => handleToggle(i)}
+                    />
                     <a class="title" href={`/admin/yachts/${yacht.slug}`}>
                         {yacht.slug}
                     </a>
+                    <div>{yacht.price}$</div>
                     <div class="button-group">
                         <button
                             class="edit-button"
