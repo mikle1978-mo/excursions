@@ -1,7 +1,7 @@
 <script>
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
-    import { excursion_card } from "$lib/i18n/excursion_card";
+    import { yacht_card } from "$lib/i18n/yacht_card";
     import { formatPrice } from "$lib/utils/priceFormatter";
     export let yacht;
     export let loading = "lazy";
@@ -77,7 +77,7 @@
                 </span>
                 <span class="excursion-card__reviews"
                     >{reviewsCount}
-                    {excursion_card.reviews[$locale]}</span
+                    {yacht_card.reviews[$locale]}</span
                 >
             </div>
         </div>
@@ -85,12 +85,12 @@
         <div class="excursion-card__footer">
             <div class="excursion-card__details">
                 <span class="excursion-card__duration"
-                    >{duration} {excursion_card.hours[$locale]}</span
+                    >{duration} {yacht_card.hours[$locale]}</span
                 >
                 <span class="excursion-card__group-size"
-                    >{excursion_card.before[$locale]}
+                    >{yacht_card.before[$locale]}
                     {groupSize}
-                    {excursion_card.people[$locale]}</span
+                    {yacht_card.people[$locale]}</span
                 >
             </div>
 
@@ -98,17 +98,13 @@
                 <span class="excursion-card__price-value">
                     {$priceDisplay}
                 </span>
-                <span class="excursion-card__price-per"
-                    >{excursion_card.perPerson[$locale]}</span
-                >
+                <span class="excursion-card__price-per">
+                    {yacht_card.per[yacht.priceType]?.[$locale] ?? ""}
+                </span>
             </div>
         </div>
     </div>
 </a>
-
-<!-- {:else}
-    <div></div>
-{/if} -->
 
 <style>
     .excursion-card {

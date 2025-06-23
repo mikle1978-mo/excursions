@@ -1,4 +1,4 @@
-export const excursion_card = {
+export const yacht_card = {
     popular: {
         ru: "Популярно",
         en: "Popular",

@@ -98,9 +98,9 @@
                 <span class="excursion-card__price-value">
                     {$priceDisplay}
                 </span>
-                <span class="excursion-card__price-per"
-                    >{excursion_card.perPerson[$locale]}</span
-                >
+                <span class="excursion-card__price-per">
+                    {excursion_card.per[excursion.priceType]?.[$locale] ?? ""}
+                </span>
             </div>
         </div>
     </div>

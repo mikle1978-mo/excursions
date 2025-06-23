@@ -9,14 +9,29 @@
     import {
         deleteExcursion,
         duplicateExcursion,
+        toggleExcursionActive,
     } from "$lib/utils/excursionsActions.js";
 
     export let data;
-    const { excursions } = data;
+
+    let excursions = structuredClone(data.excursions);
 
     let isLoading = false;
 
     onMount(async () => {});
+
+    async function handleToggle(index) {
+        const item = excursions[index];
+        const newActive = !item.active;
+
+        try {
+            await toggleExcursionActive(item.slug, newActive);
+            excursions[index].active = newActive;
+            excursions = [...excursions]; // триггерим реактивность
+        } catch (err) {
+            alert(err.message);
+        }
+    }
 
     function handleAdd() {
         goto("/admin/excursions/new");
@@ -56,14 +71,21 @@
         <p>Нет экскурсий</p>
     {:else}
         <div class="excursion-list">
-            {#each excursions as excursion}
+            {#each excursions as excursion, i}
                 <div class="excursion-item">
+                    <input
+                        type="checkbox"
+                        checked={excursion.active}
+                        on:change={() => handleToggle(i)}
+                    />
+
                     <a
                         class="excursion-title"
                         href={`/admin/excursions/${excursion.slug}`}
                     >
                         {excursion.slug}
                     </a>
+                    <div>{excursion.price}$</div>
                     <div class="button-group">
                         <button
                             class="edit-button"

@@ -99,25 +99,16 @@ export async function composeCards({
                     },
                 },
             },
-            {
-                $project: {
-                    _id: 0,
-                    slug: 1,
-                    images: 1,
-                    duration: 1,
-                    groupSize: 1,
-                    price: 1,
-                    discount: 1,
-                    title: 1,
-                    labels: 1,
-                    description: 1,
-                    rating: 1,
-                    reviewsCount: 1,
-                    createdAt: 1,
-                },
-            },
         ])
         .toArray();
 
-    return enrichCard(rawItems);
+    const items = rawItems.map(
+        ({ _id, translations = [], reviewsStats = [], ...rest }) => ({
+            ...rest,
+            translations: translations.map(({ _id, ...t }) => t),
+            reviewsStats: reviewsStats.map(({ _id, ...r }) => r),
+        })
+    );
+
+    return enrichCard(items);
 }
