@@ -1,4 +1,4 @@
-export const TOUR_CATEGORIES = {
+export const CARD_CATEGORIES = {
     POPULAR: {
         slugs: ["history-tour", "sea-tour"],
         label: {

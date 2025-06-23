@@ -1,15 +1,15 @@
-export const TOUR_LABELS = {
+export const CARD_LABELS = {
     DISCOUNT: {
-        condition: (tour) => tour.discount > 0,
+        condition: (item) => item.discount > 0,
         label: {
             en: "Discount",
             ru: "Скидка",
         },
     },
     NEW: {
-        condition: (tour) => {
+        condition: (item) => {
             const now = new Date();
-            const created = new Date(tour.createdAt);
+            const created = new Date(item.createdAt);
             return now - created < 30 * 24 * 60 * 60 * 1000; // 30 дней
         },
         label: {
@@ -18,11 +18,11 @@ export const TOUR_LABELS = {
         },
     },
     POPULAR: {
-        condition: (tour) => tour.rating >= 4.5 && tour.reviewsCount >= 10,
+        condition: (item) => item.rating >= 4.5 && item.reviewsCount >= 10,
         label: { en: "Popular", ru: "Популярный" },
     },
     VIP: {
-        condition: (tour) => tour.price > 300,
+        condition: (item) => item.price > 900,
         label: { en: "VIP", ru: "VIP" },
     },
 };

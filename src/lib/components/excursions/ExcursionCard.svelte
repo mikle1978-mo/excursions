@@ -4,6 +4,7 @@
     import { excursion_card } from "$lib/i18n/excursion_card";
     import { formatPrice } from "$lib/utils/priceFormatter";
     export let excursion;
+
     export let loading = "lazy";
     const {
         slug = "/",
