@@ -48,6 +48,7 @@
         if (!allExcursions.length) return;
 
         filteredExcursions = allExcursions.filter((excursion) => {
+            if (!excursion.active) return false;
             const excursionPriceUSD = excursion.price;
 
             // Фильтр по цене

@@ -48,6 +48,7 @@
         if (!allYachts.length) return;
 
         filteredYachts = allYachts.filter((yacht) => {
+            if (!yacht.active) return false;
             const excursionPriceUSD = yacht.price;
 
             // Фильтр по цене
