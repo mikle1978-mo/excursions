@@ -13,7 +13,6 @@
     } from "$lib/utils/excursionsActions.js";
 
     export let data;
-
     let excursions = structuredClone(data.excursions);
 
     let isLoading = false;

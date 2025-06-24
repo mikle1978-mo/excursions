@@ -77,3 +77,26 @@
         />
     </svg>
 </button>
+
+<style>
+    .share-button {
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .share-button svg {
+        width: var(--text-lg);
+        height: var(--text-lg);
+        font-size: var(--text-md);
+        transition: color 0.3s ease;
+        color: var(--color-text);
+    }
+
+    .share-button:hover {
+        color: var(--color-primary);
+    }
+</style>

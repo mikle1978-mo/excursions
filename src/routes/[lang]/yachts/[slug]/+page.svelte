@@ -6,18 +6,19 @@
     import { onMount } from "svelte";
     import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
     import { breadcrumbs } from "$lib/i18n/breadcrumbs.js";
-    export let data;
-    const { yacht, reviewsCount, rating } = data;
-
-    const { slug } = $page.params;
-    import { excursion_page } from "$lib/i18n/excursion_pade.js";
+    import { yacht_page } from "$lib/i18n/yacht_page.js";
     import { formatPrice } from "$lib/utils/priceFormatter.js";
     import { initCurrencyService } from "$lib/services/currencyService";
     import Galery from "$lib/components/layout/Galery.svelte";
     import ReviewsList from "$lib/components/layout/ReviewsList.svelte";
     import Modal from "$lib/components/UI/Modal.svelte";
     import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
+    import Share from "$lib/components/UI/buttons/Share.svelte";
 
+    export let data;
+    const { yacht, reviewsCount, rating } = data;
+
+    const { slug } = $page.params;
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
     let lang = $page.params.lang || "en";
@@ -122,7 +123,7 @@
                     <span>{rating}</span>
                     <span
                         >({reviewsCount || 0}
-                        {excursion_page.reviews[$locale]})</span
+                        {yacht_page.reviews[$locale]})</span
                     >
                 </div>
 
@@ -131,9 +132,10 @@
                         <span class="badge popular">Популярно</span>
                     {/if}
                     <span class="badge duration"
-                        >{yacht.duration} {excursion_page.hours[$locale]}</span
+                        >{yacht.duration} {yacht_page.hours[$locale]}</span
                     >
                 </div>
+                <Share />
             </div>
         </header>
 
@@ -143,7 +145,7 @@
         <!-- Основное содержимое -->
         <div class="content-grid">
             <section class="description">
-                <h2>{excursion_page.description[$locale]}</h2>
+                <h2>{yacht_page.description[$locale]}</h2>
                 <p>{currentTranslation.description}</p>
             </section>
 
@@ -151,42 +153,53 @@
                 <div class="price-block">
                     <span class="price">{$priceDisplay}</span>
                     <span class="per-person">
-                        {excursion_page.perPerson[$locale]}</span
+                        {yacht_page.perPerson[$locale]}</span
                     >
                 </div>
 
                 <div class="details">
                     <div class="detail">
                         <span class="label"
-                            >{excursion_page.duration[$locale]}:</span
+                            >{yacht_page.duration[$locale]}:</span
                         >
                         <span class="value"
                             >{yacht.duration}
-                            {excursion_page.hours[$locale]}</span
+                            {yacht_page.hours[$locale]}</span
                         >
                     </div>
 
                     <div class="detail">
                         <span class="label">
-                            {excursion_page.groupSize[$locale]}:</span
+                            {yacht_page.groupSize[$locale]}:</span
                         >
                         <span class="value"
-                            >{excursion_page.before[$locale]}
+                            >{yacht_page.before[$locale]}
                             {yacht.groupSize}
-                            {excursion_page.people[$locale]}</span
+                            {yacht_page.people[$locale]}</span
                         >
                     </div>
                 </div>
 
-                <button class="book-button" on:click={openModal}
-                    >{excursion_page.button[$locale]}</button
+                <button
+                    class="book-button"
+                    on:click={yacht.active ? openModal : null}
+                    disabled={!yacht.active}
+                    style="background-color: {yacht.active
+                        ? 'var(--color-primary)'
+                        : '#ccc'}; cursor: {yacht.active
+                        ? 'pointer'
+                        : 'not-allowed'}"
                 >
+                    {yacht.active
+                        ? yacht_page.button[$locale]
+                        : yacht_page.available[$locale]}
+                </button>
             </aside>
             <section class="additional-info">
                 <!-- Что включено -->
                 {#if currentTranslation.includes.length > 0}
                     <div class="info-block">
-                        <h2>{excursion_page.includes[$locale]}</h2>
+                        <h2>{yacht_page.includes[$locale]}</h2>
                         <ul class="info-list">
                             {#each currentTranslation.includes as item}
                                 <li>{item}</li>
@@ -197,7 +210,7 @@
                 <!-- Что вы увидите -->
                 {#if currentTranslation.whatYouSee.length > 0}
                     <div class="info-block">
-                        <h2>{excursion_page.whatYouSee[$locale]}</h2>
+                        <h2>{yacht_page.whatYouSee[$locale]}</h2>
                         <ul class="info-list">
                             {#each currentTranslation.whatYouSee as item}
                                 <li>{item}</li>
@@ -209,7 +222,7 @@
                 <!-- Что взять с собой -->
                 {#if currentTranslation.whatToBring.length > 0}
                     <div class="info-block">
-                        <h2>{excursion_page.whatToBring[$locale]}</h2>
+                        <h2>{yacht_page.whatToBring[$locale]}</h2>
                         <ul class="info-list">
                             {#each currentTranslation.whatToBring as item}
                                 <li>{item}</li>

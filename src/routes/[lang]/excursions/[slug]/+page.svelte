@@ -9,13 +9,14 @@
     export let data;
     const { tour, reviewsCount, rating } = data;
     const { slug } = $page.params;
-    import { excursion_page } from "$lib/i18n/excursion_pade.js";
+    import { excursion_page } from "$lib/i18n/excursion_page.js";
     import { formatPrice } from "$lib/utils/priceFormatter.js";
     import { initCurrencyService } from "$lib/services/currencyService";
     import Galery from "$lib/components/layout/Galery.svelte";
     import ReviewsList from "$lib/components/layout/ReviewsList.svelte";
     import Modal from "$lib/components/UI/Modal.svelte";
     import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
+    import Share from "$lib/components/UI/buttons/Share.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -133,6 +134,7 @@
                         >{tour.duration} {excursion_page.hours[$locale]}</span
                     >
                 </div>
+                <Share />
             </div>
         </header>
 
@@ -177,9 +179,20 @@
                     </div>
                 </div>
 
-                <button class="book-button" on:click={openModal}
-                    >{excursion_page.button[$locale]}</button
+                <button
+                    class="book-button"
+                    on:click={excursion.active ? openModal : null}
+                    disabled={!excursion.active}
+                    style="background-color: {excursion.active
+                        ? 'var(--accent-color)'
+                        : '#ccc'}; cursor: {excursion.active
+                        ? 'pointer'
+                        : 'not-allowed'}"
                 >
+                    {excursion.active
+                        ? excursion_page.button[$locale]
+                        : excursion_page.available[$locale]}
+                </button>
             </aside>
             <section class="additional-info">
                 <!-- Что включено -->
@@ -255,6 +268,7 @@
     .meta-info {
         display: flex;
         gap: var(--space-horizontal-md);
+        justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
     }

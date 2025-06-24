@@ -48,4 +48,8 @@ export const excursion_page = {
         ru: "Забронировать",
         en: "Book now",
     },
+    available: {
+        ru: "Не доступно",
+        en: "Not available",
+    },
 };

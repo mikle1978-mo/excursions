@@ -181,14 +181,11 @@
 </svelte:head>
 
 <div class="content">
-    <!-- {#if isMounted} -->
     <EcxursionsSidebar
         excursions={allExcursions}
         on:filtersChanged={handleFiltersChange}
     />
-    <!-- {:else}
-        <div></div>
-    {/if} -->
+
     <main>
         <div class="main_page">
             <h1 class="visually-hidden">

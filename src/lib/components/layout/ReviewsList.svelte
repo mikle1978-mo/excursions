@@ -62,7 +62,9 @@
                 return;
             }
 
-            const newReview = await response.json();
+            alert("Спасибо за отзыв!");
+
+            const newReview = result;
             reviews = [...reviews, newReview];
 
             name = "";

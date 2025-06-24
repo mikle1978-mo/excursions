@@ -76,7 +76,7 @@
         <p>Нет яхт</p>
     {:else}
         <div class="list">
-            {#each yachts as yacht}
+            {#each yachts as yacht, i}
                 <div class="item">
                     <input
                         type="checkbox"
