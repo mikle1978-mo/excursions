@@ -181,15 +181,15 @@
 
                 <button
                     class="book-button"
-                    on:click={excursion.active ? openModal : null}
-                    disabled={!excursion.active}
-                    style="background-color: {excursion.active
+                    on:click={tour.active ? openModal : null}
+                    disabled={!tour.active}
+                    style="background-color: {tour.active
                         ? 'var(--accent-color)'
-                        : '#ccc'}; cursor: {excursion.active
+                        : '#ccc'}; cursor: {tour.active
                         ? 'pointer'
                         : 'not-allowed'}"
                 >
-                    {excursion.active
+                    {tour.active
                         ? excursion_page.button[$locale]
                         : excursion_page.available[$locale]}
                 </button>

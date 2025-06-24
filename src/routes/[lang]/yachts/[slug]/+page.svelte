@@ -270,6 +270,7 @@
         display: flex;
         gap: var(--space-horizontal-md);
         align-items: center;
+        justify-content: space-between;
         flex-wrap: wrap;
     }
 
