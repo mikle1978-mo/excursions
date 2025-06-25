@@ -1,15 +1,15 @@
 <script>
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
-    import { excursion_card } from "$lib/i18n/excursion_card";
+    import { car_card } from "$lib/i18n/car_card";
     import { formatPrice } from "$lib/utils/priceFormatter";
-    export let excursion;
+    export let car;
 
     export let loading = "lazy";
     const {
         slug = "/",
-        title = "Обзорная экскурсия по историческому центру",
-        images = [{ url: "/images/excursions/excursion_default.webp" }],
+        title = "легковой автомобиль",
+        images = ["/images/cars/car_default.webp"],
         duration = 2.5,
         groupSize = 10,
         price = 1500,
@@ -17,7 +17,7 @@
         rating = 4,
         reviewsCount = 142,
         meta = {},
-    } = excursion;
+    } = car;
 
     let isMounted = false;
     const priceDisplay = formatPrice(price);
@@ -32,12 +32,12 @@
 </script>
 
 <!-- {#if isMounted} -->
-<a class="excursion-card" href="/{$locale}/excursions/{slug}">
-    <div class="excursion-card__image-wrapper">
+<a class="car-card" href="/{$locale}/cars/{slug}">
+    <div class="car-card__image-wrapper">
         <img
-            src={images[0]?.url}
+            src={images[0]}
             alt=""
-            class="excursion-card__image"
+            class="car-card__image"
             width="980"
             height="551"
             {loading}
@@ -45,61 +45,58 @@
         />
 
         {#if getLabelByKey(meta.labels, "POPULAR")}
-            <span class="excursion-card__badge topright">
+            <span class="car-card__badge topright">
                 {getLabelByKey(meta.labels, "POPULAR").label[$locale]}
             </span>
         {/if}
         {#if getLabelByKey(meta.labels, "DISCOUNT")}
-            <span class="excursion-card__badge bottomleft">
+            <span class="car-card__badge bottomleft">
                 {`-${discount}%`}
             </span>
         {/if}
         {#if getLabelByKey(meta.labels, "NEW")}
-            <span class="excursion-card__badge topleft">
+            <span class="car-card__badge topleft">
                 {getLabelByKey(meta.labels, "NEW").label[$locale]}
             </span>
         {/if}
         {#if getLabelByKey(meta.labels, "VIP")}
-            <span class="excursion-card__badge bottomright">
+            <span class="car-card__badge bottomright">
                 {getLabelByKey(meta.labels, "VIP").label[$locale]}
             </span>
         {/if}
     </div>
 
-    <div class="excursion-card__content">
-        <div class="excursion-card__header">
-            <h2 class="excursion-card__title">{title[$locale]}</h2>
-            <div class="excursion-card__rating">
-                <span
-                    class="excursion-card__stars"
-                    style="--rating: {rating || 0};"
-                >
+    <div class="car-card__content">
+        <div class="car-card__header">
+            <h2 class="car-card__title">{title[$locale]}</h2>
+            <div class="car-card__rating">
+                <span class="car-card__stars" style="--rating: {rating || 0};">
                 </span>
-                <span class="excursion-card__reviews"
+                <span class="car-card__reviews"
                     >{reviewsCount}
-                    {excursion_card.reviews[$locale]}</span
+                    {car_card.reviews[$locale]}</span
                 >
             </div>
         </div>
 
-        <div class="excursion-card__footer">
-            <div class="excursion-card__details">
-                <span class="excursion-card__duration"
-                    >{duration} {excursion_card.hours[$locale]}</span
+        <div class="car-card__footer">
+            <div class="car-card__details">
+                <span class="car-card__duration"
+                    >{duration} {car_card.hours[$locale]}</span
                 >
-                <span class="excursion-card__group-size"
-                    >{excursion_card.before[$locale]}
+                <span class="car-card__group-size"
+                    >{car_card.before[$locale]}
                     {groupSize}
-                    {excursion_card.people[$locale]}</span
+                    {car_card.people[$locale]}</span
                 >
             </div>
 
-            <div class="excursion-card__price">
-                <span class="excursion-card__price-value">
+            <div class="car-card__price">
+                <span class="car-card__price-value">
                     {$priceDisplay}
                 </span>
-                <span class="excursion-card__price-per">
-                    {excursion_card.per[excursion.priceType]?.[$locale] ?? ""}
+                <span class="car-card__price-per">
+                    {car_card.per[car.priceType]?.[$locale] ?? ""}
                 </span>
             </div>
         </div>
@@ -111,7 +108,7 @@
 {/if} -->
 
 <style>
-    .excursion-card {
+    .car-card {
         display: flex;
         flex-direction: column;
         background-color: var(--color-bg);
@@ -123,25 +120,25 @@
         min-height: 245px;
     }
 
-    .excursion-card:hover {
+    .car-card:hover {
         box-shadow: var(--shadow-lg);
         transform: translateY(-2px);
     }
 
-    .excursion-card__image-wrapper {
+    .car-card__image-wrapper {
         position: relative;
         width: 100%;
         height: 100%;
         aspect-ratio: 16 / 9;
     }
 
-    .excursion-card__image {
+    .car-card__image {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
 
-    .excursion-card__badge {
+    .car-card__badge {
         position: absolute;
         color: var(--color-light);
         padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
@@ -170,7 +167,7 @@
         right: var(--space-horizontal-xs);
         background-color: var(--color-secondary);
     }
-    .excursion-card__content {
+    .car-card__content {
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-xs);
@@ -178,12 +175,12 @@
         flex-grow: 1;
     }
 
-    .excursion-card__header {
+    .car-card__header {
         display: flex;
         flex-direction: column;
     }
 
-    .excursion-card__title {
+    .car-card__title {
         font-size: var(--text-lg);
         font-weight: 600;
         margin: 0;
@@ -194,19 +191,19 @@
         text-overflow: ellipsis;
     }
 
-    .excursion-card__rating {
+    .car-card__rating {
         display: flex;
         align-items: flex-end;
         gap: var(--space-horizontal-xs);
     }
 
-    .excursion-card__stars {
+    .car-card__stars {
         --percent: calc(var(--rating) / 5 * 100%);
         display: inline-block;
         font-size: var(--text-lg);
         line-height: 1;
     }
-    .excursion-card__stars::before {
+    .car-card__stars::before {
         content: "★★★★★";
         background: linear-gradient(
             90deg,
@@ -218,12 +215,12 @@
         color: transparent;
     }
 
-    .excursion-card__reviews {
+    .car-card__reviews {
         font-size: var(--text-xs);
         color: var(--color-gray-600);
     }
 
-    /* .excursion-card__description {
+    /* .car-card__description {
         margin: 0;
         font-size: var(--text-sm);
         color: var(--color-gray-700);
@@ -231,20 +228,20 @@
         flex-grow: 1;
     } */
 
-    .excursion-card__footer {
+    .car-card__footer {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
     }
 
-    .excursion-card__details {
+    .car-card__details {
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-xxs);
     }
 
-    .excursion-card__duration,
-    .excursion-card__group-size {
+    .car-card__duration,
+    .car-card__group-size {
         font-size: var(--text-xs);
         color: var(--color-gray-600);
         display: flex;
@@ -252,28 +249,28 @@
         gap: var(--space-horizontal-xxs);
     }
 
-    .excursion-card__price {
+    .car-card__price {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
     }
 
-    .excursion-card__price-value {
+    .car-card__price-value {
         font-size: var(--text-lg);
         font-weight: 500;
         color: var(--color-primary);
     }
 
-    .excursion-card__price-per {
+    .car-card__price-per {
         font-size: var(--text-xs);
         color: var(--color-gray-600);
     }
 
     @media (max-width: 768px) {
-        .excursion-card {
+        .car-card {
             flex-direction: column;
         }
-        .excursion-card__content {
+        .car-card__content {
             display: flex;
             flex-direction: column;
             gap: var(--space-vertical-xs);

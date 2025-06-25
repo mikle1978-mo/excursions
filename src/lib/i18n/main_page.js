@@ -25,8 +25,7 @@ export const main_page = {
                 ru: "Аренда автомобилей",
                 en: "Car Rentals",
             },
-            // link: "cars",
-            link: "development",
+            link: "cars",
             img: "/images/cars/car_default.webp",
         },
         {

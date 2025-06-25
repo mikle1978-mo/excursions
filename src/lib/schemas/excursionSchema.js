@@ -22,7 +22,14 @@ export const excursionSchema = z.object({
     distance: z.union([z.string(), z.number()]).transform(Number).optional(),
     start: z.string().optional(),
     discount: z.union([z.string(), z.number()]).transform(Number).optional(),
-    images: z.array(z.string()).optional(),
+    images: z
+        .array(
+            z.object({
+                url: z.string(),
+                public_id: z.string(),
+            })
+        )
+        .optional(),
     days: z.array(z.union([z.string(), z.number()])).optional(),
 
     title: i18nString.optional(),

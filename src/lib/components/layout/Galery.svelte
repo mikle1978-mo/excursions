@@ -29,7 +29,7 @@
         aria-label="Открыть галерею"
     >
         <img
-            src={images[selectedIndex]}
+            src={images[selectedIndex]?.url}
             alt={title ? `${title}_${selectedIndex}` : "gallery"}
         />
     </button>
@@ -43,7 +43,7 @@
                 aria-label="Выбрать изображение {i + 1}"
                 class="thumbnail-button"
             >
-                <img src={img} alt="Thumbnail {i + 1}" />
+                <img src={img?.url} alt="Thumbnail {i + 1}" />
             </button>
         {/each}
     </div>
@@ -57,7 +57,7 @@
                             ? 'active'
                             : ''}"
                     >
-                        <img src={img} alt={titles[i] || ""} />
+                        <img src={img?.url} alt={titles[i] || ""} />
                         {#if titles[i]}
                             <p class="caption">{titles[i]}</p>
                         {/if}
