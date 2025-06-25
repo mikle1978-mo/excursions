@@ -1,5 +1,6 @@
 <script>
     import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
+    import { dndzone } from "svelte-dnd-action";
 
     export let images = [];
     export let label = "Фотографии:";
@@ -12,9 +13,19 @@
     let previews = [];
     let isUploading = false;
 
+    // Гарантируем уникальные ID для всех изображений
+    $: images = images.map((img) => ({
+        ...img,
+        id:
+            img.id ||
+            img.public_id ||
+            `img-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+    }));
+
     function handleFileChange(event) {
         selectedFiles = event.target.files;
-        previews = Array.from(selectedFiles).map((file) => ({
+        previews = Array.from(selectedFiles).map((file, i) => ({
+            id: `preview-${Date.now()}-${i}-${Math.random().toString(36).slice(2, 6)}`,
             url: URL.createObjectURL(file),
             name: file.name,
             file,
@@ -26,7 +37,7 @@
         const uploads = previews.map(async (preview) => {
             const formData = new FormData();
             formData.append("file", preview.file);
-            formData.append("folder", folder); // например: excursions/boat-tour
+            formData.append("folder", folder);
 
             const res = await fetch("/api/upload", {
                 method: "POST",
@@ -34,9 +45,16 @@
             });
 
             const data = await res.json();
-            console.log("Upload response:", data);
-
-            images = [...images, { url: data.url, public_id: data.public_id }];
+            images = [
+                ...images,
+                {
+                    url: data.url,
+                    public_id: data.public_id,
+                    id:
+                        data.public_id ||
+                        `img-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+                },
+            ];
         });
 
         await Promise.all(uploads);
@@ -46,41 +64,30 @@
     }
 
     async function removeImage(image) {
-        const public_id = typeof image === "string" ? null : image.public_id;
-
-        // Если старый формат (строка), просто удаляем из массива
-        if (!public_id) {
-            images = images.filter((img) => img !== image);
-            return;
-        }
-
-        // Иначе — удаляем с Cloudinary
         try {
-            const res = await fetch(
-                `/api/upload?public_id=${encodeURIComponent(public_id)}`,
-                {
-                    method: "DELETE",
-                }
-            );
-
-            const result = await res.json();
-
-            if (!res.ok) {
-                console.error("Ошибка удаления с Cloudinary:", result.error);
-                alert("Ошибка удаления изображения. Попробуйте ещё раз.");
-                return;
+            if (image.public_id) {
+                const res = await fetch(
+                    `/api/upload?public_id=${encodeURIComponent(image.public_id)}`,
+                    { method: "DELETE" }
+                );
+                if (!res.ok) throw new Error("Ошибка сервера");
             }
-
-            // Удаляем из массива
-            images = images.filter((img) => img.public_id !== public_id);
+            images = images.filter((img) => img.id !== image.id);
         } catch (err) {
-            console.error("Ошибка запроса на удаление:", err);
             alert("Ошибка удаления изображения.");
         }
     }
 
-    function removePreview(index) {
-        previews = [...previews.slice(0, index), ...previews.slice(index + 1)];
+    function removePreview(id) {
+        previews = previews.filter((preview) => preview.id !== id);
+    }
+
+    function handleDndConsider(event) {
+        images = event.detail.items;
+    }
+
+    function handleDndFinalize(event) {
+        images = event.detail.items;
     }
 </script>
 
@@ -93,10 +100,8 @@
                 type="file"
                 multiple
                 accept="image/*"
-                {placeholder}
                 on:change={handleFileChange}
-                сlass="file-input"
-                aria-label="Выберите изображения"
+                aria-label={placeholder}
             />
             <button
                 on:click={uploadImages}
@@ -111,17 +116,15 @@
         {#if previews.length}
             <div class="preview-list">
                 <h4>В очереди:</h4>
-                {#each previews as img, index (img.name)}
+                {#each previews as preview (preview.id)}
                     <div class="item image">
-                        <img src={img.url} alt={img.name} />
+                        <img src={preview.url} alt={preview.name} />
                         <div class="actions">
                             <button
-                                on:click={() => removePreview(index)}
+                                on:click={() => removePreview(preview.id)}
                                 type="button"
-                                class="clear-btn"
+                                class="clear-btn">×</button
                             >
-                                ×
-                            </button>
                         </div>
                     </div>
                 {/each}
@@ -129,19 +132,22 @@
         {/if}
 
         {#if images.length}
-            <div class="items-list">
-                <h4>Загруженные:</h4>
-                {#each images as img, index}
-                    <div class="item image">
-                        <img src={img.url} alt="Загруженное изображение" />
+            <h4>Загруженные (перетащите для сортировки):</h4>
+            <div
+                class="items-list"
+                use:dndzone={{ items: images }}
+                on:consider={handleDndConsider}
+                on:finalize={handleDndFinalize}
+            >
+                {#each images as img (img.id)}
+                    <div class="item image" data-id={img.id}>
+                        <img src={img.url} alt="" />
                         <div class="actions">
                             <button
                                 on:click={() => removeImage(img)}
                                 type="button"
-                                class="clear-btn"
+                                class="clear-btn">×</button
                             >
-                                ×
-                            </button>
                         </div>
                     </div>
                 {/each}
@@ -159,85 +165,52 @@
         font-size: var(--text-sm);
         gap: 0.3rem;
     }
-
     .images-input {
         display: flex;
         flex-direction: column;
         gap: 1rem;
     }
-
+    .input-group {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+    }
     input[type="file"] {
         flex: 1;
         font-size: var(--text-md);
         border: 1px solid var(--color-gray-400);
         border-radius: var(--radius-sm);
-        background-color: var(--color-light);
+        background-color: var(--color-bg);
         padding: 0.4rem 0.6rem;
         color: var(--color-text);
         cursor: pointer;
-        transition:
-            border 0.2s,
-            box-shadow 0.2s;
     }
-
     input[type="file"]::file-selector-button {
         background-color: var(--color-primary);
-        color: var(--color-light);
+        color: var(--color-text);
         border: none;
         border-radius: var(--radius-sm);
         padding: 0.4rem 0.8rem;
         margin-right: 0.6rem;
         font-size: 0.9rem;
         cursor: pointer;
-        transition: background-color 0.2s;
     }
-
     input[type="file"]::file-selector-button:hover {
         background-color: var(--color-primary-hover);
     }
-
-    input[type="file"]:focus {
-        outline: none;
-        border-color: var(--color-primary);
-        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
-    }
-
-    .input-group {
-        display: flex;
-        flex-direction: row;
-        gap: 0.5rem;
-    }
-
-    input[type="file"] {
-        flex: 1;
-        font-size: var(--text-md);
-        border: 1px solid var(--color-gray-400);
-        border-radius: var(--radius-sm);
-        background-color: var(--color-light);
-        padding: 0.4rem 0.6rem;
-        color: var(--color-text);
-    }
-
     .button {
         padding: var(--space-vertical-xs) var(--space-horizontal-sm);
-        font-size: inherit;
         border: none;
         border-radius: 3rem;
         cursor: pointer;
+        font-size: inherit;
         background-color: var(--color-primary);
         color: var(--color-text);
         transition: 0.3s;
     }
-
     .button:hover {
-        background-color: var(--primary-light);
+        background-color: var(--color-primary-hover);
     }
-
-    .button:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-    }
-
     .preview-list,
     .items-list {
         display: flex;
@@ -248,14 +221,12 @@
         border-radius: var(--radius-sm);
         background-color: var(--color-gray-100);
     }
-
     h4 {
         width: 100%;
         margin: 0 0 0.3rem 0;
         font-size: 0.95rem;
         color: var(--color-gray-600);
     }
-
     .item.image {
         background: var(--color-bg);
         padding: 0.3rem;
@@ -268,20 +239,17 @@
         align-items: center;
         justify-content: center;
     }
-
     .item.image img {
         max-width: 100%;
         max-height: 100%;
         object-fit: cover;
         border-radius: 4px;
     }
-
     .actions {
         position: absolute;
         top: 2px;
         right: 2px;
     }
-
     .clear-btn {
         background: none;
         border: none;
@@ -294,7 +262,6 @@
             color 0.2s,
             background 0.2s;
     }
-
     .clear-btn:hover {
         color: var(--color-error);
         background: var(--color-gray-100);

@@ -47,7 +47,14 @@ export const carSchema = z.object({
     extraTimePolicy: z.string().optional(), // как считать перерасход (описание)
     withDriver: z.boolean().optional(), // Можно ли с водителем
 
-    images: z.array(z.string()).optional(),
+    images: z
+        .array(
+            z.object({
+                url: z.string(),
+                public_id: z.string(),
+            })
+        )
+        .optional(),
     availableDays: z.array(z.union([z.string(), z.number()])).optional(),
 
     // Мультиязычные поля

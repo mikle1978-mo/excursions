@@ -11,6 +11,7 @@
     import { createYacht, updateYacht } from "$lib/utils/yachtsActions";
     import { onMount } from "svelte";
     import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
+    import ImageUploader from "$lib/components/UI/inputs/ImageUploader/ImageUploader.svelte";
 
     export let mode = "create"; // "create" или "edit"
     export let slug = ""; // для режима "edit"
@@ -142,10 +143,10 @@
                 <ErrorMessage field="discount" {errors} />
             </label>
 
-            <ArrayInput
-                bind:value={$yachtForm.images}
-                placeholder="Введите URL изображений каждый с новой строки"
+            <ImageUploader
+                bind:images={$yachtForm.images}
                 label="Изображения (URL через запятую или с новой строки)"
+                folder={`yachts/${$yachtForm.slug}`}
             />
             <ErrorMessage field="images" {errors} />
         </fieldset>

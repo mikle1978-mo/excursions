@@ -9,7 +9,7 @@
     const {
         slug = "/",
         title = "Обзорная экскурсия по историческому центру",
-        images = ["/images/excursions/excursion_default.webp"],
+        images = [{ url: "/images/excursions/excursion_default.webp" }],
         duration = 2.5,
         groupSize = 10,
         price = 1500,
@@ -35,7 +35,7 @@
 <a class="excursion-card" href="/{$locale}/yachts/{slug}">
     <div class="excursion-card__image-wrapper">
         <img
-            src={images[0]}
+            src={images[0]?.url}
             alt=""
             class="excursion-card__image"
             width="980"

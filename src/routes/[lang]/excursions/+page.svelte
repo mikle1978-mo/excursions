@@ -173,7 +173,7 @@
             <link
                 rel="preload"
                 as="image"
-                href={item.images[0]}
+                href={item.images[0]?.url}
                 type="image/webp"
             />
         {/if}

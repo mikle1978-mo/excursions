@@ -12,8 +12,8 @@
         createExcursion,
         updateExcursion,
     } from "$lib/utils/excursionsActions";
-    import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
     import { onMount } from "svelte";
+    import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
     import ImageUploader from "$lib/components/UI/inputs/ImageUploader/ImageUploader.svelte";
 
     export let mode = "create"; // "create" или "edit"
@@ -153,6 +153,7 @@
                 label="Изображения (URL через запятую или с новой строки)"
                 folder={`excursions/${$excursionForm.slug}`}
             />
+            <ErrorMessage field="images" {errors} />
         </fieldset>
 
         <h2>Мультиязычные поля</h2>
