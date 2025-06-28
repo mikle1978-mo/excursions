@@ -211,7 +211,7 @@
                         on:click={car.active ? openModal : null}
                         disabled={!car.active}
                         style="background-color: {car.active
-                            ? 'var(--accent-color)'
+                            ? 'var(--color-primary)'
                             : '#ccc'}; cursor: {car.active
                             ? 'pointer'
                             : 'not-allowed'}"

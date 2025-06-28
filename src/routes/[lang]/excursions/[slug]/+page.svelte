@@ -184,7 +184,7 @@
                     on:click={tour.active ? openModal : null}
                     disabled={!tour.active}
                     style="background-color: {tour.active
-                        ? 'var(--accent-color)'
+                        ? 'var(--color-primary)'
                         : '#ccc'}; cursor: {tour.active
                         ? 'pointer'
                         : 'not-allowed'}"
