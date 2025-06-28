@@ -28,9 +28,9 @@ export const car_page = {
     description: { ru: "Описание", en: "Description", tr: "Açıklama" },
     discount: { ru: "Скидка", en: "Discount", tr: "İndirim" },
     distanceLimit: {
-        ru: "Лимит пробега",
-        en: "Distance limit",
-        tr: "Mesafe limiti",
+        ru: "Лимит пробега (км/день)",
+        en: "Distance limit (km/day)",
+        tr: "Mesafe limiti (km/gün)",
     },
     doors: { ru: "Дверей", en: "Doors", tr: "Kapı sayısı" },
     extraTimePolicy: {
@@ -65,8 +65,9 @@ export const car_page = {
         en: "Insurance exclusions",
         tr: "Sigorta kapsamı dışı",
     },
-    luggage: { ru: "Багаж", en: "Luggage", tr: "Bagaj" },
-    minRentalPeriod: {
+    luggage: { ru: "Багаж (л.)", en: "Luggage (l.)", tr: "Bagaj" },
+
+    minRentalPeriodValue: {
         ru: "Мин. срок аренды",
         en: "Min rental period",
         tr: "Minimum kiralama süresi",

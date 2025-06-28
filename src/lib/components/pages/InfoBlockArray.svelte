@@ -5,7 +5,7 @@
 
 {#if items.length > 0}
     <div class="info-block">
-        <h2>{title}</h2>
+        <h2>{title}:</h2>
         <ul class="info-list">
             {#each items as item}
                 <li>{item}</li>

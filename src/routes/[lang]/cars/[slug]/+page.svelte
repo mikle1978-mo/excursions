@@ -14,7 +14,8 @@
     import Modal from "$lib/components/UI/Modal.svelte";
     import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
     import Share from "$lib/components/UI/buttons/Share.svelte";
-    import InfoBlock from "$lib/components/pages/InfoBlock.svelte";
+    import InfoBlockArray from "$lib/components/pages/InfoBlockArray.svelte";
+    import InfoBlockString from "$lib/components/pages/InfoBlockString.svelte";
 
     export let data;
     const { car, reviewsCount, rating } = data;
@@ -135,7 +136,6 @@
                         <span class="badge popular">Популярно</span>
                     {/if}
                     <span class="badge duration">
-                        {car.fuel}
                         {car_page.fuel?.[car.fuel]?.[$locale] ?? ""}</span
                     >
                 </div>
@@ -183,28 +183,71 @@
                             {car.doors}
                         </span>
                     </div>
-                </div>
+                    <div class="detail">
+                        <span class="label">
+                            {car_page.distanceLimit[$locale]}:</span
+                        >
+                        <span class="value">
+                            {car.distanceLimit}
+                        </span>
+                    </div>
+                    <div class="detail">
+                        <span class="label"> {car_page.luggage[$locale]}:</span>
+                        <span class="value">
+                            {car.luggage}
+                        </span>
+                    </div>
+                    <div class="detail">
+                        <span class="label">
+                            {car_page.minRentalPeriodValue[$locale]}:</span
+                        >
+                        <span class="value">
+                            {car.minRentalPeriodValue}
+                        </span>
+                    </div>
 
-                <button
-                    class="book-button"
-                    on:click={car.active ? openModal : null}
-                    disabled={!car.active}
-                    style="background-color: {car.active
-                        ? 'var(--accent-color)'
-                        : '#ccc'}; cursor: {car.active
-                        ? 'pointer'
-                        : 'not-allowed'}"
-                >
-                    {car.active
-                        ? car_page.button[$locale]
-                        : car_page.available[$locale]}
-                </button>
+                    <button
+                        class="book-button"
+                        on:click={car.active ? openModal : null}
+                        disabled={!car.active}
+                        style="background-color: {car.active
+                            ? 'var(--accent-color)'
+                            : '#ccc'}; cursor: {car.active
+                            ? 'pointer'
+                            : 'not-allowed'}"
+                    >
+                        {car.active
+                            ? car_page.button[$locale]
+                            : car_page.available[$locale]}
+                    </button>
+                </div>
             </aside>
             <section class="additional-info">
                 <!-- Обязательные документы -->
-                <InfoBlock
+                <InfoBlockArray
                     title={car_page.requiredDocuments[$locale]}
                     items={currentTranslation.requiredDocuments}
+                />
+                <InfoBlockArray
+                    title={car_page.insuranceDescription[$locale]}
+                    items={currentTranslation.insuranceDescription}
+                />
+                <InfoBlockArray
+                    title={car_page.insuranceExclusions[$locale]}
+                    items={currentTranslation.insuranceExclusions}
+                />
+                <InfoBlockString
+                    title={car_page.extraTimePolicy[$locale]}
+                    item={currentTranslation.extraTimePolicy}
+                />
+                <InfoBlockString
+                    title={car_page.fuelPolicy[$locale]}
+                    item={currentTranslation.fuelPolicy}
+                />
+
+                <InfoBlockArray
+                    title={car_page.accidentInstructions[$locale]}
+                    items={currentTranslation.accidentInstructions}
                 />
             </section>
         </div>
