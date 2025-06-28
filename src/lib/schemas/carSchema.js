@@ -38,13 +38,12 @@ export const carSchema = z.object({
         .union([z.string(), z.number()])
         .transform(Number)
         .optional(), // км/день
-    minRentalPeriod: z
-        .object({
-            value: z.number(),
-            unit: z.enum(["hours", "days"]),
-        })
+    minRentalPeriodValue: z
+        .union([z.string(), z.number()])
+        .transform(Number)
         .optional(),
-    extraTimePolicy: z.string().optional(), // как считать перерасход (описание)
+    minRentalPeriodUnit: z.enum(["hours", "days"]).optional(),
+
     withDriver: z.boolean().optional(), // Можно ли с водителем
 
     images: z
@@ -61,13 +60,15 @@ export const carSchema = z.object({
     title: i18nString.optional(),
     metaDescription: i18nString.optional(),
     description: i18nString.optional(),
+    fuelPolicy: i18nString.optional(), // Политика по топливу
+    extraTimePolicy: i18nString.optional(), // как считать перерасход (описание)
+    // Массивы с мультиязычными строками
+    insuranceDescription: i18nArray.optional(), // Детальное описание страховки
+    accidentInstructions: i18nArray.optional(), //Инструкции при ДТП
+    rentalConditions: i18nArray.optional(), // Условия
     includes: i18nArray.optional(), // Входит в аренду
     whatToBring: i18nArray.optional(), // Что нужно
-    rentalConditions: i18nArray.optional(), // Условия
-    insuranceDescription: i18nString.optional(), // Детальное описание страховки
     insuranceExclusions: i18nArray.optional(), // Перечень исключений
-    accidentInstructions: i18nArray.optional(),
-    fuelPolicy: i18nString.optional(), // Политика по топливу
     requiredDocuments: i18nArray.optional(), // Паспорт, ВУ, возраст, стаж
     notes: i18nArray.optional(), // Любые дополнительные условия
     tags: i18nArray.optional(),

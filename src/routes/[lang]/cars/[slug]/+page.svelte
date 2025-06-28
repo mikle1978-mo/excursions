@@ -14,9 +14,13 @@
     import Modal from "$lib/components/UI/Modal.svelte";
     import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
     import Share from "$lib/components/UI/buttons/Share.svelte";
+    import InfoBlock from "$lib/components/pages/InfoBlock.svelte";
 
     export let data;
     const { car, reviewsCount, rating } = data;
+    console.log("====================================");
+    console.log(car);
+    console.log("====================================");
     const { slug } = $page.params;
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -130,8 +134,9 @@
                     {#if car.isPopular}
                         <span class="badge popular">Популярно</span>
                     {/if}
-                    <span class="badge duration"
-                        >{car.duration} {car_page.hours[$locale]}</span
+                    <span class="badge duration">
+                        {car.fuel}
+                        {car_page.fuel?.[car.fuel]?.[$locale] ?? ""}</span
                     >
                 </div>
                 <Share />
@@ -152,28 +157,31 @@
                 <div class="price-block">
                     <span class="price">{$priceDisplay}</span>
                     <span class="per-person">
-                        {car_page.perPerson[$locale]}</span
-                    >
+                        {car_page.priceType?.[car.priceType]?.[$locale] ?? ""}
+                    </span>
                 </div>
 
                 <div class="details">
                     <div class="detail">
-                        <span class="label">{car_page.duration[$locale]}:</span>
-                        <span class="value"
-                            >{car.duration}
-                            {car_page.hours[$locale]}</span
+                        <span class="label">
+                            {car_page.fuelTitle[$locale]}:
+                        </span>
+                        <span class="value">
+                            {car_page.fuel?.[car.fuel]?.[$locale] ?? ""}</span
                         >
                     </div>
 
                     <div class="detail">
-                        <span class="label">
-                            {car_page.groupSize[$locale]}:</span
-                        >
-                        <span class="value"
-                            >{car_page.before[$locale]}
-                            {car.groupSize}
-                            {car_page.people[$locale]}</span
-                        >
+                        <span class="label"> {car_page.seats[$locale]}:</span>
+                        <span class="value">
+                            {car.seats}
+                        </span>
+                    </div>
+                    <div class="detail">
+                        <span class="label"> {car_page.doors[$locale]}:</span>
+                        <span class="value">
+                            {car.doors}
+                        </span>
                     </div>
                 </div>
 
@@ -193,40 +201,11 @@
                 </button>
             </aside>
             <section class="additional-info">
-                <!-- Что включено -->
-                {#if currentTranslation.includes.length > 0}
-                    <div class="info-block">
-                        <h2>{car_page.includes[$locale]}</h2>
-                        <ul class="info-list">
-                            {#each currentTranslation.includes as item}
-                                <li>{item}</li>
-                            {/each}
-                        </ul>
-                    </div>
-                {/if}
-                <!-- Что вы увидите -->
-                {#if currentTranslation.whatYouSee.length > 0}
-                    <div class="info-block">
-                        <h2>{car_page.whatYouSee[$locale]}</h2>
-                        <ul class="info-list">
-                            {#each currentTranslation.whatYouSee as item}
-                                <li>{item}</li>
-                            {/each}
-                        </ul>
-                    </div>
-                {/if}
-
-                <!-- Что взять с собой -->
-                {#if currentTranslation.whatToBring.length > 0}
-                    <div class="info-block">
-                        <h2>{car_page.whatToBring[$locale]}</h2>
-                        <ul class="info-list">
-                            {#each currentTranslation.whatToBring as item}
-                                <li>{item}</li>
-                            {/each}
-                        </ul>
-                    </div>
-                {/if}
+                <!-- Обязательные документы -->
+                <InfoBlock
+                    title={car_page.requiredDocuments[$locale]}
+                    items={currentTranslation.requiredDocuments}
+                />
             </section>
         </div>
 
@@ -422,24 +401,5 @@
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-lg);
-    }
-
-    .info-block {
-        background: var(--color-bg);
-        padding: var(--space-vertical-md);
-        border-radius: var(--radius-md);
-        border: 1px solid var(--color-gray-300);
-    }
-
-    .info-block h2 {
-        font-size: var(--text-lg);
-        margin-bottom: var(--space-vertical-sm);
-        color: var(--color-text);
-    }
-
-    .info-list {
-        list-style: disc inside;
-        color: var(--color-gray-700);
-        line-height: var(--line-height-base);
     }
 </style>

@@ -1,17 +1,14 @@
 <script>
     import {
-        excursionForm,
-        setExcursionForm,
-        createInitialExcursionForm,
-        resetExcursionForm,
-    } from "$lib/stores/excursionForm";
-    import { excursionSchema } from "$lib/schemas/excursionSchema";
+        carForm,
+        setCarForm,
+        createInitialCarForm,
+        resetCarForm,
+    } from "$lib/stores/carForm";
+    import { carSchema } from "$lib/schemas/carSchema";
     import ArrayInput from "$lib/components/UI/inputs/arrayInput/ArrayInput.svelte";
     import { goto } from "$app/navigation";
-    import {
-        createExcursion,
-        updateExcursion,
-    } from "$lib/utils/excursionsActions";
+    import { createCar, updateCar } from "$lib/utils/carsActions";
     import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
     import { onMount } from "svelte";
     import ImageUploader from "$lib/components/UI/inputs/ImageUploader/ImageUploader.svelte";
@@ -28,18 +25,18 @@
         errors = {};
 
         try {
-            const validData = excursionSchema.parse($excursionForm);
+            const validData = carSchema.parse($carForm);
 
             if (mode === "create") {
-                await createExcursion(validData);
-                alert("Экскурсия создана");
-                excursionForm.set(createInitialExcursionForm());
+                await createCar(validData);
+                alert("Машина создана");
+                carForm.set(createInitialCarForm());
             } else {
-                await updateExcursion(slug, validData);
+                await updateCar(slug, validData);
                 alert("Изменения сохранены");
             }
 
-            goto("/admin/excursions");
+            goto("/admin/cars");
         } catch (err) {
             if (err.errors) {
                 // Преобразуем zod-ошибки в объект { field: message }
@@ -58,28 +55,26 @@
 
     function handleReset() {
         if (confirm("Вы уверены, что хотите очистить форму?")) {
-            resetExcursionForm();
+            resetCarForm();
         }
     }
 
     onMount(() => {
         if (mode === "create") {
-            resetExcursionForm(); // сбрасываем всё к начальному состоянию
+            resetCarForm(); // сбрасываем всё к начальному состоянию
         }
     });
 
     $: console.log(
         "--- Current formData ---",
-        JSON.parse(JSON.stringify($excursionForm))
+        JSON.parse(JSON.stringify($carForm))
     );
 </script>
 
 <div class="new-page">
     <div class="title-row">
         <h1 class="title">
-            {mode === "create"
-                ? "Создание экскурсии"
-                : "Редактирование экскурсии"}
+            {mode === "create" ? "Создание машины" : "Редактирование машины"}
         </h1>
         <button
             type="button"
@@ -91,67 +86,142 @@
     <form on:submit|preventDefault={handleSubmit}>
         <fieldset>
             <legend>Общая информация</legend>
+
             <label class="checkbox">
-                <input type="checkbox" bind:checked={$excursionForm.active} />
+                <input type="checkbox" bind:checked={$carForm.active} />
                 Активна (отображать на сайте)
+                <ErrorMessage field="active" {errors} />
             </label>
-            <label>
-                Slug (уникальный идентификатор):
-                <input type="text" bind:value={$excursionForm.slug} required />
+
+            <label
+                >Slug (уникальный идентификатор):
+                <input type="text" bind:value={$carForm.slug} required />
                 <ErrorMessage field="slug" {errors} />
             </label>
 
-            <label>
-                Длительность (в часах):
-                <input type="number" bind:value={$excursionForm.duration} />
-                <ErrorMessage field="duration" {errors} />
+            <label
+                >Марка (мерседес, ауди и т.д.):
+                <input type="text" bind:value={$carForm.brand} />
+                <ErrorMessage field="brand" {errors} />
             </label>
 
-            <label>
-                Размер группы (макс. количество человек):
-                <input type="number" bind:value={$excursionForm.groupSize} />
-                <ErrorMessage field="groupSize" {errors} />
+            <label
+                >Модель (например, A-Class):
+                <input type="text" bind:value={$carForm.model} />
+                <ErrorMessage field="model" {errors} />
             </label>
 
-            <label>
-                Цена прогулки (в долларах):
-                <input type="number" bind:value={$excursionForm.price} />
+            <label
+                >Год:
+                <input type="number" bind:value={$carForm.year} />
+                <ErrorMessage field="year" {errors} />
+            </label>
+
+            <label
+                >Количество мест:
+                <input type="number" bind:value={$carForm.seats} />
+                <ErrorMessage field="seats" {errors} />
+            </label>
+
+            <label
+                >Количество дверей:
+                <input type="number" bind:value={$carForm.doors} />
+                <ErrorMessage field="doors" {errors} />
+            </label>
+
+            <label
+                >Объем багажника (в литрах):
+                <input type="number" bind:value={$carForm.luggage} />
+                <ErrorMessage field="luggage" {errors} />
+            </label>
+
+            <label
+                >Тип топлива:
+                <select bind:value={$carForm.fuel}>
+                    <option value="" disabled selected>Выберите тип</option>
+                    <option value="petrol">Бензин</option>
+                    <option value="diesel">Дизель</option>
+                    <option value="hybrid">Гибрид</option>
+                    <option value="electric">Электро</option>
+                </select>
+                <ErrorMessage field="fuel" {errors} />
+            </label>
+
+            <label
+                >Коробка передач:
+                <select bind:value={$carForm.transmission}>
+                    <option value="" disabled selected>Выберите тип</option>
+                    <option value="automatic">Автомат</option>
+                    <option value="manual">Механика</option>
+                </select>
+                <ErrorMessage field="transmission" {errors} />
+            </label>
+
+            <label
+                >Тип кузова:
+                <select bind:value={$carForm.bodyType}>
+                    <option value="" disabled selected>Выберите тип</option>
+                    <option value="sedan">Седан</option>
+                    <option value="suv">Внедорожник</option>
+                    <option value="hatchback">Хэтчбек</option>
+                    <option value="van">Фургон</option>
+                    <option value="pickup">Пикап</option>
+                    <option value="convertible">Кабриолет</option>
+                </select>
+                <ErrorMessage field="bodyType" {errors} />
+            </label>
+
+            <label
+                >Цена аренды:
+                <input type="number" bind:value={$carForm.price} />
                 <ErrorMessage field="price" {errors} />
             </label>
 
-            <label>
-                Тип цены:
-                <select bind:value={$excursionForm.priceType}>
+            <label
+                >Тип цены:
+                <select bind:value={$carForm.priceType}>
                     <option value="" disabled selected>Выберите тип</option>
-                    <option value="per_person">за человека</option>
-                    <option value="per_trip">за прогулку</option>
+                    <option value="per_day">за день</option>
                     <option value="per_hour">за час</option>
+                    <option value="per_week">за неделю</option>
                 </select>
                 <ErrorMessage field="priceType" {errors} />
             </label>
 
-            <label>
-                Расстояние (км):
-                <input type="number" bind:value={$excursionForm.distance} />
-                <ErrorMessage field="distance" {errors} />
+            <label
+                >Скидка (%):
+                <input type="number" bind:value={$carForm.discount} />
+            </label>
+
+            <label
+                >Ограничение по пробегу (км/день):
+                <input type="number" bind:value={$carForm.distanceLimit} />
+                <ErrorMessage field="distanceLimit" {errors} />
+            </label>
+
+            <label
+                >Минимальный срок аренды:
+                <input
+                    type="number"
+                    bind:value={$carForm.minRentalPeriodValue}
+                />
+                <select bind:value={$carForm.minRentalPeriodUnit}>
+                    <option value="hours">Часы</option>
+                    <option value="days">Дни</option>
+                </select>
             </label>
 
             <label>
-                Время начала:
-                <input type="text" bind:value={$excursionForm.start} />
-                <ErrorMessage field="start" {errors} />
-            </label>
-
-            <label>
-                Скидка (%):
-                <input type="number" bind:value={$excursionForm.discount} />
-                <ErrorMessage field="discount" {errors} />
+                <input type="checkbox" bind:checked={$carForm.withDriver} />
+                Можно с водителем
+                <ErrorMessage field="withDriver" {errors} />
             </label>
 
             <ImageUploader
-                bind:images={$excursionForm.images}
-                label="Изображения (URL через запятую или с новой строки)"
-                folder={`excursions/${$excursionForm.slug}`}
+                bind:images={$carForm.images}
+                label="Фотографии машины"
+                folder={`cars/${$carForm.slug}`}
+                {errors}
             />
         </fieldset>
 
@@ -160,69 +230,100 @@
             <fieldset>
                 <legend>{lang.toUpperCase()}</legend>
 
-                <label>
-                    Название экскурсии:
-                    <input
-                        type="text"
-                        bind:value={$excursionForm.title[lang]}
-                    />
+                <label
+                    >Название:
+                    <input type="text" bind:value={$carForm.title[lang]} />
                     <ErrorMessage field={`title.${lang}`} {errors} />
                 </label>
 
-                <label>
-                    Meta-описание:
+                <label
+                    >Meta-описание:
                     <textarea
-                        rows="5"
-                        bind:value={$excursionForm.metaDescription[lang]}
+                        rows="3"
+                        bind:value={$carForm.metaDescription[lang]}
                     ></textarea>
                     <ErrorMessage field={`metaDescription.${lang}`} {errors} />
                 </label>
 
-                <label>
-                    Описание:
-                    <textarea
-                        rows="5"
-                        bind:value={$excursionForm.description[lang]}
+                <label
+                    >Описание:
+                    <textarea rows="5" bind:value={$carForm.description[lang]}
                     ></textarea>
                     <ErrorMessage field={`description.${lang}`} {errors} />
                 </label>
 
-                <label>
-                    Место встречи:
-                    <input
-                        type="text"
-                        bind:value={$excursionForm.meetingPoint[lang]}
-                    /><ErrorMessage field={`meetingPoint.${lang}`} {errors} />
+                <label
+                    >Условия перерасхода лимитов:
+                    <textarea
+                        rows="5"
+                        bind:value={$carForm.extraTimePolicy[lang]}
+                    ></textarea>
+                    <ErrorMessage field={`extraTimePolicy.${lang}`} {errors} />
+                </label>
+                <label
+                    >Топливная политика:
+                    <textarea rows="5" bind:value={$carForm.fuelPolicy[lang]}
+                    ></textarea>
+                    <ErrorMessage field={`fuelPolicy.${lang}`} {errors} />
                 </label>
 
                 <ArrayInput
-                    bind:value={$excursionForm.whatYouSee[lang]}
-                    placeholder="Введите пункты каждый с новой строки"
-                    label="Что вы увидите:"
-                    field={`whatYouSee.${lang}`}
+                    bind:value={$carForm.requiredDocuments[lang]}
+                    label="ОБязательные документы:"
+                    field={`requiredDocuments.${lang}`}
                     {errors}
                 />
+                <ErrorMessage field={`requiredDocuments.${lang}`} {errors} />
 
                 <ArrayInput
-                    bind:value={$excursionForm.includes[lang]}
-                    placeholder="Введите пункты каждый с новой строки"
-                    label="Что включено:"
+                    bind:value={$carForm.rentalConditions[lang]}
+                    label="Условия аренды:"
+                    field={`rentalConditions.${lang}`}
+                    {errors}
+                />
+                <ArrayInput
+                    bind:value={$carForm.insuranceDescription[lang]}
+                    label="Описание страховки:"
+                    field={` insuranceDescription.${lang}`}
+                    {errors}
+                />
+                <ArrayInput
+                    bind:value={$carForm.insuranceExclusions[lang]}
+                    label="Исключения из страховки:"
+                    field={`insuranceExclusions.${lang}`}
+                    {errors}
+                />
+                <ArrayInput
+                    bind:value={$carForm.accidentInstructions[lang]}
+                    label="Инструкции при аварии:"
+                    field={`accidentInstructions.${lang}`}
+                    {errors}
+                />
+                <ArrayInput
+                    bind:value={$carForm.includes[lang]}
+                    label="Что включено"
                     field={`includes.${lang}`}
                     {errors}
                 />
 
                 <ArrayInput
-                    bind:value={$excursionForm.whatToBring[lang]}
-                    placeholder="Введите пункты каждый с новой строки"
-                    label="Что взять с собой:"
+                    bind:value={$carForm.whatToBring[lang]}
+                    label="Что взять с собой"
                     field={`whatToBring.${lang}`}
                     {errors}
                 />
+
                 <ArrayInput
-                    bind:value={$excursionForm.tags[lang]}
-                    placeholder="Введите пункты каждый с новой строки"
-                    label="Теги (через запятую):"
+                    bind:value={$carForm.tags[lang]}
+                    label="Теги"
                     field={`tags.${lang}`}
+                    {errors}
+                />
+
+                <ArrayInput
+                    bind:value={$carForm.notes[lang]}
+                    label="Доп. условия"
+                    field={`notes.${lang}`}
                     {errors}
                 />
             </fieldset>
@@ -238,7 +339,7 @@
                     ? "Создание..."
                     : "Сохранение..."
                 : mode === "create"
-                  ? "Создать экскурсию"
+                  ? "Создать машину"
                   : "Сохранить изменения"}
         </button>
     </form>

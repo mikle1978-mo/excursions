@@ -39,7 +39,9 @@
                 Добавить
             </button>
         </div>
-        <div class="items-list">
+        <div
+            class={`items-list ${value.length > 0 ? "has-items" : "no-items"}`}
+        >
             {#each value as item, index (index)}
                 <div class="item">
                     <span>{item}</span>
@@ -127,6 +129,14 @@
         border: 1px solid var(--color-gray-400);
         border-radius: var(--radius-sm);
         background-color: var(--color-gray-200);
+    }
+
+    .items-list.has-items {
+        border-color: var(--color-success, green);
+    }
+
+    .items-list.no-items {
+        border-color: var(--color-warning, red);
     }
 
     .item {

@@ -43,24 +43,19 @@ export async function POST({ request }) {
             brand: data.brand || "",
             model: data.model || "",
             year: Number(data.year) || new Date().getFullYear(),
-
             seats: Number(data.seats) || 0,
             doors: Number(data.doors) || 0,
             luggage: Number(data.luggage) || 0,
-
             fuel: data.fuel || "petrol",
             transmission: data.transmission || "automatic",
             bodyType: data.bodyType || "sedan",
-
             price: Number(data.price) || 0,
             priceType: data.priceType || "per_day",
             discount: Number(data.discount) || 0,
-
             distanceLimit: Number(data.distanceLimit) || 250,
-            minRentalPeriod: data.minRentalPeriod || { value: 1, unit: "days" },
-            extraTimePolicy: data.extraTimePolicy || "",
+            minRentalPeriodValue: Number(data.minRentalPeriodValue) || 1,
+            minRentalPeriodUnit: data.minRentalPeriodUnit || "days",
             withDriver: data.withDriver ?? false,
-
             availableDays:
                 Array.isArray(data.availableDays) &&
                 data.availableDays.length > 0
@@ -70,41 +65,6 @@ export async function POST({ request }) {
                 Array.isArray(data.images) && data.images.length > 0
                     ? data.images
                     : ["/images/cars/car_default.webp"],
-
-            title: data.title || { ru: "", en: "", tr: "" },
-            metaDescription: data.metaDescription || { ru: "", en: "", tr: "" },
-            description: data.description || { ru: "", en: "", tr: "" },
-            includes: data.includes || { ru: [], en: [], tr: [] },
-            whatToBring: data.whatToBring || { ru: [], en: [], tr: [] },
-            rentalConditions: data.rentalConditions || {
-                ru: [],
-                en: [],
-                tr: [],
-            },
-            insuranceDescription: data.insuranceDescription || {
-                ru: "",
-                en: "",
-                tr: "",
-            },
-            insuranceExclusions: data.insuranceExclusions || {
-                ru: [],
-                en: [],
-                tr: [],
-            },
-            accidentInstructions: data.accidentInstructions || {
-                ru: [],
-                en: [],
-                tr: [],
-            },
-            fuelPolicy: data.fuelPolicy || { ru: "", en: "", tr: "" },
-            requiredDocuments: data.requiredDocuments || {
-                ru: [],
-                en: [],
-                tr: [],
-            },
-            notes: data.notes || { ru: [], en: [], tr: [] },
-            tags: data.tags || { ru: [], en: [], tr: [] },
-
             active: data.active ?? true,
             rating: 0,
             reviewsCount: 0,
@@ -122,8 +82,8 @@ export async function POST({ request }) {
             metaDescription: data.metaDescription?.[lang] || "",
             description: data.description?.[lang] || "",
             fuelPolicy: data.fuelPolicy?.[lang] || "",
-            insuranceDescription: data.insuranceDescription?.[lang] || "",
-
+            extraTimePolicy: data.extraTimePolicy?.[lang] || "",
+            insuranceDescription: data.insuranceDescription?.[lang] || [],
             includes: data.includes?.[lang] || [],
             whatToBring: data.whatToBring?.[lang] || [],
             rentalConditions: data.rentalConditions?.[lang] || [],

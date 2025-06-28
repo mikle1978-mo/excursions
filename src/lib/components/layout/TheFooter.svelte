@@ -165,11 +165,13 @@
         cursor: pointer;
         height: 100%;
         border: none;
+        font-size: var(--text-md);
     }
 
     .icon-wrapper {
         display: flex;
         align-items: center;
+
         justify-content: center;
         height: calc(var(--space-vertical-md) * 1.3);
         width: calc(var(--space-vertical-md) * 1.3);

@@ -15,7 +15,7 @@ export async function deleteCar(slug) {
     });
 
     if (res.ok) {
-        alert("Экскурсия удалена");
+        alert("Машина удалена");
         return true;
     } else {
         const err = await res.json();
@@ -25,7 +25,7 @@ export async function deleteCar(slug) {
 }
 
 /**
- * Создание новой экскурсии
+ * Создание новой машины
  */
 export async function createCar(data) {
     const res = await fetch(API_URL, {

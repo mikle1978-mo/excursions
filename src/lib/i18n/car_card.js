@@ -11,9 +11,9 @@ export const car_card = {
         ru: "часа(ов)",
         en: "hours",
     },
-    people: {
-        ru: "человек",
-        en: "people",
+    seats: {
+        ru: "местa",
+        en: "seats",
     },
     per: {
         per_person: {
@@ -28,9 +28,45 @@ export const car_card = {
             ru: "в час",
             en: "per hour",
         },
+        per_day: {
+            ru: "в сутки",
+            en: "per day",
+        },
+        per_week: {
+            ru: "в неделю",
+            en: "per week",
+        },
     },
     before: {
         ru: "до",
         en: "up to",
+    },
+    fuel: {
+        petrol: {
+            ru: "бензин",
+            en: "petrol",
+        },
+        diesel: {
+            ru: "дизель",
+            en: "diesel",
+        },
+        hybrid: {
+            ru: "гибрид",
+            en: "hybrid",
+        },
+        electric: {
+            ru: "электро",
+            en: "electric",
+        },
+    },
+    transmission: {
+        automatic: {
+            ru: "автомат",
+            en: "automatic",
+        },
+        manual: {
+            ru: "механика",
+            en: "manual",
+        },
     },
 };

@@ -18,57 +18,63 @@ export async function GET({ params }) {
 export async function PUT({ request, params }) {
     const db = await connectToDatabase();
 
-    // Получаем полный объект яхты с клиента (включая мультиязычные поля)
     const carData = await request.json();
-
-    // Старый и новый slug (идентификаторы яхты)
     const oldSlug = params.slug;
     const newSlug = carData.slug;
 
-    // Формируем массив переводов для коллекции cars_translations,
-    // извлекая языковые поля из carData по каждому языку
+    // Подготовка переводов
     const preparedTranslations = ["ru", "en", "tr"].map((lang) => ({
-        itemSlug: newSlug, // связываем перевод с новым slug
-        lang, // язык перевода
+        itemSlug: newSlug,
+        lang,
         title: carData.title?.[lang] ?? "",
         description: carData.description?.[lang] ?? "",
         metaDescription: carData.metaDescription?.[lang] ?? "",
-        whatYouSee: carData.whatYouSee?.[lang] ?? [],
-        tags: carData.tags?.[lang] ?? [],
-        meetingPoint: carData.meetingPoint?.[lang] ?? "",
+        fuelPolicy: carData.fuelPolicy?.[lang] ?? "",
+        extraTimePolicy: carData.extraTimePolicy?.[lang] ?? "",
+        insuranceDescription: carData.insuranceDescription?.[lang] ?? [],
+        rentalConditions: carData.rentalConditions?.[lang] ?? [],
+        accidentInstructions: carData.accidentInstructions?.[lang] ?? [],
         includes: carData.includes?.[lang] ?? [],
         whatToBring: carData.whatToBring?.[lang] ?? [],
+        insuranceExclusions: carData.insuranceExclusions?.[lang] ?? [],
+        requiredDocuments: carData.requiredDocuments?.[lang] ?? [],
+        notes: carData.notes?.[lang] ?? [],
+        tags: carData.tags?.[lang] ?? [],
     }));
 
-    // Создаём объект для основной коллекции cars —
-    // копируем все поля, кроме мультиязычных
+    // Формируем основной объект без мультиязычных полей
     const car = { ...carData };
     delete car.title;
     delete car.description;
     delete car.metaDescription;
-    delete car.whatYouSee;
+    delete car.fuelPolicy;
+    delete car.extraTimePolicy;
+    delete car.insuranceDescription;
+    delete car.rentalConditions;
+    delete car.accidentInstructions;
     delete car.includes;
     delete car.whatToBring;
-    delete car.meetingPoint;
+    delete car.insuranceExclusions;
+    delete car.requiredDocuments;
+    delete car.notes;
     delete car.tags;
 
-    // Обновляем основной документ в коллекции cars по старому slug
+    // Обновляем основной документ
     await db.collection("cars").updateOne({ slug: oldSlug }, { $set: car });
 
-    // Удаляем все старые переводы из коллекции cars_translations
+    // Удаляем старые переводы
     await db.collection("cars_translations").deleteMany({ itemSlug: oldSlug });
 
     // Вставляем новые переводы
     await db.collection("cars_translations").insertMany(preparedTranslations);
 
-    // Если slug изменился, обновляем его в основном документе
+    // Если slug изменился, обновляем его
     if (oldSlug !== newSlug) {
         await db
             .collection("cars")
             .updateOne({ slug: oldSlug }, { $set: { slug: newSlug } });
     }
 
-    // Возвращаем успех
     return new Response(JSON.stringify({ success: true }));
 }
 

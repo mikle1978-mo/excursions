@@ -9,10 +9,12 @@
     const {
         slug = "/",
         title = "легковой автомобиль",
-        images = ["/images/cars/car_default.webp"],
-        duration = 2.5,
-        groupSize = 10,
+        images = [{ url: "/images/cars/car_default.webp" }],
+        seats = 5,
         price = 1500,
+        priceType = "perHour",
+        fuel = "petrol",
+        transmission = "automatic",
         discount = 0,
         rating = 4,
         reviewsCount = 142,
@@ -35,7 +37,7 @@
 <a class="car-card" href="/{$locale}/cars/{slug}">
     <div class="car-card__image-wrapper">
         <img
-            src={images[0]}
+            src={images[0]?.url}
             alt=""
             class="car-card__image"
             width="980"
@@ -82,12 +84,13 @@
         <div class="car-card__footer">
             <div class="car-card__details">
                 <span class="car-card__duration"
-                    >{duration} {car_card.hours[$locale]}</span
+                    >{car_card.fuel[car.fuel]?.[$locale] ?? ""}
+                    {car_card.transmission[car.transmission]?.[$locale] ??
+                        ""}</span
                 >
-                <span class="car-card__group-size"
-                    >{car_card.before[$locale]}
-                    {groupSize}
-                    {car_card.people[$locale]}</span
+                <span class="car-card__group-size">
+                    {seats}
+                    {car_card.seats[$locale]}</span
                 >
             </div>
 

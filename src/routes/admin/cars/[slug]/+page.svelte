@@ -36,15 +36,24 @@
                 title: toLangMap("title"),
                 metaDescription: toLangMap("metaDescription"),
                 description: toLangMap("description"),
-                meetingPoint: toLangMap("meetingPoint"),
-                whatYouSee: toLangArrayMap("whatYouSee"),
+                fuelPolicy: toLangMap("fuelPolicy"),
+                extraTimePolicy: toLangMap("extraTimePolicy"),
+                insuranceDescription: toLangMap("insuranceDescription"),
+
+                meetingPoint: toLangMap("meetingPoint"), // если нужно
+                whatYouSee: toLangArrayMap("whatYouSee"), // если есть
                 includes: toLangArrayMap("includes"),
                 whatToBring: toLangArrayMap("whatToBring"),
+                rentalConditions: toLangArrayMap("rentalConditions"),
+                insuranceExclusions: toLangArrayMap("insuranceExclusions"),
+                accidentInstructions: toLangArrayMap("accidentInstructions"),
+                requiredDocuments: toLangArrayMap("requiredDocuments"),
+                notes: toLangArrayMap("notes"),
                 tags: toLangArrayMap("tags"),
             });
         } catch (e) {
             console.error(e);
-            error = "Ошибка загрузки данных яхты";
+            error = "Ошибка загрузки данных машины";
         } finally {
             isLoading = false;
         }

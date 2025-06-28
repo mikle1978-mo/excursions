@@ -36,10 +36,10 @@ export async function PUT({ request, params }) {
         description: excursionData.description?.[lang] ?? "",
         metaDescription: excursionData.metaDescription?.[lang] ?? "",
         whatYouSee: excursionData.whatYouSee?.[lang] ?? [],
-        tags: excursionData.tags?.[lang] ?? [],
-        meetingPoint: excursionData.meetingPoint?.[lang] ?? "",
         includes: excursionData.includes?.[lang] ?? [],
         whatToBring: excursionData.whatToBring?.[lang] ?? [],
+        meetingPoint: excursionData.meetingPoint?.[lang] ?? "",
+        tags: excursionData.tags?.[lang] ?? [],
     }));
 
     // Создаём объект для основной коллекции excursions —
