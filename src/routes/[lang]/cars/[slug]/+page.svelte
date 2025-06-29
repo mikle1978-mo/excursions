@@ -133,7 +133,6 @@
                         {car_page.fuel?.[car.fuel]?.[$locale] ?? ""}</span
                     >
                 </div>
-                <Share />
             </div>
         </header>
 
@@ -199,22 +198,22 @@
                             {car.minRentalPeriodValue}
                         </span>
                     </div>
-
-                    <button
-                        class="book-button"
-                        on:click={car.active ? openModal : null}
-                        disabled={!car.active}
-                        style="background-color: {car.active
-                            ? 'var(--color-primary)'
-                            : '#ccc'}; cursor: {car.active
-                            ? 'pointer'
-                            : 'not-allowed'}"
-                    >
-                        {car.active
-                            ? car_page.button[$locale]
-                            : car_page.available[$locale]}
-                    </button>
                 </div>
+                <button
+                    class="book-button"
+                    on:click={car.active ? openModal : null}
+                    disabled={!car.active}
+                    style="background-color: {car.active
+                        ? 'var(--color-primary)'
+                        : '#ccc'}; cursor: {car.active
+                        ? 'pointer'
+                        : 'not-allowed'}"
+                >
+                    {car.active
+                        ? car_page.button[$locale]
+                        : car_page.available[$locale]}
+                </button>
+                <Share />
             </aside>
             <section class="additional-info">
                 <!-- Обязательные документы -->
@@ -282,7 +281,6 @@
     .meta-info {
         display: flex;
         gap: var(--space-horizontal-md);
-        justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
     }
@@ -329,12 +327,24 @@
 
         p {
             line-height: var(--line-height-base);
-            color: var(--color-gray-400);
+            color: var(--color-gray-700);
+        }
+    }
+    @media (prefers-color-scheme: dark) {
+        .description {
+            p {
+                line-height: var(--line-height-base);
+                color: var(--color-gray-300);
+            }
         }
     }
 
     /* Блок бронирования */
     .booking-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-vertical-md);
         background: var(--color-bg);
         padding: var(--space-vertical-md);
         border-radius: var(--radius-md);
@@ -348,7 +358,6 @@
     }
 
     .price-block {
-        margin-bottom: var(--space-vertical-md);
         text-align: center;
 
         .price {
@@ -366,8 +375,8 @@
 
     .details {
         display: grid;
+        width: 100%;
         gap: var(--space-vertical-sm);
-        margin-bottom: var(--space-vertical-md);
 
         .detail {
             display: flex;

@@ -30,7 +30,12 @@
 
     .info-list {
         list-style: disc inside;
-        color: var(--color-gray-300);
+        color: var(--color-gray-700);
         line-height: var(--line-height-base);
+    }
+    @media (prefers-color-scheme: dark) {
+        .info-list {
+            color: var(--color-gray-300);
+        }
     }
 </style>

@@ -129,7 +129,6 @@
                         >{yacht.duration} {yacht_page.hours[$locale]}</span
                     >
                 </div>
-                <Share />
             </div>
         </header>
 
@@ -188,6 +187,7 @@
                         ? yacht_page.button[$locale]
                         : yacht_page.available[$locale]}
                 </button>
+                <Share />
             </aside>
             <section class="additional-info">
                 <!-- Что включено -->
@@ -264,7 +264,6 @@
         display: flex;
         gap: var(--space-horizontal-md);
         align-items: center;
-        justify-content: space-between;
         flex-wrap: wrap;
     }
 
@@ -310,12 +309,24 @@
 
         p {
             line-height: var(--line-height-base);
-            color: var(--color-gray-400);
+            color: var(--color-gray-700);
+        }
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .description {
+            p {
+                color: var(--color-gray-300);
+            }
         }
     }
 
     /* Блок бронирования */
     .booking-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-vertical-md);
         background: var(--color-bg);
         padding: var(--space-vertical-md);
         border-radius: var(--radius-md);
@@ -329,7 +340,6 @@
     }
 
     .price-block {
-        margin-bottom: var(--space-vertical-md);
         text-align: center;
 
         .price {
@@ -347,8 +357,8 @@
 
     .details {
         display: grid;
+        width: 100%;
         gap: var(--space-vertical-sm);
-        margin-bottom: var(--space-vertical-md);
 
         .detail {
             display: flex;
@@ -413,7 +423,13 @@
 
     .info-list {
         list-style: disc inside;
-        color: var(--color-gray-400);
+        color: var(--color-gray-700);
         line-height: var(--line-height-base);
+    }
+
+    @media (prefers-color-scheme: dark) {
+        .info-list {
+            color: var(--color-gray-300);
+        }
     }
 </style>
