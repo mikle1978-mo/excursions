@@ -97,6 +97,7 @@
         background: transparent;
         border: 1px solid var(--color-text);
         cursor: pointer;
+        color: var(--color-text);
     }
     .share-button svg {
         width: var(--text-lg);

@@ -15,6 +15,8 @@
     import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
     import Share from "$lib/components/UI/buttons/Share.svelte";
     import Rating from "$lib/components/UI/rating/Rating.svelte";
+    import InfoBlockArray from "$lib/components/pages/InfoBlockArray.svelte";
+    import InfoBlockString from "$lib/components/pages/InfoBlockString.svelte";
 
     export let data;
     const { yacht, reviewsCount, rating } = data;
@@ -191,39 +193,21 @@
             </aside>
             <section class="additional-info">
                 <!-- Что включено -->
-                {#if currentTranslation.includes.length > 0}
-                    <div class="info-block">
-                        <h2>{yacht_page.includes[$locale]}</h2>
-                        <ul class="info-list">
-                            {#each currentTranslation.includes as item}
-                                <li>{item}</li>
-                            {/each}
-                        </ul>
-                    </div>
-                {/if}
+                <InfoBlockArray
+                    title={yacht_page.includes[$locale]}
+                    items={currentTranslation.includes}
+                />
                 <!-- Что вы увидите -->
-                {#if currentTranslation.whatYouSee.length > 0}
-                    <div class="info-block">
-                        <h2>{yacht_page.whatYouSee[$locale]}</h2>
-                        <ul class="info-list">
-                            {#each currentTranslation.whatYouSee as item}
-                                <li>{item}</li>
-                            {/each}
-                        </ul>
-                    </div>
-                {/if}
+                <InfoBlockArray
+                    title={yacht_page.whatYouSee[$locale]}
+                    items={currentTranslation.whatYouSee}
+                />
 
                 <!-- Что взять с собой -->
-                {#if currentTranslation.whatToBring.length > 0}
-                    <div class="info-block">
-                        <h2>{yacht_page.whatToBring[$locale]}</h2>
-                        <ul class="info-list">
-                            {#each currentTranslation.whatToBring as item}
-                                <li>{item}</li>
-                            {/each}
-                        </ul>
-                    </div>
-                {/if}
+                <InfoBlockArray
+                    title={yacht_page.whatToBring[$locale]}
+                    items={currentTranslation.whatToBring}
+                />
             </section>
         </div>
 
@@ -406,30 +390,5 @@
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-lg);
-    }
-
-    .info-block {
-        background: var(--color-bg);
-        padding: var(--space-vertical-md);
-        border-radius: var(--radius-md);
-        border: 1px solid var(--color-gray-400);
-    }
-
-    .info-block h2 {
-        font-size: var(--text-lg);
-        margin-bottom: var(--space-vertical-sm);
-        color: var(--color-text);
-    }
-
-    .info-list {
-        list-style: disc inside;
-        color: var(--color-gray-700);
-        line-height: var(--line-height-base);
-    }
-
-    @media (prefers-color-scheme: dark) {
-        .info-list {
-            color: var(--color-gray-300);
-        }
     }
 </style>

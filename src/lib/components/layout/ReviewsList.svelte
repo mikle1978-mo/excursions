@@ -228,6 +228,11 @@
         color: var(--color-gray-700);
         margin: 0;
     }
+    @media (prefers-color-scheme: dark) {
+        .review-comment {
+            color: var(--color-gray-300);
+        }
+    }
 
     .no-reviews {
         color: var(--color-gray-500);
