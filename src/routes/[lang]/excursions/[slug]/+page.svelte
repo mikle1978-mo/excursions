@@ -247,7 +247,6 @@
     .meta-info {
         display: flex;
         gap: var(--space-horizontal-md);
-        justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
     }
