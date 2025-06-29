@@ -1,6 +1,10 @@
 <script>
     import { locale } from "$lib/stores/locale";
     import { get } from "svelte/store";
+    const translate = {
+        ru: "Поделиться",
+        en: "Share",
+    };
     const alerts = {
         copied: {
             ru: "Ссылка скопирована в буфер обмена",
@@ -56,37 +60,43 @@
     >
         <path
             d="M4 12V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V12"
-            stroke="black"
+            stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
         />
         <path
             d="M16 6L12 2L8 6"
-            stroke="black"
+            stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
         />
         <path
             d="M12 2V15"
-            stroke="black"
+            stroke="currentColor"
             stroke-width="2"
             stroke-linecap="round"
             stroke-linejoin="round"
         />
     </svg>
+    <span>{translate[$locale]}</span>
 </button>
 
 <style>
     .share-button {
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        padding: 0;
         display: flex;
+        flex-direction: row;
         align-items: center;
         justify-content: center;
+        gap: var(--space-horizontal-xs);
+        padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
+        border-radius: var(--radius-full);
+        font-size: var(--text-xs);
+        font-weight: 600;
+        background: transparent;
+        border: 1px solid var(--color-text);
+        cursor: pointer;
     }
     .share-button svg {
         width: var(--text-lg);

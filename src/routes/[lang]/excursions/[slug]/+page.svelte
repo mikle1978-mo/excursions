@@ -17,6 +17,7 @@
     import Modal from "$lib/components/UI/Modal.svelte";
     import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
     import Share from "$lib/components/UI/buttons/Share.svelte";
+    import Rating from "$lib/components/UI/rating/Rating.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -117,14 +118,7 @@
             <h1>{currentTranslation.title}</h1>
 
             <div class="meta-info">
-                <div class="rating">
-                    <span class="stars" style="--rating: {rating || 0}"></span>
-                    <span>{rating}</span>
-                    <span
-                        >({reviewsCount || 0}
-                        {excursion_page.reviews[$locale]})</span
-                    >
-                </div>
+                <Rating {rating} {reviewsCount} locale={$locale} />
 
                 <div class="badges">
                     {#if tour.isPopular}
@@ -273,29 +267,6 @@
         flex-wrap: wrap;
     }
 
-    .rating {
-        display: flex;
-        align-items: сenter;
-        gap: var(--space-horizontal-xs);
-    }
-    .stars {
-        --percent: calc(var(--rating) / 5 * 100%);
-        display: inline-block;
-        font-size: var(--text-lg);
-        line-height: 1;
-    }
-    .stars::before {
-        content: "★★★★★";
-        background: linear-gradient(
-            90deg,
-            gold var(--percent),
-            lightgray var(--percent)
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-
     .badges {
         display: flex;
         gap: var(--space-horizontal-xs);
@@ -338,7 +309,7 @@
 
         p {
             line-height: var(--line-height-base);
-            color: var(--color-gray-700);
+            color: var(--color-gray-400);
         }
     }
 
@@ -430,7 +401,7 @@
         background: var(--color-bg);
         padding: var(--space-vertical-md);
         border-radius: var(--radius-md);
-        border: 1px solid var(--color-gray-300);
+        border: 1px solid var(--color-gray-400);
     }
 
     .info-block h2 {
@@ -441,7 +412,7 @@
 
     .info-list {
         list-style: disc inside;
-        color: var(--color-gray-700);
+        color: var(--color-gray-400);
         line-height: var(--line-height-base);
     }
 </style>

@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
     import { car_card } from "$lib/i18n/car_card";
     import { formatPrice } from "$lib/utils/priceFormatter";
+    import Rating from "$lib/components/UI/rating/Rating.svelte";
     export let car;
 
     export let loading = "lazy";
@@ -71,14 +72,7 @@
     <div class="car-card__content">
         <div class="car-card__header">
             <h2 class="car-card__title">{title[$locale]}</h2>
-            <div class="car-card__rating">
-                <span class="car-card__stars" style="--rating: {rating || 0};">
-                </span>
-                <span class="car-card__reviews"
-                    >{reviewsCount}
-                    {car_card.reviews[$locale]}</span
-                >
-            </div>
+            <Rating {rating} {reviewsCount} locale={$locale} />
         </div>
 
         <div class="car-card__footer">
@@ -193,43 +187,6 @@
         overflow: hidden; /* Скрыть выходящий за пределы текст */
         text-overflow: ellipsis;
     }
-
-    .car-card__rating {
-        display: flex;
-        align-items: flex-end;
-        gap: var(--space-horizontal-xs);
-    }
-
-    .car-card__stars {
-        --percent: calc(var(--rating) / 5 * 100%);
-        display: inline-block;
-        font-size: var(--text-lg);
-        line-height: 1;
-    }
-    .car-card__stars::before {
-        content: "★★★★★";
-        background: linear-gradient(
-            90deg,
-            gold var(--percent),
-            lightgray var(--percent)
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-
-    .car-card__reviews {
-        font-size: var(--text-xs);
-        color: var(--color-gray-600);
-    }
-
-    /* .car-card__description {
-        margin: 0;
-        font-size: var(--text-sm);
-        color: var(--color-gray-700);
-        line-height: var(--line-height-base);
-        flex-grow: 1;
-    } */
 
     .car-card__footer {
         display: flex;

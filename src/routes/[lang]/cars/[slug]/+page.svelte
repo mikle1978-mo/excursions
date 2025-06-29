@@ -16,6 +16,7 @@
     import Share from "$lib/components/UI/buttons/Share.svelte";
     import InfoBlockArray from "$lib/components/pages/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/pages/InfoBlockString.svelte";
+    import Rating from "$lib/components/UI/rating/Rating.svelte";
 
     export let data;
     const { car, reviewsCount, rating } = data;
@@ -122,14 +123,7 @@
             <h1>{currentTranslation.title}</h1>
 
             <div class="meta-info">
-                <div class="rating">
-                    <span class="stars" style="--rating: {rating || 0}"></span>
-                    <span>{rating}</span>
-                    <span
-                        >({reviewsCount || 0}
-                        {car_page.reviews[$locale]})</span
-                    >
-                </div>
+                <Rating {rating} {reviewsCount} locale={$locale} />
 
                 <div class="badges">
                     {#if car.isPopular}
@@ -293,29 +287,6 @@
         flex-wrap: wrap;
     }
 
-    .rating {
-        display: flex;
-        align-items: сenter;
-        gap: var(--space-horizontal-xs);
-    }
-    .stars {
-        --percent: calc(var(--rating) / 5 * 100%);
-        display: inline-block;
-        font-size: var(--text-lg);
-        line-height: 1;
-    }
-    .stars::before {
-        content: "★★★★★";
-        background: linear-gradient(
-            90deg,
-            gold var(--percent),
-            lightgray var(--percent)
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-
     .badges {
         display: flex;
         gap: var(--space-horizontal-xs);
@@ -358,7 +329,7 @@
 
         p {
             line-height: var(--line-height-base);
-            color: var(--color-gray-700);
+            color: var(--color-gray-400);
         }
     }
 

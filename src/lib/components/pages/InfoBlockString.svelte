@@ -28,7 +28,7 @@
 
     .info-list {
         list-style: disc inside;
-        color: var(--color-gray-700);
+        color: var(--color-gray-300);
         line-height: var(--line-height-base);
     }
 </style>

@@ -3,6 +3,7 @@
     import { onMount } from "svelte";
     import { yacht_card } from "$lib/i18n/yacht_card";
     import { formatPrice } from "$lib/utils/priceFormatter";
+    import Rating from "../UI/rating/Rating.svelte";
     export let yacht;
     export let loading = "lazy";
 
@@ -69,17 +70,7 @@
     <div class="excursion-card__content">
         <div class="excursion-card__header">
             <h2 class="excursion-card__title">{title[$locale]}</h2>
-            <div class="excursion-card__rating">
-                <span
-                    class="excursion-card__stars"
-                    style="--rating: {rating || 0};"
-                >
-                </span>
-                <span class="excursion-card__reviews"
-                    >{reviewsCount}
-                    {yacht_card.reviews[$locale]}</span
-                >
-            </div>
+            <Rating {rating} {reviewsCount} locale={$locale} />
         </div>
 
         <div class="excursion-card__footer">
@@ -189,43 +180,6 @@
         overflow: hidden; /* Скрыть выходящий за пределы текст */
         text-overflow: ellipsis;
     }
-
-    .excursion-card__rating {
-        display: flex;
-        align-items: flex-end;
-        gap: var(--space-horizontal-xs);
-    }
-
-    .excursion-card__stars {
-        --percent: calc(var(--rating) / 5 * 100%);
-        display: inline-block;
-        font-size: var(--text-lg);
-        line-height: 1;
-    }
-    .excursion-card__stars::before {
-        content: "★★★★★";
-        background: linear-gradient(
-            90deg,
-            gold var(--percent),
-            lightgray var(--percent)
-        );
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-
-    .excursion-card__reviews {
-        font-size: var(--text-xs);
-        color: var(--color-gray-600);
-    }
-
-    /* .excursion-card__description {
-        margin: 0;
-        font-size: var(--text-sm);
-        color: var(--color-gray-700);
-        line-height: var(--line-height-base);
-        flex-grow: 1;
-    } */
 
     .excursion-card__footer {
         display: flex;
