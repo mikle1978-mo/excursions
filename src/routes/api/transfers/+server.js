@@ -1,16 +1,11 @@
 import { connectToDatabase } from "$lib/server/mongodb";
-import { excursionSchema } from "$lib/schemas/excursionSchema";
+import { transferSchema } from "$lib/schemas/transferSchema";
 import { json } from "@sveltejs/kit";
 
 export async function GET() {
     const db = await connectToDatabase();
-    const excursions = await db.collection("excursions").find({}).toArray();
-    return new Response(JSON.stringify(excursions), {
-        status: 200,
-        headers: {
-            "Content-Type": "application/json",
-        },
-    });
+    const transfers = await db.collection("transfers").find({}).toArray();
+    return json(transfers);
 }
 
 export async function POST({ request }) {
@@ -18,7 +13,7 @@ export async function POST({ request }) {
         const body = await request.json();
 
         // ✅ Валидация с Zod
-        const parsed = excursionSchema.safeParse(body);
+        const parsed = transferSchema.safeParse(body);
 
         if (!parsed.success) {
             return json(
@@ -35,7 +30,7 @@ export async function POST({ request }) {
 
         // ✅ Проверка уникальности slug
         const exists = await db
-            .collection("excursions")
+            .collection("transfers")
             .findOne({ slug: data.slug });
         if (exists) {
             return json(
@@ -47,47 +42,47 @@ export async function POST({ request }) {
         // ✅ Чистка и дефолты чисел
         const cleaned = {
             slug: data.slug,
-            start: data.start || "08:00",
-            duration: Number(data.duration) || 0,
-            distance: Number(data.distance) || 0,
-            groupSize: Number(data.groupSize) || 1,
+            active: data.active ?? true,
             price: Number(data.price) || 0,
-            discount: Number(data.discount) || 0,
-            days:
-                Array.isArray(data.days) && data.days.length > 0
-                    ? data.days
-                    : ["1", "2", "3", "4", "5", "6", "7"],
+            car: {
+                model: data.car.model,
+                seats: Number(data.car.seats) || 1,
+                has_wifi: !!data.car.has_wifi,
+                has_child_seats: !!data.car.has_child_seats,
+                has_water: !!data.car.has_water,
+            },
             images:
                 Array.isArray(data.images) && data.images.length > 0
                     ? data.images
-                    : ["/images/excursions/excursion_default.webp"],
+                    : [
+                          {
+                              url: "/images/transfers/transfer_default.webp",
+                              public_id: "default",
+                          },
+                      ],
             rating: 0,
             reviewsCount: 0,
             createdAt: new Date(),
         };
 
-        // 🧾 Вставка экскурсии
-        const result = await db.collection("excursions").insertOne(cleaned);
+        // 🧾 Вставка яхты
+        const result = await db.collection("transfers").insertOne(cleaned);
 
         // 🈯 Переводы
         const translations = ["ru", "en", "tr"].map((lang) => ({
             itemSlug: cleaned.slug,
             lang,
             title: data.title?.[lang] || "",
-            metaDescription: data.metaDescription?.[lang] || "",
             description: data.description?.[lang] || "",
-            meetingPoint: data.meetingPoint?.[lang] || "",
-            whatYouSee: data.whatYouSee?.[lang] || [],
-            includes: data.includes?.[lang] || [],
-            whatToBring: data.whatToBring?.[lang] || [],
-            tags: data.tags?.[lang] || [],
+            metaDescription: data.metaDescription?.[lang] || "",
+            servicesDetails: data.servicesDetails?.[lang] || {},
         }));
 
-        await db.collection("excursions_translations").insertMany(translations);
+        await db.collection("transfers_translations").insertMany(translations);
 
         return json({ success: true, slug: cleaned.slug }, { status: 201 });
     } catch (err) {
-        console.error("Ошибка при создании экскурсии:", err);
+        console.error("Ошибка при создании трансфера:", err);
         return json({ error: "Ошибка сервера" }, { status: 500 });
     }
 }

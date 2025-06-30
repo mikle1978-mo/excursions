@@ -42,9 +42,9 @@ export const main_page = {
                 ru: "Трансфер",
                 en: "Transfer",
             },
-            // link: "transfer",
-            link: "development",
-            img: "/images/transfer/transfer_default.webp",
+
+            link: "transfers/aeroport-antalya-mercedes-vito",
+            img: "/images/transfers/transfer_default.webp",
         },
         {
             title: {

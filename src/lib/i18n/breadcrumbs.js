@@ -15,4 +15,8 @@ export const breadcrumbs = {
         ru: "Автомобили",
         en: "Cars",
     },
+    transfers: {
+        ru: "Трансферы",
+        en: "Transfers",
+    },
 };

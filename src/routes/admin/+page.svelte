@@ -9,6 +9,7 @@
         >
         <a href="/admin/yachts" class="admin-link">Управление яхтами</a>
         <a href="/admin/cars" class="admin-link">Управление машинами</a>
+        <a href="/admin/transfers" class="admin-link">Управление трансферами</a>
         <a href="/admin/faq" class="admin-link">Управление FAQ</a>
     </nav>
 </main>
