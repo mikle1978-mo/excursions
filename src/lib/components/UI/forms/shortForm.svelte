@@ -55,7 +55,7 @@
             name="phone"
             required
             class="form-input"
-            placeholder="+90 ..."
+            placeholder="+ ..."
         />
     </label>
 
