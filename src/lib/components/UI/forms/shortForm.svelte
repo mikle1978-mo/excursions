@@ -142,8 +142,8 @@
         background-color: var(--color-light);
         color: var(--color-text);
         transition:
-            border var(--transition-fast),
-            box-shadow var(--transition-fast);
+            border var(--transition-normal),
+            box-shadow var(--transition-normal);
     }
 
     .form-input:focus {
@@ -161,7 +161,7 @@
         border-radius: var(--radius-sm);
         font-size: var(--text-md);
         cursor: pointer;
-        transition: background-color var(--transition-fast);
+        transition: background-color var(--transition-normal);
     }
 
     .form-button:hover {

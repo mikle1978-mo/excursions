@@ -30,8 +30,8 @@ export const form_list = {
         en: "Add details",
     },
     form_date: {
-        ru: "Дата экскурсии",
-        en: "Tour date",
+        ru: "Дата",
+        en: "Date",
     },
     form_persons: {
         ru: "Количество человек",
