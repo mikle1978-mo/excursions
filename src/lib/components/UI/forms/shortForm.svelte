@@ -8,6 +8,7 @@
 
     export let slug;
     let currentUrl = "";
+    let showDetails = false;
 
     onMount(() => {
         currentUrl = window.location.href;
@@ -22,6 +23,9 @@
         const data = {
             name: formData.get("name"),
             phone: formData.get("phone"),
+            date: formData.get("date") || null,
+            persons: formData.get("persons") || null,
+            comment: formData.get("comment") || null,
             slug,
             url: currentUrl,
         };
@@ -59,13 +63,49 @@
         />
     </label>
 
-    <!-- Скрытые поля -->
+    <div class="form-details {showDetails ? 'form-details--visible' : ''}">
+        <label class="form-label">
+            <span>{form_list.form_date[$locale]}</span>
+            <input type="date" name="date" class="form-input" />
+        </label>
+
+        <label class="form-label">
+            <span>{form_list.form_persons[$locale]}</span>
+            <input
+                type="number"
+                name="persons"
+                class="form-input"
+                min="1"
+                placeholder="1"
+            />
+        </label>
+
+        <label class="form-label">
+            <span>{form_list.form_comment[$locale]}</span>
+            <textarea
+                name="comment"
+                class="form-input"
+                placeholder={form_list.comment_placeholder[$locale]}
+            ></textarea>
+        </label>
+    </div>
+
     <input type="hidden" name="slug" value={slug} />
     <input type="hidden" name="url" value={currentUrl} />
 
-    <button type="submit" class="form-button"
-        >{form_list.submit[$locale]}</button
-    >
+    <button type="submit" class="form-button">
+        {form_list.submit[$locale]}
+    </button>
+
+    {#if !showDetails}
+        <button
+            type="button"
+            class="form-button form-button-secondary"
+            on:click={() => (showDetails = true)}
+        >
+            {form_list.add_details[$locale]}
+        </button>
+    {/if}
 </form>
 
 <style>
@@ -133,5 +173,33 @@
             background: var(--color-gray-800);
             border-color: var(--color-gray-600);
         }
+    }
+
+    .form-details {
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition:
+            max-height var(--transition-normal),
+            opacity var(--transition-normal),
+            transform var(--transition-normal);
+    }
+
+    .form-details--visible {
+        max-height: 1000px; /* достаточно большое значение */
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* Вторая кнопка без заливки */
+    .form-button-secondary {
+        background: transparent;
+        color: var(--color-primary);
+        border: 2px solid var(--color-primary);
+    }
+
+    .form-button-secondary:hover {
+        background: rgba(var(--color-primary), 0.05);
     }
 </style>
