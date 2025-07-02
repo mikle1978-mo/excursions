@@ -44,6 +44,8 @@ export async function POST({ request }) {
             slug: data.slug,
             active: data.active ?? true,
             price: Number(data.price) || 0,
+            duration: Number(data.duration) || 0,
+            priceType: data.priceType || "per_trip",
             car: {
                 model: data.car.model,
                 seats: Number(data.car.seats) || 1,

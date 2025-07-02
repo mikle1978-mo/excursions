@@ -130,8 +130,8 @@
                         <span class="badge popular">Популярно</span>
                     {/if}
                     <span class="badge duration">
-                        <!-- {transfer.duration} -->
-                        {transfer_page.hours[$locale]}</span
+                        {transfer.duration}
+                        {transfer_page.minutes[$locale]}</span
                     >
                 </div>
             </div>
@@ -161,18 +161,18 @@
                             >{transfer_page.duration[$locale]}:</span
                         >
                         <span class="value">
-                            <!-- {transfer.duration} -->
-                            {transfer_page.hours[$locale]}</span
+                            {transfer.duration}
+                            {transfer_page.minutes[$locale]}</span
                         >
                     </div>
 
                     <div class="detail">
                         <span class="label">
-                            {transfer_page.groupSize[$locale]}:</span
+                            {transfer_page.seats[$locale]}:</span
                         >
                         <span class="value"
                             >{transfer_page.before[$locale]}
-                            <!-- {transfer.groupSize} -->
+                            {transfer.car.seats}
                             {transfer_page.people[$locale]}</span
                         >
                     </div>

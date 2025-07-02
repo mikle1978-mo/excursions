@@ -36,7 +36,6 @@
 
             setTransferForm({
                 ...transfer,
-                price: Number(transfer.price || 0), // число без валюты
                 title: toLangMap("title"),
                 description: toLangMap("description"),
                 metaDescription: toLangMap("metaDescription"),

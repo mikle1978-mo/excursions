@@ -1,6 +1,7 @@
 <script>
     import TheButton from "$lib/components/UI/buttons/TheButton.svelte";
     import TransferCard from "$lib/components/transfers/TransferCard.svelte";
+    import Card from "$lib/components/card/Card.svelte";
     import { main_page } from "$lib/i18n/main_page.js";
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
@@ -197,9 +198,10 @@
 
             <div class="transfers-grid">
                 {#each filteredTransfers as transfer, i (transfer.slug + updateKey)}
-                    <TransferCard
-                        {transfer}
+                    <Card
+                        item={transfer}
                         loading={i < 5 ? "eager" : "lazy"}
+                        type="transfers"
                     />
                 {/each}
             </div>

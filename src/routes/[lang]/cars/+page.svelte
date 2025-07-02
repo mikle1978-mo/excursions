@@ -1,6 +1,6 @@
 <script>
     import TheButton from "$lib/components/UI/buttons/TheButton.svelte";
-    import CarCard from "$lib/components/cars/CarCard.svelte";
+    import Card from "$lib/components/card/Card.svelte";
     import { main_page } from "$lib/i18n/main_page.js";
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
@@ -17,10 +17,6 @@
     let filteredCars = [];
 
     export let data;
-
-    console.log("====================================");
-    console.log("Cars page data:", data);
-    console.log("====================================");
 
     locale.subscribe((value) => {
         currentLocale = value;
@@ -200,7 +196,12 @@
 
             <div class="cars-grid">
                 {#each filteredCars as car, i (car.slug + updateKey)}
-                    <CarCard {car} loading={i < 5 ? "eager" : "lazy"} />
+                    <!-- <CarCard {car} loading={i < 5 ? "eager" : "lazy"} /> -->
+                    <Card
+                        item={car}
+                        loading={i < 5 ? "eager" : "lazy"}
+                        type="cars"
+                    />
                 {/each}
             </div>
         </div>

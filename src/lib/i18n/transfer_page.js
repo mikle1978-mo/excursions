@@ -4,8 +4,8 @@ export const transfer_page = {
         en: "Tour description",
     },
     duration: {
-        ru: "Длительность",
-        en: "Tour duration",
+        ru: "Время поездки",
+        en: "Transfer duration",
     },
 
     reviews: {
@@ -15,6 +15,10 @@ export const transfer_page = {
     hours: {
         ru: "ч",
         en: "h",
+    },
+    minutes: {
+        ru: "мин.",
+        en: "min",
     },
     people: {
         ru: "человек",
@@ -28,9 +32,9 @@ export const transfer_page = {
         ru: "до",
         en: "up to",
     },
-    groupSize: {
-        ru: "Размер группы",
-        en: "Group size",
+    seats: {
+        ru: "Мест",
+        en: "Seats",
     },
     whatYouSee: {
         ru: "Что вы увидите",

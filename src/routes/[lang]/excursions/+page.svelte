@@ -1,6 +1,6 @@
 <script>
     import TheButton from "$lib/components/UI/buttons/TheButton.svelte";
-    import ExcursionCard from "$lib/components/excursions/ExcursionCard.svelte";
+    import Card from "$lib/components/card/Card.svelte";
     import { main_page } from "$lib/i18n/main_page.js";
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
@@ -197,8 +197,9 @@
 
             <div class="excursions-grid">
                 {#each filteredExcursions as excursion, i (excursion.slug + updateKey)}
-                    <ExcursionCard
-                        {excursion}
+                    <Card
+                        item={excursion}
+                        type="excursions"
                         loading={i < 5 ? "eager" : "lazy"}
                     />
                 {/each}

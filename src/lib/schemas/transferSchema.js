@@ -16,6 +16,8 @@ export const transferSchema = z.object({
     active: z.boolean().optional(),
     slug: z.string().min(1, "Slug обязателен"),
     price: z.union([z.string(), z.number()]).transform(Number),
+    priceType: z.enum(["per_person", "per_trip", "per_hour"]).optional(),
+    duration: z.union([z.string(), z.number()]).transform(Number).optional(),
     car: z.object({
         model: z.string(),
         seats: z.union([z.string(), z.number()]).transform(Number),

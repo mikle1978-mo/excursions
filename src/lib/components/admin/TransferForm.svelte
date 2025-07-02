@@ -107,6 +107,23 @@
                 <ErrorMessage field="price" {errors} />
             </label>
 
+            <label
+                >Тип цены:
+                <select bind:value={$transferForm.priceType}>
+                    <option value="" disabled selected>Выберите тип</option>
+                    <option value="per_trip">за поездку</option>
+                    <option value="per_hour">за час</option>
+                    <option value="per_person">за человека</option>
+                </select>
+                <ErrorMessage field="priceType" {errors} />
+            </label>
+
+            <label>
+                Время в пути (в минутах):
+                <input type="number" bind:value={$transferForm.duration} />
+                <ErrorMessage field="duration" {errors} />
+            </label>
+
             <label>
                 Модель авто:
                 <input type="text" bind:value={$transferForm.car.model} />

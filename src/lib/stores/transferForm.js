@@ -5,6 +5,8 @@ export const createInitialTransferForm = () => ({
     slug: "",
     active: true,
     price: 0, // число без валюты
+    priceType: "", // число без валюты
+    duration: 0, // число без валюты
     car: {
         model: "",
         seats: 1,

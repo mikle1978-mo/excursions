@@ -11,6 +11,7 @@
         slug = "/",
         title = "Обзорная экскурсия по историческому центру",
         images = [{ url: "/images/transfers/transfer_default.webp" }],
+        car,
         duration = 2.5,
         groupSize = 10,
         price = 1500,
@@ -19,6 +20,8 @@
         reviewsCount = 142,
         meta = {},
     } = transfer;
+
+    console.log(transfer);
 
     let isMounted = false;
     const priceDisplay = formatPrice(price);
@@ -75,12 +78,13 @@
 
         <div class="transfer-card__footer">
             <div class="transfer-card__details">
-                <span class="transfer-card__duration"
-                    >{duration} {transfer_card.hours[$locale]}</span
+                <span class="transfer-card__duration">
+                    {#if car.has_wifi}
+                        free wi-fi{/if}</span
                 >
                 <span class="transfer-card__group-size"
                     >{transfer_card.before[$locale]}
-                    {groupSize}
+                    {car.seats}
                     {transfer_card.people[$locale]}</span
                 >
             </div>

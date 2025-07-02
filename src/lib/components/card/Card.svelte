@@ -1,27 +1,43 @@
 <script>
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
-    import { yacht_card } from "$lib/i18n/yacht_card";
+    import { card } from "$lib/i18n/card";
     import { formatPrice } from "$lib/utils/priceFormatter";
     import Rating from "../UI/rating/Rating.svelte";
-    export let yacht;
-    export let loading = "lazy";
 
-    const {
-        slug = "/",
-        title = "Обзорная экскурсия по историческому центру",
-        images = [{ url: "/images/excursions/excursion_default.webp" }],
-        duration = 2.5,
-        groupSize = 10,
-        price = 1500,
-        discount = 0,
-        rating = 4,
-        reviewsCount = 142,
-        meta = {},
-    } = yacht;
+    export let item;
+    export let type;
+
+    export let loading = "lazy";
+    $: slug = item.slug;
+    $: title = item.title?.[$locale] ?? "";
+    $: image = item.images?.[0]?.url ?? `/images/${type}/${type}_default.webp`;
+    $: priceDisplay = formatPrice(item.price);
+    $: priceType =
+        item.priceType && card[item.priceType] ? item.priceType : "per_person";
+
+    $: priceTypeLabel = card[priceType]?.[$locale] ?? "";
+
+    $: discount = item.discount ?? 0;
+
+    $: fuelLabel = item.fuel ? (card[item.fuel]?.[$locale] ?? item.fuel) : "";
+    $: transmissionLabel = item.transmission
+        ? (card[item.transmission]?.[$locale] ?? item.transmission)
+        : "";
+    $: detailTop = item.duration
+        ? `${item.duration} ${type === "transfers" ? card.minutes[$locale] : card.hours[$locale]}`
+        : (transmissionLabel ?? "");
+    $: detailBottom =
+        type === "transfers"
+            ? `${card.before[$locale]} ${item.car.seats} ${card.people[$locale]}`
+            : item.groupSize
+              ? `${card.before[$locale]} ${item.groupSize} ${card.people[$locale]}`
+              : (fuelLabel ?? "");
+    $: rating = item.rating ?? 5;
+    $: reviewsCount = item.reviewsCount ?? 10;
+    $: meta = item.meta ?? {};
 
     let isMounted = false;
-    const priceDisplay = formatPrice(price);
 
     function getLabelByKey(labelsArray, key) {
         return labelsArray.find((item) => item.key === key);
@@ -32,13 +48,12 @@
     });
 </script>
 
-<!-- {#if isMounted} -->
-<a class="excursion-card" href="/{$locale}/yachts/{slug}">
-    <div class="excursion-card__image-wrapper">
+<a class="card" href="/{$locale}/{type}/{slug}">
+    <div class="card__image-wrapper">
         <img
-            src={images[0]?.url}
-            alt=""
-            class="excursion-card__image"
+            src={image}
+            alt={title}
+            class="card__image"
             width="980"
             height="551"
             {loading}
@@ -46,51 +61,47 @@
         />
 
         {#if getLabelByKey(meta.labels, "POPULAR")}
-            <span class="excursion-card__badge topright">
+            <span class="card__badge topright">
                 {getLabelByKey(meta.labels, "POPULAR").label[$locale]}
             </span>
         {/if}
         {#if getLabelByKey(meta.labels, "DISCOUNT")}
-            <span class="excursion-card__badge bottomleft">
+            <span class="card__badge bottomleft">
                 {`-${discount}%`}
             </span>
         {/if}
         {#if getLabelByKey(meta.labels, "NEW")}
-            <span class="excursion-card__badge topleft">
+            <span class="card__badge topleft">
                 {getLabelByKey(meta.labels, "NEW").label[$locale]}
             </span>
         {/if}
         {#if getLabelByKey(meta.labels, "VIP")}
-            <span class="excursion-card__badge bottomright">
+            <span class="card__badge bottomright">
                 {getLabelByKey(meta.labels, "VIP").label[$locale]}
             </span>
         {/if}
     </div>
 
-    <div class="excursion-card__content">
-        <div class="excursion-card__header">
-            <h2 class="excursion-card__title">{title[$locale]}</h2>
+    <div class="card__content">
+        <div class="card__header">
+            <h2 class="card__title">{title}</h2>
             <Rating {rating} {reviewsCount} locale={$locale} />
         </div>
 
-        <div class="excursion-card__footer">
-            <div class="excursion-card__details">
-                <span class="excursion-card__duration"
-                    >{duration} {yacht_card.hours[$locale]}</span
-                >
-                <span class="excursion-card__group-size"
-                    >{yacht_card.before[$locale]}
-                    {groupSize}
-                    {yacht_card.people[$locale]}</span
-                >
+        <div class="card__footer">
+            <div class="card__details">
+                <span class="card__detail-top">{detailTop} </span>
+                <span class="card__detail-bottom">
+                    {detailBottom}
+                </span>
             </div>
 
-            <div class="excursion-card__price">
-                <span class="excursion-card__price-value">
+            <div class="card__price">
+                <span class="card__price-value">
                     {$priceDisplay}
                 </span>
-                <span class="excursion-card__price-per">
-                    {yacht_card.per[yacht.priceType]?.[$locale] ?? ""}
+                <span class="card__price-type">
+                    {priceTypeLabel}
                 </span>
             </div>
         </div>
@@ -98,7 +109,7 @@
 </a>
 
 <style>
-    .excursion-card {
+    .card {
         display: flex;
         flex-direction: column;
         background-color: var(--color-bg);
@@ -110,25 +121,25 @@
         min-height: 245px;
     }
 
-    .excursion-card:hover {
+    .card:hover {
         box-shadow: var(--shadow-lg);
         transform: translateY(-2px);
     }
 
-    .excursion-card__image-wrapper {
+    .card__image-wrapper {
         position: relative;
         width: 100%;
         height: 100%;
         aspect-ratio: 16 / 9;
     }
 
-    .excursion-card__image {
+    .card__image {
         width: 100%;
         height: 100%;
         object-fit: cover;
     }
 
-    .excursion-card__badge {
+    .card__badge {
         position: absolute;
         color: var(--color-light);
         padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
@@ -157,7 +168,7 @@
         right: var(--space-horizontal-xs);
         background-color: var(--color-secondary);
     }
-    .excursion-card__content {
+    .card__content {
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-xs);
@@ -165,12 +176,12 @@
         flex-grow: 1;
     }
 
-    .excursion-card__header {
+    .card__header {
         display: flex;
         flex-direction: column;
     }
 
-    .excursion-card__title {
+    .card__title {
         font-size: var(--text-lg);
         font-weight: 600;
         margin: 0;
@@ -181,20 +192,20 @@
         text-overflow: ellipsis;
     }
 
-    .excursion-card__footer {
+    .card__footer {
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
     }
 
-    .excursion-card__details {
+    .card__details {
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-xxs);
     }
 
-    .excursion-card__duration,
-    .excursion-card__group-size {
+    .card__detail-top,
+    .card__detail-bottom {
         font-size: var(--text-xs);
         color: var(--color-gray-600);
         display: flex;
@@ -202,28 +213,28 @@
         gap: var(--space-horizontal-xxs);
     }
 
-    .excursion-card__price {
+    .card__price {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
     }
 
-    .excursion-card__price-value {
+    .card__price-value {
         font-size: var(--text-lg);
         font-weight: 500;
         color: var(--color-primary);
     }
 
-    .excursion-card__price-per {
+    .card__price-type {
         font-size: var(--text-xs);
         color: var(--color-gray-600);
     }
 
     @media (max-width: 768px) {
-        .excursion-card {
+        .card {
             flex-direction: column;
         }
-        .excursion-card__content {
+        .card__content {
             display: flex;
             flex-direction: column;
             gap: var(--space-vertical-xs);
