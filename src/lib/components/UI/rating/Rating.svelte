@@ -7,8 +7,8 @@
 
 <div class="rating">
     <span class="stars" style="--rating: {rating || 0}"></span>
-    <span>{rating}</span>
-    <span>({reviewsCount} {tReviews[locale]})</span>
+    <span class="average">{rating}</span>
+    <span class="count">({reviewsCount} {tReviews[locale]})</span>
 </div>
 
 <style>
@@ -17,11 +17,17 @@
         align-items: baseline;
         gap: var(--space-horizontal-xs);
         color: var(--color-gray-600);
+        font-size: var(--text-md);
     }
+    .average,
+    .count {
+        font-size: var(--text-xs);
+    }
+
     .stars {
         --percent: calc(var(--rating) / 5 * 100%);
         display: inline-block;
-        font-size: var(--text-md);
+
         line-height: 1;
     }
     .stars::before {
