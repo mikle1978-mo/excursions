@@ -194,7 +194,7 @@
                 {/if}
             </h1>
 
-            <div class="cars-grid">
+            <div class="grid">
                 {#each filteredCars as car, i (car.slug + updateKey)}
                     <!-- <CarCard {car} loading={i < 5 ? "eager" : "lazy"} /> -->
                     <Card
@@ -238,10 +238,10 @@
         font-size: var(--text-xl);
     }
 
-    .cars-grid {
+    .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-        gap: var(--space-vertical-md);
+        grid-template-columns: repeat(auto-fill, minmax(351px, 1fr));
+        gap: var(--space-vertical-lg);
         width: 100%;
         align-items: center;
         justify-content: space-evenly;

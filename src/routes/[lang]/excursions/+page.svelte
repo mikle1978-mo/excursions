@@ -195,12 +195,12 @@
                 {/if}
             </h1>
 
-            <div class="excursions-grid">
+            <div class="grid">
                 {#each filteredExcursions as excursion, i (excursion.slug + updateKey)}
                     <Card
                         item={excursion}
-                        type="excursions"
                         loading={i < 5 ? "eager" : "lazy"}
+                        type="excursions"
                     />
                 {/each}
             </div>
@@ -238,12 +238,54 @@
         font-size: var(--text-xl);
     }
 
-    .excursions-grid {
+    .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        grid-template-columns: 1fr;
         gap: var(--space-vertical-md);
         width: 100%;
         align-items: center;
         justify-content: space-evenly;
+    }
+
+    /* 414+ — 1 колонка (карточка красиво помещается) */
+    @media (min-width: 414px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* 576+ — 2 колонки */
+    @media (min-width: 576px) {
+        .grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    /* 768+ — 2 колонки (можешь оставить 2, если не хочешь мельчить) */
+    @media (min-width: 768px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+    /* 992+ — 3 колонки */
+    @media (min-width: 992px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+    /* 1200+ — 4 колонки */
+    @media (min-width: 1200px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+    }
+
+    /* 1440+ — 5 колонок (или оставь 4, если плотность не нравится) */
+    @media (min-width: 1440px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        }
     }
 </style>

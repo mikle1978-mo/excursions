@@ -196,7 +196,7 @@
                 {/if}
             </h1>
 
-            <div class="transfers-grid">
+            <div class="grid">
                 {#each filteredTransfers as transfer, i (transfer.slug + updateKey)}
                     <Card
                         item={transfer}
@@ -239,10 +239,10 @@
         font-size: var(--text-xl);
     }
 
-    .transfers-grid {
+    .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-        gap: var(--space-vertical-md);
+        grid-template-columns: repeat(auto-fill, minmax(351px, 1fr));
+        gap: var(--space-vertical-lg);
         width: 100%;
         align-items: center;
         justify-content: space-evenly;

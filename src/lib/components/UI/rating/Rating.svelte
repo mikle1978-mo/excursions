@@ -14,14 +14,14 @@
 <style>
     .rating {
         display: flex;
-        align-items: сenter;
+        align-items: baseline;
         gap: var(--space-horizontal-xs);
         color: var(--color-gray-600);
     }
     .stars {
         --percent: calc(var(--rating) / 5 * 100%);
         display: inline-block;
-        font-size: var(--text-lg);
+        font-size: var(--text-md);
         line-height: 1;
     }
     .stars::before {
