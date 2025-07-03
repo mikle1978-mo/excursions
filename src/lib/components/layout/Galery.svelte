@@ -1,6 +1,8 @@
 <script>
     import { onMount } from "svelte";
     import Modal from "$lib/components/UI/Modal.svelte";
+    import { locale } from "$lib/stores/locale";
+    import { gallery_texts } from "$lib/i18n/gallery";
 
     export let images = [];
     export let title = "";
@@ -19,6 +21,25 @@
     const selectImage = (index) => {
         selectedIndex = index;
     };
+
+    // Функция для генерации alt-текста
+    const getAltText = (index) => {
+        return gallery_texts.photo_alt[$locale]
+            .replace("{title}", title)
+            .replace("{current}", index + 1)
+            .replace("{total}", images.length);
+    };
+
+    const getCaption = (index) => {
+        return gallery_texts.photo_caption[$locale]
+            .replace("{title}", title)
+            .replace("{current}", index + 1)
+            .replace("{total}", images.length);
+    };
+    // Функция для aria-label кнопок выбора изображения
+    const getSelectImageLabel = (index) => {
+        return gallery_texts.select_image[$locale].replace("{num}", index + 1);
+    };
 </script>
 
 <div class="image-gallery">
@@ -26,11 +47,14 @@
         type="button"
         class="main-image"
         on:click={openModal}
-        aria-label="Открыть галерею"
+        aria-label={gallery_texts.open_gallery[$locale]}
     >
         <img
             src={images[selectedIndex]?.url}
-            alt={title ? `${title}_${selectedIndex}` : "gallery"}
+            alt={title
+                ? getAltText(selectedIndex)
+                : gallery_texts.default_alt[$locale]}
+            loading="lazy"
         />
     </button>
 
@@ -40,10 +64,10 @@
                 type="button"
                 class:selected={i === selectedIndex}
                 on:click={() => selectImage(i)}
-                aria-label="Выбрать изображение {i + 1}"
+                aria-label={getSelectImageLabel(i)}
                 class="thumbnail-button"
             >
-                <img src={img?.url} alt="Thumbnail {i + 1}" />
+                <img src={img?.url} alt={getAltText(i)} loading="lazy" />
             </button>
         {/each}
     </div>
@@ -57,10 +81,10 @@
                             ? 'active'
                             : ''}"
                     >
-                        <img src={img?.url} alt={titles[i] || ""} />
-                        {#if titles[i]}
-                            <p class="caption">{titles[i]}</p>
-                        {/if}
+                        <img src={img?.url} alt={getAltText(i)} />
+                        <!-- Исправлено: используем getAltText(i) вместо selectedIndex -->
+                        <p class="caption">{getCaption(i)}</p>
+                        <!-- Исправлено: используем текущий индекс (i) -->
                     </div>
                 {/each}
             </div>

@@ -134,7 +134,7 @@
         </header>
 
         <!-- Галерея изображений -->
-        <Galery images={tour.images} title={tour.title} />
+        <Galery images={tour.images} title={currentTranslation.title} />
 
         <!-- Основное содержимое -->
         <div class="content-grid">

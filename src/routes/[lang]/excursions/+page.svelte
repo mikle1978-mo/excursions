@@ -3,98 +3,46 @@
     import Card from "$lib/components/card/Card.svelte";
     import { main_page } from "$lib/i18n/main_page.js";
     import { locale } from "$lib/stores/locale.js";
-    import { onMount } from "svelte";
-    // import EcxursionsSidebar from "$lib/components/excursions/EcxursionsSidebar.svelte";
+    import { onMount, onDestroy } from "svelte";
     import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
-    import { searchQuery } from "$lib/stores/searchQuery.js";
     import {
-        filters,
-        hasFilter,
         resetFilters,
         setFilters,
+        hasFilter,
     } from "$lib/stores/filters.js";
-    import { onDestroy } from "svelte";
-    import { get } from "svelte/store";
-    import { sortStore } from "$lib/stores/sortStore.js";
     import SortControls from "$lib/components/filters/SortControls.svelte";
-    import { applyFiltersAndSort } from "$lib/utils/filterUtils.js";
+    import PageSEO from "$lib/components/SEO/PageSEO.svelte";
+    import { useServiceFilters } from "$lib/hooks/useServiceFilters.js";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
     export let data;
 
-    let search = "";
-    let currentLocale = null;
-    let allExcursions = [];
+    let allExcursions = data?.excursions || [];
     let filteredExcursions = [];
 
-    let selectedSort = null;
-
+    // Scroll info block visibility
     let lastScrollTop = 0;
-    let infoVisible = false; // управляет видимостью
-    $: console.log("infoVisible now:", infoVisible);
-
+    let infoVisible = false;
     let accumulatedDeltaDown = 0;
     let accumulatedDeltaUp = 0;
 
-    // Подписываемся на сторы
-    const unsubscribeSort = sortStore.subscribe((value) => {
-        selectedSort = value;
-        updateFiltered();
-    });
+    // Используем хук для фильтров поиска и сортировки
+    const { update } = useServiceFilters(
+        allExcursions,
+        "excursions",
+        (result) => {
+            filteredExcursions = result;
+        }
+    );
 
-    const unsubscribeLocale = locale.subscribe((v) => {
-        currentLocale = v;
-        updateFiltered();
-    });
-
-    const unsubscribeSearch = searchQuery.subscribe((v) => {
-        search = v.toLowerCase();
-        updateFiltered();
-    });
-
-    const unsubscribeFilters = filters.subscribe(() => {
-        updateFiltered();
-    });
-
-    onDestroy(() => {
-        unsubscribeLocale();
-        unsubscribeSearch();
-        unsubscribeFilters();
-        unsubscribeSort();
-    });
-
-    function updateFiltered() {
-        filteredExcursions = applyFiltersAndSort(
-            allExcursions,
-            search,
-            currentLocale
-        );
-    }
-
-    let isMounted = false;
-
+    // Следим за обновлением данных
     $: if (data?.excursions) {
         allExcursions = data.excursions;
-        updateFiltered();
+        update();
     }
 
-    function handleFiltersChange(event) {
-        setFilters(event.detail);
-    }
-    // Изменение сортировки
-    function handleSortChange(e) {
-        sortStore.set(e.target.value);
-    }
-    // Сброс фильтров
-    function resetAllFilters() {
-        resetFilters();
-    }
-    // Сброс сортировки
-    function resetSort() {
-        sortStore.set(null);
-    }
-
+    // Scroll logic
     onMount(() => {
         const contentEl = document.querySelector("main");
         if (contentEl) {
@@ -130,6 +78,7 @@
         lastScrollTop = currentScroll;
     }
 
+    // SEO
     const SEO_TEXT = {
         ru: {
             title: "Экскурсии по Турции",
@@ -156,75 +105,32 @@
                 "Yerel rehberlerle Türkiye'de turlar. Hemen çevrimiçi rezervasyon yapin.",
         },
     };
+
+    // Обработчики
+    function resetAllFilters() {
+        resetFilters();
+    }
 </script>
 
-<svelte:head>
-    <title>{SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title} | {baseName}</title>
-    <meta
-        name="description"
-        content={SEO_TEXT[$locale]?.description ?? SEO_TEXT.en.description}
-    />
-    <meta
-        name="keywords"
-        content={SEO_TEXT[$locale]?.keywords ?? SEO_TEXT.en.keywords}
-    />
-    <link rel="canonical" href={`${baseUrl}/${$locale}/excursions`} />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={baseName} />
-    <meta
-        property="og:title"
-        content={SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title}
-    />
-    <meta
-        property="og:description"
-        content={SEO_TEXT[$locale]?.description ?? SEO_TEXT.en.description}
-    />
-    <meta
-        property="og:image"
-        content={`${baseUrl}/images/excursions/excursion_default.webp`}
-    />
-    <meta property="og:url" content={`${baseUrl}/${$locale}/excursions`} />
-    <meta property="og:locale" content={$locale} />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-        name="twitter:title"
-        content={SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title}
-    />
-    <meta
-        name="twitter:description"
-        content={SEO_TEXT[$locale]?.twitter ?? SEO_TEXT.en.twitter}
-    />
-    <meta
-        name="twitter:image"
-        content={`${baseUrl}/images/excursions/excursion_default.webp`}
-    />
-    {#each allExcursions.slice(0, 5) as item}
-        {#if item.images && item.images.length > 0}
-            <link
-                rel="preload"
-                as="image"
-                href={item.images[0]?.url}
-                type="image/webp"
-            />
-        {/if}
-    {/each}
-</svelte:head>
+<PageSEO
+    {baseUrl}
+    {baseName}
+    locale={$locale}
+    urlPath="excursions"
+    seo={SEO_TEXT[$locale] ?? SEO_TEXT.en}
+    image={`${baseUrl}/images/excursions/excursion_default.webp`}
+/>
 
 <div class="content">
     <SidebarFilters
         type="excursions"
         items={allExcursions}
-        {filters}
         on:filtersChanged={(e) => setFilters(e.detail)}
     />
 
     <main>
         <div class="info-block" class:hidden={infoVisible}>
-            <div class="fitler-containet">
+            <div class="filter-container">
                 {#if $hasFilter}
                     <button
                         class="filters-info-button"
@@ -237,8 +143,6 @@
                         {:else}
                             Filtered {filteredExcursions.length} items
                         {/if}
-
-                        <!-- Крестик в SVG (можно заменить на символ или иконку из библиотеки) -->
                         <svg
                             viewBox="0 0 24 24"
                             aria-hidden="true"
@@ -254,9 +158,9 @@
                     </button>
                 {/if}
             </div>
-
             <SortControls />
         </div>
+
         <div class="main_page">
             <h1 class="visually-hidden">
                 {@html main_page.title[$locale]}

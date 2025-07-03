@@ -1,38 +1,41 @@
 // src/lib/utils/filterUtils.js
-
 import { get } from "svelte/store";
 import { filters } from "$lib/stores/filters.js";
-import { sortStore } from "$lib/stores/sortStore";
+import { sortStore } from "$lib/stores/sortStore.js";
 
-export function applyFiltersAndSort(allItems, search, currentLocale) {
-    const $filters = get(filters);
-    const selectedSort = get(sortStore);
-
+export function applyFiltersAndSort(
+    allItems,
+    search,
+    locale,
+    filters,
+    sort,
+    type = "default"
+) {
     let filtered = allItems.filter((item) => {
         if (!item.active) return false;
 
-        const priceMatch = $filters.priceRange
-            ? item.price >= $filters.priceRange[0] &&
-              item.price <= $filters.priceRange[1]
+        const price = item.price || item.priceUSD || 0;
+        const priceMatch = filters.priceRange
+            ? price >= filters.priceRange[0] && price <= filters.priceRange[1]
             : true;
 
-        const durationMatch = $filters.durationRange
-            ? item.duration >= $filters.durationRange[0] &&
-              item.duration <= $filters.durationRange[1]
-            : true;
+        const durationMatch =
+            type === "excursions" && filters.durationRange
+                ? item.duration >= filters.durationRange[0] &&
+                  item.duration <= filters.durationRange[1]
+                : true;
 
         const ratingMatch =
-            $filters.minRating === 0 ||
-            (item.rating !== null && item.rating >= $filters.minRating);
+            filters.minRating === 0 ||
+            (item.rating !== null && item.rating >= filters.minRating);
 
         const matchesSearch =
-            !search ||
-            item.title[currentLocale]?.toLowerCase().includes(search);
+            !search || item.title?.[locale]?.toLowerCase().includes(search);
 
         return priceMatch && durationMatch && ratingMatch && matchesSearch;
     });
 
-    switch (selectedSort) {
+    switch (sort) {
         case "priceAsc":
             filtered.sort((a, b) => (a.price || 0) - (b.price || 0));
             break;

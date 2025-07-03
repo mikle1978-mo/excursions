@@ -5,7 +5,6 @@ export const filters = writable({
     priceRange: null,
     durationRange: null,
     minRating: 0,
-    sort: null,
 });
 
 export const hasFilter = derived(filters, ($filters) => {
@@ -26,6 +25,5 @@ export function resetFilters() {
         priceRange: null,
         durationRange: null,
         minRating: 0,
-        sort: null,
     });
 }
