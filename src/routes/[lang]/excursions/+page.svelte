@@ -35,7 +35,11 @@
 
     let lastScrollTop = 0;
     let infoVisible = true; // управляет видимостью
+    $: console.log("infoVisible now:", infoVisible);
+
     let scrollY = 0;
+    let accumulatedDeltaDown = 0;
+    let accumulatedDeltaUp = 0;
 
     // Подписываемся на сторы
     const unsubscribeSort = sortStore.subscribe((value) => {
@@ -157,24 +161,26 @@
     });
 
     function handleScroll(event) {
-        const contentEl = event.target;
-        const currentScroll = contentEl.scrollTop;
-
+        const currentScroll = event.target.scrollTop;
         const delta = currentScroll - lastScrollTop;
 
         if (delta > 0) {
-            // Скроллим вниз — триггер через 5px
-            if (delta >= 5) {
+            accumulatedDeltaDown += delta;
+            accumulatedDeltaUp = 0;
+            if (accumulatedDeltaDown >= 150 && infoVisible) {
                 infoVisible = false;
-                lastScrollTop = currentScroll;
+                accumulatedDeltaDown = 0;
             }
         } else if (delta < 0) {
-            // Скроллим вверх — триггер через 50px
-            if (Math.abs(delta) >= 50) {
+            accumulatedDeltaUp += -delta;
+            accumulatedDeltaDown = 0;
+            if (accumulatedDeltaUp >= 10 && !infoVisible) {
                 infoVisible = true;
-                lastScrollTop = currentScroll;
+                accumulatedDeltaUp = 0;
             }
         }
+
+        lastScrollTop = currentScroll;
     }
 
     const SEO_TEXT = {
