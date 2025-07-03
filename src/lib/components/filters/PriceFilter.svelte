@@ -4,6 +4,7 @@
     import { locale } from "$lib/stores/locale.js";
 
     export let currency;
+    export let minPrice;
     export let maxPrice;
     export let currentRange;
 
@@ -23,7 +24,7 @@
 <div class="filter-group">
     <span class="filter-title">{labels.price[$locale]} ({currency})</span>
     <RangeSlider
-        min={0}
+        min={minPrice}
         max={maxPrice}
         values={currentRange}
         format={formatPrice}

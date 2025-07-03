@@ -20,7 +20,7 @@ export const nav_items = [
     },
     {
         title: { ru: "трансфер", en: "transfer" },
-        link: "",
+        link: "/transfers/aeroport-antalya-mercedes-vito",
         rel: "nofollow",
         submenu: [],
     },

@@ -37,6 +37,7 @@
 
 {#if isMounted}
     <form
+        id="search"
         role="search"
         on:submit|preventDefault={handleInput}
         class="search-form"
@@ -72,6 +73,7 @@
             </button>
 
             <input
+                id="searh_input"
                 type="text"
                 bind:value={query}
                 on:focus={() => (isFocused = true)}

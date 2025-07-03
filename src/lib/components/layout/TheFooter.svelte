@@ -7,6 +7,13 @@
     import { mobileMenuOpen } from "$lib/stores/mobileMenu";
 
     let isMounted = false;
+    const listPages = ["excursions", "cars", "yachts"];
+    // Разбиваем путь на сегменты, фильтруем пустые
+    $: segments = $page.url.pathname.split("/").filter(Boolean);
+
+    // Проверяем, что путь с локалью + 1 сегмент совпадает с одним из listPages и это ровно два сегмента
+    $: showButton =
+        segments.length === 2 && segments[1] && listPages.includes(segments[1]);
 
     onMount(() => {
         isMounted = true;
@@ -44,7 +51,7 @@
             </div>
             <span>{footer_list[0].title[$locale]}</span>
         </a>
-        {#if $page.url.pathname.includes("excursions")}
+        {#if showButton}
             <button class="menu-item" on:click={() => sidebarOpen.set(true)}>
                 <div class="icon-wrapper">
                     <svelte:component this={footer_list[1].icon} />

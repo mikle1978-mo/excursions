@@ -4,7 +4,7 @@
     import { main_page } from "$lib/i18n/main_page.js";
     import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
-    import CarsSidebar from "$lib/components/cars/CarsSidebar.svelte";
+    import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
     import { searchQuery } from "$lib/stores/searchQuery.js";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -183,7 +183,11 @@
 </svelte:head>
 
 <div class="content">
-    <CarsSidebar cars={allCars} on:filtersChanged={handleFiltersChange} />
+    <SidebarFilters
+        type="cars"
+        items={allCars}
+        on:filtersChanged={handleFiltersChange}
+    />
 
     <main>
         <div class="main_page">
