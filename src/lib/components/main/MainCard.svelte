@@ -48,6 +48,7 @@
         box-shadow: var(--shadow-md);
         transition: var(--transition-normal);
         height: 100%;
+        min-height: 240px;
     }
 
     .card:hover {
