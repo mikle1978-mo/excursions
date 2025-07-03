@@ -45,17 +45,19 @@
 </svelte:head>
 
 <div class="content">
-    <div class="main_page">
-        <h1>
-            {main_page.title[$locale]}
-        </h1>
+    <main>
+        <div class="main_page">
+            <h1>
+                {main_page.title[$locale]}
+            </h1>
 
-        <div class="grid">
-            {#each main_page.pages as item, i}
-                <MainCard {item} loading={i < 3 ? "eager" : "lazy"} />
-            {/each}
+            <div class="grid">
+                {#each main_page.pages as item, i}
+                    <MainCard {item} loading={i < 3 ? "eager" : "lazy"} />
+                {/each}
+            </div>
         </div>
-    </div>
+    </main>
 </div>
 
 <style>
