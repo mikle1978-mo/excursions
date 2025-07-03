@@ -428,7 +428,6 @@
         gap: var(--space-vertical-md);
         width: 100%;
         align-items: center;
-        justify-content: space-evenly;
     }
 
     /* 414+ — 1 колонка (карточка красиво помещается) */
