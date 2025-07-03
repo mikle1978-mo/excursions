@@ -159,12 +159,22 @@
     function handleScroll(event) {
         const contentEl = event.target;
         const currentScroll = contentEl.scrollTop;
-        if (currentScroll > lastScrollTop) {
-            infoVisible = false;
-        } else {
-            infoVisible = true;
+
+        const delta = currentScroll - lastScrollTop;
+
+        if (delta > 0) {
+            // Скроллим вниз — триггер через 5px
+            if (delta >= 5) {
+                infoVisible = false;
+                lastScrollTop = currentScroll;
+            }
+        } else if (delta < 0) {
+            // Скроллим вверх — триггер через 50px
+            if (Math.abs(delta) >= 50) {
+                infoVisible = true;
+                lastScrollTop = currentScroll;
+            }
         }
-        lastScrollTop = currentScroll;
     }
 
     const SEO_TEXT = {
@@ -344,14 +354,14 @@
         position: absolute;
         top: -1px;
         z-index: 1;
-        opacity: 1;
+        opacity: 0.9;
         transition:
             opacity 0.3s ease,
             transform 0.3s ease;
     }
 
     .hidden {
-        opacity: 0.5; /* или 0 */
+        opacity: 0; /* или 0 */
         transform: translateY(-100%);
         pointer-events: none;
         transition:
