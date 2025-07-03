@@ -50,7 +50,7 @@
             {main_page.title[$locale]}
         </h1>
 
-        <div class="main-grid">
+        <div class="grid">
             {#each main_page.pages as item, i}
                 <MainCard {item} loading={i < 3 ? "eager" : "lazy"} />
             {/each}
@@ -60,6 +60,7 @@
 
 <style>
     .content {
+        position: relative;
         display: flex;
         align-items: flex-start;
         padding: 0px;
@@ -74,25 +75,68 @@
         border-top: 1px solid var(--color-gray-500);
         border-bottom: 1px solid var(--color-gray-500);
     }
+
     .main_page {
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-md);
         width: 100%;
-        padding: var(--space-vertical-md) 0;
+        padding: 0 0 var(--space-vertical-md) 0;
     }
 
     h1 {
-        font-size: var(--text-xxl);
         text-align: center;
+        font-size: var(--text-xl);
     }
 
-    .main-grid {
+    .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        grid-template-columns: 1fr;
         gap: var(--space-vertical-md);
         width: 100%;
         align-items: center;
         justify-content: space-evenly;
+    }
+
+    /* 414+ — 1 колонка (карточка красиво помещается) */
+    @media (min-width: 414px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* 576+ — 2 колонки */
+    @media (min-width: 576px) {
+        .grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    /* 768+ — 2 колонки (можешь оставить 2, если не хочешь мельчить) */
+    @media (min-width: 768px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+    /* 992+ — 3 колонки */
+    @media (min-width: 992px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+    /* 1200+ — 4 колонки */
+    @media (min-width: 1200px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+    }
+
+    /* 1440+ — 5 колонок (или оставь 4, если плотность не нравится) */
+    @media (min-width: 1440px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        }
     }
 </style>
