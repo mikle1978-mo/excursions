@@ -258,6 +258,7 @@
         {filters}
         on:filtersChanged={(e) => setFilters(e.detail)}
     />
+
     <main>
         <div class="info-block" class:hidden={!infoVisible}>
             <div class="fitler-containet">
@@ -293,7 +294,6 @@
 
             <SortControls />
         </div>
-
         <div class="main_page">
             <h1 class="visually-hidden">
                 {@html main_page.title[$locale]}
@@ -341,7 +341,7 @@
         width: 100%;
         align-items: center;
         justify-content: space-between;
-        position: sticky;
+        position: absolute;
         top: -1px;
         z-index: 1;
         opacity: 1;

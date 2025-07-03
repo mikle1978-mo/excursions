@@ -92,7 +92,7 @@
     .grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: var(--space-vertical-md);
+        gap: 1rem;
         width: 100%;
         align-items: center;
         justify-content: space-evenly;
