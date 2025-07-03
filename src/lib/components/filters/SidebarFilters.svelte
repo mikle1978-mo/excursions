@@ -1,51 +1,19 @@
 <script>
-    import { locale } from "$lib/stores/locale.js";
-    import { sidebarOpen } from "$lib/stores/sidebar";
-    import { selectedCurrency, exchangeRates } from "$lib/stores/currency";
-    import { createEventDispatcher, onMount } from "svelte";
+    import { filters } from "$lib/stores/filters.js";
+    import { sidebarOpen } from "$lib/stores/sidebar.js";
+    import { selectedCurrency, exchangeRates } from "$lib/stores/currency.js";
+    import { createEventDispatcher } from "svelte";
 
     import PriceFilter from "$lib/components/filters/PriceFilter.svelte";
     import DurationFilter from "$lib/components/filters/DurationFilter.svelte";
     import RatingFilter from "$lib/components/filters/RatingFilter.svelte";
 
+    import { get } from "svelte/store";
+
     export let type = "excursions";
     export let items = [];
-    export let filters = {
-        priceRange: null,
-        durationRange: null,
-        minRating: 0,
-    };
-
-    const titles = {
-        excursions: { en: "Excursion Filters", ru: "Фильтры экскурсий" },
-        cars: { en: "Car Filters", ru: "Фильтры машин" },
-        yachts: { en: "Yacht Filters", ru: "Фильтры яхт" },
-    };
-
-    const labels = {
-        title: {
-            en: "Excursion Filters",
-            ru: "Фильтры экскурсий",
-        },
-        apply: {
-            en: "Apply",
-            ru: "Применить",
-        },
-        reset: {
-            en: "Reset",
-            ru: "Сбросить",
-        },
-    };
 
     const dispatch = createEventDispatcher();
-
-    // Локальная копия фильтров
-    let localFilters = { ...filters };
-
-    // Когда filters проп обновляется - обновляем localFilters
-    $: if (filters) {
-        localFilters = { ...filters };
-    }
 
     // Валюта
     $: currentCurrency = $selectedCurrency;
@@ -67,66 +35,59 @@
         return [Math.min(...durations), Math.max(...durations)];
     }
 
-    // Обработчики обновляют локальный filters и эмитят событие
+    // Обновления фильтров
     function handlePriceChange(e) {
-        localFilters.priceRange = e.detail.map((p) => p / currentRate);
-        dispatch("filtersChanged", { ...localFilters });
+        filters.update((f) => ({
+            ...f,
+            priceRange: e.detail.map((p) => p / currentRate),
+        }));
     }
-
     function handleDurationChange(e) {
-        localFilters.durationRange = e.detail.length ? e.detail : null;
-        dispatch("filtersChanged", { ...localFilters });
+        filters.update((f) => ({ ...f, durationRange: e.detail }));
     }
-
     function handleRatingChange(e) {
-        localFilters.minRating = e.detail;
-        dispatch("filtersChanged", { ...localFilters });
+        filters.update((f) => ({ ...f, minRating: e.detail }));
     }
-
-    function resetFilters() {
-        localFilters = {
+    function resetAllFilters() {
+        filters.set({
             priceRange: null,
             durationRange: null,
             minRating: 0,
-        };
-        dispatch("filtersChanged", { ...localFilters });
+            sort: null,
+        });
     }
 
     const closeSidebar = () => sidebarOpen.set(false);
     const handleKeydown = (e) =>
         e.key === "Escape" && $sidebarOpen && closeSidebar();
     const handleBackdropClick = () => closeSidebar();
-
-    onMount(() => {
-        resetFilters();
-    });
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
 
 {#if $sidebarOpen}
-    <div
+    <button
         class="sidebar-overlay"
-        role="presentation"
         on:click={handleBackdropClick}
-        on:keydown={(e) => e.key === "Enter" && closeSidebar()}
-    ></div>
+        area-label="close">✕</button
+    >
 {/if}
 
 <side class="sidebar" class:active={$sidebarOpen}>
     <div class="sidebar-content">
-        <span class="sidebar-title">{titles[type]?.[$locale] || "Filters"}</span
-        >
-
+        <span class="sidebar-title">Фильтры</span>
         <div class="filters">
             {#if priceRange[0] !== priceRange[1]}
                 <PriceFilter
                     currency={currentCurrency}
                     minPrice={priceRange[0] * currentRate}
                     maxPrice={priceRange[1] * currentRate}
-                    currentRange={localFilters.priceRange
-                        ? localFilters.priceRange.map((p) => p * currentRate)
-                        : [0, priceRange[1] * currentRate]}
+                    currentRange={$filters.priceRange
+                        ? $filters.priceRange.map((p) => p * currentRate)
+                        : [
+                              priceRange[0] * currentRate,
+                              priceRange[1] * currentRate,
+                          ]}
                     on:change={handlePriceChange}
                 />
             {/if}
@@ -134,24 +95,24 @@
             {#if type === "excursions" && durationRange}
                 <DurationFilter
                     durations={durationRange}
-                    currentRange={localFilters.durationRange || durationRange}
+                    currentRange={$filters.durationRange || durationRange}
                     on:change={handleDurationChange}
                 />
             {/if}
 
             <RatingFilter
-                minRating={localFilters.minRating || 0}
+                minRating={$filters.minRating}
                 on:change={handleRatingChange}
             />
         </div>
 
         <div class="buttons">
-            <button class="confirm-filters" on:click={closeSidebar}>
-                {labels?.apply?.[$locale] || "Apply"}
-            </button>
-            <button class="reset-filters" on:click={resetFilters}>
-                {labels?.reset?.[$locale] || "Reset"}
-            </button>
+            <button class="confirm-filters" on:click={closeSidebar}
+                >Применить</button
+            >
+            <button class="reset-filters" on:click={resetAllFilters}
+                >Сбросить</button
+            >
         </div>
     </div>
 
@@ -174,6 +135,7 @@
         width: 280px;
         height: 100svh;
         z-index: 1000;
+        touch-action: pan-y;
     }
 
     .sidebar.active {

@@ -1,12 +1,38 @@
 <script>
     import { sortStore } from "$lib/stores/sortStore.js";
-    import { get } from "svelte/store";
-    import { onMount, onDestroy } from "svelte";
+    import { locale } from "$lib/stores/locale";
+    import { onDestroy } from "svelte";
 
     let selectedSort = null;
 
-    // Подписываемся на стор сортировки
-    const unsubscribe = sortStore.subscribe((value) => (selectedSort = value));
+    const unsubscribeSort = sortStore.subscribe(
+        (value) => (selectedSort = value)
+    );
+    const unsubscribeLocale = locale.subscribe((value) => ($locale = value));
+
+    const translations = {
+        ru: {
+            noSort: "Без сортировки",
+            priceAsc: "Цена ↑",
+            priceDesc: "Цена ↓",
+            ratingDesc: "Рейтинг ↓",
+            durationAsc: "Длительность ↑",
+        },
+        en: {
+            noSort: "No sort",
+            priceAsc: "Price ↑",
+            priceDesc: "Price ↓",
+            ratingDesc: "Rating ↓",
+            durationAsc: "Duration ↑",
+        },
+        tr: {
+            noSort: "Sıralama yok",
+            priceAsc: "Fiyat ↑",
+            priceDesc: "Fiyat ↓",
+            ratingDesc: "Puan ↓",
+            durationAsc: "Süre ↑",
+        },
+    };
 
     function handleChange(event) {
         sortStore.set(event.target.value);
@@ -17,7 +43,8 @@
     }
 
     onDestroy(() => {
-        unsubscribe();
+        unsubscribeSort();
+        unsubscribeLocale();
     });
 </script>
 
@@ -29,11 +56,26 @@
                 on:change={handleChange}
                 bind:value={selectedSort}
             >
-                <option value={null}>No sort</option>
-                <option value="priceAsc">Price ↑</option>
-                <option value="priceDesc">Price ↓</option>
-                <option value="ratingDesc">Rating ↓</option>
-                <option value="durationAsc">Duration ↑</option>
+                <option value={null}
+                    >{translations[$locale]?.noSort ??
+                        translations.en.noSort}</option
+                >
+                <option value="priceAsc"
+                    >{translations[$locale]?.priceAsc ??
+                        translations.en.priceAsc}</option
+                >
+                <option value="priceDesc"
+                    >{translations[$locale]?.priceDesc ??
+                        translations.en.priceDesc}</option
+                >
+                <option value="ratingDesc"
+                    >{translations[$locale]?.ratingDesc ??
+                        translations.en.ratingDesc}</option
+                >
+                <option value="durationAsc"
+                    >{translations[$locale]?.durationAsc ??
+                        translations.en.durationAsc}</option
+                >
             </select>
             <span class="custom-arrow">▼</span>
         </div>
@@ -68,7 +110,7 @@
         padding: 0.3rem 1.5rem 0.3rem 0.5rem; /* справа место для стрелки */
         border: 1px solid var(--color-gray-400, #ccc);
         border-radius: var(--radius-md, 6px);
-        font-size: var(--text-sm, 0.875rem);
+        font-size: var(--text-xs, 0.875rem);
         font-family: inherit;
         color: var(--color-text, #333);
         appearance: none;

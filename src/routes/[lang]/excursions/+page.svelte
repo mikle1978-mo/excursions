@@ -17,121 +17,68 @@
     import { get } from "svelte/store";
     import { sortStore } from "$lib/stores/sortStore.js";
     import SortControls from "$lib/components/filters/SortControls.svelte";
+    import { applyFiltersAndSort } from "$lib/utils/filterUtils.js";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
     export let data;
 
-    let priceRange = [0, 0];
-    let durationRange = [0, 0];
-
     let search = "";
     let currentLocale = null;
-
     let allExcursions = [];
     let filteredExcursions = [];
 
     let selectedSort = null;
 
     let lastScrollTop = 0;
-    let infoVisible = true; // управляет видимостью
+    let infoVisible = false; // управляет видимостью
     $: console.log("infoVisible now:", infoVisible);
 
-    let scrollY = 0;
     let accumulatedDeltaDown = 0;
     let accumulatedDeltaUp = 0;
 
     // Подписываемся на сторы
     const unsubscribeSort = sortStore.subscribe((value) => {
         selectedSort = value;
-        applyFilters(); // или отдельный applySort, если хочешь разделить
+        updateFiltered();
     });
 
     const unsubscribeLocale = locale.subscribe((v) => {
         currentLocale = v;
-        applyFilters();
+        updateFiltered();
     });
 
     const unsubscribeSearch = searchQuery.subscribe((v) => {
         search = v.toLowerCase();
-        applyFilters();
+        updateFiltered();
     });
 
-    const unsubscribeFilters = filters.subscribe(($filters) => {
-        applyFilters($filters);
+    const unsubscribeFilters = filters.subscribe(() => {
+        updateFiltered();
     });
 
     onDestroy(() => {
         unsubscribeLocale();
         unsubscribeSearch();
         unsubscribeFilters();
+        unsubscribeSort();
     });
+
+    function updateFiltered() {
+        filteredExcursions = applyFiltersAndSort(
+            allExcursions,
+            search,
+            currentLocale
+        );
+    }
 
     let isMounted = false;
 
     $: if (data?.excursions) {
         allExcursions = data.excursions;
-
-        filteredExcursions = [...allExcursions];
-        applyFilters();
+        updateFiltered();
     }
 
-    function applyFilters() {
-        const $filters = get(filters);
-        filteredExcursions = allExcursions.filter((excursion) => {
-            if (!excursion.active) return false;
-
-            // Price filter
-            const priceMatch = $filters.priceRange
-                ? excursion.price >= $filters.priceRange[0] &&
-                  excursion.price <= $filters.priceRange[1]
-                : true;
-
-            // Duration filter
-            const durationMatch = $filters.durationRange
-                ? excursion.duration >= $filters.durationRange[0] &&
-                  excursion.duration <= $filters.durationRange[1]
-                : true;
-
-            // Rating filter
-            const ratingMatch =
-                $filters.minRating === 0 ||
-                (excursion.rating !== null &&
-                    excursion.rating >= $filters.minRating);
-
-            // Search filter
-            const matchesSearch =
-                !search ||
-                excursion.title[currentLocale]?.toLowerCase().includes(search);
-
-            return priceMatch && durationMatch && ratingMatch && matchesSearch;
-        });
-
-        // Sorting
-        switch (selectedSort) {
-            case "priceAsc":
-                filteredExcursions.sort(
-                    (a, b) => (a.price || 0) - (b.price || 0)
-                );
-                break;
-            case "priceDesc":
-                filteredExcursions.sort(
-                    (a, b) => (b.price || 0) - (a.price || 0)
-                );
-                break;
-            case "ratingDesc":
-                filteredExcursions.sort(
-                    (a, b) => (b.rating || 0) - (a.rating || 0)
-                );
-                break;
-            case "durationAsc":
-                filteredExcursions.sort(
-                    (a, b) => (a.duration || 0) - (b.duration || 0)
-                );
-                break;
-        }
-    }
-    // Изменение фильтров
     function handleFiltersChange(event) {
         setFilters(event.detail);
     }
@@ -167,14 +114,14 @@
         if (delta > 0) {
             accumulatedDeltaDown += delta;
             accumulatedDeltaUp = 0;
-            if (accumulatedDeltaDown >= 150 && infoVisible) {
+            if (accumulatedDeltaDown >= 10 && infoVisible) {
                 infoVisible = false;
                 accumulatedDeltaDown = 0;
             }
         } else if (delta < 0) {
             accumulatedDeltaUp += -delta;
             accumulatedDeltaDown = 0;
-            if (accumulatedDeltaUp >= 10 && !infoVisible) {
+            if (accumulatedDeltaUp >= 150 && !infoVisible) {
                 infoVisible = true;
                 accumulatedDeltaUp = 0;
             }
@@ -276,7 +223,7 @@
     />
 
     <main>
-        <div class="info-block" class:hidden={!infoVisible}>
+        <div class="info-block" class:hidden={infoVisible}>
             <div class="fitler-containet">
                 {#if $hasFilter}
                     <button
@@ -358,7 +305,7 @@
         align-items: center;
         justify-content: space-between;
         position: absolute;
-        top: -1px;
+        bottom: -1px;
         z-index: 1;
         opacity: 0.9;
         transition:
@@ -368,7 +315,7 @@
 
     .hidden {
         opacity: 0; /* или 0 */
-        transform: translateY(-100%);
+        transform: translateY(100%);
         pointer-events: none;
         transition:
             opacity 0.3s ease,
@@ -414,7 +361,7 @@
         flex-direction: column;
         gap: var(--space-vertical-md);
         width: 100%;
-        padding: 0 0 var(--space-vertical-md) 0;
+        padding: var(--space-vertical-md) 0;
     }
 
     h1 {
