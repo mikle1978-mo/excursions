@@ -11,8 +11,9 @@
         hasFilter,
     } from "$lib/stores/filters.js";
     import SortControls from "$lib/components/filters/SortControls.svelte";
-    import PageSEO from "$lib/components/SEO/PageSEO.svelte";
+    import PageSeo from "$lib/components/SEO/PageSeo.svelte";
     import { useServiceFilters } from "$lib/hooks/useServiceFilters.js";
+    import InfoBlock from "$lib/components/layout/InfoBlock.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -112,7 +113,7 @@
     }
 </script>
 
-<PageSEO
+<PageSeo
     {baseUrl}
     {baseName}
     locale={$locale}
@@ -129,44 +130,15 @@
     />
 
     <main>
-        <div class="info-block" class:hidden={infoVisible}>
-            <div class="filter-container">
-                {#if $hasFilter}
-                    <button
-                        class="filters-info-button"
-                        on:click={resetAllFilters}
-                        aria-label="Сбросить фильтры"
-                        title="Сбросить фильтры"
-                    >
-                        {#if $locale === "ru"}
-                            Выбрано {filteredExcursions.length}
-                        {:else}
-                            Filtered {filteredExcursions.length} items
-                        {/if}
-                        <svg
-                            viewBox="0 0 24 24"
-                            aria-hidden="true"
-                            focusable="false"
-                        >
-                            <path
-                                d="M18 6 L6 18 M6 6 L18 18"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                            />
-                        </svg>
-                    </button>
-                {/if}
-            </div>
-            <SortControls />
-        </div>
-
+        <InfoBlock
+            {infoVisible}
+            filteredCount={filteredExcursions.length}
+            onReset={resetAllFilters}
+            type="excursions"
+        />
         <div class="main_page">
             <h1 class="visually-hidden">
-                {@html main_page.title[$locale]}
-                {#if main_page.subtitle && main_page.subtitle[$locale]}
-                    <p>{main_page.subtitle[$locale]}</p>
-                {/if}
+                {main_page.title[$locale]}
             </h1>
 
             <div class="grid">
@@ -198,66 +170,6 @@
         flex-grow: 1;
         border-top: 1px solid var(--color-gray-500);
         border-bottom: 1px solid var(--color-gray-500);
-    }
-
-    .info-block {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: var(--space-vertical-md);
-        background-color: var(--color-bg);
-        width: 100%;
-        align-items: center;
-        justify-content: space-between;
-        position: absolute;
-        bottom: -1px;
-        z-index: 1;
-        opacity: 0.9;
-        transition:
-            opacity 0.3s ease,
-            transform 0.3s ease;
-    }
-
-    .hidden {
-        opacity: 0; /* или 0 */
-        transform: translateY(100%);
-        pointer-events: none;
-        transition:
-            opacity 0.3s ease,
-            transform 0.3s ease;
-    }
-
-    .filters-info-button {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.4rem 0.8rem;
-        background-color: var(--color-bg, #f0f0f0);
-        border: 1px solid var(--color-gray-400, #ccc);
-        border-radius: var(--radius-md, 6px);
-        color: var(--color-text, #333);
-        font-size: var(--text-xs, 0.875rem);
-        white-space: nowrap;
-
-        cursor: pointer;
-        user-select: none;
-        transition:
-            background-color 0.3s ease,
-            border-color 0.3s ease;
-    }
-
-    .filters-info-button:hover,
-    .filters-info-button:focus {
-        background-color: var(--color-primary, #4ac97e);
-        border-color: var(--color-primary-hover, #3db16d);
-        color: white;
-        outline: none;
-    }
-
-    .filters-info-button svg {
-        width: 1rem;
-        height: 1rem;
-        fill: currentColor;
-        flex-shrink: 0;
     }
 
     .main_page {

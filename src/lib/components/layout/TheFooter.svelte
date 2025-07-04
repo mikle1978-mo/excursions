@@ -7,7 +7,7 @@
     import { mobileMenuOpen } from "$lib/stores/mobileMenu";
 
     let isMounted = false;
-    const listPages = ["excursions", "cars", "yachts"];
+    const listPages = ["excursions", "cars", "yachts", "transfers"];
     // Разбиваем путь на сегменты, фильтруем пустые
     $: segments = $page.url.pathname.split("/").filter(Boolean);
 

@@ -19,11 +19,10 @@ export function applyFiltersAndSort(
             ? price >= filters.priceRange[0] && price <= filters.priceRange[1]
             : true;
 
-        const durationMatch =
-            type === "excursions" && filters.durationRange
-                ? item.duration >= filters.durationRange[0] &&
-                  item.duration <= filters.durationRange[1]
-                : true;
+        const durationMatch = filters.durationRange
+            ? item.duration >= filters.durationRange[0] &&
+              item.duration <= filters.durationRange[1]
+            : true;
 
         const ratingMatch =
             filters.minRating === 0 ||

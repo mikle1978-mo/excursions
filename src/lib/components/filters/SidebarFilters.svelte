@@ -1,5 +1,6 @@
 <script>
     import { filters } from "$lib/stores/filters.js";
+    import { FILTER_CONFIG } from "$lib/constants/filtersConfig.js";
     import { sidebarOpen } from "$lib/stores/sidebar.js";
     import { selectedCurrency, exchangeRates } from "$lib/stores/currency.js";
     import { createEventDispatcher } from "svelte";
@@ -8,18 +9,14 @@
     import DurationFilter from "$lib/components/filters/DurationFilter.svelte";
     import RatingFilter from "$lib/components/filters/RatingFilter.svelte";
 
-    import { get } from "svelte/store";
-
     export let type = "excursions";
     export let items = [];
 
     const dispatch = createEventDispatcher();
 
-    // Валюта
     $: currentCurrency = $selectedCurrency;
     $: currentRate = $exchangeRates[currentCurrency] || 1;
 
-    // Диапазоны
     $: priceRange = computePriceRange();
     $: durationRange = computeDurationRange();
 
@@ -30,24 +27,32 @@
     }
 
     function computeDurationRange() {
-        if (type !== "excursions" || !items.length) return null;
+        if (!items.length) return null;
         const durations = items.map((i) => i.duration || 0);
         return [Math.min(...durations), Math.max(...durations)];
     }
 
-    // Обновления фильтров
     function handlePriceChange(e) {
         filters.update((f) => ({
             ...f,
             priceRange: e.detail.map((p) => p / currentRate),
         }));
     }
+
     function handleDurationChange(e) {
-        filters.update((f) => ({ ...f, durationRange: e.detail }));
+        filters.update((f) => ({
+            ...f,
+            durationRange: e.detail,
+        }));
     }
+
     function handleRatingChange(e) {
-        filters.update((f) => ({ ...f, minRating: e.detail }));
+        filters.update((f) => ({
+            ...f,
+            minRating: e.detail,
+        }));
     }
+
     function resetAllFilters() {
         filters.set({
             priceRange: null,
@@ -58,52 +63,76 @@
     }
 
     const closeSidebar = () => sidebarOpen.set(false);
-    const handleKeydown = (e) =>
-        e.key === "Escape" && $sidebarOpen && closeSidebar();
-    const handleBackdropClick = () => closeSidebar();
+
+    function hasFilter(name) {
+        return FILTER_CONFIG[name]?.includes(type);
+    }
+
+    const FILTERS = [
+        {
+            name: "price",
+            condition: () => priceRange[0] !== priceRange[1],
+            component: PriceFilter,
+            props: () => ({
+                currency: currentCurrency,
+                minPrice: priceRange[0] * currentRate,
+                maxPrice: priceRange[1] * currentRate,
+                currentRange: $filters.priceRange
+                    ? $filters.priceRange.map((p) => p * currentRate)
+                    : [
+                          priceRange[0] * currentRate,
+                          priceRange[1] * currentRate,
+                      ],
+                onChange: handlePriceChange,
+            }),
+        },
+        {
+            name: "duration",
+            condition: () =>
+                durationRange && durationRange[0] !== durationRange[1],
+            component: DurationFilter,
+            props: () => ({
+                durations: durationRange,
+                currentRange: $filters.durationRange || durationRange,
+                onChange: handleDurationChange,
+            }),
+        },
+        {
+            name: "rating",
+            condition: () => true,
+            component: RatingFilter,
+            props: () => ({
+                minRating: $filters.minRating,
+                onChange: handleRatingChange,
+            }),
+        },
+    ];
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
+<svelte:window
+    on:keydown={(e) => e.key === "Escape" && $sidebarOpen && closeSidebar()}
+/>
 
 {#if $sidebarOpen}
     <button
         class="sidebar-overlay"
-        on:click={handleBackdropClick}
-        area-label="close">✕</button
-    >
+        on:click={closeSidebar}
+        aria-label="Закрыть фильтры"
+    ></button>
 {/if}
 
 <side class="sidebar" class:active={$sidebarOpen}>
     <div class="sidebar-content">
         <span class="sidebar-title">Фильтры</span>
         <div class="filters">
-            {#if priceRange[0] !== priceRange[1]}
-                <PriceFilter
-                    currency={currentCurrency}
-                    minPrice={priceRange[0] * currentRate}
-                    maxPrice={priceRange[1] * currentRate}
-                    currentRange={$filters.priceRange
-                        ? $filters.priceRange.map((p) => p * currentRate)
-                        : [
-                              priceRange[0] * currentRate,
-                              priceRange[1] * currentRate,
-                          ]}
-                    on:change={handlePriceChange}
-                />
-            {/if}
-
-            {#if type === "excursions" && durationRange}
-                <DurationFilter
-                    durations={durationRange}
-                    currentRange={$filters.durationRange || durationRange}
-                    on:change={handleDurationChange}
-                />
-            {/if}
-
-            <RatingFilter
-                minRating={$filters.minRating}
-                on:change={handleRatingChange}
-            />
+            {#each FILTERS as filter (filter.name)}
+                {#if hasFilter(filter.name) && filter.condition()}
+                    <svelte:component
+                        this={filter.component}
+                        {...filter.props()}
+                    />
+                {/if}
+            {/each}
         </div>
 
         <div class="buttons">

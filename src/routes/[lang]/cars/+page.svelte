@@ -3,98 +3,78 @@
     import Card from "$lib/components/card/Card.svelte";
     import { main_page } from "$lib/i18n/main_page.js";
     import { locale } from "$lib/stores/locale.js";
-    import { onMount } from "svelte";
+    import { onMount, onDestroy } from "svelte";
     import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
     import { searchQuery } from "$lib/stores/searchQuery.js";
+    import {
+        resetFilters,
+        setFilters,
+        hasFilter,
+    } from "$lib/stores/filters.js";
+    import PageSeo from "$lib/components/SEO/PageSeo.svelte";
+    import { useServiceFilters } from "$lib/hooks/useServiceFilters.js";
+    import InfoBlock from "$lib/components/layout/InfoBlock.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
-
-    let search = "";
-    let currentLocale = null;
-
-    let allCars = [];
-    let filteredCars = [];
-
     export let data;
 
-    locale.subscribe((value) => {
-        currentLocale = value;
-        applyFilters();
+    let allCars = data?.cars || [];
+    let filteredCars = [];
+
+    // Scroll info block visibility
+    let lastScrollTop = 0;
+    let infoVisible = false;
+    let accumulatedDeltaDown = 0;
+    let accumulatedDeltaUp = 0;
+
+    // Используем хук для фильтров поиска и сортировки
+    const { update } = useServiceFilters(allCars, "cars", (result) => {
+        filteredCars = result;
     });
 
-    searchQuery.subscribe((value) => {
-        search = value.toLowerCase();
-        applyFilters();
-    });
-
-    let currentFilters = {
-        durationRange: null, // изменено на null вместо []
-        priceRange: null, // изменено на null вместо [0, Infinity]
-        minRating: 0,
-    };
-
-    let updateKey = 0;
-    let isMounted = false;
-
+    // Следим за обновлением данных
     $: if (data?.cars) {
         allCars = data.cars;
-
-        filteredCars = [...allCars];
-        applyFilters();
+        update();
     }
 
-    function applyFilters() {
-        if (!allCars.length) return;
-
-        filteredCars = allCars.filter((car) => {
-            if (!car.active) return false;
-            const carPriceUSD = car.price;
-
-            // Фильтр по цене
-            const priceInRange = currentFilters.priceRange
-                ? carPriceUSD >= currentFilters.priceRange[0] &&
-                  carPriceUSD <= currentFilters.priceRange[1]
-                : true;
-
-            // Фильтр по длительности
-            const durationMatch = currentFilters.durationRange
-                ? car.duration >= currentFilters.durationRange[0] &&
-                  car.duration <= currentFilters.durationRange[1]
-                : true;
-
-            // Фильтр по рейтингу
-            const ratingMatch =
-                currentFilters.minRating === 0 ||
-                (car.rating !== null && car.rating >= currentFilters.minRating);
-
-            // Поиск по названию
-            const matchesSearch =
-                !search ||
-                car.title[currentLocale]?.toLowerCase().includes(search);
-
-            return (
-                priceInRange && durationMatch && ratingMatch && matchesSearch
-            );
-        });
-        updateKey++;
-    }
-
-    function handleFiltersChange(event) {
-        currentFilters = {
-            ...event.detail,
-            // Обеспечиваем обратную совместимость
-            durationRange: event.detail.durationRange?.length
-                ? event.detail.durationRange
-                : null,
-            priceRange: event.detail.priceRange || null,
-        };
-        applyFilters();
-    }
-
+    // Scroll logic
     onMount(() => {
-        isMounted = true;
+        const contentEl = document.querySelector("main");
+        if (contentEl) {
+            contentEl.addEventListener("scroll", handleScroll);
+        }
+        return () => {
+            if (contentEl) {
+                contentEl.removeEventListener("scroll", handleScroll);
+            }
+        };
     });
+
+    function handleScroll(event) {
+        const currentScroll = event.target.scrollTop;
+        const delta = currentScroll - lastScrollTop;
+
+        if (delta > 0) {
+            accumulatedDeltaDown += delta;
+            accumulatedDeltaUp = 0;
+            if (accumulatedDeltaDown >= 10 && infoVisible) {
+                infoVisible = false;
+                accumulatedDeltaDown = 0;
+            }
+        } else if (delta < 0) {
+            accumulatedDeltaUp += -delta;
+            accumulatedDeltaDown = 0;
+            if (accumulatedDeltaUp >= 150 && !infoVisible) {
+                infoVisible = true;
+                accumulatedDeltaUp = 0;
+            }
+        }
+
+        lastScrollTop = currentScroll;
+    }
+
     const SEO_TEXT = {
         ru: {
             title: "Аренда автомобилей в Кемере",
@@ -124,82 +104,43 @@
                 "Kemer'de araç kiralama — hızlı, güvenilir ve uygun fiyatlı. Hemen çevrimiçi rezervasyon yapın.",
         },
     };
+
+    // Обработчики
+    function resetAllFilters() {
+        resetFilters();
+    }
 </script>
 
-<svelte:head>
-    <title>{SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title} | {baseName}</title>
-    <meta
-        name="description"
-        content={SEO_TEXT[$locale]?.description ?? SEO_TEXT.en.description}
-    />
-    <meta
-        name="keywords"
-        content={SEO_TEXT[$locale]?.keywords ?? SEO_TEXT.en.keywords}
-    />
-    <link rel="canonical" href={`${baseUrl}/${$locale}/cars`} />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={baseName} />
-    <meta
-        property="og:title"
-        content={SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title}
-    />
-    <meta
-        property="og:description"
-        content={SEO_TEXT[$locale]?.description ?? SEO_TEXT.en.description}
-    />
-    <meta
-        property="og:image"
-        content={`${baseUrl}/images/cars/car_default.webp`}
-    />
-    <meta property="og:url" content={`${baseUrl}/${$locale}/cars`} />
-    <meta property="og:locale" content={$locale} />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-        name="twitter:title"
-        content={SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title}
-    />
-    <meta
-        name="twitter:description"
-        content={SEO_TEXT[$locale]?.twitter ?? SEO_TEXT.en.twitter}
-    />
-    <meta
-        name="twitter:image"
-        content={`${baseUrl}/images/cars/car_default.webp`}
-    />
-    {#each allCars.slice(0, 5) as item}
-        {#if item.images && item.images.length > 0}
-            <link
-                rel="preload"
-                as="image"
-                href={item.images[0].url}
-                type="image/webp"
-            />
-        {/if}
-    {/each}
-</svelte:head>
+<PageSeo
+    {baseUrl}
+    {baseName}
+    locale={$locale}
+    urlPath="cars"
+    seo={SEO_TEXT[$locale] ?? SEO_TEXT.en}
+    image={`${baseUrl}/images/cars/car_default.webp`}
+/>
 
 <div class="content">
     <SidebarFilters
         type="cars"
         items={allCars}
-        on:filtersChanged={handleFiltersChange}
+        on:filtersChanged={(e) => setFilters(e.detail)}
     />
 
     <main>
+        <InfoBlock
+            {infoVisible}
+            filteredCount={filteredCars.length}
+            onReset={resetAllFilters}
+            type="cars"
+        />
         <div class="main_page">
             <h1 class="visually-hidden">
-                {@html main_page.title[$locale]}
-                {#if main_page.subtitle && main_page.subtitle[$locale]}
-                    <p>{main_page.subtitle[$locale]}</p>
-                {/if}
+                {main_page.title[$locale]}
             </h1>
 
             <div class="grid">
-                {#each filteredCars as car, i (car.slug + updateKey)}
+                {#each filteredCars as car, i (car.slug)}
                     <!-- <CarCard {car} loading={i < 5 ? "eager" : "lazy"} /> -->
                     <Card
                         item={car}
@@ -214,6 +155,7 @@
 
 <style>
     .content {
+        position: relative;
         display: flex;
         align-items: flex-start;
         padding: 0px;
@@ -244,10 +186,51 @@
 
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(351px, 1fr));
-        gap: var(--space-vertical-lg);
+        grid-template-columns: 1fr;
+        gap: var(--space-vertical-md);
         width: 100%;
         align-items: center;
-        justify-content: space-evenly;
+    }
+
+    /* 414+ — 1 колонка (карточка красиво помещается) */
+    @media (min-width: 414px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* 576+ — 2 колонки */
+    @media (min-width: 576px) {
+        .grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    /* 768+ — 2 колонки (можешь оставить 2, если не хочешь мельчить) */
+    @media (min-width: 768px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+    /* 992+ — 3 колонки */
+    @media (min-width: 992px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+    /* 1200+ — 4 колонки */
+    @media (min-width: 1200px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+    }
+
+    /* 1440+ — 5 колонок (или оставь 4, если плотность не нравится) */
+    @media (min-width: 1440px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        }
     }
 </style>

@@ -1,203 +1,152 @@
 <script>
     import TheButton from "$lib/components/UI/buttons/TheButton.svelte";
-    import TransferCard from "$lib/components/transfers/TransferCard.svelte";
     import Card from "$lib/components/card/Card.svelte";
     import { main_page } from "$lib/i18n/main_page.js";
     import { locale } from "$lib/stores/locale.js";
-    import { onMount } from "svelte";
-    import TransfersSidebar from "$lib/components/transfers/TransfersSidebar.svelte";
-    import { searchQuery } from "$lib/stores/searchQuery.js";
+    import { onMount, onDestroy } from "svelte";
+    import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
+    import {
+        resetFilters,
+        setFilters,
+        hasFilter,
+    } from "$lib/stores/filters.js";
+    import SortControls from "$lib/components/filters/SortControls.svelte";
+    import PageSeo from "$lib/components/SEO/PageSeo.svelte";
+    import { useServiceFilters } from "$lib/hooks/useServiceFilters.js";
+    import InfoBlock from "$lib/components/layout/InfoBlock.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
-
-    let search = "";
-    let currentLocale = null;
-
-    let allTransfers = [];
-    let filteredTransfers = [];
-
     export let data;
 
-    locale.subscribe((value) => {
-        currentLocale = value;
-        applyFilters();
-    });
+    let allTransfers = data?.transfers || [];
+    let filteredTransfers = [];
 
-    searchQuery.subscribe((value) => {
-        search = value.toLowerCase();
-        applyFilters();
-    });
+    // Scroll info block visibility
+    let lastScrollTop = 0;
+    let infoVisible = false;
+    let accumulatedDeltaDown = 0;
+    let accumulatedDeltaUp = 0;
 
-    let currentFilters = {
-        durationRange: null, // изменено на null вместо []
-        priceRange: null, // изменено на null вместо [0, Infinity]
-        minRating: 0,
-    };
+    // Используем хук для фильтров поиска и сортировки
+    const { update } = useServiceFilters(
+        allTransfers,
+        "transfers",
+        (result) => {
+            filteredTransfers = result;
+        }
+    );
 
-    let updateKey = 0;
-    let isMounted = false;
-
+    // Следим за обновлением данных
     $: if (data?.transfers) {
         allTransfers = data.transfers;
-
-        filteredTransfers = [...allTransfers];
-        applyFilters();
+        update();
     }
 
-    function applyFilters() {
-        if (!allTransfers.length) return;
-
-        filteredTransfers = allTransfers.filter((transfer) => {
-            if (!transfer.active) return false;
-            const transferPriceUSD = transfer.price;
-
-            // Фильтр по цене
-            const priceInRange = currentFilters.priceRange
-                ? transferPriceUSD >= currentFilters.priceRange[0] &&
-                  transferPriceUSD <= currentFilters.priceRange[1]
-                : true;
-
-            // Фильтр по длительности
-            const durationMatch = currentFilters.durationRange
-                ? transfer.duration >= currentFilters.durationRange[0] &&
-                  transfer.duration <= currentFilters.durationRange[1]
-                : true;
-
-            // Фильтр по рейтингу
-            const ratingMatch =
-                currentFilters.minRating === 0 ||
-                (transfer.rating !== null &&
-                    transfer.rating >= currentFilters.minRating);
-
-            // Поиск по названию
-            const matchesSearch =
-                !search ||
-                transfer.title[currentLocale]?.toLowerCase().includes(search);
-
-            return (
-                priceInRange && durationMatch && ratingMatch && matchesSearch
-            );
-        });
-        updateKey++;
-    }
-
-    function handleFiltersChange(event) {
-        currentFilters = {
-            ...event.detail,
-            // Обеспечиваем обратную совместимость
-            durationRange: event.detail.durationRange?.length
-                ? event.detail.durationRange
-                : null,
-            priceRange: event.detail.priceRange || null,
-        };
-        applyFilters();
-    }
-
+    // Scroll logic
     onMount(() => {
-        isMounted = true;
+        const contentEl = document.querySelector("main");
+        if (contentEl) {
+            contentEl.addEventListener("scroll", handleScroll);
+        }
+        return () => {
+            if (contentEl) {
+                contentEl.removeEventListener("scroll", handleScroll);
+            }
+        };
     });
+
+    function handleScroll(event) {
+        const currentScroll = event.target.scrollTop;
+        const delta = currentScroll - lastScrollTop;
+
+        if (delta > 0) {
+            accumulatedDeltaDown += delta;
+            accumulatedDeltaUp = 0;
+            if (accumulatedDeltaDown >= 10 && infoVisible) {
+                infoVisible = false;
+                accumulatedDeltaDown = 0;
+            }
+        } else if (delta < 0) {
+            accumulatedDeltaUp += -delta;
+            accumulatedDeltaDown = 0;
+            if (accumulatedDeltaUp >= 150 && !infoVisible) {
+                infoVisible = true;
+                accumulatedDeltaUp = 0;
+            }
+        }
+
+        lastScrollTop = currentScroll;
+    }
+
+    // SEO
+
     const SEO_TEXT = {
         ru: {
-            title: "Экскурсии по Турции",
+            title: "Трансфер из аэропорта Анталии до Кемера и обратно",
             description:
-                "Увлекательные экскурсии по Турции. Гиды, трансфер, комфорт и уникальные маршруты.",
-            keywords: "экскурсии в Турции, туры, гиды, отдых, Стамбул, Анталия",
+                "Быстрый и комфортный трансфер из аэропорта Анталии в Кемер и обратно. Индивидуальные поездки, новые автомобили, профессиональные водители.",
+            keywords:
+                "трансфер Анталия Кемер, такси Анталия Кемер, трансфер из аэропорта Анталии, индивидуальный трансфер в Кемер",
             twitter:
-                "Экскурсии по Турции от местных гидов. Онлайн бронирование.",
+                "Индивидуальный трансфер из аэропорта Анталии в Кемер. Комфорт, безопасность и доступные цены.",
         },
         en: {
-            title: "Transfers in Turkey",
+            title: "Transfer from Antalya Airport to Kemer and back",
             description:
-                "Exciting tours around Turkey. Guides, transfer, comfort and unique routes.",
+                "Fast and comfortable transfer from Antalya Airport to Kemer and back. Private rides, modern cars, professional drivers.",
             keywords:
-                "transfers in Turkey, tours, guides, vacation, Istanbul, Antalya",
-            twitter: "Tours in Turkey with local guides. Book online now.",
+                "Antalya Kemer transfer, taxi Antalya Kemer, Antalya airport transfer, private transfer to Kemer",
+            twitter:
+                "Private transfer from Antalya Airport to Kemer. Comfort, safety and affordable prices.",
         },
         tr: {
-            title: "Türkiye'de Turlar",
+            title: "Antalya Havalimanı'ndan Kemer'e ve geri transfer",
             description:
-                "Türkiye'de heyecan verici turlar. Rehberler, transfer, konfor ve eşsiz rotalar.",
-            keywords: "Türkiye'de turlar, rehberler, tatil, İstanbul, Antalya",
+                "Antalya Havalimanı'ndan Kemer'e ve geri hızlı ve konforlu transfer. Özel araçlar, modern filolar, profesyonel şoförler.",
+            keywords:
+                "Antalya Kemer transfer, Antalya havalimanı transfer, Kemer özel transfer, Antalya Kemer taksi",
             twitter:
-                "Yerel rehberlerle Türkiye'de turlar. Hemen çevrimiçi rezervasyon yapin.",
+                "Antalya Havalimanı'ndan Kemer'e özel transfer. Konforlu ve güvenli yolculuklar.",
         },
     };
+
+    // Обработчики
+    function resetAllFilters() {
+        resetFilters();
+    }
 </script>
 
-<svelte:head>
-    <title>{SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title} | {baseName}</title>
-    <meta
-        name="description"
-        content={SEO_TEXT[$locale]?.description ?? SEO_TEXT.en.description}
-    />
-    <meta
-        name="keywords"
-        content={SEO_TEXT[$locale]?.keywords ?? SEO_TEXT.en.keywords}
-    />
-    <link rel="canonical" href={`${baseUrl}/${$locale}/transfers`} />
-
-    <!-- Open Graph -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={baseName} />
-    <meta
-        property="og:title"
-        content={SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title}
-    />
-    <meta
-        property="og:description"
-        content={SEO_TEXT[$locale]?.description ?? SEO_TEXT.en.description}
-    />
-    <meta
-        property="og:image"
-        content={`${baseUrl}/images/transfers/transfer_default.webp`}
-    />
-    <meta property="og:url" content={`${baseUrl}/${$locale}/transfers`} />
-    <meta property="og:locale" content={$locale} />
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta
-        name="twitter:title"
-        content={SEO_TEXT[$locale]?.title ?? SEO_TEXT.en.title}
-    />
-    <meta
-        name="twitter:description"
-        content={SEO_TEXT[$locale]?.twitter ?? SEO_TEXT.en.twitter}
-    />
-    <meta
-        name="twitter:image"
-        content={`${baseUrl}/images/transfers/transfer_default.webp`}
-    />
-    {#each allTransfers.slice(0, 5) as item}
-        {#if item.images && item.images.length > 0}
-            <link
-                rel="preload"
-                as="image"
-                href={item.images[0]?.url}
-                type="image/webp"
-            />
-        {/if}
-    {/each}
-</svelte:head>
+<PageSeo
+    {baseUrl}
+    {baseName}
+    locale={$locale}
+    urlPath="transfers"
+    seo={SEO_TEXT[$locale] ?? SEO_TEXT.en}
+    image={`${baseUrl}/images/transfers/transfer_default.webp`}
+/>
 
 <div class="content">
-    <TransfersSidebar
-        transfers={allTransfers}
-        on:filtersChanged={handleFiltersChange}
+    <SidebarFilters
+        type="excursions"
+        items={allTransfers}
+        on:filtersChanged={(e) => setFilters(e.detail)}
     />
 
     <main>
+        <InfoBlock
+            {infoVisible}
+            filteredCount={filteredTransfers.length}
+            onReset={resetAllFilters}
+            type="transfers"
+        />
         <div class="main_page">
             <h1 class="visually-hidden">
-                {@html main_page.title[$locale]}
-                {#if main_page.subtitle && main_page.subtitle[$locale]}
-                    <p>{main_page.subtitle[$locale]}</p>
-                {/if}
+                {main_page.title[$locale]}
             </h1>
 
             <div class="grid">
-                {#each filteredTransfers as transfer, i (transfer.slug + updateKey)}
+                {#each filteredTransfers as transfer, i (transfer.slug)}
                     <Card
                         item={transfer}
                         loading={i < 5 ? "eager" : "lazy"}
@@ -211,6 +160,7 @@
 
 <style>
     .content {
+        position: relative;
         display: flex;
         align-items: flex-start;
         padding: 0px;
@@ -241,10 +191,51 @@
 
     .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(351px, 1fr));
-        gap: var(--space-vertical-lg);
+        grid-template-columns: 1fr;
+        gap: var(--space-vertical-md);
         width: 100%;
         align-items: center;
-        justify-content: space-evenly;
+    }
+
+    /* 414+ — 1 колонка (карточка красиво помещается) */
+    @media (min-width: 414px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* 576+ — 2 колонки */
+    @media (min-width: 576px) {
+        .grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    /* 768+ — 2 колонки (можешь оставить 2, если не хочешь мельчить) */
+    @media (min-width: 768px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+    /* 992+ — 3 колонки */
+    @media (min-width: 992px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+    }
+
+    /* 1200+ — 4 колонки */
+    @media (min-width: 1200px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+    }
+
+    /* 1440+ — 5 колонок (или оставь 4, если плотность не нравится) */
+    @media (min-width: 1440px) {
+        .grid {
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        }
     }
 </style>

@@ -2,6 +2,9 @@
     import { sortStore } from "$lib/stores/sortStore.js";
     import { locale } from "$lib/stores/locale";
     import { onDestroy } from "svelte";
+    import { SORT_OPTIONS } from "$lib/constants/filtersConfig";
+
+    export let type;
 
     let selectedSort = null;
 
@@ -15,31 +18,37 @@
             noSort: "Без сортировки",
             priceAsc: "Цена ↑",
             priceDesc: "Цена ↓",
+            ratingAsc: "Рейтинг ↑",
             ratingDesc: "Рейтинг ↓",
             durationAsc: "Длительность ↑",
+            durationDesc: "Длительность ↓",
         },
         en: {
             noSort: "No sort",
             priceAsc: "Price ↑",
             priceDesc: "Price ↓",
+            ratingAsc: "Rating ↑",
             ratingDesc: "Rating ↓",
             durationAsc: "Duration ↑",
+            durationDesc: "Duration ↓",
         },
         tr: {
             noSort: "Sıralama yok",
             priceAsc: "Fiyat ↑",
             priceDesc: "Fiyat ↓",
+            ratingAsc: "Puan ↑",
             ratingDesc: "Puan ↓",
             durationAsc: "Süre ↑",
+            durationDesc: "Süre ↓",
         },
     };
 
     function handleChange(event) {
-        sortStore.set(event.target.value);
+        sortStore.set(event.target.value || null);
     }
 
-    function resetSort() {
-        sortStore.set(null);
+    function hasSortOption(groupName) {
+        return SORT_OPTIONS[groupName]?.includes(type);
     }
 
     onDestroy(() => {
@@ -56,26 +65,42 @@
                 on:change={handleChange}
                 bind:value={selectedSort}
             >
-                <option value={null}
-                    >{translations[$locale]?.noSort ??
-                        translations.en.noSort}</option
-                >
-                <option value="priceAsc"
-                    >{translations[$locale]?.priceAsc ??
-                        translations.en.priceAsc}</option
-                >
-                <option value="priceDesc"
-                    >{translations[$locale]?.priceDesc ??
-                        translations.en.priceDesc}</option
-                >
-                <option value="ratingDesc"
-                    >{translations[$locale]?.ratingDesc ??
-                        translations.en.ratingDesc}</option
-                >
-                <option value="durationAsc"
-                    >{translations[$locale]?.durationAsc ??
-                        translations.en.durationAsc}</option
-                >
+                <option value={null}>
+                    {translations[$locale]?.noSort ?? translations.en.noSort}
+                </option>
+
+                {#if hasSortOption("price")}
+                    <option value="priceAsc">
+                        {translations[$locale]?.priceAsc ??
+                            translations.en.priceAsc}
+                    </option>
+                    <option value="priceDesc">
+                        {translations[$locale]?.priceDesc ??
+                            translations.en.priceDesc}
+                    </option>
+                {/if}
+
+                {#if hasSortOption("rating")}
+                    <option value="ratingDesc">
+                        {translations[$locale]?.ratingDesc ??
+                            translations.en.ratingDesc}
+                    </option>
+                    <option value="ratingAsc">
+                        {translations[$locale]?.ratingAsc ??
+                            translations.en.ratingAsc}
+                    </option>
+                {/if}
+
+                {#if hasSortOption("duration")}
+                    <option value="durationAsc">
+                        {translations[$locale]?.durationAsc ??
+                            translations.en.durationAsc}
+                    </option>
+                    <option value="durationDesc">
+                        {translations[$locale]?.durationDesc ??
+                            translations.en.durationDesc}
+                    </option>
+                {/if}
             </select>
             <span class="custom-arrow">▼</span>
         </div>
