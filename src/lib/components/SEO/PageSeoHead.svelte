@@ -27,3 +27,4 @@
     <meta name="twitter:description" content={seo.twitter || seo.description} />
     <meta name="twitter:image" content={image} />
 </svelte:head>
+//плохо деплоится

@@ -112,7 +112,7 @@
     }
 </script>
 
-<PageSeo
+<PageSeoHead
     {baseUrl}
     {baseName}
     locale={$locale}
