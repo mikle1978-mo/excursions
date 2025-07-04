@@ -10,7 +10,6 @@
         setFilters,
         hasFilter,
     } from "$lib/stores/filters.js";
-    import SortControls from "$lib/components/filters/SortControls.svelte";
     import PageSeo from "$lib/components/SEO/PageSeo.svelte";
     import { useServiceFilters } from "$lib/hooks/useServiceFilters.js";
     import InfoBlock from "$lib/components/layout/InfoBlock.svelte";
