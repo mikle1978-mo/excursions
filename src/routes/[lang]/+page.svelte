@@ -83,7 +83,7 @@
         flex-direction: column;
         gap: var(--space-vertical-md);
         width: 100%;
-        padding: 0 0 var(--space-vertical-md) 0;
+        padding: var(--space-vertical-md) 0;
     }
 
     h1 {
