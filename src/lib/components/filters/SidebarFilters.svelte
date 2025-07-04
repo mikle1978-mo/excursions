@@ -73,38 +73,47 @@
             name: "price",
             condition: () => priceRange[0] !== priceRange[1],
             component: PriceFilter,
-            props: () => ({
-                currency: currentCurrency,
-                minPrice: priceRange[0] * currentRate,
-                maxPrice: priceRange[1] * currentRate,
-                currentRange: $filters.priceRange
-                    ? $filters.priceRange.map((p) => p * currentRate)
-                    : [
-                          priceRange[0] * currentRate,
-                          priceRange[1] * currentRate,
-                      ],
-                onChange: handlePriceChange,
-            }),
+            props: () => {
+                const range = $filters.priceRange ?? [
+                    priceRange[0],
+                    priceRange[1],
+                ];
+                return {
+                    currency: currentCurrency,
+                    minPrice: priceRange[0] * currentRate,
+                    maxPrice: priceRange[1] * currentRate,
+                    currentRange: [
+                        range[0] * currentRate,
+                        range[1] * currentRate,
+                    ],
+                };
+            },
         },
         {
             name: "duration",
             condition: () =>
                 durationRange && durationRange[0] !== durationRange[1],
             component: DurationFilter,
-            props: () => ({
-                durations: durationRange,
-                currentRange: $filters.durationRange || durationRange,
-                onChange: handleDurationChange,
-            }),
+            props: () => {
+                const range = $filters.durationRange ?? [
+                    durationRange[0],
+                    durationRange[1],
+                ];
+                return {
+                    durations: durationRange,
+                    currentRange: [range[0], range[1]],
+                };
+            },
         },
         {
             name: "rating",
             condition: () => true,
             component: RatingFilter,
-            props: () => ({
-                minRating: $filters.minRating,
-                onChange: handleRatingChange,
-            }),
+            props: () => {
+                return {
+                    minRating: $filters.minRating,
+                };
+            },
         },
     ];
 </script>
@@ -130,6 +139,12 @@
                     <svelte:component
                         this={filter.component}
                         {...filter.props()}
+                        on:change={(e) => {
+                            if (filter.name === "price") handlePriceChange(e);
+                            if (filter.name === "duration")
+                                handleDurationChange(e);
+                            if (filter.name === "rating") handleRatingChange(e);
+                        }}
                     />
                 {/if}
             {/each}

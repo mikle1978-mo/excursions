@@ -15,11 +15,12 @@ export function applyFiltersAndSort(
         if (!item.active) return false;
 
         const price = item.price || item.priceUSD || 0;
-        const priceMatch = filters.priceRange
+
+        const priceMatch = Array.isArray(filters.priceRange)
             ? price >= filters.priceRange[0] && price <= filters.priceRange[1]
             : true;
 
-        const durationMatch = filters.durationRange
+        const durationMatch = Array.isArray(filters.durationRange)
             ? item.duration >= filters.durationRange[0] &&
               item.duration <= filters.durationRange[1]
             : true;

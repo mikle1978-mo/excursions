@@ -9,10 +9,15 @@ export const filters = writable({
 
 export const hasFilter = derived(filters, ($filters) => {
     const { priceRange, durationRange, minRating } = $filters;
+
     const isPriceSet =
-        priceRange && (priceRange[0] !== 0 || priceRange[1] !== 0);
+        Array.isArray(priceRange) &&
+        (priceRange[0] !== 0 || priceRange[1] !== 0);
+
     const isDurationSet =
-        durationRange && (durationRange[0] !== 0 || durationRange[1] !== 0);
+        Array.isArray(durationRange) &&
+        (durationRange[0] !== 0 || durationRange[1] !== 0);
+
     return isPriceSet || isDurationSet || minRating > 0;
 });
 

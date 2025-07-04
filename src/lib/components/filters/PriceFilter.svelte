@@ -28,7 +28,9 @@
         max={maxPrice}
         values={currentRange}
         format={formatPrice}
-        on:change={(e) => dispatch("change", e.detail)}
+        on:change={(e) => {
+            dispatch("change", e.detail);
+        }}
     />
 </div>
 
