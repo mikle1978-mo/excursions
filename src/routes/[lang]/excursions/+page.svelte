@@ -10,7 +10,7 @@
         setFilters,
         hasFilter,
     } from "$lib/stores/filters.js";
-    import PageSeo from "$lib/components/SEO/PageSeo.svelte";
+    import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
     import { useServiceFilters } from "$lib/hooks/useServiceFilters.js";
     import InfoBlock from "$lib/components/layout/InfoBlock.svelte";
 
