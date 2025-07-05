@@ -17,12 +17,11 @@
     import InfoBlockArray from "$lib/components/pages/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/pages/InfoBlockString.svelte";
     import Rating from "$lib/components/UI/rating/Rating.svelte";
+    import ProductSeoHead from "$lib/components/SEO/ProductSeoHead.svelte";
 
     export let data;
     const { car, reviewsCount, rating } = data;
-    console.log("====================================");
-    console.log(car);
-    console.log("====================================");
+
     const { slug } = $page.params;
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -55,45 +54,26 @@
     });
 </script>
 
-<svelte:head>
-    <title>{`${currentTranslation.title} | ${baseName}`}</title>
-    <meta name="description" content={currentTranslation.metaDescription} />
-    <meta name="keywords" content={currentTranslation.title} />
-
-    <!-- Open Graph (у тебя уже есть основные) -->
-    <meta property="og:title" content={currentTranslation.title} />
-    <meta
-        property="og:description"
-        content={currentTranslation.metaDescription}
-    />
-    <meta property="og:image" content={car.images[0]} />
-    <meta
-        property="og:image:alt"
-        content={`Tuor photo: ${currentTranslation.title}`}
-    />
-    <meta property="og:type" content="product" />
-    <meta property="og:url" content={`${baseUrl}${$page.url.pathname}`} />
-    <meta property="og:locale" content={lang} />
-    <meta property="og:site_name" content={baseName} />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={currentTranslation.title} />
-    <meta
-        name="twitter:description"
-        content={currentTranslation.metaDescription}
-    />
-    <meta name="twitter:image" content={car.images[0]} />
-    <!-- <meta name="twitter:site" content="@YourTwitterHandle" /> -->
-
-    <!-- Канонический URL -->
-    <link rel="canonical" href={`${baseUrl}${$page.url.pathname}`} />
-</svelte:head>
+<ProductSeoHead
+    {baseUrl}
+    {baseName}
+    urlPath="cars"
+    slug={car.slug}
+    title={currentTranslation.title}
+    description={currentTranslation.metaDescription}
+    keywords={`${car.brand} ${car.model} ${car.year}`}
+    image={car.images?.[0]?.url || `${baseUrl}/images/cars/car_default.webp`}
+    imageAlt={`Photo ${currentTranslation.title}`}
+    amount={car.price.toString()}
+    currency="USD"
+    availability={car.active ? "in stock" : "out of stock"}
+    brand={car.brand}
+/>
 
 <SeoSchemaCar
     title={currentTranslation.title}
     description={currentTranslation.metaDescription}
-    image={car.images?.[0] || "/images/cars/car_default.webp"}
+    image={car.images?.[0].url || "/images/cars/car_default.webp"}
     url={`${baseUrl}${$page.url.pathname}`}
     price={car.price}
     currency="USD"
@@ -221,6 +201,7 @@
                     title={car_page.requiredDocuments[$locale]}
                     items={currentTranslation.requiredDocuments}
                 />
+                <!-- Описание страховки -->
                 <InfoBlockArray
                     title={car_page.insuranceDescription[$locale]}
                     items={currentTranslation.insuranceDescription}

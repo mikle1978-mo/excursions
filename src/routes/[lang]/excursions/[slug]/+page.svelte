@@ -20,6 +20,7 @@
     import Rating from "$lib/components/UI/rating/Rating.svelte";
     import InfoBlockArray from "$lib/components/pages/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/pages/InfoBlockString.svelte";
+    import ProductSeoHead from "$lib/components/SEO/ProductSeoHead.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -52,40 +53,28 @@
     });
 </script>
 
-<svelte:head>
-    <title>{`${currentTranslation.title} | ${baseName}`}</title>
-    <meta name="description" content={currentTranslation.metaDescription} />
-    <meta name="keywords" content={currentTranslation.title} />
-
-    <!-- Open Graph (у тебя уже есть основные) -->
-    <meta property="og:title" content={currentTranslation.title} />
-    <meta
-        property="og:description"
-        content={currentTranslation.metaDescription}
-    />
-    <meta property="og:image" content={tour.images[0]} />
-    <meta
-        property="og:image:alt"
-        content={`Tuor photo: ${currentTranslation.title}`}
-    />
-    <meta property="og:type" content="product" />
-    <meta property="og:url" content={`${baseUrl}${$page.url.pathname}`} />
-    <meta property="og:locale" content={lang} />
-    <meta property="og:site_name" content={baseName} />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={currentTranslation.title} />
-    <meta
-        name="twitter:description"
-        content={currentTranslation.metaDescription}
-    />
-    <meta name="twitter:image" content={tour.images[0]} />
-    <!-- <meta name="twitter:site" content="@YourTwitterHandle" /> -->
-
-    <!-- Канонический URL -->
-    <link rel="canonical" href={`${baseUrl}${$page.url.pathname}`} />
-</svelte:head>
+<ProductSeoHead
+    {baseUrl}
+    {baseName}
+    urlPath="excursions"
+    slug={tour.slug}
+    title={currentTranslation.title}
+    description={currentTranslation.metaDescription}
+    keywords={currentTranslation.metaDescription
+        .split(/\s+/)
+        .map((word) => word.replace(/[.,!?;:()]/g, "").toLowerCase())
+        .filter(
+            (word, index, arr) => word.length > 2 && arr.indexOf(word) === index
+        )
+        .join(", ")}
+    image={tour.images?.[0]?.url ||
+        `${baseUrl}/images/excursions/excursion_default.webp`}
+    imageAlt={`Photo ${currentTranslation.title}`}
+    amount={tour.price.toString()}
+    currency="USD"
+    availability={tour.active ? "in stock" : "out of stock"}
+    brand=""
+/>
 
 <SeoSchemaTour
     title={currentTranslation.title}
