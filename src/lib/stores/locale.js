@@ -1,16 +1,38 @@
 import { writable } from "svelte/store";
+import { NON_EN_LANGUAGES } from "$lib/constants/supportedLanguages";
 
-// Просто начальное значение, будет перезаписано из data.locale
-export const locale = writable("ru");
+export const locale = writable("en");
 
-// Обновление с сохранением в localStorage при ручной смене
-export function setLocale(lang) {
-    locale.set(lang);
-
-    if (typeof window !== "undefined") {
-        localStorage.setItem("locale", lang);
-        document.cookie = `locale=${lang}; path=/; max-age=${
-            60 * 60 * 24 * 30
-        }; SameSite=Lax`;
+locale.subscribe((value) => {
+    if (value === undefined) {
+        console.error(
+            "⚠ locale store обновлен в undefined!",
+            new Error().stack
+        );
+    } else {
+        console.log("✅ locale store обновлен:", value);
     }
+});
+
+export function setLocale(lang) {
+    if (lang === undefined) {
+        console.error("⚠ setLocale вызван с undefined!", new Error().stack);
+    } else {
+        console.log("✅ setLocale вызван с:", lang);
+    }
+    locale.set(lang);
+}
+
+/**
+ * Генерирует локализованный путь с учётом того, нужен ли префикс языка
+ * @param {string} locale - текущая локаль
+ * @param {string} path - путь без префикса слэша (например 'cars' или 'excursions')
+ * @returns {string} - локализованный URL
+ */
+export function getLocalizedPath(locale, path = "") {
+    if (!path) {
+        return locale === "en" ? "/" : `/${locale}`;
+    }
+
+    return locale === "en" ? `/${path}` : `/${locale}/${path}`;
 }

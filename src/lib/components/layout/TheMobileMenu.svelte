@@ -1,5 +1,5 @@
 <script>
-    import { locale } from "$lib/stores/locale.js";
+    import { locale, getLocalizedPath } from "$lib/stores/locale.js";
     import { mobileMenuOpen } from "$lib/stores/mobileMenu";
     import { nav_items } from "$lib/i18n/nav_list";
     import TheSocial from "./TheSocial.svelte";
@@ -40,7 +40,7 @@
             {#each nav_items as item}
                 {#if isValidLink(item.link)}
                     <a
-                        href={`/${$locale}${item.link}`}
+                        href={getLocalizedPath($locale, item.link)}
                         class="nav-item"
                         on:click={closeMobileMenu}
                         aria-label={getTitle(item)}

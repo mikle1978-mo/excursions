@@ -1,17 +1,17 @@
 <script>
-    import { locale } from "$lib/stores/locale";
-    import { get } from "svelte/store";
+    import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
-    export let baseUrl = "";
-    export let baseName = "";
-    export let urlPath = ""; // например cars
-    export let slug = ""; // добавляем для формирования canonical
+    export let baseUrl;
+    export let baseName;
+    export let locale; // fallback if not passed
+    export let urlPath = ""; // example: 'cars'
+    export let slug = "";
 
     export let title = "";
     export let description = "";
     export let keywords = "";
 
-    export let image = "";
+    export let image = `${baseUrl}/images/default.webp`;
     export let imageAlt = "Photo";
 
     export let amount = "";
@@ -19,28 +19,37 @@
     export let availability = "in stock";
     export let brand = "";
 
-    // Собираем canonical
-    $: canonical =
-        `${baseUrl.replace(/\/+$/, "")}/${$locale}/${urlPath}/${slug}`
+    // Canonical helper
+    function getHref(lang) {
+        const langPrefix = lang === "en" ? "" : `/${lang}`;
+        return `${baseUrl}${langPrefix}/${urlPath}/${slug}`
             .replace(/([^:]\/)\/+/g, "$1")
             .replace(/\/+$/, "");
+    }
+
+    const canonical = getHref("en");
 </script>
 
 <svelte:head>
     <title>{title} | {baseName}</title>
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
+
     <link rel="canonical" href={canonical} />
 
-    <!-- Open Graph -->
+    {#each SUPPORTED_LANGUAGES as value}
+        <link rel="alternate" hreflang={value} href={getHref(value)} />
+    {/each}
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+
     <meta property="og:type" content="product" />
     <meta property="og:site_name" content={baseName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
     <meta property="og:image:alt" content={imageAlt} />
-    <meta property="og:url" content={canonical} />
-    <meta property="og:locale" content={$locale} />
+    <meta property="og:url" content={getHref(locale)} />
+    <meta property="og:locale" content={locale} />
 
     {#if amount}
         <meta property="product:price:amount" content={amount} />
@@ -52,7 +61,6 @@
     {/if}
     <meta property="product:condition" content="new" />
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />

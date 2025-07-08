@@ -1,26 +1,26 @@
 export const nav_items = [
     {
         title: { ru: "экскурсии", en: "excursions" },
-        link: "/excursions",
+        link: "excursions",
         rel: "nofollow",
         submenu: [],
     },
     {
         title: { ru: "яхты", en: "yachts" },
-        link: "/yachts",
+        link: "yachts",
         rel: "nofollow",
         submenu: [],
     },
 
     {
         title: { ru: "авто", en: "cars" },
-        link: "/cars",
+        link: "cars",
         rel: "nofollow",
         submenu: [],
     },
     {
         title: { ru: "трансфер", en: "transfer" },
-        link: "/transfers/aeroport-antalya-mercedes-vito",
+        link: "transfers/aeroport-antalya-mercedes-vito",
         rel: "nofollow",
         submenu: [],
     },

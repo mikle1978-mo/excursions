@@ -1,4 +1,4 @@
-import { ru } from "zod/v4/locales";
+// i18n/car_page
 
 export const car_page = {
     accidentInstructions: {

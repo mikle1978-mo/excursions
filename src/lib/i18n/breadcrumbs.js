@@ -3,7 +3,7 @@ export const breadcrumbs = {
         ru: "Главная",
         en: "Home",
     },
-    tours: {
+    excursions: {
         ru: "Экскурсии",
         en: "Excursions",
     },

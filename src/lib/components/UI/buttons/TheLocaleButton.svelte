@@ -1,31 +1,36 @@
 <script>
     import { locale, setLocale } from "$lib/stores/locale.js";
     import { goto } from "$app/navigation";
-    import { fly } from "svelte/transition";
     import { get } from "svelte/store";
     import { page } from "$app/stores";
+    import { fly } from "svelte/transition";
+    import {
+        SUPPORTED_LANGUAGES,
+        NON_EN_LANGUAGES,
+    } from "$lib/constants/supportedLanguages";
 
-    const languages = [
-        { value: "ru", label: "RU" },
-        { value: "en", label: "EN" },
-    ];
-
-    let currentLang = get(locale);
     let isOpen = false;
 
-    locale.subscribe((val) => {
-        currentLang = val;
-    });
-
     const changeLanguage = (lang) => {
+        const currentLocale = get(locale);
+        if (lang === currentLocale) {
+            isOpen = false;
+            return;
+        }
+
         const currentPath = get(page).url.pathname;
-        const segments = currentPath.split("/").filter(Boolean);
-        if (segments.length && (segments[0] === "ru" || segments[0] === "en")) {
-            segments[0] = lang;
-        } else {
+        let segments = currentPath.split("/").filter(Boolean);
+
+        if (segments.length && NON_EN_LANGUAGES.includes(segments[0])) {
+            segments.shift();
+        }
+
+        if (NON_EN_LANGUAGES.includes(lang)) {
             segments.unshift(lang);
         }
+
         const newPath = "/" + segments.join("/");
+
         setLocale(lang);
         goto(newPath, { replaceState: true });
         isOpen = false;
@@ -43,21 +48,17 @@
         aria-label="Выбрать язык"
         aria-expanded={isOpen}
     >
-        {#each languages.filter((l) => l.value === currentLang) as l}
-            <span>{l.label}</span>
-        {/each}
+        <span>{$locale.toUpperCase()}</span>
     </button>
 
     {#if isOpen}
         <div class="locale-dropdown" transition:fly={{ y: 10, duration: 200 }}>
-            {#each languages as lang}
+            {#each SUPPORTED_LANGUAGES as lang}
                 <button
-                    class="locale-option {currentLang === lang.value
-                        ? 'selected'
-                        : ''}"
-                    onclick={() => changeLanguage(lang.value)}
+                    class="locale-option {$locale === lang ? 'selected' : ''}"
+                    onclick={() => changeLanguage(lang)}
                 >
-                    <span>{lang.label}</span>
+                    <span>{lang.toLocaleUpperCase()}</span>
                 </button>
             {/each}
         </div>

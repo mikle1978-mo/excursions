@@ -1,5 +1,5 @@
 <script>
-    import { locale } from "$lib/stores/locale.js";
+    import { locale, getLocalizedPath } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
     import { card } from "$lib/i18n/card";
     import { formatPrice } from "$lib/utils/priceFormatter";
@@ -48,7 +48,7 @@
     });
 </script>
 
-<a class="card" href="/{$locale}/{type}/{slug}">
+<a class="card" href={getLocalizedPath($locale, `${type}/${slug}`)}>
     <div class="card__image-wrapper">
         <img
             src={image}

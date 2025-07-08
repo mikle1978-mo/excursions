@@ -29,7 +29,7 @@ export const yacht_page = {
         en: "up to",
     },
     groupSize: {
-        ru: "Размер группы",
+        ru: "Вместимость",
         en: "Group size",
     },
     whatYouSee: {

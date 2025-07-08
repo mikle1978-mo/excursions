@@ -1,36 +1,17 @@
 <script>
-    import { onMount } from "svelte";
+    import { onMount, onDestroy } from "svelte";
+    import { locale } from "$lib/stores/locale.js";
+    import { thanks_page } from "$lib/i18n/thanks_page";
     import { page } from "$app/stores";
 
-    // Локализация для 404 — можно вынести в отдельный файл, как у тебя thanks_page
-    const error_404 = {
-        title: {
-            ru: "Страница не найдена",
-            en: "Page Not Found",
-        },
-        text: {
-            ru: "К сожалению, такая страница отсутствует.",
-            en: "Sorry, the page you are looking for does not exist.",
-        },
-        back_button: {
-            ru: "На главную",
-            en: "Go Home",
-        },
-        redirect_note: {
-            ru: "Вы будете перенаправлены на главную через",
-            en: "You will be redirected to the homepage in",
-        },
-        seconds: {
-            ru: "секунд",
-            en: "seconds",
-        },
-    };
+    let lang = $page.params.lang;
 
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const baseName = import.meta.env.VITE_BASE_NAME;
+
+    // По желанию — автопереход через 10 секунд
     let countdown = 10;
     let interval;
-
-    const { params } = $page;
-    const lang = params.lang ?? "en";
 
     onMount(() => {
         interval = setInterval(() => {
@@ -38,49 +19,54 @@
                 countdown -= 1;
             } else {
                 clearInterval(interval);
-                window.location.href = `/`;
+                // Переход на главную
+                window.location.href = "/";
             }
         }, 1000);
     });
 
-    // Очистка таймера при размонтировании
-    import { onDestroy } from "svelte";
+    // Очистка таймера при размонтировании (хорошая практика)
     onDestroy(() => {
         clearInterval(interval);
     });
 </script>
 
 <svelte:head>
-    <title
-        >{error_404.title[lang] ?? error_404.title.en} | {import.meta.env
-            .VITE_BASE_NAME}</title
+    <title>{thanks_page.title[lang] ?? thanks_page.title.en} | {baseName}</title
     >
     <meta
         name="description"
-        content={error_404.text[lang] ?? error_404.text.en}
+        content={thanks_page.text[lang] ?? thanks_page.text.en}
     />
-    <meta name="robots" content="noindex, follow" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content={baseName} />
+    <meta name="theme-color" content="#0066cc" />
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
 </svelte:head>
 
 <main>
-    <div class="error-box">
-        <h1>{error_404.title[lang] ?? error_404.title.en}</h1>
-        <p>{error_404.text[lang] ?? error_404.text.en}</p>
-        <a class="button" href="/{lang}"
-            >{error_404.back_button[lang] ?? error_404.back_button.en}</a
-        >
+    <div class="thankyou-box">
+        <h1>{thanks_page.title[$locale]}</h1>
+        <p>
+            {thanks_page.text[$locale]}
+        </p>
+        <a class="button" href="/"> {thanks_page.back_button[$locale]}</a>
         <p
             style="margin-top: var(--space-vertical-sm); font-size: var(--text-sm); color: var(--color-gray-700);"
         >
-            {error_404.redirect_note[lang] ?? error_404.redirect_note.en} <br />
-            {countdown}
-            {error_404.seconds[lang] ?? error_404.seconds.en}
+            {thanks_page.redirect_note[$locale]} <br />{countdown}
+            {countdown === 1
+                ? thanks_page.seconds[$locale]
+                : thanks_page.seconds[$locale]}
         </p>
     </div>
 </main>
 
 <style>
-    .error-box {
+    .thankyou-box {
         margin: auto;
         background-color: var(--color-bg);
         border-radius: var(--radius-lg);

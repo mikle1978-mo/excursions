@@ -1,19 +1,39 @@
 <script>
-    import { locale } from "$lib/stores/locale.js";
+    import { locale, getLocalizedPath } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
     import { footer_list } from "$lib/i18n/footer_list";
     import { page } from "$app/stores";
     import { sidebarOpen } from "$lib/stores/sidebar";
     import { mobileMenuOpen } from "$lib/stores/mobileMenu";
+    import { NON_EN_LANGUAGES } from "$lib/constants/supportedLanguages";
 
     let isMounted = false;
     const listPages = ["excursions", "cars", "yachts", "transfers"];
+
     // Разбиваем путь на сегменты, фильтруем пустые
+
     $: segments = $page.url.pathname.split("/").filter(Boolean);
 
-    // Проверяем, что путь с локалью + 1 сегмент совпадает с одним из listPages и это ровно два сегмента
+    $: nonEnLangValues = NON_EN_LANGUAGES;
+
+    $: langPrefix =
+        segments.length && nonEnLangValues.includes(segments[0])
+            ? segments[0]
+            : "en";
+
+    $: pageSegment = segments.length
+        ? nonEnLangValues.includes(segments[0])
+            ? segments[1]
+            : segments[0]
+        : null;
+
+    // $: showButton = pageSegment ? listPages.includes(pageSegment) : false;
+
     $: showButton =
-        segments.length === 2 && segments[1] && listPages.includes(segments[1]);
+        pageSegment && listPages.includes(pageSegment)
+            ? (langPrefix === "en" && segments.length === 1) ||
+              (langPrefix !== "en" && segments.length === 2)
+            : false;
 
     onMount(() => {
         isMounted = true;
@@ -26,7 +46,7 @@
             class="menu-item {$page.url.pathname === `/${$locale}`
                 ? 'active'
                 : ''}"
-            href="/"
+            href={getLocalizedPath($locale)}
             rel={footer_list[0].rel}
             target={footer_list[0].target}
         >
@@ -65,7 +85,7 @@
             `/${$locale}/${footer_list[2].link}`
                 ? 'active'
                 : ''}"
-            href={`/${$locale}/${footer_list[2].link}`}
+            href={getLocalizedPath($locale, footer_list[2].link)}
             rel={footer_list[2].rel}
             target={footer_list[2].target}
         >

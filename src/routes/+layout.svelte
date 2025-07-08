@@ -5,10 +5,11 @@
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import { onMount } from "svelte";
     import { initCurrencyService } from "$lib/services/currencyService";
-    import { locale as localeStore } from "$lib/stores/locale.js";
+    import { locale as localeStore, setLocale } from "$lib/stores/locale.js";
     import { browser } from "$app/environment";
 
-    let { data, children } = $props();
+    export let data;
+    setLocale(data.lang);
 
     // Синхронизация локали
     const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -43,12 +44,23 @@
                 "Kemer'de konforlu tatil — turlar, yat ve araba kiralama, transferler. Kemer.app'te çevrimiçi rezervasyon yapin.",
         },
     };
-
+    // $: {
+    //     document.documentElement.lang = data.lang;
+    //     console.log("layout lang:", document.documentElement.lang);
+    // }
     onMount(() => {
-        localeStore.set(data.locale);
+        const unsubscribe = localeStore.subscribe((value) => {
+            document.documentElement.lang = value;
+            console.log("Set lang:", value);
+        });
+
         initCurrencyService();
         const interval = setInterval(initCurrencyService, 30 * 60 * 1000);
-        return () => clearInterval(interval);
+
+        return () => {
+            unsubscribe();
+            clearInterval(interval);
+        };
     });
 </script>
 
@@ -140,7 +152,9 @@
         <WhatsApp />
         <TheMobileMenu />
         <TheHeader />
-        {@render children()}
+
+        <slot />
+        <!-- {@render children()} -->
         <TheFooter />
     </div>
 </div>

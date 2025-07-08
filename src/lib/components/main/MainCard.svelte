@@ -6,7 +6,7 @@
     export let loading = "lazy"; // по умолчанию
 
     const {
-        title = { ru: "", en: "" },
+        title = { ru: "Фото ссылки", en: "Link photo" },
         img: image = "/images/excursions/excursion_default.webp",
         link: slug = "",
     } = item;
@@ -18,7 +18,7 @@
     });
 </script>
 
-<a class="card" href="/{$locale}/{slug}">
+<a class="card" href={$locale === "en" ? `/${slug}` : `/${$locale}/${slug}`}>
     <div class="card__image-wrapper">
         <img
             src={image}

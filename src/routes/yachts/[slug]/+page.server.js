@@ -6,13 +6,13 @@ export async function load({ params }) {
     const { lang, slug } = params;
 
     const db = await connectToDatabase();
-    const excursionsCollection = db.collection("excursions");
-    const translationsCollection = db.collection("excursions_translations");
+    const yachtsCollection = db.collection("yachts");
+    const translationsCollection = db.collection("yachts_translations");
     const reviewsCollection = db.collection("reviews");
 
-    const excursion = await excursionsCollection.findOne({ slug });
+    const yacht = await yachtsCollection.findOne({ slug });
 
-    if (!excursion) throw error(404, "Экскурсия не найдена");
+    if (!yacht) throw error(404, "Экскурсия не найдена");
 
     const translations = await translationsCollection
         .find({ itemSlug: slug })
@@ -45,9 +45,9 @@ export async function load({ params }) {
             : null;
 
     return {
-        excursion: {
-            ...excursion,
-            _id: excursion._id.toString(),
+        yacht: {
+            ...yacht,
+            _id: yacht._id.toString(),
             translations: safeTranslations,
         },
         reviewsCount,
