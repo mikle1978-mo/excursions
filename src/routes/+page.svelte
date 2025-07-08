@@ -39,6 +39,29 @@
     <link rel="alternate" hreflang="en" href={`${baseUrl}/en`} />
     <link rel="alternate" hreflang="x-default" href={`${baseUrl}/en`} />
 
+    <!-- Open Graph (OG) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={baseName} />
+    <meta property="og:title" content={SEO.title[$locale]} />
+    <meta property="og:description" content={SEO.description[$locale]} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={$locale} />
+    <meta
+        property="og:image"
+        content={`${baseUrl}/images/excursions/excursion_default.webp`}
+    />
+    <meta property="og:image:alt" content={SEO.title[$locale]} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={SEO.title[$locale]} />
+    <meta name="twitter:description" content={SEO.description[$locale]} />
+    <meta
+        name="twitter:image"
+        content={`${baseUrl}/images/excursions/excursion_default.webp`}
+    />
+
+    <!-- preload first 3 images -->
     {#each main_page.pages.slice(0, 3) as item}
         <link rel="preload" as="image" href={item.img} type="image/webp" />
     {/each}
