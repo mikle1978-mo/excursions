@@ -1,17 +1,18 @@
 User-agent: *
 
-# Запретить индексацию служебных страниц
+# Запретить индексацию служебных страниц для всех языков
 Disallow: /admin/
-Disallow: /thanks
-Disallow: /error
 Disallow: /api/
 
-# Запретить только корень /
-Disallow: /$
+Disallow: /thanks
+Disallow: /error
 
-# Разрешить языковые разделы
-Allow: /ru/
-Allow: /en/
+Disallow: /ru/thanks
+Disallow: /ru/error
+
+Disallow: /tr/thanks
+Disallow: /tr/error
 
 # Указать путь к карте сайта
 Sitemap: https://kemer.app/sitemap.xml
+
