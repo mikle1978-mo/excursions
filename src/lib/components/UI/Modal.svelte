@@ -80,7 +80,7 @@
         box-shadow: var(--shadow-lg);
         z-index: 1001;
         outline: none;
-        max-width: min(95vw, 800px);
+        max-width: min(95vw, 1000px);
         max-height: 80vh;
         overflow-y: auto;
         cursor: auto;

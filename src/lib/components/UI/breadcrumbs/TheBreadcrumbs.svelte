@@ -18,9 +18,14 @@
 
 <style>
     .breadcrumbs {
+        position: absolute;
+        width: 100%;
+        top: 0;
         font-size: var(--text-sm);
-        padding-top: var(--text-sm);
+        padding: var(--space-vertical-xs) 0;
         color: var(--color-gray-600);
+        background-color: var(--color-bg);
+        z-index: 1;
 
         a {
             color: var(--color-primary);

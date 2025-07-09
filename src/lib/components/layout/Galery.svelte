@@ -95,6 +95,7 @@
 <style>
     .image-gallery {
         display: flex;
+        width: 100%;
         flex-direction: column;
         gap: var(--space-vertical-sm);
     }

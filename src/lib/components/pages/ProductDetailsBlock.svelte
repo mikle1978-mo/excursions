@@ -100,12 +100,18 @@
 
 <style>
     .details {
+        width: 100%;
         display: grid;
         gap: 10px;
+        padding: var(--space-vertical-md);
     }
     .detail {
         display: flex;
         justify-content: space-between;
+    }
+    .value {
+        display: flex;
+        justify-content: flex-end;
     }
     .label {
         font-weight: 600;

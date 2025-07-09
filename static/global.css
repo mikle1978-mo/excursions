@@ -248,6 +248,7 @@ select {
 }
 
 .page {
+    position: relative;
     display: grid;
     grid-template-rows: minmax(32px, 6%) 1fr minmax(42px, 6%);
     align-items: flex-start;

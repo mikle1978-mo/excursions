@@ -98,187 +98,212 @@
         </a>
     </div>
 {:else}
-    <article class="product-detail">
+    <div class="content">
         <TheBreadcrumbs items={breadcrumbsList} />
+        <main class="product-detail">
+            <section class="top_block">
+                <Galery images={item.images} title={currentTranslation.title} />
+                <div class="header">
+                    <h1>{currentTranslation.title}</h1>
+                    <div class="meta-info">
+                        <Rating
+                            {rating}
+                            {reviewsCount}
+                            locale={effectiveLocale}
+                        />
+                        {#if item.isPopular}
+                            <span class="badge popular">
+                                {effectiveLocale === "ru"
+                                    ? "Популярно"
+                                    : "Popular"}
+                            </span>
+                        {/if}
+                    </div>
+                    <section class="description">
+                        <p>{currentTranslation.description}</p>
+                    </section>
+                </div>
+                <BookingCard
+                    price={item.price}
+                    priceType={item.priceType}
+                    active={item.active}
+                    locale={effectiveLocale}
+                    onBook={openModal}
+                />
+                <ProductDetailsBlock {type} {item} {locale} />
+            </section>
 
-        <header class="header">
-            <h1>{currentTranslation.title}</h1>
-            <div class="meta-info">
-                <Rating {rating} {reviewsCount} locale={effectiveLocale} />
-                {#if item.isPopular}
-                    <span class="badge popular">
-                        {effectiveLocale === "ru" ? "Популярно" : "Popular"}
-                    </span>
+            <!-- Общие мультиязычные блоки -->
+            <section class="additional-info">
+                {#if currentTranslation.requiredDocuments}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "requiredDocuments",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.requiredDocuments}
+                    />
                 {/if}
-            </div>
-        </header>
 
-        <Galery images={item.images} title={currentTranslation.title} />
+                {#if currentTranslation.insuranceDescription}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "insuranceDescription",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.insuranceDescription}
+                    />
+                {/if}
 
-        <section class="description">
-            <h2>{effectiveLocale === "ru" ? "Описание" : "Description"}</h2>
-            <p>{currentTranslation.description}</p>
-        </section>
+                {#if currentTranslation.insuranceExclusions}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "insuranceExclusions",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.insuranceExclusions}
+                    />
+                {/if}
 
-        <BookingCard
-            price={item.price}
-            priceType={item.priceType}
-            active={item.active}
-            locale={effectiveLocale}
-            onBook={openModal}
-        />
-        <ProductDetailsBlock {type} {item} {locale} />
+                {#if currentTranslation.extraTimePolicy}
+                    <InfoBlockString
+                        title={getI18nLabel(
+                            translations,
+                            "extraTimePolicy",
+                            effectiveLocale
+                        )}
+                        item={currentTranslation.extraTimePolicy}
+                    />
+                {/if}
 
-        <!-- Общие мультиязычные блоки -->
-        <section class="additional-info">
-            {#if currentTranslation.requiredDocuments}
-                <InfoBlockArray
-                    title={getI18nLabel(
-                        translations,
-                        "requiredDocuments",
-                        effectiveLocale
-                    )}
-                    items={currentTranslation.requiredDocuments}
-                />
-            {/if}
+                {#if currentTranslation.fuelPolicy}
+                    <InfoBlockString
+                        title={getI18nLabel(
+                            translations,
+                            "fuelPolicy",
+                            effectiveLocale
+                        )}
+                        item={currentTranslation.fuelPolicy}
+                    />
+                {/if}
 
-            {#if currentTranslation.insuranceDescription}
-                <InfoBlockArray
-                    title={getI18nLabel(
-                        translations,
-                        "insuranceDescription",
-                        effectiveLocale
-                    )}
-                    items={currentTranslation.insuranceDescription}
-                />
-            {/if}
+                {#if currentTranslation.accidentInstructions}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "accidentInstructions",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.accidentInstructions}
+                    />
+                {/if}
+                {#if currentTranslation.whatYouSee}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "whatYouSee",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.whatYouSee}
+                    />
+                {/if}
 
-            {#if currentTranslation.insuranceExclusions}
-                <InfoBlockArray
-                    title={getI18nLabel(
-                        translations,
-                        "insuranceExclusions",
-                        effectiveLocale
-                    )}
-                    items={currentTranslation.insuranceExclusions}
-                />
-            {/if}
+                {#if currentTranslation.whatToBring}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "whatToBring",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.whatToBring}
+                    />
+                {/if}
 
-            {#if currentTranslation.extraTimePolicy}
-                <InfoBlockString
-                    title={getI18nLabel(
-                        translations,
-                        "extraTimePolicy",
-                        effectiveLocale
-                    )}
-                    item={currentTranslation.extraTimePolicy}
-                />
-            {/if}
+                {#if currentTranslation.includes}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "includes",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.includes}
+                    />
+                {/if}
 
-            {#if currentTranslation.fuelPolicy}
-                <InfoBlockString
-                    title={getI18nLabel(
-                        translations,
-                        "fuelPolicy",
-                        effectiveLocale
-                    )}
-                    item={currentTranslation.fuelPolicy}
-                />
-            {/if}
+                {#if currentTranslation.rentalConditions}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "rentalConditions",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.rentalConditions}
+                    />
+                {/if}
 
-            {#if currentTranslation.accidentInstructions}
-                <InfoBlockArray
-                    title={getI18nLabel(
-                        translations,
-                        "accidentInstructions",
-                        effectiveLocale
-                    )}
-                    items={currentTranslation.accidentInstructions}
-                />
-            {/if}
-            {#if currentTranslation.whatYouSee}
-                <InfoBlockArray
-                    title={getI18nLabel(
-                        translations,
-                        "whatYouSee",
-                        effectiveLocale
-                    )}
-                    items={currentTranslation.whatYouSee}
-                />
-            {/if}
+                {#if currentTranslation.servicesDetails}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "servicesDetails",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.servicesDetails}
+                    />
+                {/if}
 
-            {#if currentTranslation.whatToBring}
-                <InfoBlockArray
-                    title={getI18nLabel(
-                        translations,
-                        "whatToBring",
-                        effectiveLocale
-                    )}
-                    items={currentTranslation.whatToBring}
-                />
-            {/if}
+                {#if currentTranslation.meetingPoint}
+                    <InfoBlockString
+                        title={getI18nLabel(
+                            translations,
+                            "meetingPoint",
+                            effectiveLocale
+                        )}
+                        item={currentTranslation.meetingPoint}
+                    />
+                {/if}
 
-            {#if currentTranslation.includes}
-                <InfoBlockArray
-                    title={getI18nLabel(
-                        translations,
-                        "includes",
-                        effectiveLocale
-                    )}
-                    items={currentTranslation.includes}
-                />
-            {/if}
-
-            {#if currentTranslation.rentalConditions}
-                <InfoBlockArray
-                    title={getI18nLabel(
-                        translations,
-                        "rentalConditions",
-                        effectiveLocale
-                    )}
-                    items={currentTranslation.rentalConditions}
-                />
-            {/if}
-
-            {#if currentTranslation.servicesDetails}
-                <InfoBlockArray
-                    title={getI18nLabel(
-                        translations,
-                        "servicesDetails",
-                        effectiveLocale
-                    )}
-                    items={currentTranslation.servicesDetails}
-                />
-            {/if}
-
-            {#if currentTranslation.meetingPoint}
-                <InfoBlockString
-                    title={getI18nLabel(
-                        translations,
-                        "meetingPoint",
-                        effectiveLocale
-                    )}
-                    item={currentTranslation.meetingPoint}
-                />
-            {/if}
-
-            {#if currentTranslation.notes}
-                <InfoBlockArray
-                    title={getI18nLabel(translations, "notes", effectiveLocale)}
-                    items={currentTranslation.notes}
-                />
-            {/if}
-
+                {#if currentTranslation.notes}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "notes",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.notes}
+                    />
+                {/if}
+            </section>
             {#if item.slug}
                 <ReviewsList itemSlug={item.slug} locale={effectiveLocale} />
             {/if}
-        </section>
-    </article>
+        </main>
+    </div>
 {/if}
 
 <style>
+    .content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        overflow-x: hidden;
+        flex: none;
+        align-self: stretch;
+        flex-grow: 1;
+        border-bottom: 1px solid var(--color-gray-500);
+    }
+
     /* Стили из твоего кода с переименованными классами */
     .product-detail {
+        position: relative;
         display: flex;
         flex-direction: column;
         max-width: var(--max-width-container);
@@ -292,14 +317,8 @@
         flex: none;
         align-self: stretch;
         flex-grow: 1;
-        border-top: 1px solid var(--color-gray-500);
         border-bottom: 1px solid var(--color-gray-500);
-    }
-
-    .header h1 {
-        font-size: var(--text-xxl);
-        margin-bottom: var(--space-vertical-sm);
-        color: var(--color-text);
+        padding-top: calc(var(--text-lg) * 2.5);
     }
 
     .meta-info {
@@ -319,11 +338,25 @@
         background: var(--color-accent);
         color: var(--color-light);
     }
-
-    .description h2 {
-        font-size: var(--text-xl);
-        margin-bottom: var(--space-vertical-sm);
-        color: var(--color-text);
+    .top_block {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 50% 1fr;
+        align-items: start;
+        justify-content: center;
+        gap: var(--space-horizontal-md);
+    }
+    .header {
+        display: flex;
+        flex-direction: column;
+    }
+    .additional-info {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 50% 1fr;
+        align-items: start;
+        justify-content: center;
+        gap: var(--space-horizontal-md);
     }
 
     .description p {
@@ -348,9 +381,13 @@
         margin-top: var(--space-vertical-sm);
     }
 
-    .additional-info {
-        display: flex;
-        flex-direction: column;
-        gap: var(--space-vertical-lg);
+    @media (max-width: 768px) {
+        .top_block {
+            display: flex;
+            flex-direction: column;
+        }
+        .additional-info {
+            grid-template-columns: 1fr;
+        }
     }
 </style>

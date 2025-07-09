@@ -62,7 +62,6 @@
         padding: var(--space-vertical-md);
         border-radius: var(--radius-md);
         align-self: start;
-        position: sticky;
         top: var(--space-vertical-md);
     }
 
