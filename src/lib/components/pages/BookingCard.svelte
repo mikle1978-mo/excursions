@@ -3,49 +3,83 @@
     import { formatPrice } from "$lib/utils/priceFormatter.js";
 
     export let price = 0;
-    export let priceType = "";
+    export let priceType = ""; // 'per_day', 'per_hour', ...
     export let active = false;
     export let locale = "en";
+    export let type = "default"; // 'car', 'yacht', 'excursion', 'transfer'
     export let onBook = () => {};
 
     const priceStore = formatPrice(price);
+
+    // Переводы надписей на кнопке по типу товара
+    const bookingLabels = {
+        en: {
+            default: "Join now",
+            excursion: "I want this!",
+            yacht: "All aboard",
+            car: "Pick up?",
+            transfer: "Let’s go!",
+            unavailable: "Unavailable",
+        },
+        ru: {
+            default: "Записаться",
+            excursion: "Хочу!",
+            yacht: "На борт!",
+            car: "Забрать?",
+            transfer: "Поехали!",
+            unavailable: "Недоступно",
+        },
+        tr: {
+            default: "Katılmak istiyorum",
+            excursion: " İstiyorum!",
+            yacht: "Gemiye çık!",
+            car: "Alayım mı?",
+            transfer: "Hadi gidelim!",
+            unavailable: "Müsait değil",
+        },
+    };
+
+    const priceTypeLabels = {
+        per_day: { en: "per day", ru: "в день", tr: "günlük" },
+        per_hour: { en: "per hour", ru: "в час", tr: "saatlik" },
+        per_week: { en: "per week", ru: "в неделю", tr: "haftalık" },
+        per_person: { en: "per person", ru: "с человека", tr: "kişi başı" },
+        per_trip: { en: "per trip", ru: "за поездку", tr: "gezi başı" },
+    };
+
+    function getPriceTypeLabel(type, locale) {
+        return (
+            priceTypeLabels[type]?.[locale] || priceTypeLabels[type]?.en || ""
+        );
+    }
+
+    function getBookingLabel(locale, type, isActive) {
+        const dict = bookingLabels[locale] || bookingLabels.en;
+        if (!isActive) return dict.unavailable || "Unavailable";
+        return dict[type] || dict.default || "Book";
+    }
 </script>
 
 <aside class="booking-card">
     <div class="price-block">
         <span class="price">{$priceStore}</span>
-        <span class="per-person">
-            {#if priceType}
-                {#if priceType === "per_day"}
-                    {locale === "ru" ? "в день" : "per day"}
-                {:else if priceType === "per_hour"}
-                    {locale === "ru" ? "в час" : "per hour"}
-                {:else if priceType === "per_week"}
-                    {locale === "ru" ? "в неделю" : "per week"}
-                {:else if priceType === "per_person"}
-                    {locale === "ru" ? "с человека" : "per person"}
-                {:else if priceType === "per_trip"}
-                    {locale === "ru" ? "за поездку" : "per trip"}
-                {/if}
-            {/if}
-        </span>
+        {#if priceType}
+            <span class="per-person"
+                >{getPriceTypeLabel(priceType, locale)}</span
+            >
+        {/if}
     </div>
 
     <button
         class="book-button"
         on:click={active ? onBook : null}
         disabled={!active}
-        style="background-color: {active
-            ? 'var(--color-primary)'
-            : '#ccc'}; cursor: {active ? 'pointer' : 'not-allowed'}"
+        style="
+            background-color: {active ? 'var(--color-primary)' : '#ccc'};
+            cursor: {active ? 'pointer' : 'not-allowed'};
+        "
     >
-        {active
-            ? locale === "ru"
-                ? "Забронировать"
-                : "Book now"
-            : locale === "ru"
-              ? "Недоступно"
-              : "Unavailable"}
+        {getBookingLabel(locale, type, active)}
     </button>
 
     <Share />

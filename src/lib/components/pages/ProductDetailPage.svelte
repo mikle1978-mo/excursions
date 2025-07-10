@@ -124,6 +124,7 @@
                     </section>
                 </div>
                 <BookingCard
+                    {type}
                     price={item.price}
                     priceType={item.priceType}
                     active={item.active}
