@@ -73,22 +73,24 @@
     const t = content[$locale] || content["en"];
 </script>
 
-<section class="content">
-    <Galery {images} title={t.title} />
+<div class="content">
+    <main class="about_page">
+        <Galery {images} title={t.title} />
 
-    <h1 class="title">{t.title}</h1>
-    <p class="text intro">{t.intro}</p>
-    <p class="text">{t.paragraph1}</p>
-    <p class="highlight">{t.highlighted}</p>
-    <h2 class="subtitle">{t.whyTitle}</h2>
-    <ul class="reasons">
-        {#each t.reasons as reason}
-            <li>✅ {reason}</li>
-        {/each}
-    </ul>
-    <blockquote class="quote">“{t.quote}”</blockquote>
-    <p class="text">{t.paragraph2}</p>
-</section>
+        <h1 class="title">{t.title}</h1>
+        <p class="text intro">{t.intro}</p>
+        <p class="text">{t.paragraph1}</p>
+        <p class="highlight">{t.highlighted}</p>
+        <h2 class="subtitle">{t.whyTitle}</h2>
+        <ul class="reasons">
+            {#each t.reasons as reason}
+                <li>✅ {reason}</li>
+            {/each}
+        </ul>
+        <blockquote class="quote">“{t.quote}”</blockquote>
+        <p class="text">{t.paragraph2}</p>
+    </main>
+</div>
 
 <style>
     .content {
@@ -96,8 +98,25 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        overflow-x: hidden;
+        flex: none;
+        align-self: stretch;
+        flex-grow: 1;
+        border-bottom: 1px solid var(--color-gray-500);
+    }
+
+    .about_page {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        max-width: var(--max-width-container);
+        margin: 0 auto;
+        padding: 0;
         gap: var(--space-vertical-md);
-        padding: var(--space-vertical-md) 0px;
         width: 100%;
         height: 100%;
         max-height: 100%;
@@ -110,7 +129,6 @@
 
     .title {
         font-size: var(--text-xl);
-
         color: var(--color-text);
         text-align: center;
     }
