@@ -38,7 +38,7 @@ export const nav_items = [
     },
     {
         title: { ru: "o нас", en: "about us" },
-        link: "",
+        link: "about",
         rel: "nofollow",
         submenu: [],
     },
