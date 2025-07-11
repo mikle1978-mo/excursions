@@ -3,6 +3,15 @@
     import { onMount } from "svelte";
     import { page } from "$app/stores";
     import { goto } from "$app/navigation";
+    import Galery from "../layout/Galery.svelte";
+
+    const images = [
+        { url: "/images/about/about1.webp" },
+        { url: "/images/about/about2.webp" },
+        { url: "/images/about/about3.webp" },
+        { url: "/images/about/about4.webp" },
+        { url: "/images/about/about5.webp" },
+    ];
 
     const content = {
         ru: {
@@ -65,6 +74,8 @@
 </script>
 
 <section class="content">
+    <Galery {images} title={t.title} />
+
     <h1 class="title">{t.title}</h1>
     <p class="text intro">{t.intro}</p>
     <p class="text">{t.paragraph1}</p>
@@ -85,7 +96,8 @@
         display: flex;
         flex-direction: column;
         align-items: flex-start;
-        padding: 0px;
+        gap: var(--space-vertical-md);
+        padding: var(--space-vertical-md) 0px;
         width: 100%;
         height: 100%;
         max-height: 100%;
@@ -98,31 +110,28 @@
 
     .title {
         font-size: var(--text-xl);
-        margin-bottom: 1rem;
+
         color: var(--color-text);
         text-align: center;
     }
 
     .subtitle {
         font-size: var(--text-lg);
-        margin-top: 2rem;
-        margin-bottom: 1rem;
+
         font-weight: 600;
     }
 
     .text {
         font-size: var(--text-md);
         line-height: 1.6;
-        margin-bottom: 1.2rem;
     }
 
     .highlight {
         font-weight: 600;
         color: var(--color-primary);
         background-color: #eef6ff;
-        padding: 0.75rem 1rem;
-        border-radius: 0.75rem;
-        margin: 1.2rem 0;
+        padding: var(--space-vertical-md);
+        border-radius: var(--radius-md);
     }
 
     .quote {
@@ -130,13 +139,11 @@
         color: #555;
         padding-left: 1rem;
         border-left: 3px solid var(--color-primary);
-        margin: 1.5rem 0;
     }
 
     .reasons {
         list-style: none;
         padding-left: 0;
-        margin: 1rem 0;
     }
 
     .reasons li {
