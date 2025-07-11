@@ -6,8 +6,8 @@ export const main_page = {
     pages: [
         {
             title: {
-                ru: "Лучшие экскурсии",
-                en: "Best Excursions",
+                ru: "Экскурсии для всех",
+                en: "Excursions for everyone",
             },
             link: "excursions",
             img: "/images/excursions/excursion_default.webp",

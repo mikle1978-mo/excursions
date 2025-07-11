@@ -18,7 +18,11 @@
     });
 </script>
 
-<a class="card" href={$locale === "en" ? `/${slug}` : `/${$locale}/${slug}`}>
+<a
+    class="card"
+    href={$locale === "en" ? `/${slug}` : `/${$locale}/${slug}`}
+    transition:fly={{ y: 20, duration: 500 }}
+>
     <div class="card__image-wrapper">
         <img
             src={image}

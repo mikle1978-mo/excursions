@@ -16,6 +16,7 @@
     import Share from "$lib/components/UI/buttons/Share.svelte";
     import InfoBlockArray from "$lib/components/pages/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/pages/InfoBlockString.svelte";
+    import AboutBlock from "./AboutBlock.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -278,6 +279,9 @@
                     />
                 {/if}
             </section>
+            {#if type === "excursion"}
+                <AboutBlock />
+            {/if}
             {#if item.slug}
                 <ReviewsList itemSlug={item.slug} locale={effectiveLocale} />
             {/if}
