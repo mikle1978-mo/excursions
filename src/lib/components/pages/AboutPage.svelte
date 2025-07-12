@@ -75,19 +75,24 @@
 
 <div class="content">
     <main class="about_page">
-        <Galery {images} title={t.title} />
-
-        <h1 class="title">{t.title}</h1>
-        <p class="text intro">{t.intro}</p>
-        <p class="text">{t.paragraph1}</p>
-        <p class="highlight">{t.highlighted}</p>
+        <div class="main-info">
+            <Galery {images} title={t.title} />
+            <div class="info">
+                <h1 class="title">{t.title}</h1>
+                <p class="text intro">{t.intro}</p>
+                <p class="text">{t.paragraph1}</p>
+                <p class="highlight">{t.highlighted}</p>
+            </div>
+        </div>
+        <blockquote class="quote">“{t.quote}”</blockquote>
         <h2 class="subtitle">{t.whyTitle}</h2>
+
         <ul class="reasons">
             {#each t.reasons as reason}
                 <li>✅ {reason}</li>
             {/each}
         </ul>
-        <blockquote class="quote">“{t.quote}”</blockquote>
+
         <p class="text">{t.paragraph2}</p>
     </main>
 </div>
@@ -115,7 +120,7 @@
         flex-direction: column;
         max-width: var(--max-width-container);
         margin: 0 auto;
-        padding: 0;
+        padding: var(--space-vertical-md) 0;
         gap: var(--space-vertical-md);
         width: 100%;
         height: 100%;
@@ -135,7 +140,6 @@
 
     .subtitle {
         font-size: var(--text-lg);
-
         font-weight: 600;
     }
 
@@ -167,5 +171,20 @@
     .reasons li {
         margin-bottom: 0.5rem;
         font-size: var(--text-md);
+    }
+
+    .main-info {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 50% 1fr;
+        align-items: start;
+        justify-content: center;
+        gap: var(--space-horizontal-md);
+    }
+    @media (max-width: 768px) {
+        .main-info {
+            display: flex;
+            flex-direction: column;
+        }
     }
 </style>
