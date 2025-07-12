@@ -71,6 +71,7 @@
     </div>
 
     <button
+        id="book-button"
         class="book-button"
         on:click={active ? onBook : null}
         disabled={!active}
