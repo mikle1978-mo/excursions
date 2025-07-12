@@ -46,6 +46,7 @@
 </script>
 
 <button
+    id="share-button"
     on:click={handleShare}
     aria-label="share"
     class="share-button"
