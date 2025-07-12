@@ -38,7 +38,7 @@
     };
 </script>
 
-<form class="form-request" on:submit={handleSubmit}>
+<form class="form-request" on:submit={handleSubmit} id="shortForm">
     <h2 class="form-title">{form_list.title[$locale]}</h2>
 
     <label class="form-label">

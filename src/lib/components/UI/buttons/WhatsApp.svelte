@@ -3,6 +3,7 @@
 </script>
 
 <a
+    id="whatsapp"
     href="https://wa.me/message/P3KXH7AFMVV4C1"
     class="whatsapp-btn"
     aria-label="Ватсап: +905356062642"
