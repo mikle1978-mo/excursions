@@ -14,7 +14,7 @@
     export let baseUrl;
     export let baseName;
     export let urlPath;
-    export let type; // "yachts" | "excursions" | "cars" и т.д.
+    export let type;
 
     let allItems = data?.[type] || [];
     let filteredItems = [];

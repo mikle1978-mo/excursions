@@ -1,9 +1,15 @@
 <script>
-    import { locale } from "$lib/stores/locale";
+    import { locale as localeStore } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
     import { page } from "$app/stores";
     import { goto } from "$app/navigation";
     import Galery from "../layout/Galery.svelte";
+    import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
+
+    export let seoText;
+    export let baseUrl;
+    export let baseName;
+    export let urlPath;
 
     const images = [
         { url: "/images/about/about1.webp" },
@@ -70,8 +76,17 @@
         },
     };
 
-    const t = content[$locale] || content["en"];
+    const t = content[$localeStore] || content["en"];
 </script>
+
+<PageSeoHead
+    {baseUrl}
+    {baseName}
+    locale={$localeStore}
+    {urlPath}
+    seo={seoText[$localeStore] ?? seoText.en}
+    image={`${baseUrl}/images/about/about1.webp`}
+/>
 
 <div class="content">
     <main class="about_page">
