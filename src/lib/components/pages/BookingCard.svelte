@@ -136,6 +136,7 @@
         border: none;
         border-radius: var(--radius-sm);
         font-weight: 600;
+        font-size: var(--radius-lg);
         cursor: pointer;
         transition: var(--transition-fast);
     }
