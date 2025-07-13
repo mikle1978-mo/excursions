@@ -56,4 +56,8 @@ export const transfer_page = {
         ru: "Не доступно",
         en: "Not available",
     },
+    servicesDetails: {
+        ru: "Условия и детали",
+        en: "Terms and details",
+    },
 };
