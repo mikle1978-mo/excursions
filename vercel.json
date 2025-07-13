@@ -4,6 +4,10 @@
             "source": "/(.*)",
             "headers": [
                 {
+                    "key": "Content-Security-Policy",
+                    "value": "default-src 'self' https: data: blob:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src * data: blob:; connect-src *; font-src * data:;"
+                },
+                {
                     "key": "X-Frame-Options",
                     "value": "SAMEORIGIN"
                 },
