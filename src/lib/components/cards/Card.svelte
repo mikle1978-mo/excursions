@@ -4,6 +4,7 @@
     import { card } from "$lib/i18n/card";
     import { formatPrice } from "$lib/utils/priceFormatter";
     import Rating from "../UI/rating/Rating.svelte";
+    import { getCloudinarySrcset } from "$lib/utils/optimizeCloudinary.js";
 
     export let item;
     export let type;
@@ -36,6 +37,7 @@
     $: rating = item.rating ?? 5;
     $: reviewsCount = item.reviewsCount ?? 10;
     $: meta = item.meta ?? {};
+    $: imageSrcset = getCloudinarySrcset(image, [400, 600, 800, 980]);
 
     let isMounted = false;
 
@@ -51,13 +53,14 @@
 <a class="card" href={getLocalizedPath($locale, `${type}/${slug}`)}>
     <div class="card__image-wrapper">
         <img
-            src={image}
+            src={imageSrcset.src}
+            srcset={imageSrcset.srcset}
+            sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
             alt={title}
             class="card__image"
-            width="980"
-            height="551"
             {loading}
             fetchpriority={loading === "eager" ? "high" : "auto"}
+            decoding="async"
         />
 
         {#if getLabelByKey(meta.labels, "POPULAR")}

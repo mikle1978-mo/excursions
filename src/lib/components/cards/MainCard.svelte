@@ -8,8 +8,17 @@
     const {
         title = { ru: "Фото ссылки", en: "Link photo" },
         img: image = "/images/excursions/excursion_default.webp",
+        set = [],
         link: slug = "",
     } = item;
+
+    // Преобразуем массив set в строку для srcset
+    $: srcset = set.length
+        ? set.map(({ url, width }) => `${url} ${width}`).join(", ")
+        : "";
+
+    // Основное изображение берем либо первое из set, либо дефолтное
+    $: src = set.length ? set[0].url : image;
 
     let isMounted = false;
 
@@ -25,13 +34,14 @@
 >
     <div class="card__image-wrapper">
         <img
-            src={image}
-            alt=""
+            {src}
+            {srcset}
+            sizes="(max-width: 400px) 100vw, (max-width: 768px) 50vw, 33vw"
+            alt={title[$locale]}
             class="card__image"
-            width="980"
-            height="551"
             {loading}
             fetchpriority={loading === "eager" ? "high" : "auto"}
+            decoding="async"
         />
     </div>
 

@@ -1,5 +1,5 @@
 <script>
-    import Card from "$lib/components/card/Card.svelte";
+    import Card from "$lib/components/cards/Card.svelte";
     import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
     import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
     import InfoBlock from "$lib/components/layout/InfoBlock.svelte";

@@ -3,6 +3,7 @@
     import Modal from "$lib/components/UI/Modal.svelte";
     import { locale } from "$lib/stores/locale";
     import { gallery_texts } from "$lib/i18n/gallery";
+    import { getCloudinarySrcset } from "$lib/utils/optimizeCloudinary.js";
 
     export let images = [];
     export let title = "";
@@ -40,6 +41,24 @@
     const getSelectImageLabel = (index) => {
         return gallery_texts.select_image[$locale].replace("{num}", index + 1);
     };
+
+    // Для главного изображения вычисляем src и srcset
+    $: mainSrcset = images[selectedIndex]
+        ? getCloudinarySrcset(
+              images[selectedIndex].url,
+              [200, 400, 600, 800, 980]
+          )
+        : { src: "", srcset: "" };
+
+    // Массив с src и srcset для всех миниатюр
+    $: thumbs = images.map((img) =>
+        getCloudinarySrcset(img.url, [100, 150, 200])
+    );
+
+    // Вычисляем src и srcset для модальных изображений (например, более большие размеры)
+    $: modalImages = images.map((img) =>
+        getCloudinarySrcset(img.url, [600, 900, 1200, 1600])
+    );
 </script>
 
 <div class="image-gallery">
@@ -50,11 +69,13 @@
         aria-label={gallery_texts.open_gallery[$locale]}
     >
         <img
-            src={images[selectedIndex]?.url}
+            src={mainSrcset.src}
+            srcset={mainSrcset.srcset}
+            sizes="(max-width: 768px) 100vw, 50vw"
             alt={title
                 ? getAltText(selectedIndex)
                 : gallery_texts.default_alt[$locale]}
-            loading="lazy"
+            decoding="async"
         />
     </button>
 
@@ -67,7 +88,14 @@
                 aria-label={getSelectImageLabel(i)}
                 class="thumbnail-button"
             >
-                <img src={img?.url} alt={getAltText(i)} loading="lazy" />
+                <img
+                    src={thumbs[i].src}
+                    srcset={thumbs[i].srcset}
+                    sizes="(max-width: 600px) 50px, 100px"
+                    alt={getAltText(i)}
+                    loading="lazy"
+                    decoding="async"
+                />
             </button>
         {/each}
     </div>
@@ -81,7 +109,14 @@
                             ? 'active'
                             : ''}"
                     >
-                        <img src={img?.url} alt={getAltText(i)} />
+                        <img
+                            src={modalImages[i].src}
+                            srcset={modalImages[i].srcset}
+                            sizes="(max-width: 768px) 95vw, (max-width: 1200px) 85vw, 1200px"
+                            alt={getAltText(i)}
+                            loading="eager"
+                            decoding="async"
+                        />
                         <!-- Исправлено: используем getAltText(i) вместо selectedIndex -->
                         <p class="caption">{getCaption(i)}</p>
                         <!-- Исправлено: используем текущий индекс (i) -->
