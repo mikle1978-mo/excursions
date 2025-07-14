@@ -7,6 +7,10 @@
     export let urlPath = "";
     export let image = `${baseUrl}/images/default.webp`;
 
+    console.log("====================================");
+    console.log(seo);
+    console.log("====================================");
+
     function getHref(lang) {
         if (lang === "en") {
             return `${baseUrl}/${urlPath}`;

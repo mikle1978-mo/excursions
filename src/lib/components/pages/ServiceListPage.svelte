@@ -96,7 +96,9 @@
             {type}
         />
         <div class="main_page">
-            <h1 class="visually-hidden">{main_page.title[$localeStore]}</h1>
+            <h1 class="visually-hidden">
+                {seoText[$localeStore].title ?? seoText.en.title}
+            </h1>
 
             <div class="grid">
                 {#each filteredItems as item, i (item.slug)}
