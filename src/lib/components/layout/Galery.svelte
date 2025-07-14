@@ -150,7 +150,9 @@
 
     .main-image img {
         width: 100%;
+        max-width: 980px;
         aspect-ratio: 16 / 9;
+        height: auto;
         object-fit: cover;
         border-radius: var(--radius-md);
         transition: var(--transition-normal);
@@ -182,7 +184,9 @@
     }
 
     .thumbnail-button img {
-        width: 100%;
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+        width: auto;
         height: 60px;
         border-radius: inherit;
         display: block;

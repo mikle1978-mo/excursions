@@ -6,12 +6,15 @@ Disallow: /api/
 
 Disallow: /thanks
 Disallow: /error
+Disallow: /development
 
 Disallow: /ru/thanks
 Disallow: /ru/error
+Disallow: /ru/development
 
 Disallow: /tr/thanks
 Disallow: /tr/error
+Disallow: /tr/development
 
 # Указать путь к карте сайта
 Sitemap: https://kemer.app/sitemap.xml
