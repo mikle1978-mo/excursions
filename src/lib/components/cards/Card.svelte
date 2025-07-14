@@ -56,11 +56,13 @@
             src={imageSrcset.src}
             srcset={imageSrcset.srcset}
             sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
-            alt={title}
+            alt={`${title} ${type}`}
             class="card__image"
             {loading}
             fetchpriority={loading === "eager" ? "high" : "auto"}
             decoding="async"
+            width="600"
+            height="338"
         />
 
         {#if getLabelByKey(meta.labels, "POPULAR")}

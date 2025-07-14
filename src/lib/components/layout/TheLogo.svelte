@@ -4,8 +4,7 @@
 
 <a
     href={getLocalizedPath($locale)}
-    class="logo"
-    rel="nofollow"
+    class="logo"   
     aria-label="go main"
 >
     <div class="target">

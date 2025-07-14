@@ -76,6 +76,9 @@
                 ? getAltText(selectedIndex)
                 : gallery_texts.default_alt[$locale]}
             decoding="async"
+            width="600"
+            height="337"
+            loading="lazy"
         />
     </button>
 
@@ -95,6 +98,8 @@
                     alt={getAltText(i)}
                     loading="lazy"
                     decoding="async"
+                    width="400"
+                    height="225"
                 />
             </button>
         {/each}
@@ -116,6 +121,8 @@
                             alt={getAltText(i)}
                             loading="eager"
                             decoding="async"
+                            width="600"
+                            height="337"
                         />
                         <!-- Исправлено: используем getAltText(i) вместо selectedIndex -->
                         <p class="caption">{getCaption(i)}</p>
@@ -175,6 +182,7 @@
     }
 
     .thumbnail-button img {
+        width: 100%;
         height: 60px;
         border-radius: inherit;
         display: block;

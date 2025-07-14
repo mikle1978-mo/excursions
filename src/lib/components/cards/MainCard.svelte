@@ -37,11 +37,13 @@
             {src}
             {srcset}
             sizes="(max-width: 400px) 100vw, (max-width: 768px) 50vw, 33vw"
-            alt={title[$locale]}
+            alt="servise"
             class="card__image"
             {loading}
             fetchpriority={loading === "eager" ? "high" : "auto"}
             decoding="async"
+            width="600"
+            height="338"
         />
     </div>
 
