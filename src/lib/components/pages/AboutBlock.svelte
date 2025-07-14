@@ -12,7 +12,7 @@
             quote: "Мы живём в Кемере и знаем, где действительно стоит побывать. Рекомендуем только то, что действительно стоит посмотреть.",
             paragraph2:
                 "Всегда на связи до, во время и после поездки — поможем, подскажем, подберём лучшее.",
-            link: "подробнее...",
+            link: "подробнее о нас...",
         },
         en: {
             title: "About us",
@@ -24,7 +24,7 @@
             quote: "We live in Kemer and know where it’s truly worth going. We recommend only what’s genuinely worth seeing.",
             paragraph2:
                 "We’re always available — before, during, and after your trip — to help, advise, and find the best for you.",
-            link: "more...",
+            link: "learn more about us...",
         },
         tr: {
             title: "Hakkımızda",
@@ -36,7 +36,7 @@
             quote: "Kemer'de yaşıyoruz ve gerçekten gidilmeye değer yerleri biliyoruz. Sadece gerçekten görülmeye değer yerleri öneriyoruz.",
             paragraph2:
                 "Seyahatinizden önce, sırasında ve sonrasında her zaman ulaşılabiliriz — yardımcı oluruz, öneririz, en iyisini buluruz.",
-            link: "etraflıca...",
+            link: "hakkımızda daha fazla bilgi...",
         },
     };
 

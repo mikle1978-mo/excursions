@@ -28,6 +28,7 @@
 <svelte:head>
     <title>{development_page.title[$locale]}</title>
     <meta name="description" content="Страница в разработке" />
+    <meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
 <main>
