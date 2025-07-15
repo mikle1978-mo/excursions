@@ -1,5 +1,6 @@
 <script>
     import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
+    import { extractKeywords } from "$lib/utils/extractKeywords";
     export let baseUrl;
     export let baseName;
     export let locale; // 'en', 'ru', 'tr'
@@ -7,22 +8,22 @@
     export let urlPath = "";
     export let image = `${baseUrl}/images/default.webp`;
 
-    console.log("====================================");
-    console.log(seo);
-    console.log("====================================");
-
     function getHref(lang) {
         if (lang === "en") {
             return `${baseUrl}/${urlPath}`;
         }
         return `${baseUrl}/${lang}/${urlPath}`;
     }
+
+    $: metaKeywords =
+        seo.keywords ||
+        (seo.description ? extractKeywords(seo.description).join(", ") : "");
 </script>
 
 <svelte:head>
     <title>{seo.title} | {baseName}</title>
     <meta name="description" content={seo.description} />
-    <meta name="keywords" content={seo.keywords} />
+    <meta name="keywords" content={metaKeywords} />
 
     <link rel="canonical" href={getHref("en")} />
 
