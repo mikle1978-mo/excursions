@@ -2,6 +2,12 @@
     // Никаких данных подгружать не нужно на этом этапе
 </script>
 
+<svelte:head>
+    <title>Админка</title>
+    <meta name="description" content="Админка" />
+    <meta name="robots" content="noindex, nofollow" />
+</svelte:head>
+
 <main class="admin-dashboard">
     <h1 class="admin-title">Админка</h1>
     <nav class="admin-links">
