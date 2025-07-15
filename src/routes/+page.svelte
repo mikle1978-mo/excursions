@@ -26,12 +26,17 @@
             ru: "Все для комфортного отдыха в Кемере: экскурсии, аренда яхт и автомобилей, трансферы.",
             en: "Everything for a comfortable stay in Kemer: excursions, yacht and car rentals, and transfers.",
         },
+        keywords: {
+            ru: "отдых, кемере, экскурсии, аренда, яхт, автомобилей, трансферы, комфортного, бизнеса, турции",
+            en: "kemer, vacation, comfortable, excursions, yacht, car, rentals, transfers, stay, everything",
+        },
     };
 </script>
 
 <svelte:head>
     <title>{SEO.title[$locale]}</title>
     <meta name="description" content={SEO.description[$locale]} />
+    <meta name="keywords" content={SEO.keywords[$locale]} />
     <link rel="canonical" href={canonicalUrl} />
 
     <!-- hreflang -->
