@@ -1,6 +1,6 @@
 <script>
     import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
-    import { extractKeywords } from "$lib/utils/extractKeywords";
+
     export let baseUrl;
     export let baseName;
     export let locale; // 'en', 'ru', 'tr'

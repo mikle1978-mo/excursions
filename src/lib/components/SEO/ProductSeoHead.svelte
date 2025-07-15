@@ -1,5 +1,6 @@
 <script>
     import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
+    import { extractKeywords } from "$lib/utils/extractKeywords";
 
     export let baseUrl;
     export let baseName;
@@ -28,12 +29,16 @@
     }
 
     const canonical = getHref("en");
+
+    $: metaKeywords =
+        keywords ||
+        (description ? extractKeywords(description).join(", ") : "");
 </script>
 
 <svelte:head>
     <title>{title} | {baseName}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content={keywords} />
+    <meta name="keywords" content={metaKeywords} />
 
     <link rel="canonical" href={canonical} />
 
