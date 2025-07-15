@@ -25,14 +25,14 @@ export async function POST({ request, getClientAddress }) {
             ip,
         });
 
-        if (existingReview) {
-            return json(
-                {
-                    error: "Вы уже оставили отзыв для этой экскурсии с этого IP",
-                },
-                { status: 403 }
-            );
-        }
+        // if (existingReview) {
+        //     return json(
+        //         {
+        //             error: "Вы уже оставили отзыв для этой экскурсии с этого IP",
+        //         },
+        //         { status: 403 }
+        //     );
+        // }
 
         // Создаем новый отзыв
         const newReview = {
