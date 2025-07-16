@@ -1,5 +1,5 @@
 <script>
-    import { exportToCSV } from "$lib/utils/exportToCSV.js";
+    import { exportToCSV } from "$lib/utils/exportToCsv.js";
     export let items = [];
     export let fileName = "data";
     export let columnMap = null;
