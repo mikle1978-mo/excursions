@@ -11,9 +11,11 @@
         duplicateExcursion,
         toggleExcursionActive,
     } from "$lib/utils/excursionsActions.js";
+    import ExportCSVButton from "$lib/components/UI/buttons/ExportCSVButton.svelte";
 
     export let data;
     let excursions = structuredClone(data.excursions);
+    let translations = structuredClone(data.translations);
 
     let isLoading = false;
 
@@ -32,7 +34,7 @@
         try {
             await toggleExcursionActive(item.slug, newActive);
             excursions[index].active = newActive;
-            excursions = [...excursions]; // триггерим реактивность
+            excursions = [...excursions];
         } catch (err) {
             alert(`Ошибка: ${err.message}`);
         }
@@ -60,6 +62,29 @@
             location.reload();
         }
     }
+
+    // Создаём карту переводов для русского языка
+    const translationsMap = new Map();
+    for (const t of translations) {
+        if (t.lang === "ru") {
+            translationsMap.set(t.itemSlug, t.title);
+        }
+    }
+
+    // Маппим экскурсии с русским названием
+    $: mappedExcursions = excursions.map((e) => ({
+        slug: e.slug,
+        active: e.active ? "Да" : "Нет",
+        price: e.price,
+        title_ru: translationsMap.get(e.slug) || "",
+    }));
+
+    const columnMap = {
+        slug: "Slug",
+        title_ru: "Название (RU)",
+        active: "Активна",
+        price: "Цена",
+    };
 </script>
 
 <div class="admin-page">
@@ -68,6 +93,12 @@
         <button class="add-button" on:click={handleAdd}>
             <IconPlus />
         </button>
+        <ExportCSVButton
+            items={mappedExcursions}
+            fileName="excursions"
+            {columnMap}
+            label="Скачать CSV"
+        />
     </div>
 
     {#if isLoading}
