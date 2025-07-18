@@ -6,7 +6,7 @@ let warmedUp = false;
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
     // 410 Gone для удалённых префиксов
-    const removedPrefixes = ["/catalog/", "/landings/", "/cart/"];
+    const removedPrefixes = ["/catalog/", "/landings/", "/cart/", "/en/"];
 
     if (
         removedPrefixes.some((prefix) => event.url.pathname.startsWith(prefix))

@@ -1,12 +1,15 @@
 <script>
     import { onMount } from "svelte";
     import { page } from "$app/stores";
+    export let error;
+    export let status;
+    console.log("Custom error page", { status, error });
 
     // Локализация для 404 — можно вынести в отдельный файл, как у тебя thanks_page
     const error_404 = {
         title: {
-            ru: "Страница не найдена",
-            en: "Page Not Found",
+            ru: "404 Страница не найдена",
+            en: "404 Page Not Found",
         },
         text: {
             ru: "К сожалению, такая страница отсутствует.",
