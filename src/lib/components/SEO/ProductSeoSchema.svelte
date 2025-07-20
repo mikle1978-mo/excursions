@@ -85,13 +85,24 @@
     const breadcrumbSchema = {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
-        itemListElement: breadcrumbs.map((b, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            name: b.label,
-            item: b.href || `${baseUrl}/${locale}/${type}s/${item.slug}`,
-        })),
+        itemListElement: breadcrumbs.map((b, i) => {
+            let href = b.href || `${baseUrl}/${locale}/${type}s/${item.slug}`;
+
+            // Если локаль "en" (дефолт), убрать локаль из пути
+            if (locale === "en") {
+                // Например, если href содержит "/en/", убрать её
+                href = href.replace(`/${locale}`, "");
+            }
+
+            return {
+                "@type": "ListItem",
+                position: i + 1,
+                name: b.label,
+                item: href,
+            };
+        }),
     };
+
     const webPageSchema = {
         "@context": "https://schema.org",
         "@type": "WebPage",
