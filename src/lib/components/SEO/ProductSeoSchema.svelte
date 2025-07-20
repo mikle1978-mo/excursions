@@ -1,15 +1,18 @@
 <script>
+    import { getLocalizedPath } from "$lib/stores/locale";
+
     export let item;
     export let type;
-    export let locale = "ru";
-    export let baseUrl = "https://site.com";
+    export let locale = "en";
+    export let baseUrl = "https://kemer.app";
     export let breadcrumbs = [];
     export let rating;
     export let reviewCount;
     export let brand = "Kemer.app";
     export let imageFallback = `${baseUrl}/images/excursions/excursion_default.webp`;
 
-    const productUrl = `${baseUrl}/${locale}/${type}s/${item.slug}`;
+    const productUrl =
+        baseUrl + getLocalizedPath(locale, `${type}s/${item.slug}`);
     const image = item.images?.[0]?.url ?? imageFallback;
     const title =
         item.translations?.find((t) => t.lang === locale)?.title ?? item.slug;
@@ -21,6 +24,10 @@
     const hasValidRating =
         typeof rating === "number" && rating >= 1 && rating <= 5;
     const hasValidReviews = typeof reviewCount === "number" && reviewCount > 0;
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const priceValidUntil = `${year}-12-31`; // 31 декабря текущего года
 
     const productSchema = {
         "@context": "https://schema.org",
@@ -43,6 +50,7 @@
             availability: item.active
                 ? "https://schema.org/InStock"
                 : "https://schema.org/OutOfStock",
+            priceValidUntil: priceValidUntil,
         },
         mainEntityOfPage: {
             "@type": "WebPage",
@@ -89,12 +97,9 @@
             let href = b.href
                 ? b.href.startsWith("http")
                     ? b.href
-                    : baseUrl + b.href
-                : `${baseUrl}/${locale}/${type}s/${item.slug}`;
-
-            if (locale === "en") {
-                href = href.replace(`${baseUrl}/en`, baseUrl);
-            }
+                    : baseUrl +
+                      getLocalizedPath(locale, b.href.replace(/^\/+/, ""))
+                : productUrl;
 
             return {
                 "@type": "ListItem",
