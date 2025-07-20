@@ -26,7 +26,7 @@
         description,
         contactPoint: {
             "@type": "ContactPoint",
-            telephone: "+90-555-555-55-55",
+            telephone: "+90-535-606-26-42",
             contactType: "customer service",
             availableLanguage: ["Russian", "English", "Turkish"],
             areaServed: "TR",
