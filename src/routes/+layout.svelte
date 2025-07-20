@@ -13,6 +13,8 @@
     import YandexNoscript from "$lib/components/SEO/YandexNoscript.svelte";
 
     export let data;
+    export let gtmId = "GTM-WWB7BSZL";
+
     setLocale(data.lang);
 
     // Синхронизация локали
@@ -65,11 +67,9 @@
     });
 </script>
 
-<YandexMetrika counterId="97637253" />
-{#if browser}
-    <YandexNoscript counterId="97637253" />
-{/if}
-<GoogleTagManager gtmId="GTM-WWB7BSZL" />
+<YandexMetrika />
+<YandexNoscript />
+<GoogleTagManager {gtmId} />
 <SeoOrganization />
 
 <svelte:head>
