@@ -34,7 +34,7 @@
 
         alert(form_list.alert[$locale]);
         const currentLocale = get(locale);
-        const path = getLocalizedPath({ locale: currentLocale }, "thanks");
+        const path = getLocalizedPath($locale, "thanks");
         goto(path);
     };
 </script>
