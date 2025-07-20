@@ -86,12 +86,14 @@
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
         itemListElement: breadcrumbs.map((b, i) => {
-            let href = b.href || `${baseUrl}/${locale}/${type}s/${item.slug}`;
+            let href = b.href
+                ? b.href.startsWith("http")
+                    ? b.href
+                    : baseUrl + b.href
+                : `${baseUrl}/${locale}/${type}s/${item.slug}`;
 
-            // Если локаль "en" (дефолт), убрать локаль из пути
             if (locale === "en") {
-                // Например, если href содержит "/en/", убрать её
-                href = href.replace(`/${locale}`, "");
+                href = href.replace(`${baseUrl}/en`, baseUrl);
             }
 
             return {
