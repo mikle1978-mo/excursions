@@ -7,6 +7,7 @@
     import { initCurrencyService } from "$lib/services/currencyService";
     import { locale as localeStore, setLocale } from "$lib/stores/locale.js";
     import { browser } from "$app/environment";
+    import SeoOrganization from "$lib/components/SEO/SeoOrganization.svelte";
 
     export let data;
     setLocale(data.lang);
@@ -63,6 +64,8 @@
         };
     });
 </script>
+
+<SeoOrganization />
 
 <svelte:head>
     <meta name="author" content="Kemer.app" />

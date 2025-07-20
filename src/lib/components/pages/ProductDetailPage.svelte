@@ -16,6 +16,7 @@
     import Share from "$lib/components/UI/buttons/Share.svelte";
     import InfoBlockArray from "$lib/components/pages/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/pages/InfoBlockString.svelte";
+    import ProductSeoSchema from "../SEO/ProductSeoSchema.svelte";
     import AboutBlock from "./AboutBlock.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -64,6 +65,17 @@
         },
     ];
 </script>
+
+<ProductSeoSchema
+    {item}
+    {type}
+    locale={effectiveLocale}
+    {baseUrl}
+    {rating}
+    reviewCount={reviewsCount}
+    brand="Kemer.app"
+    breadcrumbs={breadcrumbsList}
+/>
 
 <ProductSeoHead
     {baseUrl}
