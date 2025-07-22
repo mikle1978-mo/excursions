@@ -6,31 +6,25 @@
 
     const SEO_TEXT = {
         ru: {
-            title: "Аренда яхт и морские прогулки в Кемере",
+            title: "Аренда яхт в Кемере — прогулки и морские туры",
             description:
-                "Аренда яхт и прогулки по морю в Кемере. Частные туры, комфортабельные яхты, живописные бухты и прозрачное море.",
+                "Аренда яхт в Кемере с капитаном. Морские прогулки, рыбалка, индивидуальные туры по красивейшим бухтам Кемера. Комфортабельные яхты и честные цены без посредников.",
             keywords:
-                "аренда яхты Кемер, морские прогулки Кемер, яхт туры, Кемер Турция, яхта на прокат, туры на яхте",
-            twitter:
-                "Аренда яхты в Кемере с капитаном. Уникальные морские прогулки и живописные маршруты.",
+                "аренда яхт Кемер, яхты в Кемере, морская прогулка Кемер, аренда лодки Кемер, яхта с капитаном Кемер, прогулка на яхте Кемер, частная яхта Кемер",
         },
         en: {
-            title: "Yacht Rental and Sea Trips in Kemer",
+            title: "Yacht Rental in Kemer — Private Cruises & Boat Tours",
             description:
-                "Yacht rental and sea excursions in Kemer. Private tours, comfortable yachts, scenic bays and crystal-clear sea.",
+                "Yacht rental in Kemer with skipper. Private cruises, fishing, and scenic boat tours to Kemer’s bays. Comfortable yachts at fair prices without intermediaries.",
             keywords:
-                "yacht rental Kemer, sea trips Kemer, yacht tours, Kemer Turkey, private boat, yacht charter",
-            twitter:
-                "Charter a yacht in Kemer for unforgettable sea trips. Private routes and full comfort.",
+                "yacht rental Kemer, boat trip Kemer, private yacht Kemer, Kemer yacht tour, boat hire Kemer, sailing Kemer, rent a yacht Kemer",
         },
         tr: {
-            title: "Kemer'de Yat Kiralama ve Deniz Turları",
+            title: "Kemer'de Yat Kiralama — Özel Tekne Turları",
             description:
-                "Kemer'de yat kiralama ve deniz gezileri. Özel turlar, konforlu yatlar, berrak deniz ve eşsiz koylar.",
+                "Kemer'de kaptanlı yat kiralama. Özel turlar, balıkçılık, koylara deniz gezileri. Konforlu yatlar, aracısız ve uygun fiyatlarla.",
             keywords:
-                "Kemer yat kiralama, deniz turu Kemer, yat turları, Kemer Türkiye, özel tekne, yat turu",
-            twitter:
-                "Kemer'de özel yat kiralama. Unutulmaz deniz gezileri ve konforlu rotalar sizi bekliyor.",
+                "Kemer yat kiralama, Kemer tekne turu, özel yat Kemer, Kemer tekne kiralama, yat gezisi Kemer, kaptanlı yat Kemer, Kemer'de tekne",
         },
     };
 </script>
