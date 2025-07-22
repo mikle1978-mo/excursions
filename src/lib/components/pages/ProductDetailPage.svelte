@@ -86,7 +86,7 @@
     description={currentTranslation.metaDescription}
     keywords={currentTranslation.metaKeywords}
     image={item.images?.[0]?.url ??
-        `${baseUrl}/images/${type}s/${type}s_default.webp`}
+        `${baseUrl}/images/${type}s/${type}_default.webp`}
     imageAlt={`Photo ${currentTranslation.title}`}
     amount={item.price?.toString() ?? "0"}
     currency="USD"

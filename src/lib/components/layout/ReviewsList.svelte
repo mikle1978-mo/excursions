@@ -178,8 +178,16 @@
                 ></textarea>
             </label>
 
-            <button type="submit" class="submit-btn"
-                >{reviews_list.submit[$locale]}</button
+            <button
+                type="submit"
+                class="submit-btn"
+                id="submit-review"
+                disabled={isSubmitting}
+            >
+                {#if isSubmitting}
+                    <span class="loader"></span>
+                {/if}
+                {reviews_list.submit[$locale]}</button
             >
         </form>
     {/if}
@@ -187,12 +195,17 @@
 
 <style>
     .reviews-section {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: var(--space-vertical-md);
         padding-bottom: var(--space-vertical-md);
-        max-width: var(--max-width-container);
+        width: 100%;
     }
 
     .section-title {
-        font-size: var(--text-xl);
+        font-size: var(--text-lg);
         margin-bottom: var(--space-vertical-sm);
         color: var(--color-text);
     }
@@ -254,6 +267,7 @@
         cursor: pointer;
         font-weight: 600;
         transition: background-color 0.2s ease;
+        max-width: 351px;
     }
 
     .add-review-btn:hover {
@@ -265,6 +279,7 @@
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-sm);
+        width: 100%;
     }
 
     .form-label {

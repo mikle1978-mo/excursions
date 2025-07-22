@@ -4,6 +4,7 @@
     import { locale } from "$lib/stores/locale";
     import { gallery_texts } from "$lib/i18n/gallery";
     import { getCloudinarySrcset } from "$lib/utils/optimizeCloudinary.js";
+    const defaultImage = `/images/excursions/excursion_default.webp`;
 
     export let images = [];
     export let title = "";
@@ -59,13 +60,22 @@
     $: modalImages = images.map((img) =>
         getCloudinarySrcset(img.url, [600, 900, 1200, 1600])
     );
+
+    function onImageError(event) {
+        console.log(`Image error for ${event.target.src}`);
+
+        if (event.target.src !== defaultImage) {
+            event.target.src = defaultImage;
+            event.target.srcset = "";
+        }
+    }
 </script>
 
 <div class="image-gallery">
     <button
         type="button"
         class="main-image"
-        on:click={openModal}
+        onclick={openModal}
         aria-label={gallery_texts.open_gallery[$locale]}
     >
         <img
@@ -79,6 +89,7 @@
             width="600"
             height="337"
             loading="lazy"
+            onerror={onImageError}
         />
     </button>
 
@@ -87,7 +98,7 @@
             <button
                 type="button"
                 class:selected={i === selectedIndex}
-                on:click={() => selectImage(i)}
+                onclick={() => selectImage(i)}
                 aria-label={getSelectImageLabel(i)}
                 class="thumbnail-button"
             >
@@ -100,6 +111,7 @@
                     decoding="async"
                     width="400"
                     height="225"
+                    onerror={onImageError}
                 />
             </button>
         {/each}

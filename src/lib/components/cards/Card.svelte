@@ -10,9 +10,11 @@
     export let type;
 
     export let loading = "lazy";
+    const defaultImage = `/images/${type}/${type.endsWith("s") ? type.slice(0, -1) : type}_default.webp`;
+
     $: slug = item.slug;
     $: title = item.title?.[$locale] ?? "";
-    $: image = item.images?.[0]?.url ?? `/images/${type}/${type}_default.webp`;
+    $: image = item.images?.[0]?.url ?? defaultImage;
     $: priceDisplay = formatPrice(item.price);
     $: priceType =
         item.priceType && card[item.priceType] ? item.priceType : "per_person";
@@ -39,6 +41,15 @@
     $: meta = item.meta ?? {};
     $: imageSrcset = getCloudinarySrcset(image, [400, 600, 800, 980]);
 
+    function onImageError(event) {
+        console.log(`Image error for ${event.target.src}`);
+
+        if (event.target.src !== defaultImage) {
+            event.target.src = defaultImage;
+            event.target.srcset = "";
+        }
+    }
+
     let isMounted = false;
 
     function getLabelByKey(labelsArray, key) {
@@ -63,6 +74,7 @@
             decoding="async"
             width="600"
             height="338"
+            onerror={onImageError}
         />
 
         {#if getLabelByKey(meta.labels, "POPULAR")}
