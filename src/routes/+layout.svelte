@@ -10,7 +10,6 @@
     import SeoOrganization from "$lib/components/SEO/SeoOrganization.svelte";
     import GoogleTagManager from "$lib/components/SEO/GoogleTagManager.svelte";
     import YandexMetrika from "$lib/components/SEO/YandexMetrika.svelte";
-    import YandexNoscript from "$lib/components/SEO/YandexNoscript.svelte";
 
     export let data;
     export let gtmId = "GTM-WWB7BSZL";
@@ -68,7 +67,6 @@
 </script>
 
 <YandexMetrika />
-<YandexNoscript />
 <GoogleTagManager {gtmId} />
 <SeoOrganization />
 
