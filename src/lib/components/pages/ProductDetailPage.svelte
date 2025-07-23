@@ -337,6 +337,7 @@
         align-self: stretch;
         flex-grow: 1;
         border-bottom: 1px solid var(--color-gray-500);
+        padding-bottom: 100px;
     }
 
     .meta-info {
