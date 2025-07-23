@@ -1,40 +1,28 @@
 <script>
     import { locale } from "$lib/stores/locale";
-    export const line = [
-        {
-            ru: "Акция: подписка в instagram + репост = -5% на любой тур!",
-            en: "Promo: subscribe to Instagram + repost = -5% on any tour!",
-        },
-        {
-            ru: "Акция: подписка в instagram + репост = -5% на любой тур!",
-            en: "Promo: subscribe to Instagram + repost = -5% on any tour!",
-        },
-        {
-            ru: "Акция: подписка в instagram + репост = -5% на любой тур!",
-            en: "Promo: subscribe to Instagram + repost = -5% on any tour!",
-        },
-        {
-            ru: "Акция: подписка в instagram + репост = -5% на любой тур!",
-            en: "Promo: subscribe to Instagram + repost = -5% on any tour!",
-        },
-        {
-            ru: "Акция: подписка в instagram + репост = -5% на любой тур!",
-            en: "Promo: subscribe to Instagram + repost = -5% on any tour!",
-        },
-        {
-            ru: "Акция: подписка в instagram + репост = -5% на любой тур!",
-            en: "Promo: subscribe to Instagram + repost = -5% on any tour!",
-        },
-    ];
+    export const line = Array(6).fill({
+        ru: "Акция: подписка в instagram + репост = -5% на любой тур!",
+        en: "Promo: subscribe to Instagram + repost = -5% on any tour!",
+    });
 </script>
 
 <div class="scroll">
     <div class="scroll-track">
         {#each line as item, i (i)}
-            <span class="itemHighlight">{item[$locale]}</span>
+            <a
+                href="https://www.instagram.com/kemer.app"
+                rel="noopener noreferrer nofollow"
+                target="_blank"
+                class="itemHighlight">{item[$locale]}</a
+            >
         {/each}
         {#each line as item, i (i)}
-            <span class="itemHighlight">{item[$locale]}</span>
+            <a
+                href="https://www.instagram.com/kemer.app"
+                rel="noopener noreferrer nofollow"
+                target="_blank"
+                class="itemHighlight">{item[$locale]}</a
+            >
         {/each}
     </div>
 </div>
@@ -60,7 +48,7 @@
         animation-play-state: paused;
     }
 
-    .scroll-track span {
+    .scroll-track a {
         display: inline-flex;
         padding: 5px 10px;
         border-radius: 5px;
