@@ -9,7 +9,7 @@
 <style>
     .copyright {
         margin-top: 0.5rem;
-        font-size: var(--fz-normal);
+        font-size: var(--text-xs);
         text-align: center;
     }
 </style>

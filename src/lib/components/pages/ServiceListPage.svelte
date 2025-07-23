@@ -8,6 +8,7 @@
     import { onMount } from "svelte";
     import { locale as localeStore } from "$lib/stores/locale.js";
     import { main_page } from "$lib/i18n/main_page.js";
+    import Scroll from "../promotions/Scroll.svelte";
 
     export let data;
     export let seoText;
@@ -96,6 +97,7 @@
             {type}
         />
         <div class="main_page">
+            <Scroll />
             <h1 class="visually-hidden">
                 {seoText[$localeStore].title ?? seoText.en.title}
             </h1>
@@ -119,7 +121,7 @@
         width: 100%;
         height: 100%;
         max-height: 100%;
-        overflow-x: hidden;
+        overflow: hidden;
         flex: none;
         align-self: stretch;
         flex-grow: 1;

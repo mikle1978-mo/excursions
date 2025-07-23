@@ -18,6 +18,7 @@
     import InfoBlockString from "$lib/components/pages/InfoBlockString.svelte";
     import ProductSeoSchema from "../SEO/ProductSeoSchema.svelte";
     import AboutBlock from "./AboutBlock.svelte";
+    import Scroll from "../promotions/Scroll.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -112,6 +113,7 @@
     </div>
 {:else}
     <div class="content">
+        <Scroll />
         <TheBreadcrumbs items={breadcrumbsList} />
         <main class="product-detail">
             <section class="top_block">
@@ -311,7 +313,7 @@
         width: 100%;
         height: 100%;
         max-height: 100%;
-        overflow-x: hidden;
+        overflow: hidden;
         flex: none;
         align-self: stretch;
         flex-grow: 1;
@@ -335,7 +337,6 @@
         align-self: stretch;
         flex-grow: 1;
         border-bottom: 1px solid var(--color-gray-500);
-        padding-top: calc(var(--text-lg) * 2.5);
     }
 
     .meta-info {

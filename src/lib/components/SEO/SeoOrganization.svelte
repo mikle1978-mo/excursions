@@ -4,8 +4,10 @@
     export let url = "https://kemer.app";
     export let logo = "https://kemer.app/icon-192.png";
     export let sameAs = [
-        "https://t.me/kemer_app",
+        "https://t.me/MikleGromov",
         "https://www.instagram.com/kemer.app",
+        "https://wa.me/905356062642",
+        "https://www.facebook.com/profile.php?id=61578033954306",
     ];
 
     const descriptions = {

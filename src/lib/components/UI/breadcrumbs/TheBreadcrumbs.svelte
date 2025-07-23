@@ -18,7 +18,7 @@
 
 <style>
     .breadcrumbs {
-        position: absolute;
+        /* position: absolute; */
         width: 100%;
         top: 0;
         font-size: var(--text-sm);
