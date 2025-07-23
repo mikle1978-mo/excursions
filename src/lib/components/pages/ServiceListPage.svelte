@@ -84,20 +84,20 @@
 />
 
 <div class="content">
+    <Scroll />
     <SidebarFilters
         {type}
         items={allItems}
         on:filtersChanged={(e) => setFilters(e.detail)}
     />
+    <InfoBlock
+        {infoVisible}
+        filteredCount={filteredItems.length}
+        onReset={resetAllFilters}
+        {type}
+    />
     <main>
-        <InfoBlock
-            {infoVisible}
-            filteredCount={filteredItems.length}
-            onReset={resetAllFilters}
-            {type}
-        />
         <div class="main_page">
-            <Scroll />
             <h1 class="visually-hidden">
                 {seoText[$localeStore].title ?? seoText.en.title}
             </h1>
@@ -116,6 +116,7 @@
         position: relative;
         display: flex;
         align-items: flex-start;
+        flex-direction: column;
         padding: 0px;
         gap: var(--space-vertical-md);
         width: 100%;

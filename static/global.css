@@ -279,6 +279,7 @@ main {
     width: 100%;
     height: 100%;
     gap: var(--space-vertical-md);
+    overflow-y: auto;
 }
 
 summary {
