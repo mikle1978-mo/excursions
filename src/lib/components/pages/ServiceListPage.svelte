@@ -118,7 +118,7 @@
         align-items: flex-start;
         flex-direction: column;
         padding: 0px;
-        gap: var(--space-vertical-md);
+        gap: var(--space-vertical-xs);
         width: 100%;
         height: 100%;
         max-height: 100%;
