@@ -1,6 +1,7 @@
 // src/routes/api/excursions/toggle-active/+server.js
 import { connectToDatabase } from "$lib/server/mongodb";
 import { json } from "@sveltejs/kit";
+import { redis } from "$lib/server/redis";
 
 export async function POST({ request }) {
     try {
@@ -25,7 +26,7 @@ export async function POST({ request }) {
                 { status: 404 }
             );
         }
-
+        await redis.del("transfers");
         return json({ success: result.modifiedCount > 0 });
     } catch (err) {
         console.error("Ошибка при обновлении статуса:", err);

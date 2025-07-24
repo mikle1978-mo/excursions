@@ -1,6 +1,7 @@
 import { connectToDatabase } from "$lib/server/mongodb";
 import { yachtSchema } from "$lib/schemas/yachtSchema";
 import { json } from "@sveltejs/kit";
+import { redis } from "$lib/server/redis";
 
 export async function GET() {
     const db = await connectToDatabase();
@@ -79,7 +80,7 @@ export async function POST({ request }) {
         }));
 
         await db.collection("yachts_translations").insertMany(translations);
-
+        await redis.del("yachts");
         return json({ success: true, slug: cleaned.slug }, { status: 201 });
     } catch (err) {
         console.error("Ошибка при создании яхты:", err);

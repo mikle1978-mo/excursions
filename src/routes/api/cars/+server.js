@@ -1,6 +1,7 @@
 import { connectToDatabase } from "$lib/server/mongodb";
 import { carSchema } from "$lib/schemas/carSchema";
 import { json } from "@sveltejs/kit";
+import { redis } from "$lib/server/redis";
 
 export async function GET() {
     const db = await connectToDatabase();
@@ -95,7 +96,7 @@ export async function POST({ request }) {
         }));
 
         await db.collection("cars_translations").insertMany(translations);
-
+        await redis.del("cars");
         return json({ success: true, slug: cleaned.slug }, { status: 201 });
     } catch (err) {
         console.error("Ошибка при создании авто:", err);

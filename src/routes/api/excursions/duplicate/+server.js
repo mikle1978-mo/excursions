@@ -1,4 +1,5 @@
 import { connectToDatabase } from "$lib/server/mongodb";
+import { redis } from "$lib/server/redis";
 
 export async function POST({ request }) {
     const { slug } = await request.json();
@@ -39,6 +40,7 @@ export async function POST({ request }) {
             .insertMany(newTranslations);
     }
 
+    await redis.del("excursions");
     return new Response(JSON.stringify({ success: true, newSlug }), {
         status: 200,
     });

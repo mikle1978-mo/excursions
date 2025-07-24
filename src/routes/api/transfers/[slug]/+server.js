@@ -1,5 +1,6 @@
 import { connectToDatabase } from "$lib/server/mongodb";
 import { json } from "@sveltejs/kit";
+import { redis } from "$lib/server/redis";
 
 export async function GET({ params }) {
     const db = await connectToDatabase();
@@ -66,7 +67,7 @@ export async function PUT({ request, params }) {
             .collection("transfers")
             .updateOne({ slug: oldSlug }, { $set: { slug: newSlug } });
     }
-
+    await redis.del("transfers");
     return json({ success: true });
 }
 
@@ -80,6 +81,6 @@ export async function DELETE({ params }) {
     await db
         .collection("transfers_translations")
         .deleteMany({ itemSlug: params.slug });
-
+    await redis.del("transfers");
     return json({ success: true });
 }

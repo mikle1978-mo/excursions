@@ -1,5 +1,6 @@
 import { connectToDatabase } from "$lib/server/mongodb";
 import { json } from "@sveltejs/kit";
+import { redis } from "$lib/server/redis";
 
 export async function POST({ request }) {
     try {
@@ -41,7 +42,7 @@ export async function POST({ request }) {
                 .collection("transfers_translations")
                 .insertMany(newTranslations);
         }
-
+        await redis.del("transfers");
         return json({ success: true, newSlug }, { status: 201 });
     } catch (err) {
         console.error("Ошибка при дублировании трансфера:", err);

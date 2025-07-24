@@ -1,4 +1,5 @@
 import { connectToDatabase } from "$lib/server/mongodb";
+import { redis } from "$lib/server/redis";
 
 export async function POST({ request }) {
     const { slug } = await request.json();
@@ -36,7 +37,7 @@ export async function POST({ request }) {
     if (newTranslations.length > 0) {
         await db.collection("cars_translations").insertMany(newTranslations);
     }
-
+    await redis.del("cars");
     return new Response(JSON.stringify({ success: true, newSlug }), {
         status: 200,
     });

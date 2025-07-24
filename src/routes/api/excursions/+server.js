@@ -1,6 +1,7 @@
 import { connectToDatabase } from "$lib/server/mongodb";
 import { excursionSchema } from "$lib/schemas/excursionSchema";
 import { json } from "@sveltejs/kit";
+import { redis } from "$lib/server/redis";
 
 export async function GET() {
     const db = await connectToDatabase();
@@ -85,6 +86,7 @@ export async function POST({ request }) {
 
         await db.collection("excursions_translations").insertMany(translations);
 
+        await redis.del("excursions");
         return json({ success: true, slug: cleaned.slug }, { status: 201 });
     } catch (err) {
         console.error("Ошибка при создании экскурсии:", err);

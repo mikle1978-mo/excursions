@@ -1,5 +1,5 @@
 import { connectToDatabase } from "$lib/server/mongodb";
-
+import { redis } from "$lib/server/redis";
 export async function GET({ params }) {
     const db = await connectToDatabase();
     const yacht = await db.collection("yachts").findOne({ slug: params.slug });
@@ -69,7 +69,7 @@ export async function PUT({ request, params }) {
             .collection("yachts")
             .updateOne({ slug: oldSlug }, { $set: { slug: newSlug } });
     }
-
+    await redis.del("yachts");
     // Возвращаем успех
     return new Response(JSON.stringify({ success: true }));
 }
@@ -84,7 +84,7 @@ export async function DELETE({ params }) {
     await db
         .collection("yachts_translations")
         .deleteMany({ itemSlug: params.slug });
-
+    await redis.del("yachts");
     return new Response(JSON.stringify({ success: true }), {
         status: 200,
         headers: {
