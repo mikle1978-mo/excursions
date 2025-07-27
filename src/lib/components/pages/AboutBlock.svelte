@@ -97,4 +97,18 @@
     .read-more:hover {
         color: var(--color-primary-dark);
     }
+    @media (prefers-color-scheme: dark) {
+        .highlight {
+            background-color: rgba(
+                74,
+                201,
+                126,
+                0.15
+            ); /* 15% прозрачности от --color-primary */
+            color: var(--color-primary);
+            border-left: 2px solid var(--color-primary);
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+        }
+    }
 </style>
