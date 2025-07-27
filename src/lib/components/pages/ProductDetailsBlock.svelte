@@ -1,7 +1,21 @@
 <script>
+    import Clock from "$lib/icons/IconClock.svelte";
+    import Group from "$lib/icons/IconGroup.svelte";
+    import Distance from "$lib/icons/IconDistance.svelte";
+    import Start from "$lib/icons/IconStart.svelte";
+    import IconPriceType from "$lib/icons/IconPriceType.svelte";
+
     export let type;
     export let item;
     export let locale = "en";
+
+    const iconComponents = {
+        clock: Clock,
+        group: Group,
+        distance: Distance,
+        start: Start,
+        priceType: IconPriceType,
+    };
 
     // Конфиг с метками и путями к данным для каждого типа
     const fieldsConfig = {
@@ -26,18 +40,32 @@
                 key: "duration",
                 labelRu: "Длительность (ч)",
                 labelEn: "Duration (h)",
+                icon: "clock",
             },
             {
                 key: "groupSize",
-                labelRu: "Размер группы",
-                labelEn: "Group Size",
+                labelRu: "Размер группы (чел)",
+                labelEn: "Group Size (per)",
+                icon: "group",
             },
             {
                 key: "distance",
                 labelRu: "Дистанция (км)",
                 labelEn: "Distance (km)",
+                icon: "distance",
             },
-            { key: "start", labelRu: "Начало", labelEn: "Start" },
+            {
+                key: "start",
+                labelRu: "Начало",
+                labelEn: "Start",
+                icon: "start",
+            },
+            {
+                key: "priceType",
+                labelRu: "Тип цены",
+                labelEn: "Price Type",
+                icon: "priceType",
+            },
         ],
         yacht: [
             {
@@ -86,11 +114,21 @@
         {#each fieldsConfig[type] as field}
             {#if getNested(item, field.key) !== null && getNested(item, field.key) !== undefined && getNested(item, field.key) !== ""}
                 <div class="detail">
-                    <span class="label"
-                        >{locale === "ru"
-                            ? field.labelRu
-                            : field.labelEn}:</span
-                    >
+                    <div class="detail_label">
+                        {#if field?.icon && iconComponents[field.icon]}
+                            <svelte:component
+                                this={iconComponents[field.icon]}
+                                class="icon"
+                            />
+                        {/if}
+
+                        <span class="label"
+                            >{locale === "ru"
+                                ? field.labelRu
+                                : field.labelEn}:</span
+                        >
+                    </div>
+
                     <span class="value">{getNested(item, field.key)}</span>
                 </div>
             {/if}
@@ -108,6 +146,13 @@
     .detail {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+    }
+    .detail_label {
+        display: flex;
+        gap: var(--space-vertical-sm);
+        justify-content: space-between;
+        align-items: center;
     }
     .value {
         display: flex;

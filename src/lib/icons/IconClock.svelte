@@ -1,0 +1,32 @@
+<svg
+    class="icon"
+    width="25"
+    height="25"
+    viewBox="0 0 25 25"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <path
+        d="M12.2858 22.1429C17.8086 22.1429 22.2858 17.6657 22.2858 12.1429C22.2858 6.62004 17.8086 2.14288 12.2858 2.14288C6.76292 2.14288 2.28577 6.62004 2.28577 12.1429C2.28577 17.6657 6.76292 22.1429 12.2858 22.1429Z"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+    <path
+        d="M12.2858 6.14288V12.1429L16.2858 14.1429"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+</svg>
+
+<style>
+    .icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+        flex-shrink: 0;
+    }
+</style>

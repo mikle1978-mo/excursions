@@ -1,0 +1,46 @@
+<script>
+</script>
+
+<svg
+    class="icon"
+    width="25"
+    height="25"
+    viewBox="0 0 25 25"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <g clip-path="url(#clip0_859_40)">
+        <path
+            d="M12.2858 1.14288V23.1429"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        />
+        <path
+            d="M17.2858 5.14288H9.78577C8.85751 5.14288 7.96727 5.51163 7.31089 6.16801C6.65452 6.82439 6.28577 7.71463 6.28577 8.64288C6.28577 9.57114 6.65452 10.4614 7.31089 11.1178C7.96727 11.7741 8.85751 12.1429 9.78577 12.1429H14.7858C15.714 12.1429 16.6043 12.5116 17.2606 13.168C17.917 13.8244 18.2858 14.7146 18.2858 15.6429C18.2858 16.5711 17.917 17.4614 17.2606 18.1178C16.6043 18.7741 15.714 19.1429 14.7858 19.1429H6.28577"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+        />
+    </g>
+    <defs>
+        <clipPath id="clip0_859_40">
+            <rect
+                width="24"
+                height="24"
+                fill="white"
+                transform="translate(0.285767 0.142883)"
+            />
+        </clipPath>
+    </defs>
+</svg>
+
+<style>
+    .icon {
+        width: 1.2rem;
+        height: 1.2rem;
+        object-fit: cover;
+    }
+</style>

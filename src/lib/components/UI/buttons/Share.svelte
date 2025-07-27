@@ -1,6 +1,7 @@
 <script>
     import { locale } from "$lib/stores/locale";
     import { get } from "svelte/store";
+    import MyButton from "./MyButton.svelte";
     const translate = {
         ru: "Поделиться",
         en: "Share",
@@ -45,12 +46,12 @@
     };
 </script>
 
-<button
+<MyButton
     id="share-button"
-    on:click={handleShare}
+    onclick={handleShare}
     aria-label="share"
-    class="share-button"
     title={alerts.share[$locale] || alerts.share.en}
+    variant="outline"
 >
     <svg
         width="24"
@@ -80,35 +81,6 @@
             stroke-linecap="round"
             stroke-linejoin="round"
         />
-    </svg>
-    <span>{translate[$locale]}</span>
-</button>
-
-<style>
-    .share-button {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        gap: var(--space-horizontal-xs);
-        padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
-        border-radius: var(--radius-full);
-        font-size: var(--text-xs);
-        font-weight: 600;
-        background: transparent;
-        border: 1px solid var(--color-text);
-        cursor: pointer;
-        color: var(--color-text);
-    }
-    .share-button svg {
-        width: var(--text-lg);
-        height: var(--text-lg);
-        font-size: var(--text-md);
-        transition: color 0.3s ease;
-        color: var(--color-text);
-    }
-
-    .share-button:hover {
-        color: var(--color-primary);
-    }
-</style>
+    </svg>&nbsp
+    <span>{translate[$locale]}</span></MyButton
+>

@@ -1,6 +1,7 @@
 <script>
     import Share from "$lib/components/UI/buttons/Share.svelte";
     import { formatPrice } from "$lib/utils/priceFormatter.js";
+    import MyButton from "../UI/buttons/MyButton.svelte";
 
     export let price = 0;
     export let priceType = ""; // 'per_day', 'per_hour', ...
@@ -15,7 +16,7 @@
     const bookingLabels = {
         en: {
             default: "Join now",
-            excursion: "I want this!",
+            excursion: "Order",
             yacht: "All aboard",
             car: "Pick up?",
             transfer: "Let’s go!",
@@ -23,7 +24,7 @@
         },
         ru: {
             default: "Записаться",
-            excursion: "Хочу!",
+            excursion: "Заказать",
             yacht: "На борт!",
             car: "Забрать?",
             transfer: "Поехали!",
@@ -70,18 +71,13 @@
         {/if}
     </div>
 
-    <button
+    <MyButton
         id="book-button"
-        class="book-button"
-        on:click={active ? onBook : null}
+        onclick={active ? onBook : null}
         disabled={!active}
-        style="
-            background-color: {active ? 'var(--color-primary)' : '#ccc'};
-            cursor: {active ? 'pointer' : 'not-allowed'};
-        "
+        size="md"
+        variant="secondary">{getBookingLabel(locale, type, active)}</MyButton
     >
-        {getBookingLabel(locale, type, active)}
-    </button>
 
     <Share />
 </aside>
@@ -94,7 +90,7 @@
         align-items: center;
         gap: var(--space-vertical-md);
         background: var(--color-bg);
-        padding: var(--space-vertical-md);
+        padding: var(--space-vertical-md) 0;
         border-radius: var(--radius-md);
         align-self: start;
         top: var(--space-vertical-md);
@@ -120,28 +116,5 @@
     .price-block .per-person {
         font-size: var(--text-sm);
         color: var(--color-gray-600);
-    }
-
-    /* .details {
-        display: grid;
-        width: 100%;
-        gap: var(--space-vertical-sm);
-    } */
-
-    .book-button {
-        width: 100%;
-        padding: var(--space-vertical-sm);
-        background: var(--color-primary);
-        color: var(--color-light);
-        border: none;
-        border-radius: var(--radius-sm);
-        font-weight: 600;
-        font-size: var(--radius-lg);
-        cursor: pointer;
-        transition: var(--transition-fast);
-    }
-
-    .book-button:hover {
-        background: var(--color-primary-hover);
     }
 </style>
