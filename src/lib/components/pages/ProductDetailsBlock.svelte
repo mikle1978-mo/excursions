@@ -3,7 +3,6 @@
     import Group from "$lib/icons/IconGroup.svelte";
     import Distance from "$lib/icons/IconDistance.svelte";
     import Start from "$lib/icons/IconStart.svelte";
-    import IconPriceType from "$lib/icons/IconPriceType.svelte";
 
     export let type;
     export let item;
@@ -14,7 +13,6 @@
         group: Group,
         distance: Distance,
         start: Start,
-        priceType: IconPriceType,
     };
 
     // Конфиг с метками и путями к данным для каждого типа
@@ -60,12 +58,6 @@
                 labelEn: "Start",
                 icon: "start",
             },
-            {
-                key: "priceType",
-                labelRu: "Тип цены",
-                labelEn: "Price Type",
-                icon: "priceType",
-            },
         ],
         yacht: [
             {
@@ -97,7 +89,6 @@
                 labelEn: "Car Model",
             },
             { key: "car.seats", labelRu: "Мест", labelEn: "Seats" },
-            { key: "priceType", labelRu: "Тип цены", labelEn: "Price Type" },
         ],
     };
 
