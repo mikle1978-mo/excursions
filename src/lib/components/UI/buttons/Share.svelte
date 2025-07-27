@@ -54,6 +54,7 @@
     variant="outline"
 >
     <svg
+        class="icon"
         width="24"
         height="24"
         viewBox="0 0 24 24"
@@ -84,3 +85,12 @@
     </svg>&nbsp
     <span>{translate[$locale]}</span></MyButton
 >
+
+<style>
+    .icon {
+        width: 16px;
+        height: 16px;
+        margin-right: 6px;
+        flex-shrink: 0;
+    }
+</style>
