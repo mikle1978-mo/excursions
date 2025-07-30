@@ -2,15 +2,18 @@
     import Share from "$lib/components/UI/buttons/Share.svelte";
     import { formatPrice } from "$lib/utils/priceFormatter.js";
     import MyButton from "../UI/buttons/MyButton.svelte";
+    import getOldPrice from "$lib/utils/getOldPrice";
 
     export let price = 0;
     export let priceType = ""; // 'per_day', 'per_hour', ...
     export let active = false;
     export let locale = "en";
+    export let discount = 0; // Discount percentage, e.g., 10 for 10%
     export let type = "default"; // 'car', 'yacht', 'excursion', 'transfer'
     export let onBook = () => {};
 
     const priceStore = formatPrice(price);
+    const oldPriceStore = formatPrice(getOldPrice(price, discount)); // Assuming 10% discount for example
 
     // Переводы надписей на кнопке по типу товара
     const bookingLabels = {
@@ -63,7 +66,15 @@
 
 <aside class="booking-card">
     <div class="price-block">
-        <span class="price">{$priceStore}</span>
+        <div class="price-row">
+            {#if discount > 0}
+                <span class="discount">-{discount}%</span>
+                <span class="old-price">{$oldPriceStore}</span>
+            {/if}
+
+            <span class="price">{$priceStore}</span>
+        </div>
+
         {#if priceType}
             <span class="per-person"
                 >{getPriceTypeLabel(priceType, locale)}</span
@@ -105,12 +116,33 @@
     .price-block {
         text-align: center;
     }
+    .price-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-horizontal-xs);
+    }
 
     .price-block .price {
         font-size: var(--text-xxl);
         font-weight: 700;
-        color: var(--color-primary);
-        display: block;
+        color: var(--color-error);
+    }
+
+    .price-block .old-price {
+        font-size: var(--text-xxl);
+        font-weight: 700;
+        color: var(--color-text);
+        text-decoration-line: line-through; /* подчёркивание */
+        text-decoration-color: var(--color-error);
+    }
+    .price-block .discount {
+        border-radius: var(--radius-sm);
+        padding: 0 var(--space-horizontal-xs);
+        font-size: var(--text-sm);
+        color: var(--color-bg);
+        background-color: var(--color-error);
+        font-weight: 500;
     }
 
     .price-block .per-person {

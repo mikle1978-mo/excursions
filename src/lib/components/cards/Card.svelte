@@ -3,8 +3,10 @@
     import { onMount } from "svelte";
     import { card } from "$lib/i18n/card";
     import { formatPrice } from "$lib/utils/priceFormatter";
+    import getOldPrice from "$lib/utils/getOldPrice";
     import Rating from "../UI/rating/Rating.svelte";
     import { getCloudinarySrcset } from "$lib/utils/optimizeCloudinary.js";
+    import { get } from "svelte/store";
 
     export let item;
     export let type;
@@ -17,6 +19,7 @@
     $: title = item.title?.[$locale] ?? "";
     $: image = item.images?.[0]?.url ?? defaultImage;
     $: priceDisplay = formatPrice(item.price);
+    $: oldPriceDisplay = formatPrice(getOldPrice(item.price, item.discount));
     $: priceType =
         item.priceType && card[item.priceType] ? item.priceType : "per_person";
 
@@ -117,7 +120,9 @@
 
             <div class="card__price">
                 <span class="card__price-value">
-                    {$priceDisplay}
+                    <span class="card__old-price"
+                        >{discount > 0 ? $oldPriceDisplay : ""}</span
+                    > <span>{$priceDisplay}</span>
                 </span>
                 <span class="card__price-type">
                     {priceTypeLabel}
@@ -160,7 +165,7 @@
     .card__badge {
         position: absolute;
         color: var(--color-light);
-        padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
+        padding: var(--space-vertical-xxs) var(--space-horizontal-xs);
         border-radius: var(--radius-sm);
         font-size: var(--text-xs);
         font-weight: 600;
@@ -252,15 +257,24 @@
     .card__price {
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
+        align-items: center;
     }
 
     .card__price-value {
+        display: flex;
+        align-items: center;
+        gap: var(--space-horizontal-xxs);
         font-size: var(--text-lg);
         font-weight: 500;
-        color: var(--color-primary);
+        color: var(--color-error);
     }
 
+    .card__old-price {
+        text-decoration: line-through;
+        font-weight: 500;
+        font-size: var(--text-lg);
+        color: var(--color-gray-600);
+    }
     .card__price-type {
         font-size: var(--text-xs);
         color: var(--color-gray-600);
@@ -273,7 +287,8 @@
         .card__title {
             font-size: calc(var(--text-md) * 0.9);
         }
-        .card__price-value {
+        .card__price-value,
+        .card__old-price {
             font-size: calc(var(--text-lg) * 0.88);
         }
         .card__content {
@@ -286,7 +301,8 @@
         .card__title {
             font-size: calc(var(--text-md) * 0.95);
         }
-        .card__price-value {
+        .card__price-value,
+        .card__old-price {
             font-size: calc(var(--text-lg) * 0.92);
         }
         .card__content {
@@ -300,7 +316,8 @@
         .card__title {
             font-size: calc(var(--text-md) * 0.9);
         }
-        .card__price-value {
+        .card__price-value,
+        .card__old-price {
             font-size: calc(var(--text-lg) * 0.88);
         }
         .card__content {
@@ -313,7 +330,8 @@
         .card__title {
             font-size: calc(var(--text-md) * 0.85);
         }
-        .card__price-value {
+        .card__price-value,
+        .card__old-price {
             font-size: calc(var(--text-lg) * 0.8);
         }
         .card__content {

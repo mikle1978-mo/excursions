@@ -29,7 +29,7 @@
         background-color: var(--color-primary);
         z-index: 999;
         color: #000000;
-        padding: 9px 4px;
+        padding: 8px 3px;
         border-radius: 0 6px 6px 0;
         transform: rotate(180deg);
         writing-mode: vertical-rl;
@@ -38,8 +38,8 @@
     }
 
     .btn-icon {
-        width: 24px;
-        height: 24px;
+        width: 16px;
+        height: 16px;
         display: flex;
         align-items: center;
         justify-content: center;

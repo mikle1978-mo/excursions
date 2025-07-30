@@ -98,6 +98,7 @@
         calc(0.25 * var(--space-horizontal-unit)),
         0.5rem
     );
+
     --space-horizontal-xs: clamp(
         0.5rem,
         calc(0.5 * var(--space-horizontal-unit)),

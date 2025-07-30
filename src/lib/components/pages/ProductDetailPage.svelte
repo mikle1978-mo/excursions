@@ -143,6 +143,7 @@
                     price={item.price}
                     priceType={item.priceType}
                     active={item.active}
+                    discount={item.discount}
                     locale={effectiveLocale}
                     onBook={openModal}
                 />
