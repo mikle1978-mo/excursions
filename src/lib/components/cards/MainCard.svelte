@@ -86,7 +86,7 @@
     .card__content {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        justify-content: center;
         gap: var(--space-vertical-xs);
         padding: var(--space-vertical-md) var(--space-horizontal-md);
         flex-grow: 1;

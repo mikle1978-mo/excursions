@@ -8,6 +8,7 @@
 
     export let item;
     export let type;
+    let imageSrcset = { src: image, srcset: "" };
 
     export let loading = "lazy";
     const defaultImage = `/images/${type}/${type.endsWith("s") ? type.slice(0, -1) : type}_default.webp`;
@@ -39,7 +40,7 @@
     $: rating = item.rating ?? 5;
     $: reviewsCount = item.reviewsCount ?? 10;
     $: meta = item.meta ?? {};
-    $: imageSrcset = getCloudinarySrcset(image, [400, 600, 800, 980]);
+    // $: imageSrcset = getCloudinarySrcset(image, [400, 600, 800, 980]);
 
     function onImageError(event) {
         console.log(`Image error for ${event.target.src}`);
@@ -57,6 +58,7 @@
     }
 
     onMount(async () => {
+        imageSrcset = getCloudinarySrcset(image, [400, 600, 800, 980]);
         isMounted = true;
     });
 </script>
