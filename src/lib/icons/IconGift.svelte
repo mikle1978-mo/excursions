@@ -1,0 +1,52 @@
+<svg
+    class="icon"
+    width="25"
+    height="25"
+    viewBox="0 0 25 25"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+>
+    <path
+        d="M20.2858 12.0952V22.0952H4.28577V12.0952"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+    <path
+        d="M22.2858 7.09525H2.28577V12.0952H22.2858V7.09525Z"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+    <path
+        d="M12.2858 22.0952V7.09525"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+    <path
+        d="M12.2858 7.09525H7.78577C7.12273 7.09525 6.48684 6.83185 6.018 6.36301C5.54916 5.89417 5.28577 5.25829 5.28577 4.59525C5.28577 3.9322 5.54916 3.29632 6.018 2.82748C6.48684 2.35864 7.12273 2.09525 7.78577 2.09525C11.2858 2.09525 12.2858 7.09525 12.2858 7.09525Z"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+    <path
+        d="M12.2858 7.09525H16.7858C17.4488 7.09525 18.0847 6.83185 18.5535 6.36301C19.0224 5.89417 19.2858 5.25829 19.2858 4.59525C19.2858 3.9322 19.0224 3.29632 18.5535 2.82748C18.0847 2.35864 17.4488 2.09525 16.7858 2.09525C13.2858 2.09525 12.2858 7.09525 12.2858 7.09525Z"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+</svg>
+
+<style>
+  .icon {
+        width: 1.2rem;
+        height: 1.2rem;
+        object-fit: cover;
+    }
+</style>

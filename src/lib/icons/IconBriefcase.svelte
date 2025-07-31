@@ -1,20 +1,23 @@
+<script>
+</script>
+
 <svg
     class="icon"
-    width="25"
-    height="25"
-    viewBox="0 0 25 25"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
 >
     <path
-        d="M12.2858 22.1429C17.8086 22.1429 22.2858 17.6657 22.2858 12.1429C22.2858 6.62004 17.8086 2.14288 12.2858 2.14288C6.76292 2.14288 2.28577 6.62004 2.28577 12.1429C2.28577 17.6657 6.76292 22.1429 12.2858 22.1429Z"
+        d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z"
         stroke="currentColor"
         stroke-width="2"
         stroke-linecap="round"
         stroke-linejoin="round"
     />
     <path
-        d="M12.2858 6.14288V12.1429L16.2858 14.1429"
+        d="M16 21V5C16 4.46957 15.7893 3.96086 15.4142 3.58579C15.0391 3.21071 14.5304 3 14 3H10C9.46957 3 8.96086 3.21071 8.58579 3.58579C8.21071 3.96086 8 4.46957 8 5V21"
         stroke="currentColor"
         stroke-width="2"
         stroke-linecap="round"
@@ -23,7 +26,7 @@
 </svg>
 
 <style>
-    .icon {
+  .icon {
         width: 1.2rem;
         height: 1.2rem;
         object-fit: cover;

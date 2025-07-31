@@ -1,11 +1,18 @@
 <script>
     export let title = "";
     export let items = [];
+    export let icon = null;
+    console.log("InfoBlockArray", { title, items, icon });
 </script>
 
 {#if items.length > 0}
     <div class="info-block">
-        <h2>{title}:</h2>
+        <h2 class="title-with-icon">
+            {#if icon}
+                <svelte:component this={icon} class="icon" />
+            {/if}
+            {title}:
+        </h2>
         <ul class="info-list">
             {#each items as item}
                 <li>{item}</li>
@@ -26,6 +33,12 @@
         font-size: var(--text-lg);
         margin-bottom: var(--space-vertical-sm);
         color: var(--color-text);
+    }
+    .title-with-icon {
+        display: flex;
+        gap: var(--space-vertical-sm);
+        justify-content: flex-start;
+        align-items: center;
     }
 
     .info-list {

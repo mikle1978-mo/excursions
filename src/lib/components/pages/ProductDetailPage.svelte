@@ -19,6 +19,9 @@
     import ProductSeoSchema from "../SEO/ProductSeoSchema.svelte";
     import AboutBlock from "./AboutBlock.svelte";
     import Scroll from "../promotions/Scroll.svelte";
+    import IconImage from "$lib/icons/IconImage.svelte";
+    import IconBriefcase from "$lib/icons/IconBriefcase.svelte";
+    import IconGift from "$lib/icons/IconGift.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -225,6 +228,7 @@
                             effectiveLocale
                         )}
                         items={currentTranslation.whatYouSee}
+                        icon={IconImage}
                     />
                 {/if}
 
@@ -236,6 +240,7 @@
                             effectiveLocale
                         )}
                         items={currentTranslation.whatToBring}
+                        icon={IconBriefcase}
                     />
                 {/if}
 
@@ -247,6 +252,7 @@
                             effectiveLocale
                         )}
                         items={currentTranslation.includes}
+                        icon={IconGift}
                     />
                 {/if}
 
