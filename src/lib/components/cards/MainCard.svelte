@@ -59,7 +59,7 @@
         display: flex;
         flex-direction: column;
         background-color: var(--color-bg);
-        border-radius: var(--radius-md);
+        border-radius: unset;
         overflow: hidden;
         box-shadow: var(--shadow-md);
         transition: var(--transition-normal);
@@ -127,6 +127,11 @@
     /* Медиазапросы */
 
     /* 768px — карточка ~237 */
+    @media (min-width: 480px) {
+        .card {
+            border-radius: var(--radius-md);
+        }
+    }
     @media (min-width: 768px) {
         .card__title {
             font-size: calc(var(--text-md) * 0.9);
