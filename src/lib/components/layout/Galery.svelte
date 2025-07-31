@@ -224,4 +224,16 @@
         color: var(--color-text);
         font-size: var(--text-sm);
     }
+
+    @media (max-width: 480px) {
+        .image-gallery {
+            gap: var(--space-vertical-xs);
+        }
+        .main-image img {
+            border-radius: unset;
+        }
+        .thumbnails {
+            padding-left: var(--space-vertical-xs);
+        }
+    }
 </style>

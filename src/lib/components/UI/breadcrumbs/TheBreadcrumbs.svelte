@@ -36,4 +36,10 @@
             }
         }
     }
+
+    @media (max-width: 480px) {
+        .breadcrumbs {
+            padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
+        }
+    }
 </style>

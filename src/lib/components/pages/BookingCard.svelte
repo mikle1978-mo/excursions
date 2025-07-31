@@ -107,6 +107,11 @@
         top: var(--space-vertical-md);
     }
 
+    @media (max-width: 480px) {
+        .booking-card {
+            padding: 0 var(--space-horizontal-sm);
+        }
+    }
     @media (max-width: 768px) {
         .booking-card {
             position: static;

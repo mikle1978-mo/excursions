@@ -401,6 +401,11 @@
         margin-top: var(--space-vertical-sm);
     }
 
+    @media (max-width: 480px) {
+        .header {
+            padding: 0 var(--space-horizontal-sm);
+        }
+    }
     @media (max-width: 768px) {
         .top_block {
             display: flex;

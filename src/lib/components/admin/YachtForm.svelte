@@ -12,6 +12,7 @@
     import { onMount } from "svelte";
     import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
     import ImageUploader from "$lib/components/UI/inputs/ImageUploader/ImageUploader.svelte";
+    import pluralize from "$lib/utils/pluralize.js";
 
     export let mode = "create"; // "create" или "edit"
     export let slug = ""; // для режима "edit"
@@ -45,6 +46,9 @@
                     acc[field] = e.message;
                     return acc;
                 }, {});
+
+                const count = err.errors.length;
+                generalError = `❌ Неверно заполнено ${count} ${pluralize(count, "поле", "поля", "полей")}. Пожалуйста, проверьте форму.`;
             } else {
                 generalError = err.message || "Ошибка при сохранении";
             }

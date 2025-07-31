@@ -137,7 +137,7 @@
         display: flex;
         flex-direction: column;
         background-color: var(--color-bg);
-        border-radius: var(--radius-md);
+        border-radius: unset;
         overflow: hidden;
         box-shadow: var(--shadow-md);
         transition: var(--transition-normal);
@@ -196,7 +196,7 @@
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        gap: var(--space-vertical-xs);
+        gap: 0;
         padding: var(--space-vertical-md) var(--space-horizontal-md);
         flex-grow: 1;
     }
@@ -235,12 +235,12 @@
 
     .card__footer {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: flex-end;
     }
 
     .card__details {
-        display: flex;
+        display: none;
         flex-direction: column;
         gap: var(--space-vertical-xxs);
     }
@@ -276,12 +276,30 @@
         color: var(--color-gray-600);
     }
     .card__price-type {
+        display: none;
         font-size: var(--text-xs);
         color: var(--color-gray-600);
     }
 
     /* Медиазапросы */
 
+    @media (min-width: 480px) {
+        .card {
+            border-radius: var(--radius-md);
+        }
+        .card__content {
+            gap: var(--space-vertical-xs);
+        }
+        .card__details {
+            display: flex;
+        }
+        .card__footer {
+            justify-content: space-between;
+        }
+        .card__price-type {
+            display: block;
+        }
+    }
     /* 768px — карточка ~237 */
     @media (min-width: 768px) {
         .card__title {

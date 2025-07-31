@@ -336,6 +336,9 @@ summary::-webkit-details-marker {
         --min-font-size: 11px;
         --max-font-size: 14px;
     }
+    .container {
+        padding: var(--space-vertical-sm) 0;
+    }
 }
 
 /* ===== Стили для скроллбаров ===== */

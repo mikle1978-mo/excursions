@@ -137,7 +137,7 @@
     /* 576+ — 2 колонки */
     @media (min-width: 576px) {
         .grid {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr 1fr;
         }
     }
 
@@ -151,21 +151,21 @@
     /* 992+ — 3 колонки */
     @media (min-width: 992px) {
         .grid {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
         }
     }
 
     /* 1200+ — 4 колонки */
     @media (min-width: 1200px) {
         .grid {
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
         }
     }
 
     /* 1440+ — 5 колонок (или оставь 4, если плотность не нравится) */
     @media (min-width: 1440px) {
         .grid {
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
         }
     }
 </style>

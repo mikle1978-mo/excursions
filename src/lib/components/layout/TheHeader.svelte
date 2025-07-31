@@ -51,4 +51,9 @@
             gap: var(--space-horizontal-sm);
         }
     }
+    @media (max-width: 480px) {
+        .header {
+            padding: 0 var(--space-horizontal-sm);
+        }
+    }
 </style>
