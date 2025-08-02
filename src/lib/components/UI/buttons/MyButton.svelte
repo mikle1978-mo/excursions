@@ -26,6 +26,10 @@
     }
 
     /* Размеры */
+    .xs {
+        padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
+        font-size: var(--text-xs);
+    }
     .sm {
         padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
         font-size: var(--text-sm);

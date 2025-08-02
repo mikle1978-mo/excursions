@@ -1,3 +1,4 @@
+// load-функция (сервер)
 import { connectToDatabase } from "$lib/server/mongodb";
 
 export async function load() {
@@ -8,22 +9,33 @@ export async function load() {
         .find(
             {},
             {
-                projection: {
-                    _id: 0,
-                    slug: 1,
-                    active: 1,
-                    price: 1,
-                },
+                projection: { _id: 0, slug: 1, active: 1, price: 1 },
             }
         )
-        .sort({ slug: 1 })
         .toArray();
 
+    const translations = await db
+        .collection("cars_translations")
+        .find(
+            { lang: "ru" },
+            {
+                projection: { _id: 0, itemSlug: 1, title: 1 },
+            }
+        )
+        .toArray();
+
+    const translationsMap = new Map(
+        translations.map((t) => [t.itemSlug, t.title])
+    );
+
+    const mappedCars = cars.map((e) => ({
+        slug: e.slug,
+        active: e.active,
+        price: e.price,
+        title_ru: translationsMap.get(e.slug) || "",
+    }));
+
     return {
-        cars: cars.map((t) => ({
-            active: t.active,
-            slug: t.slug,
-            price: t.price,
-        })),
+        items: mappedCars,
     };
 }
