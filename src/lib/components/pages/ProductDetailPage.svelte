@@ -107,7 +107,7 @@
 
 {#if !item}
     <div class="error-page">
-        <h1>
+        <h1 class="error-title">
             {effectiveLocale === "ru" ? "Объект не найден" : "Item not found"}
         </h1>
         <a href={`/${effectiveLocale}/${type}s`}>
@@ -388,6 +388,10 @@
     .description p {
         line-height: var(--line-height-base);
         color: var(--color-gray-700);
+    }
+
+    .error-title {
+        font-size: var(--text-md);
     }
 
     @media (prefers-color-scheme: dark) {
