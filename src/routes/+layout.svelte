@@ -51,32 +51,15 @@
     };
 
     onMount(() => {
+        // Существующий код
         const unsubscribe = localeStore.subscribe((value) => {
             document.documentElement.lang = value;
             console.log("Set lang:", value);
         });
-
         initCurrencyService();
         const interval = setInterval(initCurrencyService, 30 * 60 * 1000);
 
-        return () => {
-            unsubscribe();
-            clearInterval(interval);
-        };
-    });
-</script>
-
-<GoogleTagManager {gtmId} />
-<SeoOrganization />
-
-<svelte:head>
-    <meta name="author" content="Kemer.app" />
-    <link rel="manifest" href="/manifest.json" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
-    <meta name="theme-color" content="#ffffff" />
-    <script type="text/javascript">
+        // 👇 Добавляем метрику
         (function (m, e, t, r, i, k, a) {
             m[i] =
                 m[i] ||
@@ -96,13 +79,30 @@
             "ym"
         );
 
-        ym(97637253, "init", {
+        window.ym?.(97637253, "init", {
             clickmap: true,
             trackLinks: true,
             accurateTrackBounce: true,
             webvisor: true,
         });
-    </script>
+
+        return () => {
+            unsubscribe();
+            clearInterval(interval);
+        };
+    });
+</script>
+
+<GoogleTagManager {gtmId} />
+<SeoOrganization />
+
+<svelte:head>
+    <meta name="author" content="Kemer.app" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
+    <meta name="theme-color" content="#ffffff" />
 </svelte:head>
 
 <div class="container">

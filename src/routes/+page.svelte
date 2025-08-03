@@ -2,7 +2,7 @@
     import { main_page } from "$lib/i18n/main_page";
     import { locale } from "$lib/stores/locale";
     import MainCard from "$lib/components/cards/MainCard.svelte";
-    import { onMount } from "svelte";
+
     import { page } from "$app/stores";
     import { fly, slide } from "svelte/transition";
 
@@ -12,10 +12,6 @@
     $: canonicalUrl = `${baseUrl}`;
 
     let isMounted = false;
-
-    onMount(() => {
-        isMounted = true;
-    });
 
     const SEO = {
         title: {
