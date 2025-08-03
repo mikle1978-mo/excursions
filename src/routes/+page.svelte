@@ -77,7 +77,7 @@
 
             <div class="grid">
                 {#each main_page.pages as item, i}
-                    <MainCard {item} loading={i < 3 ? "eager" : "lazy"} />
+                    <MainCard {item} loading={"eager"} />
                 {/each}
             </div>
         </div>
