@@ -67,11 +67,6 @@
             resetExcursionForm(); // сбрасываем всё к начальному состоянию
         }
     });
-
-    $: console.log(
-        "--- Current formData ---",
-        JSON.parse(JSON.stringify($excursionForm))
-    );
 </script>
 
 <div class="new-page">

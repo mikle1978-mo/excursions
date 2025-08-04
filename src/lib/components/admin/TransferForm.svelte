@@ -67,11 +67,6 @@
             resetTransferForm(); // сбрасываем всё к начальному состоянию
         }
     });
-
-    $: console.log(
-        "--- Current formData ---",
-        JSON.parse(JSON.stringify($transferForm))
-    );
 </script>
 
 <div class="new-page">

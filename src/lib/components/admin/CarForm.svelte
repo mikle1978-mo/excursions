@@ -64,11 +64,6 @@
             resetCarForm(); // сбрасываем всё к начальному состоянию
         }
     });
-
-    $: console.log(
-        "--- Current formData ---",
-        JSON.parse(JSON.stringify($carForm))
-    );
 </script>
 
 <div class="new-page">

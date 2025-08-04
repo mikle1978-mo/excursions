@@ -3,6 +3,7 @@ export const EN_VALID_ROUTES = [
     "",
     "about",
     "admin",
+    "login",
     "development",
     "excursions",
     "yachts",
