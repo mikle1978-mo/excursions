@@ -51,6 +51,13 @@
     };
 
     onMount(() => {
+        function handleKeydown(e) {
+            if (e.ctrlKey && e.altKey && e.key.toLowerCase() === "a") {
+                window.location.href = "/admin";
+            }
+        }
+
+        window.addEventListener("keydown", handleKeydown);
         // Существующий код
         const unsubscribe = localeStore.subscribe((value) => {
             document.documentElement.lang = value;
@@ -87,6 +94,7 @@
         });
 
         return () => {
+            window.removeEventListener("keydown", handleKeydown);
             unsubscribe();
             clearInterval(interval);
         };
