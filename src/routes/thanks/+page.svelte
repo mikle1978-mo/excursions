@@ -20,7 +20,7 @@
             } else {
                 clearInterval(interval);
                 // Переход на главную
-                // window.location.href = "/";
+                window.location.href = "/";
             }
         }, 1000);
     });

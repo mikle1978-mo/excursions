@@ -10,7 +10,7 @@ export async function POST({ request }) {
         });
     }
 
-    let message = `<b>Заявка с сайта Экскурсий!</b>\n`;
+    let message = `<b>Заявка с сайта Kemer.app!</b>\n`;
 
     for (const [key, value] of Object.entries(data)) {
         message += `<b>${key}: </b>${value || "Не указан"}\n`;
