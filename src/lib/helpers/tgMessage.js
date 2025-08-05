@@ -1,4 +1,5 @@
 export default async function TGMessage(data) {
+    console.log("Отправка сообщения в Telegram:", data);
     try {
         const response = await fetch("/api/telegram", {
             method: "POST",

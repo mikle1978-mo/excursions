@@ -64,7 +64,16 @@
 
     <!-- preload first 3 images -->
     {#each main_page.pages.slice(0, 3) as item}
-        <link rel="preload" as="image" href={item.img} type="image/webp" />
+        {#if item.set && item.set.length > 0}
+            <link
+                rel="preload"
+                as="image"
+                href={item.set[0].url}
+                type="image/webp"
+            />
+        {:else}
+            <link rel="preload" as="image" href={item.img} type="image/webp" />
+        {/if}
     {/each}
 </svelte:head>
 

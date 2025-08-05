@@ -9,6 +9,9 @@
     export let slug;
     let currentUrl = "";
     let showDetails = false;
+    let min = 6;
+    let max = 15;
+    let pattern = `^\\+\\d{${min},${max}}$`;
 
     onMount(() => {
         currentUrl = window.location.href;
@@ -29,6 +32,8 @@
             slug,
             url: currentUrl,
         };
+
+        console.log("Form data:", data);
 
         TGMessage(data);
 
@@ -61,6 +66,8 @@
             required
             class="form-input"
             placeholder="+ ..."
+            {pattern}
+            title="Введите номер с кодом страны, например +901234567890"
         />
     </label>
 

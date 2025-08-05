@@ -2,7 +2,6 @@
     export let title = "";
     export let items = [];
     export let icon = null;
-    console.log("InfoBlockArray", { title, items, icon });
 </script>
 
 {#if items.length > 0}
