@@ -61,7 +61,7 @@
         background-color: var(--color-bg);
         border-radius: unset;
         overflow: hidden;
-        box-shadow: var(--shadow-md);
+
         transition: var(--transition-normal);
         min-height: 245px;
     }

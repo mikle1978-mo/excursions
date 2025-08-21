@@ -1,15 +1,16 @@
 <script>
     export let variant = "primary"; // 'primary' | 'secondary' | 'outline'
     export let size = "md"; // 'sm' | 'md' | 'lg'
+    export let width = "width-full"; // 'full' | 'auto' | 'lg'
 </script>
 
-<button class="custom-button {variant} {size}" {...$$restProps}>
+<button class="custom-button {variant} {size} {width}" {...$$restProps}>
     <slot />
 </button>
 
 <style>
     .custom-button {
-        width: 100%;
+        max-height: calc(var(--space-vertical-lg) * 2);
         font-family: inherit;
         font-weight: 500;
         border-radius: var(--radius-md);
@@ -20,9 +21,16 @@
         justify-content: center;
         white-space: nowrap;
         border: none;
-        line-height: var(--line-height-base);
+        line-height: calc(var(--line-height-base) * 1.5);
         position: relative;
         overflow: hidden;
+    }
+
+    .width-full {
+        width: 100%;
+    }
+    .width-auto {
+        width: auto;
     }
 
     /* Размеры */
@@ -72,8 +80,20 @@
         background-color: transparent;
         color: var(--color-primary);
         border: 1px solid var(--color-primary);
+    }
+
+    /* Добавить отдельные правила паддинга для размеров и outline */
+    .outline.sm {
+        padding: calc(var(--space-vertical-xxs) - 1px)
+            calc(var(--space-horizontal-sm) - 1px);
+    }
+    .outline.md {
         padding: calc(var(--space-vertical-xs) - 1px)
             calc(var(--space-horizontal-md) - 1px);
+    }
+    .outline.lg {
+        padding: calc(var(--space-vertical-sm) - 1px)
+            calc(var(--space-horizontal-lg) - 1px);
     }
     .outline:hover:not(:disabled) {
         background-color: color-mix(in srgb, var(--color-primary), white 90%);

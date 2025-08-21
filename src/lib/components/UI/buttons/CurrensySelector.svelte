@@ -63,7 +63,8 @@
     .currency-container {
         position: relative;
         height: 100%;
-        min-width: 32px;
+        width: 32px;
+        height: 32px;
     }
 
     .currency-button {
@@ -76,9 +77,9 @@
         height: 100%;
         aspect-ratio: 1;
         font-size: var(--text-sm);
-        color: var(--color-text);
+        color: var(--color-gray-500);
         background: var(--color-gray-100);
-        border: 1px solid var(--color-gray-300);
+        border: 2px solid var(--color-gray-500);
         border-radius: var(--radius-full);
         padding: 0;
         box-shadow: var(--shadow-sm);

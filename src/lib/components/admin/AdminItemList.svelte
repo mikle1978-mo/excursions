@@ -9,8 +9,6 @@
 
     export let items = [];
 
-    console.log(items);
-
     export let type = "excursions";
     export let columnMap = {
         slug: "Slug",
@@ -71,10 +69,6 @@
         }
     }
 
-    function goBack() {
-        history.back();
-    }
-
     $: sortedItems = [...items].sort((a, b) => {
         const aVal = a[sortKey] ?? "";
         const bVal = b[sortKey] ?? "";
@@ -103,7 +97,11 @@
     <div class="admin-title">
         <span>Список: {type}</span>
         <div class="admin-actions">
-            <MyButton size="xs" variant="outline" onclick={goBack}>
+            <MyButton
+                size="xs"
+                variant="outline"
+                onclick={goto.bind(null, "/admin")}
+            >
                 Админка</MyButton
             >
 
@@ -147,6 +145,7 @@
                     <tr class:item-inactive={!item.active}>
                         <td>
                             <input
+                                id={`toggle-${i}`}
                                 type="checkbox"
                                 checked={item.active}
                                 on:change={() => handleToggle(i)}

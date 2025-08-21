@@ -15,6 +15,7 @@
             <label>
                 Логин
                 <input
+                    id="username"
                     name="username"
                     type="text"
                     placeholder="Введите логин"
@@ -26,6 +27,7 @@
             <label>
                 Пароль
                 <input
+                    id="password"
                     name="password"
                     type="password"
                     placeholder="Введите пароль"

@@ -1,5 +1,18 @@
 import { connectToDatabase } from "$lib/server/mongodb";
 import { redis } from "$lib/server/redis";
+import { excursionSteps } from "$lib/components/admin/fields/excursions";
+import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
+
+// вспомогательные функции
+function flattenFields(steps) {
+    return steps.flatMap((step) => step.fields);
+}
+
+function isLocalizedField(name) {
+    return excursionSteps.some((step) =>
+        step.fields.some((field) => field.name === name && field.localized)
+    );
+}
 
 export async function GET({ params }) {
     const db = await connectToDatabase();
@@ -20,66 +33,52 @@ export async function GET({ params }) {
 
 export async function PUT({ request, params }) {
     const db = await connectToDatabase();
-
-    // Получаем полный объект яхты с клиента (включая мультиязычные поля)
     const excursionData = await request.json();
 
-    // Старый и новый slug (идентификаторы яхты)
     const oldSlug = params.slug;
     const newSlug = excursionData.slug;
 
-    // Формируем массив переводов для коллекции excursions_translations,
-    // извлекая языковые поля из excursionData по каждому языку
-    const preparedTranslations = ["ru", "en", "tr"].map((lang) => ({
-        itemSlug: newSlug, // связываем перевод с новым slug
-        lang, // язык перевода
-        title: excursionData.title?.[lang] ?? "",
-        description: excursionData.description?.[lang] ?? "",
-        metaDescription: excursionData.metaDescription?.[lang] ?? "",
-        whatYouSee: excursionData.whatYouSee?.[lang] ?? [],
-        includes: excursionData.includes?.[lang] ?? [],
-        whatToBring: excursionData.whatToBring?.[lang] ?? [],
-        meetingPoint: excursionData.meetingPoint?.[lang] ?? "",
-        tags: excursionData.tags?.[lang] ?? [],
-    }));
+    // Все поля
+    const allFields = flattenFields(excursionSteps);
 
-    // Создаём объект для основной коллекции excursions —
-    // копируем все поля, кроме мультиязычных
-    const excursion = { ...excursionData };
-    delete excursion.title;
-    delete excursion.description;
-    delete excursion.metaDescription;
-    delete excursion.whatYouSee;
-    delete excursion.includes;
-    delete excursion.whatToBring;
-    delete excursion.meetingPoint;
-    delete excursion.tags;
+    // Локализованные поля
+    const localizedFields = allFields.filter((f) => isLocalizedField(f.name));
 
-    // Обновляем основной документ в коллекции excursions по старому slug
+    // Подготовка переводов для каждой локали
+    const preparedTranslations = SUPPORTED_LANGUAGES.map((lang) => {
+        const t = { itemSlug: newSlug, lang };
+        for (const field of localizedFields) {
+            t[field.name] =
+                excursionData[field.name]?.[lang] ??
+                field.default?.[lang] ??
+                (Array.isArray(field.default) ? [] : "");
+        }
+        return t;
+    });
+
+    // Основной документ — все не-локализованные поля
+    const mainDoc = { ...excursionData };
+    for (const field of localizedFields) {
+        delete mainDoc[field.name]; // удаляем локализованные поля
+    }
+
+    // Обновляем основной документ и slug одной операцией
     await db
         .collection("excursions")
-        .updateOne({ slug: oldSlug }, { $set: excursion });
+        .updateOne({ slug: oldSlug }, { $set: { ...mainDoc, slug: newSlug } });
 
-    // Удаляем все старые переводы из коллекции excursions_translations
+    // Обновляем переводы: удаляем старые и вставляем новые
     await db
         .collection("excursions_translations")
         .deleteMany({ itemSlug: oldSlug });
-
-    // Вставляем новые переводы
     await db
         .collection("excursions_translations")
         .insertMany(preparedTranslations);
 
-    // Если slug изменился, обновляем его в основном документе
-    if (oldSlug !== newSlug) {
-        await db
-            .collection("excursions")
-            .updateOne({ slug: oldSlug }, { $set: { slug: newSlug } });
-    }
-
-    // Возвращаем успех
+    // Чистим кеш Redis
     await redis.del("excursions");
-    return new Response(JSON.stringify({ success: true }));
+
+    return new Response(JSON.stringify({ success: true, slug: newSlug }));
 }
 
 export async function DELETE({ params }) {

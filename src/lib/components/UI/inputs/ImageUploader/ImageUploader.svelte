@@ -1,5 +1,6 @@
 <script>
     import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
+    import MyButton from "../../buttons/MyButton.svelte";
     import { dndzone } from "svelte-dnd-action";
 
     export let images = [];
@@ -103,14 +104,6 @@
                 on:change={handleFileChange}
                 aria-label={placeholder}
             />
-            <button
-                on:click={uploadImages}
-                type="button"
-                class="button"
-                disabled={isUploading || !previews.length}
-            >
-                {isUploading ? "Загрузка..." : "Загрузить"}
-            </button>
         </div>
 
         {#if previews.length}
@@ -130,6 +123,15 @@
                 {/each}
             </div>
         {/if}
+        <MyButton
+            width="width-auto"
+            onclick={uploadImages}
+            size="xs"
+            type="button"
+            disabled={isUploading || !previews.length}
+        >
+            {isUploading ? "Загрузка..." : "Загрузить"}
+        </MyButton>
 
         {#if images.length}
             <h4>Загруженные (перетащите для сортировки):</h4>
@@ -186,29 +188,25 @@
         cursor: pointer;
     }
     input[type="file"]::file-selector-button {
-        background-color: var(--color-primary);
-        color: var(--color-text);
-        border: none;
-        border-radius: var(--radius-sm);
-        padding: 0.4rem 0.8rem;
-        margin-right: 0.6rem;
-        font-size: 0.9rem;
+        font-family: inherit;
+        font-weight: 500;
+        border-radius: var(--radius-md);
         cursor: pointer;
+        transition: var(--transition-fast);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        border: none;
+        line-height: var(--line-height-base);
+        position: relative;
+        overflow: hidden;
+        background-color: var(--color-primary);
+        color: var(--color-light);
+        padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
+        font-size: var(--text-xs);
     }
     input[type="file"]::file-selector-button:hover {
-        background-color: var(--color-primary-hover);
-    }
-    .button {
-        padding: var(--space-vertical-xs) var(--space-horizontal-sm);
-        border: none;
-        border-radius: 3rem;
-        cursor: pointer;
-        font-size: inherit;
-        background-color: var(--color-primary);
-        color: var(--color-text);
-        transition: 0.3s;
-    }
-    .button:hover {
         background-color: var(--color-primary-hover);
     }
     .preview-list,

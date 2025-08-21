@@ -48,6 +48,9 @@ export async function createExcursion(data) {
  * Обновление экскурсии
  */
 export async function updateExcursion(slug, data) {
+    console.log("====================================");
+    console.log(data);
+    console.log("====================================");
     const res = await fetch(`${API_URL}/${slug}`, {
         method: "PUT",
         headers: {

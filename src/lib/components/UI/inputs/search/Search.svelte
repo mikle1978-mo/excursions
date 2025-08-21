@@ -1,26 +1,19 @@
 <script>
     import { searchQuery } from "$lib/stores/searchQuery.js";
     import { locale } from "$lib/stores/locale";
-    import { onMount } from "svelte";
+    import { onMount, tick } from "svelte";
+
     const labels = {
-        placeholder: {
-            en: "Search...",
-            ru: "Поиск...",
-        },
-        clear: {
-            en: "Clear search",
-            ru: "Очистить поиск",
-        },
-        submit: {
-            en: "Perform search",
-            ru: "Выполнить поиск",
-        },
+        placeholder: { en: "Search...", ru: "Поиск..." },
+        clear: { en: "Clear search", ru: "Очистить поиск" },
+        submit: { en: "Perform search", ru: "Выполнить поиск" },
     };
+
     let query = "";
     let isMounted = false;
     let isFocused = false;
-
-    import { tick } from "svelte";
+    let expanded = false;
+    let inputEl;
 
     function handleInput() {
         searchQuery.set(query.trim());
@@ -29,24 +22,37 @@
     function clearInput() {
         query = "";
         searchQuery.set("");
+        inputEl?.focus();
     }
+
+    async function toggleSearch() {
+        expanded = !expanded;
+        if (expanded) {
+            await tick();
+            inputEl?.focus();
+        } else {
+            clearInput();
+        }
+    }
+
     onMount(() => {
         isMounted = true;
+        locale.subscribe((v) => ($locale = v));
     });
 </script>
 
 {#if isMounted}
     <form
-        id="search"
         role="search"
         on:submit|preventDefault={handleInput}
         class="search-form"
     >
-        <div class="search-container {isFocused ? 'focused' : ''}">
+        <div class="search-container {expanded ? 'expanded' : ''}">
             <button
-                type="submit"
+                type="button"
                 class="search-button"
                 aria-label={labels.submit[$locale] || labels.submit.en}
+                on:click={toggleSearch}
             >
                 <svg
                     class="search-icon"
@@ -73,7 +79,7 @@
             </button>
 
             <input
-                id="searh_input"
+                bind:this={inputEl}
                 type="text"
                 bind:value={query}
                 on:focus={() => (isFocused = true)}
@@ -83,7 +89,6 @@
                     labels.placeholder.en}
                 aria-label={labels.placeholder[$locale] ||
                     labels.placeholder.en}
-                required
             />
 
             <button
@@ -113,130 +118,78 @@
 
 <style>
     .search-form {
-        width: auto;
-        height: 100%;
-    }
-    .search-container {
-        position: relative;
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        align-items: center;
+        display: flex;
+        justify-content: flex-end;
         width: 100%;
-        height: 100%;
-        background: var(--color-gray-100);
-        border: 1px solid var(--color-gray-300);
-        border-radius: var(--radius-full);
-        padding: 0 var(--space-horizontal-xs);
-        gap: var(--space-horizontal-xs);
-        box-shadow: var(--shadow-sm);
-        transition: all var(--transition-normal);
     }
 
-    .search-container.focused {
-        background: var(--color-bg);
+    .search-container {
+        display: flex;
+        align-items: center;
+        background: var(--color-gray-100);
+        border-radius: 50%;
+        overflow: hidden;
+        width: 32px;
+        height: 32px;
+        transition: all 0.3s ease;
+        border: 2px solid var(--color-gray-500);
+    }
+
+    .search-container.expanded {
+        width: 100%;
+        border-radius: var(--radius-full);
         border-color: var(--color-primary);
-        box-shadow: var(--shadow-md);
-        animation: input-focus var(--transition-slow);
     }
 
     .search-button {
         display: flex;
         align-items: center;
         justify-content: center;
+        width: 32px;
+        height: 32px;
         background: none;
         border: none;
-        padding: 0;
         cursor: pointer;
         color: var(--color-gray-500);
-        transition: color var(--transition-fast);
-    }
-
-    .search-container.focused .search-button {
-        color: var(--color-primary);
     }
 
     input {
-        width: 100%;
+        width: 0;
         border: none;
-        background: transparent;
-        color: var(--color-text);
-        font-size: var(--text-md);
-        font-family: inherit;
-        line-height: var(--line-height-base);
         outline: none;
-    }
-    input:focus {
-        font-size: 16px;
-    }
-
-    input::placeholder {
-        color: var(--color-gray-500);
-        font-size: var(--text-sm);
-        transition: opacity var(--transition-fast);
+        background: transparent;
+        flex: 1;
+        opacity: 0;
+        transition: opacity 0.2s ease;
     }
 
-    input:focus::placeholder {
-        opacity: 0.5;
+    .search-container.expanded input {
+        width: 100%;
+        opacity: 1;
     }
 
     .clear-btn {
+        width: 0;
         display: flex;
         align-items: center;
         justify-content: center;
         background: none;
         border: none;
-        padding: 0;
-        border-radius: var(--radius-full);
-        color: var(--color-gray-500);
-        cursor: pointer;
-        transition: all var(--transition-fast);
-        /* Скрыта по умолчанию */
         opacity: 0;
         pointer-events: none;
+        transition: opacity 0.2s ease;
     }
 
     .clear-btn.visible {
+        width: 24px;
         opacity: 1;
         pointer-events: auto;
-    }
-
-    .clear-btn:hover,
-    .clear-btn:focus {
-        color: var(--color-error);
-        background: var(--color-gray-200);
-    }
-
-    @keyframes input-focus {
-        0% {
-            box-shadow: var(--shadow-sm);
-        }
-        50% {
-            box-shadow: 0 0 0 var(--space-horizontal-xs) rgba(74, 201, 126, 0.2);
-        }
-        100% {
-            box-shadow: var(--shadow-md);
-        }
     }
 
     @media (prefers-color-scheme: dark) {
         .search-container {
             background: var(--color-gray-800);
             border-color: var(--color-gray-600);
-        }
-
-        .search-container.focused {
-            background: var(--color-gray-900);
-        }
-
-        .clear-btn:hover,
-        .clear-btn:focus {
-            background: var(--color-gray-700);
-        }
-    }
-
-    @media (max-width: 768px) {
-        input::placeholder {
-            font-size: var(--text-xs);
         }
     }
 </style>

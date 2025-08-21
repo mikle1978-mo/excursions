@@ -50,6 +50,7 @@
     <label class="form-label">
         <span>{form_list.form_name[$locale]}</span>
         <input
+            id="name"
             type="text"
             name="name"
             required
@@ -61,6 +62,7 @@
     <label class="form-label">
         <span>{form_list.form_phone[$locale]}</span>
         <input
+            id="phone"
             type="tel"
             name="phone"
             required
@@ -74,12 +76,13 @@
     <div class="form-details {showDetails ? 'form-details--visible' : ''}">
         <label class="form-label">
             <span>{form_list.form_date[$locale]}</span>
-            <input type="date" name="date" class="form-input" />
+            <input id="date" type="date" name="date" class="form-input" />
         </label>
 
         <label class="form-label">
             <span>{form_list.form_persons[$locale]}</span>
             <input
+                id="persons"
                 type="number"
                 name="persons"
                 class="form-input"
@@ -91,6 +94,7 @@
         <label class="form-label">
             <span>{form_list.form_comment[$locale]}</span>
             <textarea
+                id="comment"
                 name="comment"
                 class="form-input"
                 placeholder={form_list.comment_placeholder[$locale]}
@@ -98,8 +102,8 @@
         </label>
     </div>
 
-    <input type="hidden" name="slug" value={slug} />
-    <input type="hidden" name="url" value={currentUrl} />
+    <input type="hidden" name="slug" value={slug} id="slug" />
+    <input type="hidden" name="url" value={currentUrl} id="url" />
 
     <button type="submit" class="form-button">
         {form_list.submit[$locale]}

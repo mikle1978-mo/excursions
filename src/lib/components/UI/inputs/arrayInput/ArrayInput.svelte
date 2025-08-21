@@ -1,5 +1,6 @@
 <script>
     import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
+    import MyButton from "../../buttons/MyButton.svelte";
     export let value = [];
     export let placeholder = "Введите элементы (каждый с новой строки)";
     // export let delimiter = /[,;\n]+/;
@@ -35,9 +36,12 @@
     <div class="array-input">
         <div class="input-group">
             <textarea bind:value={inputValue} {placeholder}></textarea>
-            <button on:click={addItems} type="button" class="button">
-                Добавить
-            </button>
+            <MyButton
+                width="width-auto"
+                size="xs"
+                onclick={addItems}
+                type="button">Добавить</MyButton
+            >
         </div>
         <div
             class={`items-list ${value.length > 0 ? "has-items" : "no-items"}`}
@@ -65,7 +69,6 @@
     .label {
         display: flex;
         flex-direction: column;
-        font-size: var(--text-sm);
         gap: 0.3rem;
     }
     .array-input {
@@ -81,7 +84,6 @@
     textarea {
         width: 100%;
         padding: 0.5rem 0.75rem;
-        font-size: var(--text-md);
         border: 1px solid var(--color-gray-400);
         border-radius: var(--radius-sm);
         background-color: var(--color-light);
@@ -92,7 +94,6 @@
     }
 
     textarea:focus {
-        font-size: 16px;
         outline: none;
         border-color: var(--color-primary);
         box-shadow: 0 0 0 2px rgba(74, 201, 126, 0.3);
@@ -101,7 +102,6 @@
         padding: var(--space-vertical-xs) var(--space-horizontal-sm);
         max-width: 20rem;
         max-height: calc(var(--text-md) * 2);
-        font-size: inherit;
         border: none;
         border-radius: 3rem;
         cursor: pointer;
@@ -171,5 +171,11 @@
     .actions {
         display: flex;
         align-items: center;
+    }
+    @media (prefers-color-scheme: dark) {
+        textarea {
+            background: var(--color-gray-800);
+            border-color: var(--color-gray-600);
+        }
     }
 </style>

@@ -113,14 +113,4 @@
     <meta name="theme-color" content="#ffffff" />
 </svelte:head>
 
-<div class="container">
-    <div class="page">
-        <WhatsApp />
-        <TheMobileMenu />
-        <TheHeader />
-
-        <slot />
-        <!-- {@render children()} -->
-        <TheFooter />
-    </div>
-</div>
+<slot />

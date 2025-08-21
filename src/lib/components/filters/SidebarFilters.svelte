@@ -256,7 +256,7 @@
         background: transparent;
         border: none;
         font-size: 1.5rem;
-        color: var(--color-text);
+        color: var(--color-gray-500);
         cursor: pointer;
     }
 

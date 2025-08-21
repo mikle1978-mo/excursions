@@ -18,5 +18,5 @@ export async function load() {
     // Сохраняем в кеш на сутки
     await setCache(CACHE_KEY, excursions, CACHE_TTL_SECONDS);
 
-    return { excursions };
+    return { excursions, noLayout: true };
 }

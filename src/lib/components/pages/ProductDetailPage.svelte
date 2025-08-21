@@ -5,6 +5,7 @@
         getLocalizedPath,
     } from "$lib/stores/locale";
     import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
+    import HeroBlock from "./HeroBlock.svelte";
     import ReviewsList from "../layout/ReviewsList.svelte";
     import BookingCard from "./BookingCard.svelte";
     import ProductDetailsBlock from "./ProductDetailsBlock.svelte";
@@ -18,10 +19,17 @@
     import InfoBlockString from "$lib/components/pages/InfoBlockString.svelte";
     import ProductSeoSchema from "../SEO/ProductSeoSchema.svelte";
     import AboutBlock from "./AboutBlock.svelte";
-    import Scroll from "../promotions/Scroll.svelte";
     import IconImage from "$lib/icons/IconImage.svelte";
     import IconBriefcase from "$lib/icons/IconBriefcase.svelte";
     import IconGift from "$lib/icons/IconGift.svelte";
+    import TheBurger from "../UI/buttons/TheBurger.svelte";
+    import TheMobileMenu from "../layout/TheMobileMenu.svelte";
+    import GaleryCollage from "../layout/GaleryCollage.svelte";
+    import Description from "./Description.svelte";
+    import ButtonBlock from "./ButtonBlock.svelte";
+    import PriceBlock from "./PriceBlock.svelte";
+    import WhatsApp from "../UI/buttons/WhatsApp.svelte";
+    import ScheduleBlock from "./ScheduleBlock.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -32,6 +40,8 @@
     export let reviewsCount;
     export let locale;
     export let translations;
+
+    console.log(item);
 
     export function getI18nLabel(obj, key, locale) {
         return obj?.[key]?.[locale] ?? key;
@@ -45,7 +55,9 @@
 
     $: currentTranslation =
         item?.translations?.find((t) => t.lang === effectiveLocale) ?? {};
-
+    $: {
+        console.log("Translation changed:", currentTranslation);
+    }
     // Хлебные крошки
     const typeLabels = {
         car: { ru: "Авто", en: "Cars", tr: "Araba" },
@@ -116,45 +128,50 @@
     </div>
 {:else}
     <div class="content">
-        <Scroll />
-        <TheBreadcrumbs items={breadcrumbsList} />
+        <WhatsApp />
+        <div class="burger-wrapper">
+            <TheBurger />
+        </div>
+        <TheMobileMenu />
         <main class="product-detail">
+            <HeroBlock
+                imageUrl={item.images?.[0]?.url ??
+                    `${baseUrl}/images/${type}s/${type}_default.webp`}
+                title={currentTranslation.h1}
+                subtitle={currentTranslation.subtitle}
+                {rating}
+                {reviewsCount}
+                locale={effectiveLocale}
+            />
             <section class="top_block">
-                <Galery images={item.images} title={currentTranslation.title} />
-                <div class="header">
-                    <h1>{currentTranslation.title}</h1>
-                    <div class="meta-info">
-                        <Rating
-                            {rating}
-                            {reviewsCount}
-                            locale={effectiveLocale}
-                        />
-                        {#if item.isPopular}
-                            <span class="badge popular">
-                                {effectiveLocale === "ru"
-                                    ? "Популярно"
-                                    : "Popular"}
-                            </span>
-                        {/if}
-                    </div>
-                    <section class="description">
-                        <p>{currentTranslation.description}</p>
-                    </section>
-                </div>
-                <BookingCard
+                <ProductDetailsBlock {type} {item} {locale} />
+                <PriceBlock
                     {type}
+                    locale={effectiveLocale}
                     price={item.price}
                     priceType={item.priceType}
-                    active={item.active}
                     discount={item.discount}
-                    locale={effectiveLocale}
-                    onBook={openModal}
+                    discountEnd={item.discountEnd}
                 />
-                <ProductDetailsBlock {type} {item} {locale} />
-            </section>
 
-            <!-- Общие мультиязычные блоки -->
-            <section class="additional-info">
+                <Description item={currentTranslation.description} />
+
+                <GaleryCollage
+                    images={item.images}
+                    title={currentTranslation.title}
+                />
+
+                {#if currentTranslation.schedule}
+                    <ScheduleBlock
+                        title={getI18nLabel(
+                            translations,
+                            "schedule",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.schedule}
+                        icon={IconImage}
+                    />
+                {/if}
                 {#if currentTranslation.requiredDocuments}
                     <InfoBlockArray
                         title={getI18nLabel(
@@ -300,6 +317,15 @@
                     />
                 {/if}
             </section>
+            <div class="stiky">
+                <ButtonBlock
+                    id="book-button"
+                    active={item.active}
+                    {type}
+                    locale={effectiveLocale}
+                    onBook={openModal}
+                />
+            </div>
             {#if type === "excursion"}
                 <AboutBlock />
             {/if}
@@ -327,6 +353,16 @@
         border-bottom: 1px solid var(--color-gray-500);
     }
 
+    .burger-wrapper {
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-full);
+        top: var(--space-vertical-sm);
+        right: var(--space-vertical-sm);
+        z-index: 1000;
+    }
+
     /* Стили из твоего кода с переименованными классами */
     .product-detail {
         position: relative;
@@ -344,26 +380,16 @@
         align-self: stretch;
         flex-grow: 1;
         border-bottom: 1px solid var(--color-gray-500);
-        padding-bottom: 100px;
+    }
+    .stiky {
+        position: sticky;
+        width: 100%;
+        bottom: 0;
+        z-index: 10;
+        background-color: var(--color-bg);
+        padding: var(--space-vertical-md) var(--space-horizontal-sm);
     }
 
-    .meta-info {
-        display: flex;
-        gap: var(--space-horizontal-md);
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .badge {
-        padding: var(--space-vertical-xxs) var(--space-horizontal-sm);
-        border-radius: var(--radius-sm);
-        font-size: var(--text-xs);
-        font-weight: 600;
-    }
-    .badge.popular {
-        background: var(--color-accent);
-        color: var(--color-light);
-    }
     .top_block {
         display: grid;
         width: 100%;
@@ -371,33 +397,11 @@
         align-items: start;
         justify-content: center;
         gap: var(--space-horizontal-md);
-    }
-    .header {
-        display: flex;
-        flex-direction: column;
-    }
-    .additional-info {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 50% 1fr;
-        align-items: start;
-        justify-content: center;
-        gap: var(--space-horizontal-md);
-    }
-
-    .description p {
-        line-height: var(--line-height-base);
-        color: var(--color-gray-700);
+        padding: 0 var(--space-vertical-sm);
     }
 
     .error-title {
         font-size: var(--text-md);
-    }
-
-    @media (prefers-color-scheme: dark) {
-        .description p {
-            color: var(--color-gray-300);
-        }
     }
 
     .error-page {
@@ -411,18 +415,10 @@
         margin-top: var(--space-vertical-sm);
     }
 
-    @media (max-width: 480px) {
-        .header {
-            padding: 0 var(--space-horizontal-sm);
-        }
-    }
     @media (max-width: 768px) {
         .top_block {
             display: flex;
             flex-direction: column;
-        }
-        .additional-info {
-            grid-template-columns: 1fr;
         }
     }
 </style>

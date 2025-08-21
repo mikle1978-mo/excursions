@@ -10,6 +10,12 @@ const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5173";
 const makePath = (lang, segment = "", slug = "") => {
     const prefix = lang === "en" ? "" : `/${lang}`;
     const path = [segment, slug].filter(Boolean).join("/");
+
+    // Если path пустой (главная страница языка)
+    if (!path) {
+        return `${VITE_BASE_URL}${prefix}`;
+    }
+
     return `${VITE_BASE_URL}${prefix}/${path}`;
 };
 

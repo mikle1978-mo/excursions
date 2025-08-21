@@ -4,6 +4,8 @@
     import CurrensySelector from "$lib/components/UI/buttons/CurrensySelector.svelte";
     import TheLocaleButton from "$lib/components/UI/buttons/TheLocaleButton.svelte";
     import { page } from "$app/stores";
+    import FilterButton from "../UI/buttons/FilterButton.svelte";
+    import TheBurger from "../UI/buttons/TheBurger.svelte";
     const showSearchOn = ["/excursions", "yachts", "cars"];
 </script>
 
@@ -14,8 +16,9 @@
             <Search />
         {/if}
         <div class="line_right">
-            <CurrensySelector />
-            <TheLocaleButton />
+            <FilterButton />
+
+            <TheBurger />
         </div>
     </div>
 </header>

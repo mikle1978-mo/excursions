@@ -134,6 +134,7 @@
             <label class="form-label">
                 {reviews_list.form_name[$locale]}
                 <input
+                    id="name"
                     type="text"
                     bind:value={name}
                     placeholder={reviews_list.name_placeholder[$locale]}

@@ -22,6 +22,7 @@
 
 <style>
     .info-block {
+        width: 100%;
         background: var(--color-bg);
         padding: var(--space-vertical-md);
         border-radius: var(--radius-md);

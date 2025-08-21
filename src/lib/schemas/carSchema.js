@@ -14,8 +14,19 @@ const i18nArray = z.object({
 
 export const carSchema = z.object({
     active: z.boolean().optional(),
-
     slug: z.string().min(1, "Slug обязателен"), // уникальный идентификатор
+    price: z.union([z.string(), z.number()]).transform(Number).optional(),
+    priceType: z.enum(["per_day", "per_hour", "per_week"]).optional(),
+    discount: z.union([z.string(), z.number()]).transform(Number).optional(),
+    images: z
+        .array(
+            z.object({
+                url: z.string(),
+                public_id: z.string(),
+            })
+        )
+        .optional(),
+    days: z.array(z.union([z.string(), z.number()])).optional(),
     brand: z.string().optional(), // Марка: Toyota
     model: z.string().optional(), // Модель: Corolla
     year: z.union([z.string(), z.number()]).transform(Number).optional(),
@@ -30,10 +41,6 @@ export const carSchema = z.object({
         .enum(["sedan", "suv", "hatchback", "van", "pickup", "convertible"])
         .optional(),
 
-    price: z.union([z.string(), z.number()]).transform(Number).optional(),
-    priceType: z.enum(["per_day", "per_hour", "per_week"]).optional(),
-
-    discount: z.union([z.string(), z.number()]).transform(Number).optional(),
     distanceLimit: z
         .union([z.string(), z.number()])
         .transform(Number)
@@ -46,18 +53,14 @@ export const carSchema = z.object({
 
     withDriver: z.boolean().optional(), // Можно ли с водителем
 
-    images: z
-        .array(
-            z.object({
-                url: z.string(),
-                public_id: z.string(),
-            })
-        )
-        .optional(),
-    availableDays: z.array(z.union([z.string(), z.number()])).optional(),
-
     // Мультиязычные поля
     title: i18nString.optional(),
+    subtitle: i18nString.optional(),
+    usp: i18nArray.optional(),
+    whyChooseUs: i18nArray.optional(),
+    guarantees: i18nArray.optional(),
+    metaDescription: i18nString.optional(),
+    keywords: i18nArray.optional(),
     metaDescription: i18nString.optional(),
     description: i18nString.optional(),
     fuelPolicy: i18nString.optional(), // Политика по топливу

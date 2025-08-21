@@ -1,35 +1,72 @@
 :root {
-    /* ===== Основные цвета ===== */
-    /* Светлая тема по умолчанию */
+    /* Базовые */
     --color-light: #ffffff;
+    --color-light-rgb: 255, 255, 255;
     --color-dark: #131619;
-    --color-light-rgb: 255, 255, 255; /* RGB для #ffffff */
-    --color-dark-rgb: 19, 22, 25; /* RGB для #131619 */
+    --color-dark-rgb: 19, 22, 25;
 
     /* Основная цветовая схема */
     --color-bg: var(--color-light);
+    --color-bg-rgb: var(--color-light-rgb);
     --color-text: var(--color-dark);
+    --color-text-rgb: var(--color-dark-rgb);
+
     --color-primary: #4ac97e;
+    --color-primary-rgb: 74, 201, 126;
     --color-primary-hover: #3db16d;
+    --color-primary-hover-rgb: 61, 177, 109;
+
+    --color-secondary-8: #edffff;
+    --color-secondary-8-rgb: 237, 255, 255;
+    --color-secondary-7: #d9eeff;
+    --color-secondary-7-rgb: 217, 238, 255;
+    --color-secondary-6: #c5daff;
+    --color-secondary-6-rgb: 197, 218, 255;
+    --color-secondary-5: #b1c6ff;
+    --color-secondary-5-rgb: 177, 198, 255;
+    --color-secondary-4: #9db2ff;
+    --color-secondary-4-rgb: 157, 178, 255;
+    --color-secondary-3: #899eff;
+    --color-secondary-3-rgb: 137, 158, 255;
+    --color-secondary-2: #758aff;
+    --color-secondary-2-rgb: 117, 138, 255;
+    --color-secondary-1: #6176f9;
+    --color-secondary-1-rgb: 97, 118, 249;
     --color-secondary: #4d62e5;
+    --color-secondary-rgb: 77, 98, 229;
+
     --color-accent: #e26f20;
+    --color-accent-rgb: 226, 111, 32;
 
-    /* Системные цвета */
+    /* Системные */
     --color-success: #4ac97e;
+    --color-success-rgb: 74, 201, 126;
     --color-warning: #ffc107;
+    --color-warning-rgb: 255, 193, 7;
     --color-error: #d0302f;
+    --color-error-rgb: 208, 48, 47;
     --color-info: #82dbf7;
+    --color-info-rgb: 130, 219, 247;
 
-    /* ===== Оттенки серого ===== */
+    /* Оттенки серого */
     --color-gray-100: #f8f9fa;
+    --color-gray-100-rgb: 248, 249, 250;
     --color-gray-200: #e9ecef;
+    --color-gray-200-rgb: 233, 236, 239;
     --color-gray-300: #dee2e6;
+    --color-gray-300-rgb: 222, 226, 230;
     --color-gray-400: #ced4da;
+    --color-gray-400-rgb: 206, 212, 218;
     --color-gray-500: #adb5bd;
+    --color-gray-500-rgb: 173, 181, 189;
     --color-gray-600: #6c757d;
+    --color-gray-600-rgb: 108, 117, 125;
     --color-gray-700: #495057;
+    --color-gray-700-rgb: 73, 80, 87;
     --color-gray-800: #343a40;
+    --color-gray-800-rgb: 52, 58, 64;
     --color-gray-900: #212529;
+    --color-gray-900-rgb: 33, 37, 41;
 
     --min-font-size: 1rem; /* 16px по умолчанию */
     --max-font-size: 1.375rem; /* 22px по умолчанию */
@@ -258,7 +295,7 @@ svg {
 .page {
     position: relative;
     display: grid;
-    grid-template-rows: minmax(32px, 6%) 1fr minmax(42px, 6%);
+    grid-template-rows: minmax(32px, 6%) 1fr;
     align-items: flex-start;
     padding: 0px;
     gap: var(--space-vertical-md);
@@ -333,7 +370,7 @@ summary::-webkit-details-marker {
         padding: var(--space-vertical-sm) var(--space-horizontal-sm);
     }
     .page {
-        grid-template-rows: minmax(32px, 5%) 1fr minmax(40px, 5%);
+        grid-template-rows: minmax(32px, 5%) 1fr;
         gap: var(--space-vertical-sm);
     }
 }

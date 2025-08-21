@@ -4,13 +4,15 @@
     import { nav_items } from "$lib/i18n/nav_list";
     import TheSocial from "./TheSocial.svelte";
     import Copyright from "./Copyright.svelte";
+    import CurrensySelector from "$lib/components/UI/buttons/CurrensySelector.svelte";
+    import TheLocaleButton from "$lib/components/UI/buttons/TheLocaleButton.svelte";
 
     const closeMobileMenu = () => mobileMenuOpen.set(false);
     const handleKeydown = (e) =>
         e.key === "Escape" && $mobileMenuOpen && closeMobileMenu();
     const handleBackdropClick = () => closeMobileMenu();
 
-    const labels = { menu: { ru: "меню", en: "menu" } };
+    const labels = { menu: { ru: "Меню", en: "Menu" } };
 
     // Функция для безопасного получения локализованного заголовка
     const getTitle = (item) => {
@@ -35,7 +37,14 @@
 
 <aside class="sidebar" class:active={$mobileMenuOpen}>
     <div class="sidebar-content">
-        <span class="sidebar-title">{labels.menu[$locale]}</span>
+        <div>
+            <span class="sidebar-title">{labels.menu[$locale]}</span>
+            <div class="buttons">
+                <CurrensySelector />
+                <TheLocaleButton />
+            </div>
+        </div>
+
         <nav class="navigation" aria-label="Main navigation">
             {#each nav_items as item}
                 {#if isValidLink(item.link)}
@@ -87,6 +96,12 @@
     .sidebar.active {
         transform: translateX(-300px);
     }
+    .buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0 var(--space-horizontal-md);
+    }
 
     .sidebar-content {
         display: grid;
@@ -100,6 +115,7 @@
         font-weight: 600;
         margin-bottom: var(--space-vertical-sm);
         color: var(--color-primary);
+        line-height: 1;
     }
 
     .sidebar-overlay {
@@ -114,12 +130,12 @@
 
     .close-button {
         position: absolute;
-        top: 1rem;
-        right: 1rem;
+        top: 0;
+        right: 0.5rem;
         background: transparent;
         border: none;
         font-size: 1.5rem;
-        color: var(--color-text);
+        color: var(--color-gray-500);
         cursor: pointer;
         transition: color var(--transition-fast);
         padding: var(--space-vertical-xs);
