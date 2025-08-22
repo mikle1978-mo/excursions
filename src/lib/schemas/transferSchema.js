@@ -1,16 +1,16 @@
 import { z } from "zod";
+import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
-const i18nString = z.object({
-    ru: z.string(),
-    en: z.string(),
-    tr: z.string(),
-});
-
-const i18nArray = z.object({
-    ru: z.array(z.string()),
-    en: z.array(z.string()),
-    tr: z.array(z.string()),
-});
+// список поддерживаемых языков
+// i18n типы
+export const i18nString = z.object(
+    Object.fromEntries(SUPPORTED_LANGUAGES.map((lang) => [lang, z.string()]))
+);
+export const i18nArray = z.object(
+    Object.fromEntries(
+        SUPPORTED_LANGUAGES.map((lang) => [lang, z.array(z.string())])
+    )
+);
 
 export const transferSchema = z.object({
     active: z.boolean().optional(),
@@ -37,6 +37,7 @@ export const transferSchema = z.object({
     }),
 
     title: i18nString.optional(),
+    h1: i18nString.optional(),
     subtitle: i18nString.optional(),
     usp: i18nArray.optional(),
     whyChooseUs: i18nArray.optional(),

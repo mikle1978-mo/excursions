@@ -1,53 +1,53 @@
 <script>
     import { onMount } from "svelte";
+    import UniversalForm from "$lib/components/admin/UniversalForm.svelte";
+    import { transferSteps } from "$lib/components/admin/fields/transfers";
+    import { transferSchema } from "$lib/schemas/transferSchema";
+    import { getTransfer, updateTransfer } from "$lib/utils/transfersActions";
+    import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
     import { page } from "$app/stores";
-    import TransferForm from "$lib/components/admin/TransferForm.svelte";
-    import { getTransfer } from "$lib/utils/transfersActions";
-    import {
-        setTransferForm,
-        createInitialTransferForm,
-    } from "$lib/stores/transferForm";
 
     let isLoading = true;
     let error = "";
+    let initialData = {};
+    const type = "transfer";
     const { slug } = $page.params;
 
     onMount(async () => {
         try {
             const { transfer, translation } = await getTransfer(slug);
 
-            // Функция для заполнения языковых полей
-            const toLangMap = (field, def = "") =>
-                Object.fromEntries(
-                    ["ru", "en", "tr"].map((lang) => [
+            // Начинаем с копии transfer
+            const data = { ...transfer };
+
+            // Для каждого ключа из перевода собираем структуру { en: value, ru: value }
+            const localizedFields = Object.keys(translation[0]).filter(
+                (key) => key !== "lang" && key !== "_id" && key !== "itemSlug"
+            );
+
+            for (const field of localizedFields) {
+                data[field] = Object.fromEntries(
+                    SUPPORTED_LANGUAGES.map((lang) => [
                         lang,
-                        translation.find((t) => t.lang === lang)?.[field] ??
-                            def,
+                        translation.find((t) => t.lang === lang)?.[field] ?? "",
                     ])
                 );
+            }
 
-            const toLangArrayMap = (field) =>
-                Object.fromEntries(
-                    ["ru", "en", "tr"].map((lang) => [
-                        lang,
-                        translation.find((t) => t.lang === lang)?.[field] ?? [],
-                    ])
-                );
-
-            setTransferForm({
-                ...transfer,
-                title: toLangMap("title"),
-                description: toLangMap("description"),
-                metaDescription: toLangMap("metaDescription"),
-                servicesDetails: toLangArrayMap("servicesDetails"),
-            });
+            initialData = data;
         } catch (e) {
             console.error(e);
-            error = "Ошибка загрузки данных трансфера";
+            error = "Ошибка загрузки данных экскурсии";
         } finally {
             isLoading = false;
         }
     });
+
+    const steps = transferSteps;
+    const schema = transferSchema;
+    const createFn = null; // в режиме редактирования не используется
+    const updateFn = updateTransfer;
+    const mode = "edit";
 </script>
 
 {#if isLoading}
@@ -55,12 +55,14 @@
 {:else if error}
     <p class="error">{error}</p>
 {:else}
-    <TransferForm mode="edit" {slug} />
+    <UniversalForm
+        {steps}
+        {schema}
+        {createFn}
+        {updateFn}
+        {mode}
+        {initialData}
+        {slug}
+        {type}
+    />
 {/if}
-
-<style>
-    .error {
-        color: red;
-        font-weight: bold;
-    }
-</style>

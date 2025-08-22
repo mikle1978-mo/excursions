@@ -1,86 +1,103 @@
 import { connectToDatabase } from "$lib/server/mongodb";
-import { json } from "@sveltejs/kit";
 import { redis } from "$lib/server/redis";
+import { transferSteps } from "$lib/components/admin/fields/transfers";
+import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
+
+// вспомогательные функции
+function flattenFields(steps) {
+    return steps.flatMap((step) => step.fields);
+}
+
+function isLocalizedField(name) {
+    return transferSteps.some((step) =>
+        step.fields.some((field) => field.name === name && field.localized)
+    );
+}
 
 export async function GET({ params }) {
     const db = await connectToDatabase();
-
     const transfer = await db
         .collection("transfers")
         .findOne({ slug: params.slug });
-    if (!transfer)
-        return json({ error: "Трансфер не найден" }, { status: 404 });
-
     const translation = await db
         .collection("transfers_translations")
         .find({ itemSlug: params.slug })
         .toArray();
 
-    return json({ transfer, translation });
+    if (!transfer) return new Response(null, { status: 404 });
+
+    return new Response(JSON.stringify({ transfer, translation }), {
+        status: 200,
+    });
 }
 
 export async function PUT({ request, params }) {
     const db = await connectToDatabase();
-
     const transferData = await request.json();
 
     const oldSlug = params.slug;
-    const newSlug = transferData.slug.trim().toLowerCase();
+    const newSlug = transferData.slug;
 
-    // Формируем массив переводов для коллекции transfers_translations,
-    // извлекая языковые поля из transferData по каждому языку
-    const preparedTranslations = ["ru", "en", "tr"].map((lang) => ({
-        itemSlug: newSlug,
-        lang,
-        title: transferData.title?.[lang] ?? "",
-        description: transferData.description?.[lang] ?? "",
-        metaDescription: transferData.metaDescription?.[lang] ?? "",
-        servicesDetails: transferData.servicesDetails?.[lang] ?? [],
-    }));
+    // Все поля
+    const allFields = flattenFields(transferSteps);
 
-    // Создаём объект для основной коллекции transfers —
-    // копируем все поля, кроме мультиязычных
-    const transfer = { ...transferData };
-    delete transfer.title;
-    delete transfer.description;
-    delete transfer.metaDescription;
-    delete transfer.servicesDetails;
+    // Локализованные поля
+    const localizedFields = allFields.filter((f) => isLocalizedField(f.name));
 
-    // Обновляем основной документ в коллекции transfers по старому slug
+    // Подготовка переводов для каждой локали
+    const preparedTranslations = SUPPORTED_LANGUAGES.map((lang) => {
+        const t = { itemSlug: newSlug, lang };
+        for (const field of localizedFields) {
+            t[field.name] =
+                transferData[field.name]?.[lang] ??
+                field.default?.[lang] ??
+                (Array.isArray(field.default) ? [] : "");
+        }
+        return t;
+    });
+
+    // Основной документ — все не-локализованные поля
+    const mainDoc = { ...transferData };
+    for (const field of localizedFields) {
+        delete mainDoc[field.name]; // удаляем локализованные поля
+    }
+
+    // Обновляем основной документ и slug одной операцией
     await db
         .collection("transfers")
-        .updateOne({ slug: oldSlug }, { $set: transfer });
+        .updateOne({ slug: oldSlug }, { $set: { ...mainDoc, slug: newSlug } });
 
-    // Удаляем все старые переводы из коллекции transfers_translations
+    // Обновляем переводы: удаляем старые и вставляем новые
     await db
         .collection("transfers_translations")
         .deleteMany({ itemSlug: oldSlug });
-
-    // Вставляем новые переводы
     await db
         .collection("transfers_translations")
         .insertMany(preparedTranslations);
 
-    // Если slug изменился, обновляем его в основном документе
-    if (oldSlug !== newSlug) {
-        await db
-            .collection("transfers")
-            .updateOne({ slug: oldSlug }, { $set: { slug: newSlug } });
-    }
+    // Чистим кеш Redis
     await redis.del("transfers");
-    return json({ success: true });
+
+    return new Response(JSON.stringify({ success: true, slug: newSlug }));
 }
 
 export async function DELETE({ params }) {
     const db = await connectToDatabase();
 
-    // Удаляем сам трансфер
+    // Удалим саму экскурсию
     await db.collection("transfers").deleteOne({ slug: params.slug });
 
-    // Удаляем переводы трансфера
+    // Удалим переводы этой экскурсии
     await db
         .collection("transfers_translations")
         .deleteMany({ itemSlug: params.slug });
+
     await redis.del("transfers");
-    return json({ success: true });
+
+    return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: {
+            "Content-Type": "application/json",
+        },
+    });
 }
