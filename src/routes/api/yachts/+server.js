@@ -2,37 +2,65 @@ import { connectToDatabase } from "$lib/server/mongodb";
 import { yachtSchema } from "$lib/schemas/yachtSchema";
 import { json } from "@sveltejs/kit";
 import { redis } from "$lib/server/redis";
+import { yachtSteps } from "$lib/components/admin/fields/yachts";
+import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
-export async function GET() {
-    const db = await connectToDatabase();
-    const yachts = await db.collection("yachts").find({}).toArray();
-    return new Response(JSON.stringify(yachts), { status: 200 });
+// вспомогательные функции
+function flattenFields(steps) {
+    return steps.flatMap((step) => step.fields);
+}
+
+function isLocalizedField(name) {
+    return yachtSteps.some((step) =>
+        step.fields.some((field) => field.name === name && field.localized)
+    );
 }
 
 export async function POST({ request }) {
     try {
         const body = await request.json();
 
-        // ✅ Валидация с Zod
+        // Валидация Zod
         const parsed = yachtSchema.safeParse(body);
-
         if (!parsed.success) {
             return json(
                 { error: "Ошибка валидации", issues: parsed.error.format() },
                 { status: 400 }
             );
         }
-
         const data = parsed.data;
-        // ✅ Нормализация slug
-        data.slug = data.slug.trim().toLowerCase();
+
+        const allFields = flattenFields(yachtSteps);
+
+        // Основной документ (не-локализованные поля)
+        const mainDoc = {};
+        for (const field of allFields) {
+            if (!isLocalizedField(field.name)) {
+                if (
+                    data[field.name] !== undefined &&
+                    data[field.name] !== null
+                ) {
+                    mainDoc[field.name] = data[field.name];
+                } else if (field.default !== undefined) {
+                    mainDoc[field.name] = field.default;
+                }
+            }
+        }
+
+        if (typeof mainDoc.slug === "string") {
+            mainDoc.slug = mainDoc.slug.trim().toLowerCase();
+        } else {
+            return json({ error: "Slug обязателен" }, { status: 400 });
+        }
+
+        mainDoc.createdAt = new Date();
+        mainDoc.rating = 0;
+        mainDoc.reviewsCount = 0;
 
         const db = await connectToDatabase();
-
-        // ✅ Проверка уникальности slug
         const exists = await db
             .collection("yachts")
-            .findOne({ slug: data.slug });
+            .findOne({ slug: mainDoc.slug });
         if (exists) {
             return json(
                 { error: "Такой slug уже существует" },
@@ -40,48 +68,35 @@ export async function POST({ request }) {
             );
         }
 
-        // ✅ Чистка и дефолты чисел
-        const cleaned = {
-            slug: data.slug,
-            start: data.start || "08:00",
-            duration: Number(data.duration) || 0,
-            distance: Number(data.distance) || 0,
-            groupSize: Number(data.groupSize) || 1,
-            price: Number(data.price) || 0,
-            discount: Number(data.discount) || 0,
-            days:
-                Array.isArray(data.days) && data.days.length > 0
-                    ? data.days
-                    : ["1", "2", "3", "4", "5", "6", "7"],
-            images:
-                Array.isArray(data.images) && data.images.length > 0
-                    ? data.images
-                    : ["/images/yachts/yacht_default.webp"],
-            rating: 0,
-            reviewsCount: 0,
-            createdAt: new Date(),
-        };
+        await db.collection("yachts").insertOne(mainDoc);
 
-        // 🧾 Вставка яхты
-        const result = await db.collection("yachts").insertOne(cleaned);
+        // Локализованные поля
+        const localizedFields = allFields.filter((f) =>
+            isLocalizedField(f.name)
+        );
 
-        // 🈯 Переводы
-        const translations = ["ru", "en", "tr"].map((lang) => ({
-            itemSlug: cleaned.slug,
-            lang,
-            title: data.title?.[lang] || "",
-            metaDescription: data.metaDescription?.[lang] || "",
-            description: data.description?.[lang] || "",
-            meetingPoint: data.meetingPoint?.[lang] || "",
-            whatYouSee: data.whatYouSee?.[lang] || [],
-            includes: data.includes?.[lang] || [],
-            whatToBring: data.whatToBring?.[lang] || [],
-            tags: data.tags?.[lang] || [],
-        }));
+        const translations = SUPPORTED_LANGUAGES.map((lang) => {
+            const translation = { itemSlug: mainDoc.slug, lang };
+            for (const field of localizedFields) {
+                const val = data[field.name]?.[lang];
+                if (val !== undefined && val !== null) {
+                    translation[field.name] = val;
+                } else if (field.default && field.default[lang] !== undefined) {
+                    translation[field.name] = field.default[lang];
+                } else {
+                    translation[field.name] = Array.isArray(field.default)
+                        ? []
+                        : "";
+                }
+            }
+            return translation;
+        });
 
         await db.collection("yachts_translations").insertMany(translations);
+
         await redis.del("yachts");
-        return json({ success: true, slug: cleaned.slug }, { status: 201 });
+
+        return json({ success: true, slug: mainDoc.slug }, { status: 201 });
     } catch (err) {
         console.error("Ошибка при создании яхты:", err);
         return json({ error: "Ошибка сервера" }, { status: 500 });

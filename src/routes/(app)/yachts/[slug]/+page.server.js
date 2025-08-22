@@ -12,7 +12,7 @@ export async function load({ params }) {
 
     const yacht = await yachtsCollection.findOne({ slug });
 
-    if (!yacht) throw error(404, "Экскурсия не найдена");
+    if (!yacht) throw error(404, "Яхта не найдена");
 
     const translations = await translationsCollection
         .find({ itemSlug: slug })

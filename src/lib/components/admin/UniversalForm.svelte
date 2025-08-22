@@ -124,6 +124,8 @@
             return true;
         } catch (err) {
             // поддержка разных форматов ZodError: err.errors или err.issues
+
+            console.log("*************", err);
             const issues = err.errors ?? err.issues ?? [];
             errors = issues.reduce((acc, e) => {
                 const path = (e.path || []).join(".");
@@ -139,6 +141,7 @@
         if (!currentStepObj) return;
 
         const ok = await validateCurrentStep();
+
         if (!ok) return;
 
         if (currentStep < totalSteps - 1) {
@@ -147,6 +150,7 @@
             window.scrollTo({ top: 0, behavior: "smooth" });
         } else {
             // последний шаг — сабмит всей формы
+
             await handleSubmit();
         }
     }
@@ -168,7 +172,6 @@
 
         try {
             const validData = schema.parse(currentForm);
-            console.log("Valid data for submission:", validData, currentForm);
 
             if (mode === "create") {
                 await createFn(validData);

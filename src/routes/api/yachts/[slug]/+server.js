@@ -1,5 +1,19 @@
 import { connectToDatabase } from "$lib/server/mongodb";
 import { redis } from "$lib/server/redis";
+import { yachtSteps } from "$lib/components/admin/fields/yachts";
+import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
+
+// вспомогательные функции
+function flattenFields(steps) {
+    return steps.flatMap((step) => step.fields);
+}
+
+function isLocalizedField(name) {
+    return yachtSteps.some((step) =>
+        step.fields.some((field) => field.name === name && field.localized)
+    );
+}
+
 export async function GET({ params }) {
     const db = await connectToDatabase();
     const yacht = await db.collection("yachts").findOne({ slug: params.slug });
@@ -17,78 +31,68 @@ export async function GET({ params }) {
 
 export async function PUT({ request, params }) {
     const db = await connectToDatabase();
-
-    // Получаем полный объект яхты с клиента (включая мультиязычные поля)
     const yachtData = await request.json();
 
-    // Старый и новый slug (идентификаторы яхты)
     const oldSlug = params.slug;
     const newSlug = yachtData.slug;
 
-    // Формируем массив переводов для коллекции yachts_translations,
-    // извлекая языковые поля из yachtData по каждому языку
-    const preparedTranslations = ["ru", "en", "tr"].map((lang) => ({
-        itemSlug: newSlug, // связываем перевод с новым slug
-        lang, // язык перевода
-        title: yachtData.title?.[lang] ?? "",
-        description: yachtData.description?.[lang] ?? "",
-        metaDescription: yachtData.metaDescription?.[lang] ?? "",
-        whatYouSee: yachtData.whatYouSee?.[lang] ?? [],
-        tags: yachtData.tags?.[lang] ?? [],
-        meetingPoint: yachtData.meetingPoint?.[lang] ?? "",
-        includes: yachtData.includes?.[lang] ?? [],
-        whatToBring: yachtData.whatToBring?.[lang] ?? [],
-    }));
+    // Все поля
+    const allFields = flattenFields(yachtSteps);
 
-    // Создаём объект для основной коллекции yachts —
-    // копируем все поля, кроме мультиязычных
-    const yacht = { ...yachtData };
-    delete yacht.title;
-    delete yacht.description;
-    delete yacht.metaDescription;
-    delete yacht.whatYouSee;
-    delete yacht.includes;
-    delete yacht.whatToBring;
-    delete yacht.meetingPoint;
-    delete yacht.tags;
+    // Локализованные поля
+    const localizedFields = allFields.filter((f) => isLocalizedField(f.name));
 
-    // Обновляем основной документ в коллекции yachts по старому slug
-    await db.collection("yachts").updateOne({ slug: oldSlug }, { $set: yacht });
+    // Подготовка переводов для каждой локали
+    const preparedTranslations = SUPPORTED_LANGUAGES.map((lang) => {
+        const t = { itemSlug: newSlug, lang };
+        for (const field of localizedFields) {
+            const value =
+                yachtData[field.name] ??
+                field.default ??
+                (field.type === "array" ? [] : "");
+            t[field.name] = value[lang] ?? (field.type === "array" ? [] : "");
+        }
+        return t;
+    });
 
-    // Удаляем все старые переводы из коллекции yachts_translations
+    // Основной документ — все не-локализованные поля
+    const mainDoc = { ...yachtData };
+    for (const field of localizedFields) {
+        delete mainDoc[field.name];
+    }
+
+    // Обновляем основной документ и slug одной операцией
+    await db
+        .collection("yachts")
+        .updateOne({ slug: oldSlug }, { $set: { ...mainDoc, slug: newSlug } });
+
+    // Обновляем переводы: удаляем старые и вставляем новые
     await db
         .collection("yachts_translations")
         .deleteMany({ itemSlug: oldSlug });
-
-    // Вставляем новые переводы
     await db.collection("yachts_translations").insertMany(preparedTranslations);
 
-    // Если slug изменился, обновляем его в основном документе
-    if (oldSlug !== newSlug) {
-        await db
-            .collection("yachts")
-            .updateOne({ slug: oldSlug }, { $set: { slug: newSlug } });
-    }
+    // Чистим кеш Redis
     await redis.del("yachts");
-    // Возвращаем успех
-    return new Response(JSON.stringify({ success: true }));
+
+    return new Response(JSON.stringify({ success: true, slug: newSlug }));
 }
 
 export async function DELETE({ params }) {
     const db = await connectToDatabase();
 
-    // Удалим саму экскурсию
+    // Удаляем саму яхту
     await db.collection("yachts").deleteOne({ slug: params.slug });
 
-    // Удалим переводы этой экскурсии
+    // Удаляем переводы
     await db
         .collection("yachts_translations")
         .deleteMany({ itemSlug: params.slug });
+
     await redis.del("yachts");
+
     return new Response(JSON.stringify({ success: true }), {
         status: 200,
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
     });
 }
