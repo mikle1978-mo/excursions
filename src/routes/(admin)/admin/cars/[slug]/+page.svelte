@@ -15,7 +15,7 @@
 
     onMount(async () => {
         try {
-            const { car, translation } = await getCar(slug);
+            const { item: car, translation } = await getCar(slug);
 
             // Начинаем с копии car
             const data = { ...car };

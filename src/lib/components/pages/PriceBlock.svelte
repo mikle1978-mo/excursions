@@ -16,8 +16,6 @@
     const priceStore = formatPrice(price);
     const oldPriceStore = formatPrice(getOldPrice(price, discount));
 
-    console.log(discountEnd);
-
     let remaining = {
         days: "00",
         hours: "00",

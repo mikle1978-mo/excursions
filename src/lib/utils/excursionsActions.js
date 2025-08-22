@@ -48,9 +48,6 @@ export async function createExcursion(data) {
  * Обновление экскурсии
  */
 export async function updateExcursion(slug, data) {
-    console.log("====================================");
-    console.log(data);
-    console.log("====================================");
     const res = await fetch(`${API_URL}/${slug}`, {
         method: "PUT",
         headers: {
@@ -75,6 +72,7 @@ export async function getExcursion(slug) {
     if (!res.ok) {
         throw new Error("Не удалось загрузить экскурсию");
     }
+
     return await res.json();
 }
 

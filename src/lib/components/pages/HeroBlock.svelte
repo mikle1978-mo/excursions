@@ -11,10 +11,6 @@
     export let reviewsCount = 120;
     export let locale = "en";
 
-    console.log("====================================");
-    console.log(title);
-    console.log("====================================");
-
     // Determine effective locale
     $: effectiveLocale = locale || "en";
 </script>

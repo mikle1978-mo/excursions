@@ -1,21 +1,8 @@
 <script>
-    import { writable } from "svelte/store";
     import { onMount } from "svelte";
-    import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
-    import CheckBoxInput from "$lib/components/UI/inputs/checkboxInput/CheckBoxInput.svelte";
-    import TextInput from "$lib/components/UI/inputs/textInput/TextInput.svelte";
-    import TexrAreaInput from "$lib/components/UI/inputs/textareaInput/TexrAreaInput.svelte";
-    import NumberInput from "$lib/components/UI/inputs/numberInput/NumberInput.svelte";
-    import SelectInput from "$lib/components/UI/inputs/selectInput/SelectInput.svelte";
-    import ArrayInput from "$lib/components/UI/inputs/arrayInput/ArrayInput.svelte";
-    import ImageUploader from "$lib/components/UI/inputs/ImageUploader/ImageUploader.svelte";
-    import DateInput from "$lib/components/UI/inputs/dateInput/DateInput.svelte";
     import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
     import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
-    // Получение дефолтов из схемы и конфигурации
-    import { getDefaultValue } from "$lib/utils/getDefaultSchemaValue";
-    import { createLocalizedField } from "$lib/utils/createLocalizedField";
-    import { get } from "svelte/store";
+    import FormField from "$lib/components/UI/inputs/FormField.svelte";
     import { goto } from "$app/navigation";
     import {
         createFormStore,
@@ -33,6 +20,7 @@
     export let type = ""; // тип сущности (excursion, tour и т.д.)
 
     // Инициализация при mount или при изменении initialData
+
     let form = createFormStore(type, slug, initializeForm());
 
     let errors = {};
@@ -227,135 +215,23 @@
                 {#each currentStepObj.fields as field}
                     {#if field.localized}
                         {#each Object.keys($form[field.name] ?? Object.fromEntries(SUPPORTED_LANGUAGES.map( (l) => [l, ""] ))) as lang}
-                            {#if field.type === "checkbox"}
-                                <CheckBoxInput
-                                    bind:value={$form[field.name][lang]}
-                                    label={`${field.label} (${lang.toUpperCase()})`}
-                                    field={`${field.name}.${lang}`}
-                                    {errors}
-                                />
-                            {:else if field.type === "date"}
-                                <DateInput
-                                    bind:value={$form[field.name][lang]}
-                                    label={`${field.label} (${lang.toUpperCase()})`}
-                                    field={`${field.name}.${lang}`}
-                                    {errors}
-                                />
-                            {:else if field.type === "textarea"}
-                                <TexrAreaInput
-                                    bind:value={$form[field.name][lang]}
-                                    label={`${field.label} (${lang.toUpperCase()})`}
-                                    field={`${field.name}.${lang}`}
-                                    {errors}
-                                />
-                            {:else if field.type === "select"}
-                                <SelectInput
-                                    bind:value={$form[field.name][lang]}
-                                    options={field.options}
-                                    label={`${field.label} (${lang.toUpperCase()})`}
-                                    field={`${field.name}.${lang}`}
-                                    {errors}
-                                />
-                            {:else if field.type === "number"}
-                                <NumberInput
-                                    bind:value={$form[field.name][lang]}
-                                    label={`${field.label} (${lang.toUpperCase()})`}
-                                    field={`${field.name}.${lang}`}
-                                    {errors}
-                                />
-                            {:else if field.type === "text"}
-                                <TextInput
-                                    bind:value={$form[field.name][lang]}
-                                    label={`${field.label} (${lang.toUpperCase()})`}
-                                    field={`${field.name}.${lang}`}
-                                    {errors}
-                                />
-                            {:else if field.type === "array"}
-                                <ArrayInput
-                                    bind:value={$form[field.name][lang]}
-                                    label={`${field.label} (${lang.toUpperCase()})`}
-                                    placeholder={field.placeholder}
-                                    field={`${field.name}.${lang}`}
-                                    {errors}
-                                />
-                            {:else if field.type === "imageUploader"}
-                                <ImageUploader
-                                    bind:images={$form[field.name][lang]}
-                                    label={`${field.label} (${lang.toUpperCase()})`}
-                                    folder={field.folder}
-                                />
-                            {:else}
-                                <TextInput
-                                    bind:value={$form[field.name][lang]}
-                                    label={`${field.label} (${lang.toUpperCase()})`}
-                                    field={`${field.name}.${lang}`}
-                                    {errors}
-                                />
-                            {/if}
+                            <FormField
+                                field={{
+                                    ...field,
+                                    label: `${field.label} (${lang.toUpperCase()})`,
+                                    localized: false,
+                                }}
+                                bind:value={$form[field.name][lang]}
+                                errors={errors[field.name]?.[lang] ?? {}}
+                                fieldName={`${field.name}.${lang}`}
+                            />
                         {/each}
-                    {:else if field.type === "checkbox"}
-                        <CheckBoxInput
-                            bind:value={$form[field.name]}
-                            label={field.label}
-                            field={field.name}
-                            {errors}
-                        />
-                    {:else if field.type === "date"}
-                        <DateInput
-                            bind:value={$form[field.name]}
-                            label={field.label}
-                            field={field.name}
-                            {errors}
-                        />
-                    {:else if field.type === "textarea"}
-                        <TexrAreaInput
-                            bind:value={$form[field.name]}
-                            label={field.label}
-                            field={field.name}
-                            {errors}
-                        />
-                    {:else if field.type === "select"}
-                        <SelectInput
-                            bind:value={$form[field.name]}
-                            options={field.options}
-                            label={field.label}
-                            field={field.name}
-                            {errors}
-                        />
-                    {:else if field.type === "number"}
-                        <NumberInput
-                            bind:value={$form[field.name]}
-                            label={field.label}
-                            field={field.name}
-                            {errors}
-                        />
-                    {:else if field.type === "text"}
-                        <TextInput
-                            bind:value={$form[field.name]}
-                            label={field.label}
-                            field={field.name}
-                            {errors}
-                        />
-                    {:else if field.type === "array"}
-                        <ArrayInput
-                            bind:value={$form[field.name]}
-                            label={field.label}
-                            placeholder={field.placeholder}
-                            field={field.name}
-                            {errors}
-                        />
-                    {:else if field.type === "imageUploader"}
-                        <ImageUploader
-                            bind:images={$form[field.name]}
-                            label={field.label}
-                            folder={field.folder}
-                        />
                     {:else}
-                        <TextInput
+                        <FormField
+                            {field}
                             bind:value={$form[field.name]}
-                            label={field.label}
-                            field={field.name}
-                            {errors}
+                            errors={errors[field.name] ?? {}}
+                            fieldName={field.name}
                         />
                     {/if}
                 {/each}

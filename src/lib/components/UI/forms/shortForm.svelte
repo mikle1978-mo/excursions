@@ -33,8 +33,6 @@
             url: currentUrl,
         };
 
-        console.log("Form data:", data);
-
         TGMessage(data);
 
         alert(form_list.alert[$locale]);

@@ -53,26 +53,36 @@ export function createFormStore(type, slug, initialForm) {
  * @param {string} slug - slug записи
  */
 export function setFormData(store, data, type = "excursion", slug = "new") {
+    console.log("setFormData called, incoming data:", data, "slug:", slug);
     const current = get(store);
 
-    // создаем новый объект, слияние дефолта и данных
-    const merged = { ...current };
+    const allKeys = Array.from(
+        new Set([...Object.keys(current), ...Object.keys(data)])
+    );
+    const merged = {};
 
-    Object.keys(current).forEach((key) => {
+    allKeys.forEach((key) => {
+        const currentVal = current[key];
+        let dataVal = data[key];
+
+        if (key === "slug" && (!dataVal || dataVal === "")) {
+            // если slug нет в data, берём аргумент
+            dataVal = slug;
+        }
+
         if (
-            current[key] &&
-            typeof current[key] === "object" &&
-            !Array.isArray(current[key])
+            (currentVal &&
+                typeof currentVal === "object" &&
+                !Array.isArray(currentVal)) ||
+            (dataVal && typeof dataVal === "object" && !Array.isArray(dataVal))
         ) {
-            // локализованное поле
-            merged[key] = { ...current[key], ...data[key] };
-            // гарантируем все языки
+            merged[key] = { ...(currentVal || {}), ...(dataVal || {}) };
+
             SUPPORTED_LANGUAGES.forEach((lang) => {
                 if (!(lang in merged[key])) merged[key][lang] = "";
             });
         } else {
-            // обычное поле
-            if (key in data) merged[key] = data[key];
+            merged[key] = dataVal !== undefined ? dataVal : currentVal;
         }
     });
 
@@ -81,6 +91,9 @@ export function setFormData(store, data, type = "excursion", slug = "new") {
     if (typeof localStorage !== "undefined") {
         localStorage.removeItem(getStorageKey(type, slug));
     }
+
+    const currentForm = get(store);
+    console.log("setFormData after setting, form.slug:", currentForm.slug);
 }
 
 /**

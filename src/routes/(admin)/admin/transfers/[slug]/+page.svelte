@@ -15,7 +15,7 @@
 
     onMount(async () => {
         try {
-            const { transfer, translation } = await getTransfer(slug);
+            const { item: transfer, translation } = await getTransfer(slug);
 
             // Начинаем с копии transfer
             const data = { ...transfer };

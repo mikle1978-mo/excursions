@@ -9,11 +9,8 @@
     export let locale = "en";
     export let discount = 0; // Discount percentage, e.g., 10 for 10%
     export let type = "default"; // 'car', 'yacht', 'excursion', 'transfer'
-    console.log(type, "type in ButtonBlock");
 
     export let onBook = () => {};
-
-    console.log(active, "active in ButtonBlock");
 
     const priceStore = formatPrice(price);
     const oldPriceStore = formatPrice(getOldPrice(price, discount)); // Assuming 10% discount for example

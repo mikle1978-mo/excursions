@@ -18,7 +18,7 @@
 
     onMount(async () => {
         try {
-            const { excursion, translation } = await getExcursion(slug);
+            const { item: excursion, translation } = await getExcursion(slug);
 
             // Начинаем с копии excursion
             const data = { ...excursion };
@@ -36,7 +36,11 @@
                     ])
                 );
             }
-
+            // 🔹 Логируем данные перед установкой в форму
+            console.log(
+                "Data received from DB before initialData assignment:",
+                data
+            );
             initialData = data;
         } catch (e) {
             console.error(e);

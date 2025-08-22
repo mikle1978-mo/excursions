@@ -53,7 +53,6 @@
 
             const result = await response.json();
             if (!response.ok) {
-                console.log("Response not OK:", result);
                 if (response.status === 403) {
                     alert(result.error || "Вы уже оставляли отзыв.");
                 } else {
