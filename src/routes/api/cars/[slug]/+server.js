@@ -1,5 +1,20 @@
 import { connectToDatabase } from "$lib/server/mongodb";
 import { redis } from "$lib/server/redis";
+import { carSteps } from "$lib/components/admin/fields/cars";
+import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
+
+// Вспомогательные функции
+function flattenFields(steps) {
+    return steps.flatMap((step) => step.fields);
+}
+
+function isLocalizedField(name) {
+    return carSteps.some((step) =>
+        step.fields.some((field) => field.name === name && field.localized)
+    );
+}
+
+// ------------------- GET -------------------
 export async function GET({ params }) {
     const db = await connectToDatabase();
     const car = await db.collection("cars").findOne({ slug: params.slug });
@@ -10,81 +25,61 @@ export async function GET({ params }) {
 
     if (!car) return new Response(null, { status: 404 });
 
-    return new Response(JSON.stringify({ car, translation }), {
-        status: 200,
-    });
+    return new Response(JSON.stringify({ car, translation }), { status: 200 });
 }
 
+// ------------------- PUT -------------------
 export async function PUT({ request, params }) {
     const db = await connectToDatabase();
-
     const carData = await request.json();
+
     const oldSlug = params.slug;
     const newSlug = carData.slug;
 
-    // Подготовка переводов
-    const preparedTranslations = ["ru", "en", "tr"].map((lang) => ({
-        itemSlug: newSlug,
-        lang,
-        title: carData.title?.[lang] ?? "",
-        description: carData.description?.[lang] ?? "",
-        metaDescription: carData.metaDescription?.[lang] ?? "",
-        fuelPolicy: carData.fuelPolicy?.[lang] ?? "",
-        extraTimePolicy: carData.extraTimePolicy?.[lang] ?? "",
-        insuranceDescription: carData.insuranceDescription?.[lang] ?? [],
-        rentalConditions: carData.rentalConditions?.[lang] ?? [],
-        accidentInstructions: carData.accidentInstructions?.[lang] ?? [],
-        includes: carData.includes?.[lang] ?? [],
-        whatToBring: carData.whatToBring?.[lang] ?? [],
-        insuranceExclusions: carData.insuranceExclusions?.[lang] ?? [],
-        requiredDocuments: carData.requiredDocuments?.[lang] ?? [],
-        notes: carData.notes?.[lang] ?? [],
-        tags: carData.tags?.[lang] ?? [],
-    }));
+    const allFields = flattenFields(carSteps);
+    const localizedFields = allFields.filter((f) => isLocalizedField(f.name));
 
-    // Формируем основной объект без мультиязычных полей
-    const car = { ...carData };
-    delete car.title;
-    delete car.description;
-    delete car.metaDescription;
-    delete car.fuelPolicy;
-    delete car.extraTimePolicy;
-    delete car.insuranceDescription;
-    delete car.rentalConditions;
-    delete car.accidentInstructions;
-    delete car.includes;
-    delete car.whatToBring;
-    delete car.insuranceExclusions;
-    delete car.requiredDocuments;
-    delete car.notes;
-    delete car.tags;
+    // Подготовка переводов для каждой локали
+    const preparedTranslations = SUPPORTED_LANGUAGES.map((lang) => {
+        const t = { itemSlug: newSlug, lang };
+        for (const field of localizedFields) {
+            t[field.name] =
+                carData[field.name]?.[lang] ??
+                field.default?.[lang] ??
+                (Array.isArray(field.default) ? [] : "");
+        }
+        return t;
+    });
 
-    // Обновляем основной документ
-    await db.collection("cars").updateOne({ slug: oldSlug }, { $set: car });
+    // Основной документ — все не-локализованные поля
+    const mainDoc = { ...carData };
+    for (const field of localizedFields) {
+        delete mainDoc[field.name];
+    }
 
-    // Удаляем старые переводы
+    // Обновляем основной документ и slug одной операцией
+    await db
+        .collection("cars")
+        .updateOne({ slug: oldSlug }, { $set: { ...mainDoc, slug: newSlug } });
+
+    // Обновляем переводы: удаляем старые и вставляем новые
     await db.collection("cars_translations").deleteMany({ itemSlug: oldSlug });
-
-    // Вставляем новые переводы
     await db.collection("cars_translations").insertMany(preparedTranslations);
 
-    // Если slug изменился, обновляем его
-    if (oldSlug !== newSlug) {
-        await db
-            .collection("cars")
-            .updateOne({ slug: oldSlug }, { $set: { slug: newSlug } });
-    }
+    // Чистим кеш Redis
     await redis.del("cars");
-    return new Response(JSON.stringify({ success: true }));
+
+    return new Response(JSON.stringify({ success: true, slug: newSlug }));
 }
 
+// ------------------- DELETE -------------------
 export async function DELETE({ params }) {
     const db = await connectToDatabase();
 
-    // Удалим саму экскурсию
+    // Удалим машину
     await db.collection("cars").deleteOne({ slug: params.slug });
 
-    // Удалим переводы этой экскурсии
+    // Удалим переводы этой машины
     await db
         .collection("cars_translations")
         .deleteMany({ itemSlug: params.slug });
@@ -93,8 +88,6 @@ export async function DELETE({ params }) {
 
     return new Response(JSON.stringify({ success: true }), {
         status: 200,
-        headers: {
-            "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
     });
 }

@@ -1,63 +1,53 @@
 <script>
     import { onMount } from "svelte";
+    import UniversalForm from "$lib/components/admin/UniversalForm.svelte";
+    import { carSteps } from "$lib/components/admin/fields/cars";
+    import { carSchema } from "$lib/schemas/carSchema";
+    import { getCar, updateCar } from "$lib/utils/carsActions";
+    import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
     import { page } from "$app/stores";
-    import CarForm from "$lib/components/admin/CarForm.svelte";
-    import { getCar } from "$lib/utils/carsActions";
-    import { setCarForm, createInitialCarForm } from "$lib/stores/carForm";
 
     let isLoading = true;
     let error = "";
+    let initialData = {};
+    const type = "car";
     const { slug } = $page.params;
 
     onMount(async () => {
         try {
             const { car, translation } = await getCar(slug);
 
-            // Функция для заполнения языковых полей
-            const toLangMap = (field, def = "") =>
-                Object.fromEntries(
-                    ["ru", "en", "tr"].map((lang) => [
+            // Начинаем с копии car
+            const data = { ...car };
+
+            // Для каждого ключа из перевода собираем структуру { en: value, ru: value }
+            const localizedFields = Object.keys(translation[0]).filter(
+                (key) => key !== "lang" && key !== "_id" && key !== "itemSlug"
+            );
+
+            for (const field of localizedFields) {
+                data[field] = Object.fromEntries(
+                    SUPPORTED_LANGUAGES.map((lang) => [
                         lang,
-                        translation.find((t) => t.lang === lang)?.[field] ??
-                            def,
+                        translation.find((t) => t.lang === lang)?.[field] ?? "",
                     ])
                 );
+            }
 
-            const toLangArrayMap = (field) =>
-                Object.fromEntries(
-                    ["ru", "en", "tr"].map((lang) => [
-                        lang,
-                        translation.find((t) => t.lang === lang)?.[field] ?? [],
-                    ])
-                );
-
-            setCarForm({
-                ...car,
-                title: toLangMap("title"),
-                metaDescription: toLangMap("metaDescription"),
-                description: toLangMap("description"),
-                fuelPolicy: toLangMap("fuelPolicy"),
-                extraTimePolicy: toLangMap("extraTimePolicy"),
-                insuranceDescription: toLangMap("insuranceDescription"),
-
-                meetingPoint: toLangMap("meetingPoint"), // если нужно
-                whatYouSee: toLangArrayMap("whatYouSee"), // если есть
-                includes: toLangArrayMap("includes"),
-                whatToBring: toLangArrayMap("whatToBring"),
-                rentalConditions: toLangArrayMap("rentalConditions"),
-                insuranceExclusions: toLangArrayMap("insuranceExclusions"),
-                accidentInstructions: toLangArrayMap("accidentInstructions"),
-                requiredDocuments: toLangArrayMap("requiredDocuments"),
-                notes: toLangArrayMap("notes"),
-                tags: toLangArrayMap("tags"),
-            });
+            initialData = data;
         } catch (e) {
             console.error(e);
-            error = "Ошибка загрузки данных машины";
+            error = "Ошибка загрузки данных экскурсии";
         } finally {
             isLoading = false;
         }
     });
+
+    const steps = carSteps;
+    const schema = carSchema;
+    const createFn = null; // в режиме редактирования не используется
+    const updateFn = updateCar;
+    const mode = "edit";
 </script>
 
 {#if isLoading}
@@ -65,12 +55,14 @@
 {:else if error}
     <p class="error">{error}</p>
 {:else}
-    <CarForm mode="edit" {slug} />
+    <UniversalForm
+        {steps}
+        {schema}
+        {createFn}
+        {updateFn}
+        {mode}
+        {initialData}
+        {slug}
+        {type}
+    />
 {/if}
-
-<style>
-    .error {
-        color: red;
-        font-weight: bold;
-    }
-</style>
