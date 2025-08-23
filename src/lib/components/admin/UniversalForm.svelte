@@ -279,38 +279,49 @@
     .wizard {
         display: flex;
         flex-direction: column;
-        height: 100%; /* чтобы занять всю доступную высоту */
-        overflow: hidden;
+        height: 100%;
+        position: relative;
     }
 
-    /* header остаётся сверху */
+    /* header фиксированный */
     .wizard-header {
         flex-shrink: 0;
         display: flex;
         align-items: center;
         gap: 1rem;
+        padding: var(--space-vertical-sm) 0;
+        background: var(--color-bg);
+        border-bottom: 1px solid var(--color-gray-300);
+        position: sticky;
+        top: 0;
+        z-index: 10;
     }
 
     /* контент прокручивается */
     .wizard-content {
-        flex: 1 1 auto;
+        flex: 1;
         overflow-y: auto;
+        padding: var(--space-vertical-md) 0;
         display: flex;
         flex-direction: column;
         gap: 1rem;
-        padding: var(--space-vertical-xs) 0;
+        /* Важно для скролла */
+        min-height: 0;
     }
 
-    /* footer закреплён внизу */
+    /* footer фиксированный */
     .wizard-footer {
         flex-shrink: 0;
         display: flex;
         gap: 0.75rem;
         align-items: center;
         justify-content: space-between;
-        background-color: var(
-            --color-bg
-        ); /* чтобы не прилипал контент под низ */
+        padding: var(--space-vertical-sm) 0;
+        background: var(--color-bg);
+        border-top: 1px solid var(--color-gray-300);
+        position: sticky;
+        bottom: 0;
+        z-index: 10;
     }
 
     .steps {
@@ -325,14 +336,56 @@
         border-radius: var(--radius-md);
         background-color: var(--color-bg);
         font-size: var(--text-xs);
+        margin: 0;
     }
+
     legend {
         font-weight: bolder;
         text-decoration: underline;
+        padding: 0 var(--space-horizontal-xs);
     }
 
     .error {
         color: var(--color-error);
         font-size: var(--text-sm);
+        text-align: center;
+        margin-top: var(--space-vertical-xs);
+    }
+
+    /* Для темной темы */
+    @media (prefers-color-scheme: dark) {
+        .wizard-header,
+        .wizard-footer {
+            background: var(--color-dark);
+            border-color: var(--color-gray-700);
+        }
+
+        fieldset {
+            border-color: var(--color-gray-700);
+            background: var(--color-dark);
+        }
+    }
+
+    /* Адаптивность для мобильных */
+    @media (max-width: 768px) {
+        .wizard-header {
+            padding: var(--space-vertical-xs) 0;
+        }
+
+        .wizard-content {
+            padding: var(--space-vertical-sm) 0;
+        }
+
+        .wizard-footer {
+            padding: var(--space-vertical-xs) 0;
+        }
+
+        .steps {
+            gap: 0.25rem;
+        }
+
+        fieldset {
+            padding: var(--space-vertical-xs);
+        }
     }
 </style>

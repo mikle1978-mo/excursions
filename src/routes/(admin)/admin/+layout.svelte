@@ -4,7 +4,9 @@
     .admin-layout {
         padding: 1rem;
         background-color: var(--color-bg);
-        min-height: 100vh;
+        height: 100vh; /* Высота на весь экран */
+        display: flex; /* Добавляем flex */
+        flex-direction: column; /* Вертикальное направление */
     }
 
     @media (max-width: 600px) {

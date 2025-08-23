@@ -124,7 +124,7 @@
             </div>
         {/if}
         <MyButton
-            width="width-auto"
+            width="half"
             onclick={uploadImages}
             size="xs"
             type="button"

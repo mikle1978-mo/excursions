@@ -1,7 +1,7 @@
 <script>
     export let variant = "primary"; // 'primary' | 'secondary' | 'outline'
     export let size = "md"; // 'sm' | 'md' | 'lg'
-    export let width = "width-full"; // 'full' | 'auto' | 'lg'
+    export let width = "full"; // 'full' | 'auto' | 'half'
 </script>
 
 <button class="custom-button {variant} {size} {width}" {...$$restProps}>
@@ -21,15 +21,17 @@
         justify-content: center;
         white-space: nowrap;
         border: none;
-        line-height: calc(var(--line-height-base) * 1.5);
         position: relative;
         overflow: hidden;
     }
 
-    .width-full {
+    .full {
         width: 100%;
     }
-    .width-auto {
+    .half {
+        width: 50%;
+    }
+    .auto {
         width: auto;
     }
 

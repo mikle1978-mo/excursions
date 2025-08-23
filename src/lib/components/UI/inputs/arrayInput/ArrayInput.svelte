@@ -69,6 +69,7 @@
     .label {
         display: flex;
         flex-direction: column;
+
         gap: 0.3rem;
     }
     .array-input {
@@ -79,6 +80,7 @@
     .input-group {
         display: flex;
         flex-direction: row;
+        align-items: flex-start;
         gap: 0.5rem;
     }
     textarea {
