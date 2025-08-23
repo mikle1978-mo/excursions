@@ -1,93 +1,53 @@
-import { connectToDatabase } from "$lib/server/mongodb";
-import { redis } from "$lib/server/redis";
+// src/routes/api/cars/[slug]/+server.js
+import { json } from "@sveltejs/kit";
 import { carSteps } from "$lib/components/admin/fields/cars";
-import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
+import {
+    getItem,
+    updateItem,
+    deleteItem,
+} from "$lib/server/utils/items/itemsService";
 
-// Вспомогательные функции
-function flattenFields(steps) {
-    return steps.flatMap((step) => step.fields);
-}
-
-function isLocalizedField(name) {
-    return carSteps.some((step) =>
-        step.fields.some((field) => field.name === name && field.localized)
-    );
-}
-
-// ------------------- GET -------------------
+/**
+ * Получение авто по slug
+ */
 export async function GET({ params }) {
-    const db = await connectToDatabase();
-    const car = await db.collection("cars").findOne({ slug: params.slug });
-    const translation = await db
-        .collection("cars_translations")
-        .find({ itemSlug: params.slug })
-        .toArray();
+    try {
+        const result = await getItem(params.slug, "cars");
+        if (!result.item) return new Response(null, { status: 404 });
 
-    if (!car) return new Response(null, { status: 404 });
-
-    return new Response(JSON.stringify({ car, translation }), { status: 200 });
-}
-
-// ------------------- PUT -------------------
-export async function PUT({ request, params }) {
-    const db = await connectToDatabase();
-    const carData = await request.json();
-
-    const oldSlug = params.slug;
-    const newSlug = carData.slug;
-
-    const allFields = flattenFields(carSteps);
-    const localizedFields = allFields.filter((f) => isLocalizedField(f.name));
-
-    // Подготовка переводов для каждой локали
-    const preparedTranslations = SUPPORTED_LANGUAGES.map((lang) => {
-        const t = { itemSlug: newSlug, lang };
-        for (const field of localizedFields) {
-            t[field.name] =
-                carData[field.name]?.[lang] ??
-                field.default?.[lang] ??
-                (Array.isArray(field.default) ? [] : "");
-        }
-        return t;
-    });
-
-    // Основной документ — все не-локализованные поля
-    const mainDoc = { ...carData };
-    for (const field of localizedFields) {
-        delete mainDoc[field.name];
+        return json(result, { status: 200 });
+    } catch (err) {
+        console.error("Ошибка при получении авто:", err);
+        return json({ error: "Ошибка сервера" }, { status: 500 });
     }
-
-    // Обновляем основной документ и slug одной операцией
-    await db
-        .collection("cars")
-        .updateOne({ slug: oldSlug }, { $set: { ...mainDoc, slug: newSlug } });
-
-    // Обновляем переводы: удаляем старые и вставляем новые
-    await db.collection("cars_translations").deleteMany({ itemSlug: oldSlug });
-    await db.collection("cars_translations").insertMany(preparedTranslations);
-
-    // Чистим кеш Redis
-    await redis.del("cars");
-
-    return new Response(JSON.stringify({ success: true, slug: newSlug }));
 }
 
-// ------------------- DELETE -------------------
+/**
+ * Обновление авто
+ */
+export async function PUT({ request, params }) {
+    try {
+        const data = await request.json();
+        const slug = await updateItem(params.slug, data, "cars", carSteps);
+        return json({ success: true, slug }, { status: 200 });
+    } catch (err) {
+        console.error("Ошибка при обновлении авто:", err);
+        return json(
+            { error: err.message || "Ошибка сервера" },
+            { status: 500 }
+        );
+    }
+}
+
+/**
+ * Удаление авто
+ */
 export async function DELETE({ params }) {
-    const db = await connectToDatabase();
-
-    // Удалим машину
-    await db.collection("cars").deleteOne({ slug: params.slug });
-
-    // Удалим переводы этой машины
-    await db
-        .collection("cars_translations")
-        .deleteMany({ itemSlug: params.slug });
-
-    await redis.del("cars");
-
-    return new Response(JSON.stringify({ success: true }), {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-    });
+    try {
+        await deleteItem(params.slug, "cars");
+        return json({ success: true }, { status: 200 });
+    } catch (err) {
+        console.error("Ошибка при удалении авто:", err);
+        return json({ error: "Ошибка сервера" }, { status: 500 });
+    }
 }
