@@ -101,7 +101,7 @@
         align-items: center;
         gap: var(--space-vertical-md);
         background: var(--color-bg);
-        padding: var(--space-vertical-md) 0;
+
         border-radius: var(--radius-md);
         align-self: start;
         top: var(--space-vertical-md);

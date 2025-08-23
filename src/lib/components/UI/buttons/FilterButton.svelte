@@ -23,7 +23,7 @@
         aspect-ratio: 1;
         font-size: var(--text-sm);
         color: var(--color-gray-500);
-        background: var(--color-gray-100);
+        background: var(--color-bg);
         border: 2px solid var(--color-gray-500);
         border-radius: var(--radius-full);
         padding: 0;
@@ -36,15 +36,5 @@
         border-color: var(--color-primary);
         box-shadow: var(--shadow-md);
         background: var(--color-bg);
-    }
-    @media (prefers-color-scheme: dark) {
-        .filter-button {
-            background: var(--color-gray-800);
-            border-color: var(--color-gray-600);
-        }
-
-        .filter-button:hover {
-            background: var(--color-gray-900);
-        }
     }
 </style>

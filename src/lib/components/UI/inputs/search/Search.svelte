@@ -126,7 +126,7 @@
     .search-container {
         display: flex;
         align-items: center;
-        background: var(--color-gray-100);
+        background: var(--color-bg);
         border-radius: 50%;
         overflow: hidden;
         width: 32px;
@@ -184,12 +184,5 @@
         width: 24px;
         opacity: 1;
         pointer-events: auto;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        .search-container {
-            background: var(--color-gray-800);
-            border-color: var(--color-gray-600);
-        }
     }
 </style>

@@ -382,6 +382,7 @@
         width: 100%;
         bottom: 0;
         z-index: 10;
+        backdrop-filter: blur(10px);
         background-color: rgba(var(--color-bg-rgb), 0.5);
         padding: var(--space-vertical-md) var(--space-horizontal-sm);
     }

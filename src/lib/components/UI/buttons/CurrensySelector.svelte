@@ -78,7 +78,7 @@
         aspect-ratio: 1;
         font-size: var(--text-sm);
         color: var(--color-gray-500);
-        background: var(--color-gray-100);
+        background: var(--color-bg);
         border: 2px solid var(--color-gray-500);
         border-radius: var(--radius-full);
         padding: 0;
@@ -122,7 +122,7 @@
         height: 5vh;
         font-size: var(--text-sm);
         color: var(--color-text);
-        background: var(--color-gray-100);
+        background: var(--color-bg);
         border: 1px solid var(--color-gray-300);
         border-radius: var(--radius-full);
         cursor: pointer;
@@ -147,7 +147,6 @@
 
     @media (prefers-color-scheme: dark) {
         .currency-button {
-            background: var(--color-gray-800);
             border-color: var(--color-gray-600);
         }
 
@@ -157,12 +156,10 @@
         }
 
         .currency-dropdown {
-            background: var(--color-gray-900);
             border-color: var(--color-gray-600);
         }
 
         .currency-option {
-            background: var(--color-gray-800);
             border-color: var(--color-gray-600);
         }
     }
