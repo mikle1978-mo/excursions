@@ -16,7 +16,7 @@
         display: flex;
         align-items: baseline;
         gap: var(--space-horizontal-xs);
-        color: var(--color-gray-600);
+        color: inherit;
         font-size: var(--text-md);
     }
     .average,
@@ -40,10 +40,5 @@
         -webkit-background-clip: text;
         background-clip: text;
         color: transparent;
-    }
-    @media (prefers-color-scheme: dark) {
-        .rating {
-            color: var(--color-gray-400);
-        }
     }
 </style>

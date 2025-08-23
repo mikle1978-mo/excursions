@@ -382,7 +382,7 @@
         width: 100%;
         bottom: 0;
         z-index: 10;
-        background-color: var(--color-bg);
+        background-color: rgba(var(--color-bg-rgb), 0.5);
         padding: var(--space-vertical-md) var(--space-horizontal-sm);
     }
 

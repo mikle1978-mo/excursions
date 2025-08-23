@@ -92,7 +92,7 @@
         align-items: center;
         border: none;
         background-color: transparent;
-        color: var(--color-gray-600);
+        color: inherit;
         cursor: pointer;
         transition:
             background-color 0.3s,
