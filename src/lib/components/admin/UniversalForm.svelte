@@ -204,6 +204,13 @@
                 </MyButton>
             {/each}
         </div>
+        <button
+            on:click={() => goto(redirectTo)}
+            type="button"
+            class="close-btn"
+        >
+            ×
+        </button>
     </div>
 
     <!-- Текущий шаг -->
@@ -279,6 +286,7 @@
     .wizard {
         display: flex;
         flex-direction: column;
+        align-items: center;
         height: 100%;
         position: relative;
     }
@@ -299,6 +307,7 @@
 
     /* контент прокручивается */
     .wizard-content {
+        width: 100%;
         flex: 1;
         overflow-y: auto;
         padding: var(--space-vertical-md) 0;
@@ -350,6 +359,28 @@
         font-size: var(--text-sm);
         text-align: center;
         margin-top: var(--space-vertical-xs);
+    }
+
+    .close-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: none;
+        font-size: 1.5rem;
+        width: calc(var(--text-md) * 1.5);
+        height: calc(var(--text-md) * 1.5);
+        border: none;
+        padding: 0;
+        border-radius: var(--radius-full);
+        color: var(--color-gray-500);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+    }
+
+    .close-btn:hover,
+    .close-btn:focus {
+        color: var(--color-error);
+        background: var(--color-gray-200);
     }
 
     /* Для темной темы */

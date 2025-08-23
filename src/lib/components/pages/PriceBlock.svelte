@@ -99,9 +99,9 @@
     };
 
     export const discountEndLabels = {
-        ru: "Срок действия скидки",
-        en: "Discount ends",
-        tr: "İndirim süresi",
+        ru: "cрок действия скидки",
+        en: "discount ends",
+        tr: "indirim süresi",
     };
 
     function getPriceTypeLabel(type, locale) {
@@ -138,7 +138,6 @@
         {/if}
 
         {#if remaining && discount > 0}
-            <span class="discountEndLabel">{discountEndLabels[locale]}</span>
             <div class="discount-timer">
                 {#each Object.entries(remaining) as [key, value]}
                     <div class="time-block">
@@ -149,6 +148,7 @@
                     </div>
                 {/each}
             </div>
+            <span class="discountEndLabel">{discountEndLabels[locale]}</span>
         {/if}
     </div>
 </aside>
@@ -237,5 +237,6 @@
 
     .discountEndLabel {
         display: block;
+        color: var(--color-gray-600);
     }
 </style>

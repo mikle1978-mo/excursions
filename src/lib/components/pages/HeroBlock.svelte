@@ -158,10 +158,6 @@
         .hero {
             max-height: 1000px;
         }
-
-        .hero-content {
-            max-width: 1400px;
-        }
     }
 
     @media (prefers-color-scheme: dark) {

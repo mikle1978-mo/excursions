@@ -213,7 +213,6 @@
     .review-list {
         list-style: none;
         padding: 0;
-        margin-bottom: var(--space-vertical-md);
     }
 
     .review-item {
@@ -275,7 +274,7 @@
     }
 
     .review-form {
-        margin-top: var(--space-vertical-md);
+        padding: var(--space-vertical-sm) var(--space-horizontal-md);
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-sm);
