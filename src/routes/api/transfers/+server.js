@@ -19,7 +19,7 @@ export async function POST({ request }) {
 
         return json({ success: true, slug }, { status: 201 });
     } catch (err) {
-        console.error("Ошибка при создании экскурсии:", err);
+        console.error("Ошибка при создании трансфера:", err);
         return json(
             { error: err.message || "Ошибка сервера" },
             { status: 500 }

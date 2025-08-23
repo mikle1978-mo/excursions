@@ -26,6 +26,7 @@
     $: priceTypeLabel = card[priceType]?.[$locale] ?? "";
 
     $: discount = item.discount ?? 0;
+    $: discountEnd = item.discountEnd ?? 0;
 
     $: fuelLabel = item.fuel ? (card[item.fuel]?.[$locale] ?? item.fuel) : "";
     $: transmissionLabel = item.transmission
@@ -87,7 +88,7 @@
                 {getLabelByKey(meta.labels, "POPULAR").label[$locale]}
             </span>
         {/if}
-        {#if getLabelByKey(meta.labels, "DISCOUNT")}
+        {#if getLabelByKey(meta.labels, "DISCOUNT") && discount > 0 && new Date(discountEnd) > new Date()}
             <span class="card__badge bottomleft">
                 {`-${discount}%`}
             </span>
