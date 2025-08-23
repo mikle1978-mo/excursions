@@ -4,18 +4,14 @@
     import IconCopy from "$lib/icons/IconCopy.svelte";
     import IconDelete from "$lib/icons/IconDelete.svelte";
     import ExportCSVButton from "$lib/components/UI/buttons/ExportCSVButton.svelte";
+    import { LIST_COLUMNS } from "$lib/constants/listAdminFields";
     import { goto } from "$app/navigation";
     import MyButton from "../UI/buttons/MyButton.svelte";
 
     export let items = [];
 
     export let type = "excursions";
-    export let columnMap = {
-        slug: "Slug",
-        title: "Название",
-        active: "Активна",
-        price: "Цена",
-    };
+    export let columnMap = LIST_COLUMNS;
 
     export let onDelete;
     export let onDuplicate;

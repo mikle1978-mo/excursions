@@ -1,5 +1,6 @@
 <script>
     import AdminItemList from "$lib/components/admin/AdminItemList.svelte";
+    import { LIST_COLUMNS } from "$lib/constants/listAdminFields.js";
     import {
         deleteCar,
         duplicateCar,
@@ -9,12 +10,7 @@
     export let data;
     let cars = structuredClone(data.items);
 
-    const columnMap = {
-        slug: "Slug",
-        title_ru: "Название (RU)",
-        active: "Активна",
-        price: "Цена",
-    };
+    const columnMap = LIST_COLUMNS;
 </script>
 
 <AdminItemList
