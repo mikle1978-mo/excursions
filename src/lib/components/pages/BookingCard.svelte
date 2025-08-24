@@ -101,7 +101,6 @@
         align-items: center;
         gap: var(--space-vertical-md);
         background: var(--color-bg);
-
         border-radius: var(--radius-md);
         align-self: start;
         top: var(--space-vertical-md);
