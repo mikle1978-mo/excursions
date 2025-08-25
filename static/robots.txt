@@ -19,3 +19,7 @@ Disallow: /tr/development
 # Указать путь к карте сайта
 Sitemap: https://kemer.app/sitemap.xml
 
+User-agent: Yandex
+# Запретить индексацию URL с параметрами Google Ads
+Disallow: /*?gad_source=
+Disallow: /*?gbraid=
