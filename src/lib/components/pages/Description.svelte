@@ -24,6 +24,7 @@
 
     .description-block :global(p:first-letter) {
         color: var(--color-primary);
+        font-weight: 700;
     }
 
     .description-block :global(strong) {
