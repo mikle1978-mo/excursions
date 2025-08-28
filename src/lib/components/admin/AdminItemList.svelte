@@ -7,15 +7,16 @@
     import { LIST_COLUMNS } from "$lib/constants/listAdminFields";
     import { goto } from "$app/navigation";
     import MyButton from "../UI/buttons/MyButton.svelte";
+    import {
+        deleteItem,
+        duplicateItem,
+        toggleItemActive,
+    } from "$lib/utils/itemsActions.js";
 
     export let items = [];
 
     export let type = "excursions";
     export let columnMap = LIST_COLUMNS;
-
-    export let onDelete;
-    export let onDuplicate;
-    export let onToggleActive;
 
     let sortKey = "slug";
     let sortDirection = "asc"; // или "desc"
@@ -32,13 +33,13 @@
 
     async function handleDelete(slug) {
         if (confirm("Удалить элемент?")) {
-            const success = await onDelete(slug);
+            const success = await deleteItem(type, slug);
             if (success) location.reload();
         }
     }
 
     async function handleDuplicate(slug) {
-        const newSlug = await onDuplicate(slug);
+        const newSlug = await duplicateItem(type, slug);
         if (newSlug) location.reload();
     }
 
@@ -50,7 +51,7 @@
                 `Ты точно хочешь ${newActive ? "включить" : "выключить"} "${item.slug}"?`
             )
         ) {
-            await onToggleActive(item.slug, newActive);
+            await toggleItemActive(type, item.slug, newActive);
             item.active = newActive;
             sortedItems = [...sortedItems];
         }

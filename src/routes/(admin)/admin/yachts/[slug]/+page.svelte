@@ -3,7 +3,7 @@
     import UniversalForm from "$lib/components/admin/UniversalForm.svelte";
     import { yachtSteps } from "$lib/components/admin/fields/yachts";
     import { yachtSchema } from "$lib/schemas/yachtSchema";
-    import { getYacht, updateYacht } from "$lib/utils/yachtsActions";
+    import { getItem } from "$lib/utils/itemsActions.js";
     import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
     import { page } from "$app/stores";
 
@@ -15,10 +15,10 @@
 
     onMount(async () => {
         try {
-            const { item: yacht, translation } = await getYacht(slug);
+            const { item, translation } = await getItem(type, slug);
 
             // Начинаем с копии yacht
-            const data = { ...yacht };
+            const data = { ...item };
 
             // Для каждого ключа из перевода собираем структуру { en: value, ru: value }
             const localizedFields = Object.keys(translation[0]).filter(
@@ -45,8 +45,6 @@
 
     const steps = yachtSteps;
     const schema = yachtSchema;
-    const createFn = null; // в режиме редактирования не используется
-    const updateFn = updateYacht;
     const mode = "edit";
 </script>
 
@@ -55,14 +53,5 @@
 {:else if error}
     <p class="error">{error}</p>
 {:else}
-    <UniversalForm
-        {steps}
-        {schema}
-        {createFn}
-        {updateFn}
-        {mode}
-        {initialData}
-        {slug}
-        {type}
-    />
+    <UniversalForm {steps} {schema} {mode} {initialData} {slug} {type} />
 {/if}

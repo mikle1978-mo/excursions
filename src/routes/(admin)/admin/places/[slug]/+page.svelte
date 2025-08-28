@@ -1,8 +1,8 @@
 <script>
     import { onMount } from "svelte";
     import UniversalForm from "$lib/components/admin/UniversalForm.svelte";
-    import { transferSteps } from "$lib/components/admin/fields/transfers";
-    import { transferSchema } from "$lib/schemas/transferSchema";
+    import { excursionSteps } from "$lib/components/admin/fields/excursions";
+    import { excursionSchema } from "$lib/schemas/excursionSchema";
     import { getItem } from "$lib/utils/itemsActions";
     import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
     import { page } from "$app/stores";
@@ -10,14 +10,15 @@
     let isLoading = true;
     let error = "";
     let initialData = {};
-    const type = "transfer";
+    const type = "place";
+
     const { slug } = $page.params;
 
     onMount(async () => {
         try {
             const { item, translation } = await getItem(type, slug);
 
-            // Начинаем с копии transfer
+            // Начинаем с копии excursion
             const data = { ...item };
 
             // Для каждого ключа из перевода собираем структуру { en: value, ru: value }
@@ -33,7 +34,11 @@
                     ])
                 );
             }
-
+            // 🔹 Логируем данные перед установкой в форму
+            console.log(
+                "Data received from DB before initialData assignment:",
+                data
+            );
             initialData = data;
         } catch (e) {
             console.error(e);
@@ -43,8 +48,8 @@
         }
     });
 
-    const steps = transferSteps;
-    const schema = transferSchema;
+    const steps = excursionSteps;
+    const schema = excursionSchema;
     const mode = "edit";
 </script>
 

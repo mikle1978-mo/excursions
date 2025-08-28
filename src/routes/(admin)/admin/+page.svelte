@@ -1,5 +1,11 @@
 <script>
-    // Никаких данных подгружать не нужно на этом этапе
+    import IconImage from "$lib/icons/IconImage.svelte";
+    import IconSunrise from "$lib/icons/IconSunrise.svelte";
+    import IconLifeBuoy from "$lib/icons/IconLifeBuoy.svelte";
+    import IconTruck from "$lib/icons/IconTruck.svelte";
+    import IconCompass from "$lib/icons/IconCompass.svelte";
+    import IconHelp from "$lib/icons/IconHelp.svelte";
+    import IconBookOpen from "$lib/icons/IconBookOpen.svelte";
 </script>
 
 <svelte:head>
@@ -11,12 +17,25 @@
 <main class="admin-dashboard">
     <h1 class="admin-title">Админка</h1>
     <nav class="admin-links">
-        <a href="/admin/excursions" class="admin-link">Управление экскурсиями</a
+        <a href="/admin/excursions" class="admin-link"
+            ><IconSunrise />Управление экскурсиями</a
         >
-        <a href="/admin/yachts" class="admin-link">Управление яхтами</a>
-        <a href="/admin/cars" class="admin-link">Управление машинами</a>
-        <a href="/admin/transfers" class="admin-link">Управление трансферами</a>
-        <a href="/admin/faq" class="admin-link">Управление FAQ</a>
+        <a href="/admin/yachts" class="admin-link"
+            ><IconLifeBuoy />Управление яхтами</a
+        >
+        <a href="/admin/cars" class="admin-link"
+            ><IconTruck />Управление машинами</a
+        >
+        <a href="/admin/transfers" class="admin-link"
+            ><IconCompass />Управление трансферами</a
+        >
+        <a href="/admin/faq" class="admin-link"><IconHelp />Управление FAQ</a>
+        <a href="/admin/places" class="admin-link"
+            ><IconImage />Управление местами</a
+        >
+        <a href="/admin/blog" class="admin-link"
+            ><IconBookOpen />Управление блогом</a
+        >
     </nav>
 </main>
 
@@ -27,7 +46,7 @@
         align-items: center;
         justify-content: center;
         gap: var(--space-vertical-md);
-        padding: var(--space-vertical-lg) var(--space-horizontal-md);
+        padding: var(--space-vertical-sm) var(--space-horizontal-sm);
     }
 
     .admin-title {
@@ -43,8 +62,12 @@
     }
 
     .admin-link {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--space-horizontal-sm);
         font-size: var(--text-md);
-        padding: 0.75em 1.5em;
+        padding: var(--space-vertical-sm) var(--space-horizontal-sm);
         background-color: var(--color-secondary);
         color: var(--color-light);
         border-radius: var(--radius-md);

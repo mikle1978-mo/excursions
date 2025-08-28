@@ -8,6 +8,8 @@ export const EN_VALID_ROUTES = [
     "excursions",
     "yachts",
     "transfers",
+    "places",
+    "blog",
     "thanks",
     "cars",
     "faq",

@@ -101,7 +101,7 @@ export const main_page = {
                 ru: "Места",
                 en: "Places",
             },
-            link: "development",
+            link: "places",
             img: "/images/places/place_default.webp",
             set: [
                 { url: "/images/places/place_default-400.webp", width: "400w" },

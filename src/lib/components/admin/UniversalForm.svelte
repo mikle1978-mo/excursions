@@ -9,11 +9,10 @@
         setFormData,
         resetForm,
     } from "$lib/stores/universalFormStore";
+    import { createItem, updateItem } from "$lib/utils/itemsActions.js";
 
     export let steps = []; // конфиг шагов и полей
     export let schema; // Zod-схема (ZodObject)
-    export let createFn; // функция создания
-    export let updateFn; // функция обновления
     export let mode = "create"; // create | edit
     export let slug = ""; // для edit
     export let initialData = null; // добавляем проп
@@ -115,11 +114,8 @@
 
             console.log("*************", err);
             const issues = err.errors ?? err.issues ?? [];
-            errors = issues.reduce((acc, e) => {
-                const path = (e.path || []).join(".");
-                acc[path] = e.message;
-                return acc;
-            }, {});
+            errors = mapZodErrors(issues);
+
             return false;
         }
     }
@@ -153,6 +149,20 @@
         }
     }
 
+    function mapZodErrors(issues) {
+        const result = {};
+        for (const e of issues) {
+            let target = result;
+            for (let i = 0; i < e.path.length - 1; i++) {
+                const key = e.path[i];
+                target[key] = target[key] || {};
+                target = target[key];
+            }
+            target[e.path[e.path.length - 1]] = { message: e.message };
+        }
+        return result;
+    }
+
     async function handleSubmit() {
         isLoading = true;
         errors = {};
@@ -162,12 +172,12 @@
             const validData = schema.parse(currentForm);
 
             if (mode === "create") {
-                await createFn(validData);
+                await createItem(type, validData);
                 alert("Создано успешно");
                 resetForm(form, initializeForm(), type, "new");
                 goto(redirectTo);
             } else {
-                await updateFn(slug, validData);
+                await updateItem(type, slug, validData);
                 alert("Изменения сохранены");
                 resetForm(form, initializeForm(), type, slug);
                 goto(redirectTo);
@@ -175,12 +185,9 @@
             // например, редирект или уведомление
         } catch (err) {
             const issues = err.errors ?? err.issues ?? [];
-            errors = issues.reduce((acc, e) => {
-                const path = (e.path || []).join(".");
-                acc[path] = e.message;
-                return acc;
-            }, {});
-            generalError = err.message || "Ошибка при сохранении";
+            errors = mapZodErrors(issues);
+            generalError =
+                err.message || JSON.stringify(err) || "Ошибка при сохранении";
         } finally {
             isLoading = false;
         }

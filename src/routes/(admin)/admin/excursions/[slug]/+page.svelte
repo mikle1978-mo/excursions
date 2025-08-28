@@ -3,10 +3,7 @@
     import UniversalForm from "$lib/components/admin/UniversalForm.svelte";
     import { excursionSteps } from "$lib/components/admin/fields/excursions";
     import { excursionSchema } from "$lib/schemas/excursionSchema";
-    import {
-        getExcursion,
-        updateExcursion,
-    } from "$lib/utils/excursionsActions";
+    import { getItem } from "$lib/utils/itemsActions";
     import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
     import { page } from "$app/stores";
 
@@ -18,10 +15,10 @@
 
     onMount(async () => {
         try {
-            const { item: excursion, translation } = await getExcursion(slug);
+            const { item, translation } = await getItem(type, slug);
 
             // Начинаем с копии excursion
-            const data = { ...excursion };
+            const data = { ...item };
 
             // Для каждого ключа из перевода собираем структуру { en: value, ru: value }
             const localizedFields = Object.keys(translation[0]).filter(
@@ -52,8 +49,6 @@
 
     const steps = excursionSteps;
     const schema = excursionSchema;
-    const createFn = null; // в режиме редактирования не используется
-    const updateFn = updateExcursion;
     const mode = "edit";
 </script>
 
@@ -62,14 +57,5 @@
 {:else if error}
     <p class="error">{error}</p>
 {:else}
-    <UniversalForm
-        {steps}
-        {schema}
-        {createFn}
-        {updateFn}
-        {mode}
-        {initialData}
-        {slug}
-        {type}
-    />
+    <UniversalForm {steps} {schema} {mode} {initialData} {slug} {type} />
 {/if}

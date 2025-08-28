@@ -238,4 +238,17 @@
         display: block;
         color: var(--color-gray-600);
     }
+
+    /* Тёмная тема только для таймера */
+    @media (prefers-color-scheme: dark) {
+        .time-block {
+            background: #2a2d31; /* тёмный фон таймера */
+        }
+        .label {
+            color: #c4c4c4; /* светлый текст */
+        }
+        .discount {
+            background-color: #f66e6e; /* скидка лучше контрастировать */
+        }
+    }
 </style>

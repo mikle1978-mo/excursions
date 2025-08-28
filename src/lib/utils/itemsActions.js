@@ -1,12 +1,20 @@
-const API_URL = "/api/excursions";
+/**
+ * Универсальные actions для CRUD по типу услуги
+ */
+function getApiUrl(type) {
+    return `/api/${type}`;
+}
+function getCollection(type) {
+    return type + "s";
+}
 
 /**
- * Удаление экскурсии
+ * Удаление
  */
-export async function deleteExcursion(slug) {
-    if (!confirm("Удалить экскурсию?")) return false;
-
-    const res = await fetch(`${API_URL}/${slug}`, {
+export async function deleteItem(type, slug) {
+    if (!confirm("Удалить элемент?")) return false;
+    const collection = getCollection(type);
+    const res = await fetch(`${getApiUrl(collection)}/${slug}`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",
@@ -15,7 +23,7 @@ export async function deleteExcursion(slug) {
     });
 
     if (res.ok) {
-        alert("Экскурсия удалена");
+        alert("Элемент удалён");
         return true;
     } else {
         const err = await res.json();
@@ -25,10 +33,11 @@ export async function deleteExcursion(slug) {
 }
 
 /**
- * Создание новой экскурсии
+ * Создание
  */
-export async function createExcursion(data) {
-    const res = await fetch(API_URL, {
+export async function createItem(type, data) {
+    const collection = getCollection(type);
+    const res = await fetch(getApiUrl(collection), {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -38,17 +47,18 @@ export async function createExcursion(data) {
 
     if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.error || "Ошибка при создании экскурсии");
+        throw new Error(err.error || "Ошибка при создании");
     }
 
     return await res.json();
 }
 
 /**
- * Обновление экскурсии
+ * Обновление
  */
-export async function updateExcursion(slug, data) {
-    const res = await fetch(`${API_URL}/${slug}`, {
+export async function updateItem(type, slug, data) {
+    const collection = getCollection(type);
+    const res = await fetch(`${getApiUrl(collection)}/${slug}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -58,32 +68,33 @@ export async function updateExcursion(slug, data) {
 
     if (!res.ok) {
         const err = await res.json();
-        throw new Error(err.error || "Ошибка при обновлении экскурсии");
+        throw new Error(err.error || "Ошибка при обновлении");
     }
 
     return await res.json();
 }
 
 /**
- * Получение одной экскурсии
+ * Получение
  */
-export async function getExcursion(slug) {
-    const res = await fetch(`${API_URL}/${slug}`);
+export async function getItem(type, slug) {
+    const collection = getCollection(type);
+    const res = await fetch(`${getApiUrl(collection)}/${slug}`);
     if (!res.ok) {
-        throw new Error("Не удалось загрузить экскурсию");
+        throw new Error("Не удалось загрузить");
     }
 
     return await res.json();
 }
 
 /**
- * Дублирование одной экскурсии
+ * Дублирование
  */
+export async function duplicateItem(type, slug) {
+    const collection = getCollection(type);
+    if (!confirm("Дублировать элемент?")) return;
 
-export async function duplicateExcursion(slug) {
-    if (!confirm("Дублировать эту экскурсию?")) return;
-
-    const res = await fetch(`${API_URL}/duplicate`, {
+    const res = await fetch(`${getApiUrl(collection)}/duplicate`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -104,8 +115,8 @@ export async function duplicateExcursion(slug) {
 /**
  * Обновление статуса "active"
  */
-export async function toggleExcursionActive(slug, active) {
-    const res = await fetch("/api/excursions/toggle-active", {
+export async function toggleItemActive(type, slug, active) {
+    const res = await fetch(`${getApiUrl(type)}/toggle-active`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

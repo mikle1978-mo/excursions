@@ -8,4 +8,4 @@
     export let columnMap = LIST_COLUMNS;
 </script>
 
-<AdminItemList type="transfers" {columnMap} {items} />
+<AdminItemList type="places" {columnMap} {items} />

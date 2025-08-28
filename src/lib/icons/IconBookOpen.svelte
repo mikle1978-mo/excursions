@@ -1,0 +1,31 @@
+<svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class="icon"
+>
+    <path
+        d="M2.80957 3.42857H8.80957C9.87044 3.42857 10.8879 3.84999 11.638 4.60014C12.3881 5.35028 12.8096 6.3677 12.8096 7.42857V21.4286C12.8096 20.6329 12.4935 19.8699 11.9309 19.3072C11.3683 18.7446 10.6052 18.4286 9.80957 18.4286H2.80957V3.42857Z"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+    <path
+        d="M22.8096 3.42857H16.8096C15.7487 3.42857 14.7313 3.84999 13.9811 4.60014C13.231 5.35028 12.8096 6.3677 12.8096 7.42857V21.4286C12.8096 20.6329 13.1256 19.8699 13.6882 19.3072C14.2509 18.7446 15.0139 18.4286 15.8096 18.4286H22.8096V3.42857Z"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+    />
+</svg>
+
+<style>
+    .icon {
+        width: 1.2rem;
+        height: 1.2rem;
+        object-fit: cover;
+    }
+</style>

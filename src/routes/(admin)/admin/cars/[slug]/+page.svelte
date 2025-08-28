@@ -3,7 +3,7 @@
     import UniversalForm from "$lib/components/admin/UniversalForm.svelte";
     import { carSteps } from "$lib/components/admin/fields/cars";
     import { carSchema } from "$lib/schemas/carSchema";
-    import { getCar, updateCar } from "$lib/utils/carsActions";
+    import { getItem } from "$lib/utils/itemsActions";
     import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
     import { page } from "$app/stores";
 
@@ -15,10 +15,10 @@
 
     onMount(async () => {
         try {
-            const { item: car, translation } = await getCar(slug);
+            const { item, translation } = await getItem(type, slug);
 
             // Начинаем с копии car
-            const data = { ...car };
+            const data = { ...item };
 
             // Для каждого ключа из перевода собираем структуру { en: value, ru: value }
             const localizedFields = Object.keys(translation[0]).filter(
@@ -45,8 +45,6 @@
 
     const steps = carSteps;
     const schema = carSchema;
-    const createFn = null; // в режиме редактирования не используется
-    const updateFn = updateCar;
     const mode = "edit";
 </script>
 
@@ -55,14 +53,5 @@
 {:else if error}
     <p class="error">{error}</p>
 {:else}
-    <UniversalForm
-        {steps}
-        {schema}
-        {createFn}
-        {updateFn}
-        {mode}
-        {initialData}
-        {slug}
-        {type}
-    />
+    <UniversalForm {steps} {schema} {mode} {initialData} {slug} {type} />
 {/if}

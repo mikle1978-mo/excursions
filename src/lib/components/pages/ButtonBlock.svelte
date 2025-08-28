@@ -71,6 +71,3 @@
     size="md"
     variant="secondary">{getBookingLabel(locale, type, active)}</MyButton
 >
-
-<style>
-</style>
