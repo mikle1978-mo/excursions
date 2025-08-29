@@ -31,7 +31,7 @@ export const nav_items = [
         submenu: [],
     },
     {
-        title: { ru: "места", en: "place" },
+        title: { ru: "места", en: "places" },
         link: "places",
         rel: "",
         submenu: [],
