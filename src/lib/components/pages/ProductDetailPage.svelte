@@ -53,11 +53,6 @@
 
     $: currentTranslation =
         item?.translations?.find((t) => t.lang === effectiveLocale) ?? {};
-
-    console.log("====================================");
-    $: console.log(currentTranslation);
-    console.log("====================================");
-
     // Хлебные крошки
     const typeLabels = {
         car: { ru: "Авто", en: "Cars", tr: "Araba" },

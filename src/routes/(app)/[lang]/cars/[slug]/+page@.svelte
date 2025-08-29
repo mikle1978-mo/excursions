@@ -4,12 +4,12 @@
     import { car_page } from "$lib/i18n/car_page.js";
 
     export let data; // данные из load функции
-    const { car, reviewsCount, rating } = data;
+    const { item, reviewsCount, rating } = data;
 </script>
 
 <ProductDetailPage
     type="car"
-    item={car}
+    {item}
     {rating}
     {reviewsCount}
     locale={$locale}

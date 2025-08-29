@@ -4,12 +4,12 @@
     import { yacht_page } from "$lib/i18n/yacht_page.js";
 
     export let data; // данные из load функции
-    const { yacht, reviewsCount, rating } = data;
+    const { item, reviewsCount, rating } = data;
 </script>
 
 <ProductDetailPage
     type="yacht"
-    item={yacht}
+    {item}
     {rating}
     {reviewsCount}
     locale={$locale}

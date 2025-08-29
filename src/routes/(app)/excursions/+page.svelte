@@ -3,7 +3,6 @@
     import { excursions_SEO_TEXT } from "$lib/i18n/SEO_TEXTS.js";
 
     export let data;
-    console.log(data.noLayout);
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;

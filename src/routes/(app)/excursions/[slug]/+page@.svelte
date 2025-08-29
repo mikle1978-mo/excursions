@@ -4,12 +4,12 @@
     import { excursion_page } from "$lib/i18n/excursion_page.js";
 
     export let data; // данные из load функции
-    const { excursion, reviewsCount, rating } = data;
+    const { item, reviewsCount, rating } = data;
 </script>
 
 <ProductDetailPage
     type="excursion"
-    item={excursion}
+    {item}
     {rating}
     {reviewsCount}
     locale={$locale}

@@ -1,6 +1,10 @@
 import { connectToDatabase } from "$lib/server/mongodb";
 import { redis } from "$lib/server/redis";
 import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
+import { connectToDatabase } from "$lib/server/mongodb";
+import { redis } from "$lib/server/redis";
+
+const CACHE_TTL_SECONDS = 60 * 5; // 5 минут по умолчанию
 
 /**
  * Вспомогательные функции
@@ -13,6 +17,16 @@ function isLocalizedField(name, steps) {
     return steps.some((step) =>
         step.fields.some((field) => field.name === name && field.localized)
     );
+}
+
+/**
+ * Инвалидируем кеш конкретного элемента
+ */
+export async function invalidateFullItemCache(slug, collectionName) {
+    const keys = await redis.keys(`fullItem_${collectionName}_${slug}_*`);
+    if (keys.length) {
+        await redis.del(keys);
+    }
 }
 
 /**
@@ -82,7 +96,7 @@ export async function createItem(data, collectionName, steps) {
 }
 
 /**
- * Универсальная функция для получения элемента по slug
+ * Универсальная функция для получения элемента по slug для админки
  */
 export async function getItem(slug, collectionName) {
     const db = await connectToDatabase();
@@ -92,6 +106,126 @@ export async function getItem(slug, collectionName) {
         .find({ itemSlug: slug })
         .toArray();
     return { item, translation };
+}
+
+/**
+ * Универсальная функция для получения элемента со всеми данными (для admin)
+ */
+export async function getFullItem(slug, collectionName, lang = null) {
+    const db = await connectToDatabase();
+
+    const item = await db.collection(collectionName).findOne({ slug });
+    if (!item) return null;
+
+    const translations = await db
+        .collection(`${collectionName}_translations`)
+        .find({ itemSlug: slug })
+        .toArray();
+
+    const reviews = await db
+        .collection("reviews")
+        .find({ itemSlug: slug })
+        .sort({ date: -1 })
+        .toArray();
+
+    const safeTranslations = translations.map((t) => ({
+        ...t,
+        _id: t._id.toString(),
+    }));
+
+    const safeReviews = reviews.map((r) => ({
+        ...r,
+        _id: r._id.toString(),
+    }));
+
+    const reviewsCount = safeReviews.length;
+    const rating =
+        reviewsCount > 0
+            ? Math.round(
+                  (reviews.reduce((sum, r) => sum + (r.rating || 0), 0) /
+                      reviewsCount) *
+                      10
+              ) / 10
+            : null;
+
+    let translation;
+    if (lang) {
+        translation = safeTranslations.find((t) => t.lang === lang) || null;
+    }
+
+    return {
+        item: {
+            ...item,
+            _id: item._id.toString(),
+            translations: lang ? undefined : safeTranslations,
+            translation,
+        },
+        reviews: safeReviews,
+        reviewsCount,
+        rating,
+    };
+}
+
+/*Получение полного элемента с кешем */
+
+export async function getFullItemCached(slug, collectionName, lang = null) {
+    const cacheKey = `fullItem_${collectionName}_${slug}_${lang || "all"}`;
+
+    // 1️⃣ Попытка достать из кеша
+    try {
+        const cached = await redis.get(cacheKey);
+        if (cached) {
+            try {
+                // Если Upstash вернул объект вместо строки — приводим к строке
+                const str =
+                    typeof cached === "string"
+                        ? cached
+                        : JSON.stringify(cached);
+                console.log(`[Cache] Данные взяты из кеша: ${cacheKey}`);
+                return JSON.parse(str);
+            } catch (err) {
+                console.warn(
+                    `[Cache] Невалидный JSON в кеше: ${cacheKey}, сбросим`,
+                    err
+                );
+                await redis.del(cacheKey); // удаляем мусор
+            }
+        }
+    } catch (err) {
+        console.error(`[Cache] Ошибка при чтении из Redis: ${cacheKey}`, err);
+    }
+
+    // 2️⃣ Достаем из базы
+    const data = await getFullItem(slug, collectionName, lang);
+    if (!data) return null;
+
+    // 3️⃣ Безопасная рекурсивная сериализация
+    function deepSafe(obj) {
+        if (obj === null || typeof obj !== "object") return obj;
+        if (obj instanceof Date) return obj.toISOString();
+        if (obj._id) return { ...obj, _id: obj._id.toString() };
+        if (Array.isArray(obj)) return obj.map(deepSafe);
+
+        const res = {};
+        for (const [key, value] of Object.entries(obj)) {
+            res[key] = typeof value === "undefined" ? null : deepSafe(value);
+        }
+        return res;
+    }
+
+    const safeData = deepSafe(data);
+
+    // 4️⃣ Записываем в кеш как строку JSON
+    try {
+        await redis.set(cacheKey, JSON.stringify(safeData), {
+            ex: CACHE_TTL_SECONDS,
+        });
+        console.log(`[Cache] Сохранили в Redis: ${cacheKey}`);
+    } catch (err) {
+        console.error(`[Cache] Не удалось записать в кеш: ${cacheKey}`, err);
+    }
+
+    return safeData;
 }
 
 /**
@@ -141,6 +275,7 @@ export async function updateItem(slug, data, collectionName, steps) {
         .collection(`${collectionName}_translations`)
         .insertMany(translations);
     await redis.del(collectionName);
+    await invalidateFullItemCache(slug, collectionName);
 
     return mainDoc.slug || slug;
 }
@@ -155,5 +290,6 @@ export async function deleteItem(slug, collectionName) {
         .collection(`${collectionName}_translations`)
         .deleteMany({ itemSlug: slug });
     await redis.del(collectionName);
+    await invalidateFullItemCache(slug, collectionName);
     return true;
 }

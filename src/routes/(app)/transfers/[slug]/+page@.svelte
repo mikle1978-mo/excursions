@@ -4,12 +4,12 @@
     import { transfer_page } from "$lib/i18n/transfer_page.js";
 
     export let data; // данные из load функции
-    const { transfer, reviewsCount, rating } = data;
+    const { item, reviewsCount, rating } = data;
 </script>
 
 <ProductDetailPage
     type="transfer"
-    item={transfer}
+    {item}
     {rating}
     {reviewsCount}
     locale={$locale}
