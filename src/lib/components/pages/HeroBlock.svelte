@@ -3,6 +3,7 @@
     import IconClock from "$lib/icons/IconClock.svelte";
     import IconGroup from "$lib/icons/IconGroup.svelte";
     import ShareIcon from "../UI/buttons/ShareIcon.svelte";
+    import { getCloudinarySrcset } from "$lib/utils/optimizeCloudinary.js";
 
     export let imageUrl = "/rafting.jpg";
     export let title = "Rafting from Kemer";
@@ -11,21 +12,28 @@
     export let reviewsCount = 120;
     export let locale = "en";
 
-    // Determine effective locale
     $: effectiveLocale = locale || "en";
+
+    // Для HeroBlock вычисляем srcset
+    $: heroImage = getCloudinarySrcset(imageUrl, [400, 800, 1200, 1600, 1920]);
 </script>
 
 <div class="hero">
     <div class="image-wrapper">
-        <img src={imageUrl} alt={title} />
+        <img
+            src={heroImage.src}
+            srcset={heroImage.srcset}
+            sizes="(max-width: 768px) 100vw, 100vw"
+            alt={title}
+            decoding="async"
+            loading="lazy"
+            class="hero-img"
+        />
     </div>
     <div class="hero-content">
         <div class="top-row">
-            <Rating
-                {rating}
-                {reviewsCount}
-                locale={effectiveLocale}
-            /><ShareIcon />
+            <Rating {rating} {reviewsCount} locale={effectiveLocale} />
+            <ShareIcon />
         </div>
         <h1 class="title">{title}</h1>
         <div class="subtitle">{subtitle || "Adrenaline and nature"}</div>
