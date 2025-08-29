@@ -2,7 +2,6 @@ import { connectToDatabase } from "$lib/server/mongodb";
 import { redis } from "$lib/server/redis";
 import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 import { connectToDatabase } from "$lib/server/mongodb";
-import { redis } from "$lib/server/redis";
 
 const CACHE_TTL_SECONDS = 60 * 5; // 5 минут по умолчанию
 
