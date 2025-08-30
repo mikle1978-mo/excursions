@@ -10,11 +10,6 @@ Disallow: /thanks
 Disallow: /error
 Disallow: /development
 
-Disallow: /catalog/
-Disallow: /landings/
-Disallow: /cart/
-Disallow: /en/
-
 Disallow: /ru/thanks
 Disallow: /ru/error
 Disallow: /ru/development
