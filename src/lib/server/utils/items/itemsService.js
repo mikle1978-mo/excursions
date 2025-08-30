@@ -2,7 +2,7 @@ import { connectToDatabase } from "$lib/server/mongodb";
 import { redis } from "$lib/server/redis";
 import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
-const CACHE_TTL_SECONDS = 60 * 5; // 5 минут по умолчанию
+const CACHE_TTL_SECONDS = 5; // 5 минут по умолчанию
 
 /**
  * Вспомогательные функции
@@ -109,7 +109,7 @@ export async function getItem(slug, collectionName) {
 /**
  * Универсальная функция для получения элемента со всеми данными (для admin)
  */
-export async function getFullItem(slug, collectionName, lang = null) {
+export async function getFullItem(slug, collectionName, lang = "en") {
     const db = await connectToDatabase();
 
     const item = await db.collection(collectionName).findOne({ slug });
@@ -146,17 +146,11 @@ export async function getFullItem(slug, collectionName, lang = null) {
               ) / 10
             : null;
 
-    let translation;
-    if (lang) {
-        translation = safeTranslations.find((t) => t.lang === lang) || null;
-    }
-
     return {
         item: {
             ...item,
             _id: item._id.toString(),
-            translations: lang ? undefined : safeTranslations,
-            translation,
+            translations: safeTranslations,
         },
         reviews: safeReviews,
         reviewsCount,

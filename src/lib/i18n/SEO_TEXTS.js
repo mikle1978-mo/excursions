@@ -122,3 +122,24 @@ export const about_SEO_TEXT = {
         twitter: "Neden bizi seçiyorlar? Şeffaf ve güvenilir hizmet.",
     },
 };
+
+export const places_SEO_TEXT = {
+    ru: {
+        title: `Достопримечательности и места Кемера`,
+        description: `Откройте для себя лучшие достопримечательности Кемера — древние города, природные парки, живописные бухты и горные тропы. Подробные описания, фото и советы для комфортного посещения каждого места.`,
+        keywords:
+            "достопримечательности Кемера, места Кемера, туризм Кемер, экскурсии, природные парки, исторические места, путешествия в Кемере",
+    },
+    en: {
+        title: `Kemer Attractions and Places`,
+        description: `Discover the top attractions in Kemer — ancient cities, nature parks, scenic bays, and mountain trails. Detailed descriptions, photos, and tips for a comfortable visit to each place.`,
+        keywords:
+            "Kemer attractions, Kemer places, Kemer tourism, excursions, nature parks, historical sites, travel in Kemer",
+    },
+    tr: {
+        title: `Kemer'deki Turistik Yerler ve Mekanlar`,
+        description: `Kemer'deki en popüler turistik yerleri keşfedin — antik şehirler, doğal parklar, manzaralı koylar ve dağ yürüyüşleri. Her yer için detaylı açıklamalar, fotoğraflar ve ziyaret ipuçları.`,
+        keywords:
+            "Kemer turistik yerleri, Kemer mekanları, Kemer turizmi, geziler, doğal parklar, tarihi yerler, Kemer'de seyahat",
+    },
+};

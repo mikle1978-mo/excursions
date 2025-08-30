@@ -108,7 +108,6 @@
     <div class="card__content">
         <div class="card__header">
             <h2 class="card__title">{title}</h2>
-            <Rating {rating} {reviewsCount} locale={$locale} />
         </div>
 
         <div class="card__footer">

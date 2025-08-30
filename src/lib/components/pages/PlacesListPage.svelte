@@ -1,5 +1,4 @@
 <script>
-    import Card from "$lib/components/cards/Card.svelte";
     import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
     import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
     import InfoBlock from "$lib/components/layout/InfoBlock.svelte";
@@ -9,6 +8,7 @@
     import { locale as localeStore } from "$lib/stores/locale.js";
     import { main_page } from "$lib/i18n/main_page.js";
     import Scroll from "../promotions/Scroll.svelte";
+    import PlacesCard from "$lib/components/cards/PlacesCard.svelte";
 
     export let data;
     export let seoText;
@@ -104,7 +104,11 @@
 
             <div class="grid">
                 {#each filteredItems as item, i (item.slug)}
-                    <Card {item} loading={i < 5 ? "eager" : "lazy"} {type} />
+                    <PlacesCard
+                        {item}
+                        loading={i < 5 ? "eager" : "lazy"}
+                        {type}
+                    />
                 {/each}
             </div>
         </div>

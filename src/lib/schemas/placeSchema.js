@@ -40,6 +40,7 @@ export const placeSchema = z.object({
     description: i18nString.optional(), // Основное описание
     history: i18nArray.optional(), // История / факты о месте
     highlights: i18nArray.optional(), // Чем примечательно (особенности, «must-see»)
+    autor: i18nString.optional(), // Чем примечательно (особенности, «must-see»)
 
     // Гео-инфо
     lat: z.union([z.string(), z.number()]).transform(Number).optional(),

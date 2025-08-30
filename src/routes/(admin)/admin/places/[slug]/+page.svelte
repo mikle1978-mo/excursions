@@ -1,8 +1,8 @@
 <script>
     import { onMount } from "svelte";
     import UniversalForm from "$lib/components/admin/UniversalForm.svelte";
-    import { excursionSteps } from "$lib/components/admin/fields/excursions";
-    import { excursionSchema } from "$lib/schemas/excursionSchema";
+    import { placeSteps } from "$lib/components/admin/fields/places";
+    import { placeSchema } from "$lib/schemas/placeSchema";
     import { getItem } from "$lib/utils/itemsActions";
     import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
     import { page } from "$app/stores";
@@ -18,7 +18,7 @@
         try {
             const { item, translation } = await getItem(type, slug);
 
-            // Начинаем с копии excursion
+            // Начинаем с копии place
             const data = { ...item };
 
             // Для каждого ключа из перевода собираем структуру { en: value, ru: value }
@@ -42,14 +42,14 @@
             initialData = data;
         } catch (e) {
             console.error(e);
-            error = "Ошибка загрузки данных экскурсии";
+            error = "Ошибка загрузки данных места";
         } finally {
             isLoading = false;
         }
     });
 
-    const steps = excursionSteps;
-    const schema = excursionSchema;
+    const steps = placeSteps;
+    const schema = placeSchema;
     const mode = "edit";
 </script>
 

@@ -27,6 +27,13 @@ export const placeSteps = [
                 localized: true,
                 default: createLocalizedDefault("text"),
             },
+            {
+                name: "autor",
+                label: "Автор / источник",
+                type: "text",
+                localized: true,
+                default: createLocalizedDefault("text"),
+            },
         ],
     },
     {

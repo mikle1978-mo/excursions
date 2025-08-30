@@ -1,13 +1,14 @@
 <script>
-    import ProductDetailPage from "$lib/components/pages/ProductDetailPage.svelte";
+    import PlaceDetailPage from "$lib/components/pages/PlaceDetailPage.svelte";
     import { locale } from "$lib/stores/locale";
     import { excursion_page } from "$lib/i18n/excursion_page.js";
 
     export let data; // данные из load функции
+
     const { item, reviewsCount, rating } = data;
 </script>
 
-<ProductDetailPage
+<PlaceDetailPage
     type="place"
     {item}
     {rating}

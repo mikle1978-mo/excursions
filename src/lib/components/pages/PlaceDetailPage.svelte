@@ -1,0 +1,420 @@
+<script>
+    import { onMount } from "svelte";
+    import {
+        locale as localeStore,
+        getLocalizedPath,
+    } from "$lib/stores/locale";
+    import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
+    import HeroBlock from "./HeroBlock.svelte";
+    import ReviewsList from "../layout/ReviewsList.svelte";
+    import BookingCard from "./BookingCard.svelte";
+    import ProductDetailsBlock from "./ProductDetailsBlock.svelte";
+    import Galery from "$lib/components/layout/Galery.svelte";
+    import Rating from "$lib/components/UI/rating/Rating.svelte";
+    import ProductSeoHead from "$lib/components/SEO/ProductSeoHead.svelte";
+    import Modal from "$lib/components/UI/Modal.svelte";
+    import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
+    import Share from "$lib/components/UI/buttons/Share.svelte";
+    import InfoBlockArray from "$lib/components/pages/InfoBlockArray.svelte";
+    import InfoBlockString from "$lib/components/pages/InfoBlockString.svelte";
+    import ProductSeoSchema from "../SEO/ProductSeoSchema.svelte";
+    import AboutBlock from "./AboutBlock.svelte";
+    import IconImage from "$lib/icons/IconImage.svelte";
+    import IconBriefcase from "$lib/icons/IconBriefcase.svelte";
+    import IconGift from "$lib/icons/IconGift.svelte";
+    import TheBurger from "../UI/buttons/TheBurger.svelte";
+    import TheMobileMenu from "../layout/TheMobileMenu.svelte";
+    import GaleryCollage from "../layout/GaleryCollage.svelte";
+    import Description from "./Description.svelte";
+    import ButtonBlock from "./ButtonBlock.svelte";
+    import PriceBlock from "./PriceBlock.svelte";
+    import WhatsApp from "../UI/buttons/WhatsApp.svelte";
+    import ScheduleBlock from "./ScheduleBlock.svelte";
+
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const baseName = import.meta.env.VITE_BASE_NAME;
+
+    export let type;
+    export let item;
+    export let rating;
+    export let reviewsCount;
+    export let locale;
+    export let translations;
+
+    export function getI18nLabel(obj, key, locale) {
+        return obj?.[key]?.[locale] ?? key;
+    }
+
+    $: effectiveLocale = locale ?? $localeStore;
+
+    let isModalOpen = false;
+    const openModal = () => (isModalOpen = true);
+    const closeModal = () => (isModalOpen = false);
+
+    $: currentTranslation =
+        item?.translations?.find((t) => t.lang === effectiveLocale) ?? {};
+    // Хлебные крошки
+    const typeLabels = {
+        car: { ru: "Авто", en: "Cars", tr: "Araba" },
+        excursion: { ru: "Экскурсии", en: "Excursions", tr: "Turlar" },
+        yacht: { ru: "Яхты", en: "Yachts", tr: "Yatlar" },
+        transfer: { ru: "Трансферы", en: "Transfers", tr: "Transferler" },
+    };
+
+    $: breadcrumbsList = [
+        {
+            label: effectiveLocale === "ru" ? "Главная" : "Home",
+            href: getLocalizedPath(effectiveLocale, ""),
+        },
+        {
+            label: typeLabels[type]?.[effectiveLocale] ?? type,
+            href: getLocalizedPath(effectiveLocale, `${type}s`),
+        },
+        {
+            label: currentTranslation?.title || item?.slug,
+            href: null,
+        },
+    ];
+</script>
+
+<ProductSeoSchema
+    {item}
+    {type}
+    locale={effectiveLocale}
+    {baseUrl}
+    {rating}
+    reviewCount={reviewsCount}
+    brand="Kemer.app"
+    breadcrumbs={breadcrumbsList}
+/>
+
+<ProductSeoHead
+    {baseUrl}
+    {baseName}
+    urlPath={`${type}s`}
+    slug={item.slug}
+    title={currentTranslation.title}
+    description={currentTranslation.metaDescription}
+    keywords={currentTranslation.metaKeywords}
+    image={item.images?.[0]?.url ??
+        `${baseUrl}/images/${type}s/${type}_default.webp`}
+    imageAlt={`Photo ${currentTranslation.title}`}
+    amount={item.price?.toString() ?? "0"}
+    currency="USD"
+    availability={item.active ? "in stock" : "out of stock"}
+    brand={item.brand ?? ""}
+    locale={$localeStore}
+/>
+
+{#if isModalOpen}
+    <Modal on:close={closeModal}>
+        <ShortForm slug={item.slug} />
+    </Modal>
+{/if}
+
+{#if !item}
+    <div class="error-page">
+        <h1 class="error-title">
+            {effectiveLocale === "ru" ? "Объект не найден" : "Item not found"}
+        </h1>
+        <a href={`/${effectiveLocale}/${type}s`}>
+            ← {effectiveLocale === "ru" ? "Вернуться к списку" : "Back to list"}
+        </a>
+    </div>
+{:else}
+    <div class="content">
+        <WhatsApp />
+        <div class="burger-wrapper">
+            <TheBurger />
+        </div>
+        <TheMobileMenu />
+        <main class="product-detail">
+            <HeroBlock
+                imageUrl={item.images?.[0]?.url ??
+                    `${baseUrl}/images/${type}s/${type}_default.webp`}
+                title={currentTranslation.h1}
+                subtitle={currentTranslation.subtitle}
+                {rating}
+                {reviewsCount}
+                locale={effectiveLocale}
+            />
+            <section class="top_block">
+                <ProductDetailsBlock {type} {item} {locale} />
+                <PriceBlock
+                    {type}
+                    locale={effectiveLocale}
+                    price={item.price}
+                    priceType={item.priceType}
+                    discount={item.discount}
+                    discountEnd={item.discountEnd}
+                />
+
+                <Description item={currentTranslation.description} />
+
+                <GaleryCollage
+                    images={item.images}
+                    title={currentTranslation.title}
+                />
+
+                {#if currentTranslation.schedule}
+                    <ScheduleBlock
+                        title={getI18nLabel(
+                            translations,
+                            "schedule",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.schedule}
+                        icon={IconImage}
+                    />
+                {/if}
+                {#if currentTranslation.requiredDocuments}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "requiredDocuments",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.requiredDocuments}
+                    />
+                {/if}
+
+                {#if currentTranslation.insuranceDescription}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "insuranceDescription",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.insuranceDescription}
+                    />
+                {/if}
+
+                {#if currentTranslation.insuranceExclusions}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "insuranceExclusions",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.insuranceExclusions}
+                    />
+                {/if}
+
+                {#if currentTranslation.extraTimePolicy}
+                    <InfoBlockString
+                        title={getI18nLabel(
+                            translations,
+                            "extraTimePolicy",
+                            effectiveLocale
+                        )}
+                        item={currentTranslation.extraTimePolicy}
+                    />
+                {/if}
+
+                {#if currentTranslation.fuelPolicy}
+                    <InfoBlockString
+                        title={getI18nLabel(
+                            translations,
+                            "fuelPolicy",
+                            effectiveLocale
+                        )}
+                        item={currentTranslation.fuelPolicy}
+                    />
+                {/if}
+
+                {#if currentTranslation.accidentInstructions}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "accidentInstructions",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.accidentInstructions}
+                    />
+                {/if}
+                {#if currentTranslation.whatYouSee}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "whatYouSee",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.whatYouSee}
+                        icon={IconImage}
+                    />
+                {/if}
+
+                {#if currentTranslation.whatToBring}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "whatToBring",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.whatToBring}
+                        icon={IconBriefcase}
+                    />
+                {/if}
+
+                {#if currentTranslation.includes}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "includes",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.includes}
+                        icon={IconGift}
+                    />
+                {/if}
+
+                {#if currentTranslation.rentalConditions}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "rentalConditions",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.rentalConditions}
+                    />
+                {/if}
+
+                {#if currentTranslation.servicesDetails}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "servicesDetails",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.servicesDetails}
+                    />
+                {/if}
+
+                {#if currentTranslation.meetingPoint}
+                    <InfoBlockString
+                        title={getI18nLabel(
+                            translations,
+                            "meetingPoint",
+                            effectiveLocale
+                        )}
+                        item={currentTranslation.meetingPoint}
+                    />
+                {/if}
+
+                {#if currentTranslation.notes}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "notes",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.notes}
+                    />
+                {/if}
+            </section>
+            <div class="stiky">
+                <ButtonBlock
+                    id="book-button"
+                    active={item.active}
+                    {type}
+                    locale={effectiveLocale}
+                    onBook={openModal}
+                />
+            </div>
+            {#if type === "excursion"}
+                <AboutBlock />
+            {/if}
+            {#if item.slug}
+                <ReviewsList itemSlug={item.slug} locale={effectiveLocale} />
+            {/if}
+        </main>
+    </div>
+{/if}
+
+<style>
+    .content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0px;
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        overflow: hidden;
+        flex: none;
+        align-self: stretch;
+        flex-grow: 1;
+        border-bottom: 1px solid var(--color-gray-500);
+    }
+
+    .burger-wrapper {
+        position: absolute;
+        width: 32px;
+        height: 32px;
+        border-radius: var(--radius-full);
+        top: var(--space-vertical-sm);
+        right: var(--space-vertical-sm);
+        z-index: 1000;
+    }
+
+    /* Стили из твоего кода с переименованными классами */
+    .product-detail {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        max-width: var(--max-width-container);
+        margin: 0 auto;
+        padding: 0;
+        gap: var(--space-vertical-md);
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+        overflow-x: hidden;
+        flex: none;
+        align-self: stretch;
+        flex-grow: 1;
+        border-bottom: 1px solid var(--color-gray-500);
+    }
+    .stiky {
+        position: sticky;
+        width: 100%;
+        bottom: 0;
+        z-index: 10;
+        backdrop-filter: blur(10px);
+        background-color: rgba(var(--color-bg-rgb), 0.5);
+        padding: var(--space-vertical-md) var(--space-horizontal-sm);
+    }
+
+    .top_block {
+        display: grid;
+        width: 100%;
+        grid-template-columns: 50% 1fr;
+        align-items: start;
+        justify-content: center;
+        gap: var(--space-horizontal-md);
+        padding: 0 var(--space-vertical-sm);
+    }
+
+    .error-title {
+        font-size: var(--text-md);
+    }
+
+    .error-page {
+        text-align: center;
+        padding: var(--space-vertical-xl) var(--space-horizontal-md);
+    }
+
+    .error-page a {
+        color: var(--color-primary);
+        display: inline-block;
+        margin-top: var(--space-vertical-sm);
+    }
+
+    @media (max-width: 768px) {
+        .top_block {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+</style>

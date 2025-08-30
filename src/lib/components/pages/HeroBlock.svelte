@@ -24,7 +24,7 @@
             src={heroImage.src}
             srcset={heroImage.srcset}
             sizes="(max-width: 768px) 100vw, 100vw"
-            alt={title}
+            alt={title || ""}
             decoding="async"
             loading="lazy"
             class="hero-img"
@@ -32,11 +32,19 @@
     </div>
     <div class="hero-content">
         <div class="top-row">
-            <Rating {rating} {reviewsCount} locale={effectiveLocale} />
+            {#if rating}
+                <Rating {rating} {reviewsCount} locale={effectiveLocale} />
+            {/if}
             <ShareIcon />
         </div>
-        <h1 class="title">{title}</h1>
-        <div class="subtitle">{subtitle || "Adrenaline and nature"}</div>
+
+        {#if title}
+            <h1 class="title">{title}</h1>
+        {/if}
+
+        {#if subtitle}
+            <div class="subtitle">{subtitle}</div>
+        {/if}
     </div>
 </div>
 
