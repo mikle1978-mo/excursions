@@ -1,4 +1,6 @@
 <script>
+    import Card from "$lib/components/cards/Card.svelte";
+    import PlacesCard from "../cards/PlacesCard.svelte";
     import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
     import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
     import InfoBlock from "$lib/components/layout/InfoBlock.svelte";
@@ -6,26 +8,24 @@
     import { resetFilters, setFilters } from "$lib/stores/filters.js";
     import { onMount } from "svelte";
     import { locale as localeStore } from "$lib/stores/locale.js";
-    import { main_page } from "$lib/i18n/main_page.js";
     import Scroll from "../promotions/Scroll.svelte";
-    import PlacesCard from "$lib/components/cards/PlacesCard.svelte";
+    import { pageListConfig } from "$lib/constants/pageListConfig";
 
     export let data;
-    export let seoText;
-    export let baseUrl;
-    export let baseName;
-    export let urlPath;
-    export let type;
 
-    let allItems = data?.[type] || [];
+    const { type, items } = data ?? {};
+
+    const config = pageListConfig[type];
+
+    let allItems = items || [];
     let filteredItems = [];
 
     const { update } = useServiceFilters(allItems, type, (result) => {
         filteredItems = result;
     });
 
-    $: if (data?.[type]) {
-        allItems = data[type];
+    $: if (items) {
+        allItems = items;
         update();
     }
 
@@ -75,20 +75,19 @@
 </script>
 
 <PageSeoHead
-    {baseUrl}
-    {baseName}
+    {type}
     locale={$localeStore}
-    {urlPath}
-    seo={seoText[$localeStore] ?? seoText.en}
-    image={`${baseUrl}/images/${type}/${type}_default.webp`}
+    seo={config?.seoText?.[$localeStore] ?? config?.seoText?.en}
 />
 
 <div class="content">
-    <!-- <Scroll /> -->
     <SidebarFilters
         {type}
         items={allItems}
-        on:filtersChanged={(e) => setFilters(e.detail)}
+        on:filtersChanged={(e) => {
+            setFilters(e.detail);
+            console.log("Filters changed:", e.detail);
+        }}
     />
     <InfoBlock
         {infoVisible}
@@ -99,16 +98,21 @@
     <main>
         <div class="main_page">
             <h1 class="visually-hidden">
-                {seoText[$localeStore].title ?? seoText.en.title}
+                {config?.seoText?.[$localeStore]?.title ??
+                    config?.seoText?.en?.title}
             </h1>
 
             <div class="grid">
                 {#each filteredItems as item, i (item.slug)}
-                    <PlacesCard
-                        {item}
-                        loading={i < 5 ? "eager" : "lazy"}
-                        {type}
-                    />
+                    {#if type === "places"}
+                        <PlacesCard {item} loading={i < 5 ? "eager" : "lazy"} />
+                    {:else}
+                        <Card
+                            {item}
+                            loading={i < 5 ? "eager" : "lazy"}
+                            {type}
+                        />
+                    {/if}
                 {/each}
             </div>
         </div>

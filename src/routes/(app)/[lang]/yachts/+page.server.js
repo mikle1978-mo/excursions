@@ -5,18 +5,21 @@ import { CACHE_TTL_SECONDS } from "$lib/constants/cacheTtlSeconds.js";
 const CACHE_KEY = "yachts"; // Можно включить язык, тип и т.п.
 
 export async function load() {
-    let yachts = await getCache(CACHE_KEY);
-    if (yachts) {
-        return { yachts };
+    let items = await getCache(CACHE_KEY);
+
+    if (!items) {
+        // Если нет кеша — грузим из базы
+        items = await composeCards({
+            type: CACHE_KEY,
+            translationCollection: `${CACHE_KEY}_translations`,
+            lang: "en",
+        });
+        // Сохраняем в кеш на сутки
+        await setCache(CACHE_KEY, items, CACHE_TTL_SECONDS);
     }
 
-    yachts = await composeCards({
-        type: "yachts",
-        translationCollection: "yachts_translations",
-        lang: "en",
-    });
-
-    await setCache(CACHE_KEY, yachts, CACHE_TTL_SECONDS);
-
-    return { yachts };
+    return {
+        type: CACHE_KEY,
+        items,
+    };
 }

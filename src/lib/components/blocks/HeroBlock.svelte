@@ -8,8 +8,8 @@
     export let imageUrl = "/rafting.jpg";
     export let title = "Rafting from Kemer";
     export let subtitle = "Adrenaline and nature";
-    export let rating = 4.5;
-    export let reviewsCount = 120;
+    export let rating;
+    export let reviewsCount;
     export let locale = "en";
 
     $: effectiveLocale = locale || "en";

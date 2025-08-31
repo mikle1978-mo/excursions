@@ -1,5 +1,5 @@
 <script>
-    import ProductDetailPage from "$lib/components/pages/ProductDetailPage.svelte";
+    import ProductDetailPage from "$lib/components/blocks/ProductDetailPage.svelte";
     import { locale } from "$lib/stores/locale";
     import { transfer_page } from "$lib/i18n/transfer_page.js";
 

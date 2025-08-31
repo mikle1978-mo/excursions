@@ -1,18 +1,18 @@
 <script>
     import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
-    export let baseUrl;
-    export let baseName;
-    export let locale; // 'en', 'ru', 'tr'
-    export let seo = {};
-    export let urlPath = "";
-    export let image = `${baseUrl}/images/default.webp`;
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const baseName = import.meta.env.VITE_BASE_NAME;
+
+    export let locale;
+    export let seo = {}; // <- уже содержит title/description/keywords
+    export let type = "excursions";
+
+    let image = `${baseUrl}/images/${type}/${type.slice(0, -1)}_default.webp`;
 
     function getHref(lang) {
-        if (lang === "en") {
-            return `${baseUrl}/${urlPath}`;
-        }
-        return `${baseUrl}/${lang}/${urlPath}`;
+        if (lang === "en") return `${baseUrl}/${type}`;
+        return `${baseUrl}/${lang}/${type}`;
     }
 
     $: metaKeywords =
@@ -24,7 +24,6 @@
     <title>{seo.title} | {baseName}</title>
     <meta name="description" content={seo.description} />
     <meta name="keywords" content={metaKeywords} />
-
     <link rel="canonical" href={getHref("en")} />
 
     {#each SUPPORTED_LANGUAGES as value}
