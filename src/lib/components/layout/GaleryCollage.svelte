@@ -114,11 +114,14 @@
 
     .modal-gallery {
         display: flex;
+        width: 100%;
+        height: 100%;
         flex-direction: column;
         align-items: center;
     }
 
     .modal-gallery img {
+        aspect-ratio: 16 / 9;
         max-width: 90vw;
         max-height: 80vh;
         object-fit: contain;

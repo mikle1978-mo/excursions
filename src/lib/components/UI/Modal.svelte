@@ -80,11 +80,9 @@
         box-shadow: var(--shadow-lg);
         z-index: 1001;
         outline: none;
-        max-width: min(95vw, 1000px);
-        max-height: 80vh;
         overflow-y: auto;
         cursor: auto;
-        margin: var(--space-vertical-md);
+        padding: var(--space-vertical-md);
     }
 
     .modal-close {

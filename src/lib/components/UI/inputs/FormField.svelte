@@ -14,6 +14,9 @@
 
     export let field;
     export let value;
+    console.log("====================================");
+    console.log(field);
+    console.log("====================================");
     export let errors = {};
     export let fieldName = ""; // путь к полю, например "car.model"
 </script>

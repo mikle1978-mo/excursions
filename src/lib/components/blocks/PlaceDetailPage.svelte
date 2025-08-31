@@ -10,13 +10,18 @@
     import TheBurger from "$lib/components/UI/buttons/TheBurger.svelte";
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
+    import InfoBlockArray from "$lib/components/blocks/InfoBlockArray.svelte";
+    import InfoBlockString from "$lib/components/blocks/InfoBlockString.svelte";
+    import MapBlock from "./MapBlock.svelte";
+    import PlaceSeoSchema from "../SEO/PlaceSeoSchema.svelte";
+    import PlaceSeoHead from "../SEO/PlaceSeoHead.svelte";
 
     export let item;
     export let locale;
 
     $: effectiveLocale = locale ?? $localeStore;
 
-    // реактивно берём перевод для текущей локали
+    // перевод для текущей локали
     $: currentTranslation =
         item?.translations?.find((t) => t.lang === effectiveLocale) ??
         item?.translations?.find((t) => t.lang === "en") ??
@@ -32,19 +37,36 @@
             label: effectiveLocale === "ru" ? "Места" : "Places",
             href: getLocalizedPath(effectiveLocale, "places"),
         },
-        { label: currentTranslation?.title ?? item?.slug, href: null },
+        { label: currentTranslation.title ?? item.slug, href: null },
     ];
 
     const defaultImage = `/images/places/place_default.webp`;
     $: mainImage = item.images?.[0]?.url ?? defaultImage;
 </script>
 
+<PlaceSeoSchema {item} {locale} breadcrumbs={breadcrumbsList} />
+
+<PlaceSeoHead
+    baseName="Kemer.app"
+    locale={effectiveLocale}
+    slug={item.slug}
+    title={currentTranslation.title}
+    description={currentTranslation.metaDescription ??
+        currentTranslation.subtitle ??
+        ""}
+    keywords={currentTranslation.metaKeywords ?? ""}
+    image={item.images?.[0]?.url ??
+        `${baseUrl}/images/places/place_default.webp`}
+    imageAlt={`Photo ${currentTranslation.title}`}
+/>
+
 <div class="content">
     <WhatsApp />
-    <div class="burger-wrapper">
-        <TheBurger />
-    </div>
+    <div class="burger-wrapper"><TheBurger /></div>
     <TheMobileMenu />
+
+    <TheBreadcrumbs {breadcrumbsList} />
+
     <main class="place-detail">
         <HeroBlock
             imageUrl={mainImage}
@@ -52,12 +74,60 @@
             subtitle={currentTranslation.subtitle}
             locale={effectiveLocale}
         />
+
         <section class="top_block">
-            <Description item={currentTranslation.description} />
+            {#if currentTranslation.description}
+                <Description item={currentTranslation.description} />
+            {/if}
+
+            {#if item.createdAt}
+                <div class="published-date">
+                    {new Date(item.createdAt).toLocaleDateString(
+                        effectiveLocale
+                    )}
+                </div>
+            {/if}
+
+            {#if currentTranslation.author}
+                <InfoBlockString
+                    title={effectiveLocale === "ru" ? "Автор" : "Author"}
+                    item={currentTranslation.author}
+                />
+            {/if}
+
+            {#if currentTranslation.highlights?.length}
+                <InfoBlockArray
+                    title={effectiveLocale === "ru"
+                        ? "Основные моменты"
+                        : "Highlights"}
+                    items={currentTranslation.highlights}
+                />
+            {/if}
+
+            {#if currentTranslation.history?.length}
+                <InfoBlockArray
+                    title={effectiveLocale === "ru" ? "История" : "History"}
+                    items={currentTranslation.history}
+                />
+            {/if}
+
+            {#if currentTranslation.address}
+                <InfoBlockString
+                    title={effectiveLocale === "ru" ? "Адрес" : "Address"}
+                    item={currentTranslation.address}
+                />
+            {/if}
 
             {#if item.images?.length > 1}
                 <GaleryCollage
                     images={item.images}
+                    title={currentTranslation.title}
+                />
+            {/if}
+            {#if item.lat && item.lng}
+                <MapBlock
+                    lat={item.lat}
+                    lng={item.lng}
                     title={currentTranslation.title}
                 />
             {/if}
@@ -80,6 +150,7 @@
         align-self: stretch;
         flex-grow: 1;
         border-bottom: 1px solid var(--color-gray-500);
+        padding-bottom: var(--space-vertical-sm);
     }
 
     .burger-wrapper {
@@ -109,6 +180,7 @@
         align-self: stretch;
         flex-grow: 1;
         border-bottom: 1px solid var(--color-gray-500);
+        padding-bottom: var(--space-vertical-sm);
     }
 
     .top_block {
