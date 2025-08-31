@@ -3,11 +3,9 @@
 
     export let lat;
     export let lng;
-    export let zoom = 13; // масштаб по умолчанию
+    export let zoom = 13;
 
     $: hasCoordinates = lat != null && lng != null;
-
-    // Преобразуем целые координаты (если >90 или >180)
     $: latNum = lat > 90 ? lat / 1000 : lat;
     $: lngNum = lng > 180 ? lng / 1000 : lng;
 
@@ -19,15 +17,24 @@
         const L = (await import("leaflet")).default;
         await import("leaflet/dist/leaflet.css");
 
+        // FIX: явно указываем пути для иконки маркера
+        delete L.Icon.Default.prototype._getIconUrl;
+        L.Icon.Default.mergeOptions({
+            iconRetinaUrl:
+                "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+            iconUrl:
+                "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+            shadowUrl:
+                "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+        });
+
         map = L.map("map").setView([latNum, lngNum], zoom);
 
-        // Используем OpenStreetMap тайлы
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution:
                 '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
         }).addTo(map);
 
-        // Маркер
         L.marker([latNum, lngNum]).addTo(map);
     });
 </script>
