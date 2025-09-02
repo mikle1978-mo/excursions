@@ -44,6 +44,10 @@ export const excursion_page = {
         ru: "Что включено",
         en: "What is included",
     },
+    meetingPoint: {
+        ru: "Место встречи",
+        en: "Meeting Point",
+    },
     button: {
         ru: "Забронировать",
         en: "Book now",
@@ -51,5 +55,21 @@ export const excursion_page = {
     available: {
         ru: "Не доступно",
         en: "Not available",
+    },
+    schedule: {
+        ru: "Расписание",
+        en: "Schedule",
+    },
+    whyChooseUs: {
+        ru: "Почему выбирают нас",
+        en: "Why choose us",
+    },
+    guarantees: {
+        ru: "Гарантии",
+        en: "Guarantees",
+    },
+    usp: {
+        ru: "Преимущества",
+        en: "Advantages",
     },
 };

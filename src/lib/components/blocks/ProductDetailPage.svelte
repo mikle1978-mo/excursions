@@ -22,6 +22,11 @@
     import IconImage from "$lib/icons/IconImage.svelte";
     import IconBriefcase from "$lib/icons/IconBriefcase.svelte";
     import IconGift from "$lib/icons/IconGift.svelte";
+    import IconList from "$lib/icons/IconList.svelte";
+    import IconMapPin from "$lib/icons/IconMapPin.svelte";
+    import IconPlus from "$lib/icons/IconPlus.svelte";
+    import IconThumbsUp from "$lib/icons/IconThumbsUp.svelte";
+    import IconClipBoard from "$lib/icons/IconClipBoard.svelte";
     import TheBurger from "$lib/components/UI/buttons/TheBurger.svelte";
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import GaleryCollage from "$lib/components/layout/GaleryCollage.svelte";
@@ -164,7 +169,7 @@
                             effectiveLocale
                         )}
                         items={currentTranslation.schedule}
-                        icon={IconImage}
+                        icon={IconList}
                     />
                 {/if}
                 {#if currentTranslation.requiredDocuments}
@@ -298,6 +303,40 @@
                             effectiveLocale
                         )}
                         item={currentTranslation.meetingPoint}
+                        icon={IconMapPin}
+                    />
+                {/if}
+                {#if currentTranslation.whyChooseUs}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "whyChooseUs",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.whyChooseUs}
+                        icon={IconThumbsUp}
+                    />
+                {/if}
+                {#if currentTranslation.usp}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "usp",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.usp}
+                        icon={IconPlus}
+                    />
+                {/if}
+                {#if currentTranslation.guarantees}
+                    <InfoBlockArray
+                        title={getI18nLabel(
+                            translations,
+                            "guarantees",
+                            effectiveLocale
+                        )}
+                        items={currentTranslation.guarantees}
+                        icon={IconClipBoard}
                     />
                 {/if}
 

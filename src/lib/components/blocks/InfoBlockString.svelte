@@ -1,11 +1,17 @@
 <script>
     export let title = "";
     export let item = [];
+    export let icon = null;
 </script>
 
 {#if item}
     <div class="info-block">
-        <h2>{title}:</h2>
+        <h2 class="title-with-icon">
+            {#if icon}
+                <svelte:component this={icon} class="icon" />
+            {/if}
+            {title}:
+        </h2>
         <div class="info-list">
             <span>{item}</span>
         </div>
@@ -14,6 +20,7 @@
 
 <style>
     .info-block {
+        width: 100%;
         background: var(--color-bg);
         padding: var(--space-vertical-md);
         border-radius: var(--radius-md);
@@ -24,6 +31,12 @@
         font-size: var(--text-lg);
         margin-bottom: var(--space-vertical-sm);
         color: var(--color-text);
+    }
+    .title-with-icon {
+        display: flex;
+        gap: var(--space-vertical-sm);
+        justify-content: flex-start;
+        align-items: center;
     }
 
     .info-list {
