@@ -41,10 +41,15 @@
 
     export let type;
     export let item;
+
+    console.log("ProductDetailPage item:", item);
+
     export let rating;
     export let reviewsCount;
     export let locale;
     export let translations;
+
+    console.log("ProductDetailPage item:", item);
 
     export function getI18nLabel(obj, key, locale) {
         return obj?.[key]?.[locale] ?? key;
@@ -58,6 +63,9 @@
 
     $: currentTranslation =
         item?.translations?.find((t) => t.lang === effectiveLocale) ?? {};
+
+    $: console.log("currentTranslation:", currentTranslation);
+
     // Хлебные крошки
     const typeLabels = {
         car: { ru: "Авто", en: "Cars", tr: "Araba" },
@@ -100,7 +108,7 @@
     slug={item.slug}
     title={currentTranslation.title}
     description={currentTranslation.metaDescription}
-    keywords={currentTranslation.metaKeywords}
+    keywords={currentTranslation.keywords}
     image={item.images?.[0]?.url ??
         `${baseUrl}/images/${type}s/${type}_default.webp`}
     imageAlt={`Photo ${currentTranslation.title}`}

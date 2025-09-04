@@ -65,7 +65,7 @@
     }
 
     // Для дебага
-    $: console.log("Form initialized with:", $form);
+    //  $: console.log("Form initialized with:", $form);
 
     onMount(async () => {
         if (mode === "edit" && slug && initialData) {

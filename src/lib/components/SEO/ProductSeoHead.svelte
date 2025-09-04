@@ -11,6 +11,7 @@
     export let title = "";
     export let description = "";
     export let keywords = "";
+    console.log("keywords in ProductSeoHead:", keywords);
 
     export let image = `${baseUrl}/images/default.webp`;
     export let imageAlt = "Photo";
@@ -30,11 +31,13 @@
 
     const canonical = getHref("en");
 
-    $: metaKeywords = keywords?.trim()
-        ? keywords.trim()
-        : description?.trim()
-          ? extractKeywords(description).join(", ")
-          : "";
+    $: metaKeywords = Array.isArray(keywords)
+        ? keywords.join(", ").trim()
+        : keywords?.trim()
+          ? keywords.trim()
+          : description?.trim()
+            ? extractKeywords(description).join(", ")
+            : "";
 </script>
 
 <svelte:head>
