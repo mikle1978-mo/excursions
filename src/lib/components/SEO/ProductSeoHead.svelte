@@ -11,7 +11,7 @@
     export let title = "";
     export let description = "";
     export let keywords = "";
-    console.log("keywords in ProductSeoHead:", keywords);
+ 
 
     export let image = `${baseUrl}/images/default.webp`;
     export let imageAlt = "Photo";
