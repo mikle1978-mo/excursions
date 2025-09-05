@@ -111,6 +111,7 @@
     <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <meta name="theme-color" content="#ffffff" />
+    <meta name="b4d2ca1f28ced862e56d30dc82da7cd4" content="" />
 </svelte:head>
 
 <slot />
