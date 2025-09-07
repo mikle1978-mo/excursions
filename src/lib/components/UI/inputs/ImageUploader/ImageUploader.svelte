@@ -35,47 +35,90 @@
 
     async function uploadImages() {
         isUploading = true;
-        const uploads = previews.map(async (preview) => {
-            const formData = new FormData();
-            formData.append("file", preview.file);
-            formData.append("folder", folder);
+        try {
+            const uploads = previews.map(async (preview) => {
+                const formData = new FormData();
+                formData.append("file", preview.file);
+                formData.append("folder", folder);
 
-            const res = await fetch("/api/upload", {
-                method: "POST",
-                body: formData,
+                const res = await fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                });
+
+                if (!res.ok) {
+                    const text = await res.text();
+                    throw new Error(`Upload failed: ${res.status} ${text}`);
+                }
+
+                const data = await res.json();
+
+                images = [
+                    ...images,
+                    {
+                        url: data.url,
+                        public_id: data.public_id,
+                        id:
+                            data.public_id ||
+                            `img-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+                    },
+                ];
+
+                // освобождаем objectURL
+                try {
+                    URL.revokeObjectURL(preview.url);
+                } catch (e) {
+                    /* ignore */
+                }
             });
 
-            const data = await res.json();
-            images = [
-                ...images,
-                {
-                    url: data.url,
-                    public_id: data.public_id,
-                    id:
-                        data.public_id ||
-                        `img-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
-                },
-            ];
-        });
+            await Promise.all(uploads);
 
-        await Promise.all(uploads);
-        selectedFiles = [];
-        previews = [];
-        isUploading = false;
+            // очистка превью и input
+            selectedFiles = [];
+            previews.forEach((p) => {
+                try {
+                    URL.revokeObjectURL(p.url);
+                } catch (e) {}
+            });
+            previews = [];
+        } catch (err) {
+            console.error("Upload error:", err);
+            alert("Ошибка загрузки изображения: " + (err.message || err));
+        } finally {
+            isUploading = false;
+        }
     }
 
     async function removeImage(image) {
+        // optimistic UI update
+        const previousImages = images;
+        images = images.filter((img) => img.id !== image.id);
+
+        // если у изображения нет public_id — просто удалили локально
+        if (!image.public_id) return;
+
         try {
-            if (image.public_id) {
-                const res = await fetch(
-                    `/api/upload?public_id=${encodeURIComponent(image.public_id)}`,
-                    { method: "DELETE" }
-                );
-                if (!res.ok) throw new Error("Ошибка сервера");
+            const res = await fetch(
+                `/api/upload?public_id=${encodeURIComponent(image.public_id)}`,
+                { method: "DELETE" }
+            );
+
+            if (!res.ok) {
+                // если ресурс на сервере уже отсутствует — считаем удаление успешным
+                if (res.status === 404 || res.status === 410) {
+                    return;
+                }
+                const text = await res.text();
+                throw new Error(`Server delete failed: ${res.status} ${text}`);
             }
-            images = images.filter((img) => img.id !== image.id);
+
+            // успешно удалено на сервере — всё ок
         } catch (err) {
-            alert("Ошибка удаления изображения.");
+            console.error("Delete image error:", err);
+            // rollback UI — возвращаем изображение
+            images = previousImages;
+            alert("Ошибка удаления изображения: " + (err.message || err));
         }
     }
 
