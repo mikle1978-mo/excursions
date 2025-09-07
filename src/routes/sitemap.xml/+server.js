@@ -43,6 +43,7 @@ export async function GET() {
     const yachts = allSlugs.filter((item) => item.type === "yacht");
     const cars = allSlugs.filter((item) => item.type === "car");
     const transfers = allSlugs.filter((item) => item.type === "transfer");
+    const places = allSlugs.filter((item) => item.type === "place");
 
     // Главная страница
     const homepageEntries = SUPPORTED_LANGUAGES.map(
@@ -94,10 +95,12 @@ ${listEntries("excursions")}
 ${listEntries("yachts")}
 ${listEntries("cars")}
 ${listEntries("transfers")}
+${listEntries("places")}
 ${dynamicEntries(excursions, "excursions")}
 ${dynamicEntries(yachts, "yachts")}
 ${dynamicEntries(cars, "cars")}
 ${dynamicEntries(cars, "transfers")}
+${dynamicEntries(places, "places")}
 </urlset>`;
 
     return new Response(xml, {
