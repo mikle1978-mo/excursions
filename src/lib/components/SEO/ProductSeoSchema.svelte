@@ -13,7 +13,7 @@
 
     const productUrl =
         baseUrl + getLocalizedPath(locale, `${type}s/${item.slug}`);
-    const image = item.images?.[0]?.url ?? imageFallback;
+    const image = item.images?.map((img) => img.url) ?? [imageFallback];
     const title =
         item.translations?.find((t) => t.lang === locale)?.title ?? item.slug;
     const description =
@@ -120,6 +120,6 @@
     };
 </script>
 
-{@html `<script type="application/ld+json">${JSON.stringify(productSchema)}</script>`}
-{@html `<script type="application/ld+json">${JSON.stringify(breadcrumbSchema)}</script>`}
-{@html `<script type="application/ld+json">${JSON.stringify(webPageSchema)}</script>`}
+{@html `<script type="application/ld+json">${JSON.stringify(productSchema, null, 2)}</script>`}
+{@html `<script type="application/ld+json">${JSON.stringify(breadcrumbSchema, null, 2)}</script>`}
+{@html `<script type="application/ld+json">${JSON.stringify(webPageSchema, null, 2)}</script>`}
