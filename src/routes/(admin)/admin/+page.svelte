@@ -33,7 +33,7 @@
         <a href="/admin/places" class="admin-link"
             ><IconImage />Управление местами</a
         >
-        <a href="/admin/blog" class="admin-link"
+        <a href="/admin/blogs" class="admin-link"
             ><IconBookOpen />Управление блогом</a
         >
     </nav>

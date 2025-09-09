@@ -4,14 +4,12 @@
 
     export let baseUrl;
     export let baseName;
-    export let locale; // fallback if not passed
-    export let urlPath = ""; // example: 'cars'
+    export let locale = "en"; // fallback
+    export let urlPath = ""; // пример: 'cars'
     export let slug = "";
 
     export let title = "";
     export let description = "";
-    export let keywords = "";
- 
 
     export let image = `${baseUrl}/images/default.webp`;
     export let imageAlt = "Photo";
@@ -21,7 +19,7 @@
     export let availability = "in stock";
     export let brand = "";
 
-    // Canonical helper
+    // Canonical + hreflang
     function getHref(lang) {
         const langPrefix = lang === "en" ? "" : `/${lang}`;
         return `${baseUrl}${langPrefix}/${urlPath}/${slug}`
@@ -29,38 +27,51 @@
             .replace(/\/+$/, "");
     }
 
-    const canonical = getHref("en");
+    const canonical = getHref(locale);
 
-    $: metaKeywords = Array.isArray(keywords)
-        ? keywords.join(", ").trim()
-        : keywords?.trim()
-          ? keywords.trim()
-          : description?.trim()
-            ? extractKeywords(description).join(", ")
-            : "";
+    // OpenGraph locale
+    const ogLocales = { ru: "ru_RU", en: "en_US" };
+    const ogLocale = ogLocales[locale] || "en_US";
+
+    // Автогенерация keywords (если прям нужны)
+    $: metaKeywords = description?.trim()
+        ? extractKeywords(description).join(", ")
+        : "";
+
+    // OG alternate locales
+    const ogAlternateLocales = SUPPORTED_LANGUAGES.filter(
+        (lang) => lang !== locale
+    ).map((lang) => ogLocales[lang] || "en_US");
 </script>
 
 <svelte:head>
     <title>{title} | {baseName}</title>
     <meta name="description" content={description} />
-    <meta name="keywords" content={metaKeywords} />
+    {#if metaKeywords}
+        <meta name="keywords" content={metaKeywords} />
+    {/if}
 
     <link rel="canonical" href={canonical} />
 
-    {#each SUPPORTED_LANGUAGES as value}
-        <link rel="alternate" hreflang={value} href={getHref(value)} />
+    {#each SUPPORTED_LANGUAGES as lang}
+        <link rel="alternate" hreflang={lang} href={getHref(lang)} />
     {/each}
-    <link rel="alternate" hreflang="x-default" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={getHref("en")} />
 
+    <!-- Open Graph -->
     <meta property="og:type" content="product" />
     <meta property="og:site_name" content={baseName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={image} />
     <meta property="og:image:alt" content={imageAlt} />
-    <meta property="og:url" content={getHref(locale)} />
-    <meta property="og:locale" content={locale} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={ogLocale} />
+    {#each ogAlternateLocales as altLocale}
+        <meta property="og:locale:alternate" content={altLocale} />
+    {/each}
 
+    <!-- Product meta -->
     {#if amount}
         <meta property="product:price:amount" content={amount} />
         <meta property="product:price:currency" content={currency} />
@@ -71,6 +82,7 @@
     {/if}
     <meta property="product:condition" content="new" />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
