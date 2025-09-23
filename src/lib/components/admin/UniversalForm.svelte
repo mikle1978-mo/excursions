@@ -1,7 +1,6 @@
 <script>
     import { onMount } from "svelte";
     import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
-    import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
     import FormField from "$lib/components/UI/inputs/FormField.svelte";
     import { goto } from "$app/navigation";
     import {
@@ -10,53 +9,75 @@
         resetForm,
     } from "$lib/stores/universalFormStore";
     import { createItem, updateItem } from "$lib/utils/itemsActions.js";
+    import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
     export let steps = []; // конфиг шагов и полей
     export let schema; // Zod-схема (ZodObject)
     export let mode = "create"; // create | edit
     export let slug = ""; // для edit
-    export let initialData = null; // добавляем проп
+    export let initialData = null; // исходные данные для edit
     export let type = ""; // тип сущности (excursion, tour и т.д.)
 
-    // Инициализация при mount или при изменении initialData
-
     let form = createFormStore(type, slug, initializeForm());
-
     let errors = {};
     let generalError = "";
     let isLoading = false;
     let redirectTo = `/admin/${type}s`;
 
-    // текущее положение в шагах
     let currentStep = 0;
     $: totalSteps = steps?.length ?? 0;
     $: currentStepObj = steps?.[currentStep];
     $: currentForm = $form;
 
     function initializeForm() {
-        const formData = {};
+        if (!steps) throw new Error("Steps не переданы в форму");
+
+        const formData = initialData ? structuredClone(initialData) : {};
 
         steps.forEach((step) => {
+            if (!step.fields)
+                throw new Error(`Step "${step.title}" не имеет fields`);
+
             step.fields.forEach((field) => {
-                if (field.localized) {
-                    // если initialData есть — берём её, иначе дефолт или пустой объект языков
-                    formData[field.name] =
-                        initialData?.[field.name] ?? field.default ?? {};
-                    // теперь гарантируем, что есть все языки
-                    SUPPORTED_LANGUAGES.forEach((lang) => {
-                        if (!(lang in formData[field.name])) {
-                            formData[field.name][lang] = "";
+                switch (field.type) {
+                    case "object":
+                        if (!field.fields) {
+                            throw new Error(
+                                `Поле "${field.name}" типа object должно иметь fields`
+                            );
                         }
-                    });
-                } else {
-                    formData[field.name] =
-                        initialData?.[field.name] ??
-                        field.default ??
-                        (field.type === "array"
-                            ? []
-                            : field.type === "number"
-                              ? 0
-                              : "");
+                        // Для объектов дефолт должен быть объект
+                        if (field.default === undefined)
+                            throw new Error(
+                                `Поле "${field.name}" типа object должно иметь default`
+                            );
+                        formData[field.name] = structuredClone(field.default);
+                        break;
+
+                    case "array":
+                    case "arrayObjects":
+                        // Дефолт для массива обязателен
+                        if (field.default === undefined)
+                            throw new Error(
+                                `Поле "${field.name}" типа ${field.type} должно иметь default`
+                            );
+                        formData[field.name] = structuredClone(field.default);
+                        break;
+
+                    case "checkbox":
+                        if (field.default === undefined)
+                            throw new Error(
+                                `Поле "${field.name}" типа checkbox должно иметь default`
+                            );
+                        formData[field.name] = field.default;
+                        break;
+
+                    default: // text, textarea и прочие
+                        if (field.default === undefined)
+                            throw new Error(
+                                `Поле "${field.name}" должно иметь default`
+                            );
+                        formData[field.name] = field.default;
                 }
             });
         });
@@ -64,88 +85,46 @@
         return formData;
     }
 
-    // Для дебага
-    //  $: console.log("Form initialized with:", $form);
-
-    onMount(async () => {
+    onMount(() => {
         if (mode === "edit" && slug && initialData) {
             setFormData(form, initialData, type, slug);
         }
     });
 
-    // Вспомог: взять уникальные базовые имена полей для шага (title, price и т.д.)
-    function getBaseNamesForStep(step) {
-        return Array.from(
-            new Set(step.fields.map((f) => f.name.split(".")[0]))
-        );
-    }
-
-    // Валидировать только поля текущего шага (partial schema)
+    // Валидация текущего шага
     async function validateCurrentStep() {
         errors = {};
         generalError = "";
 
-        const baseNames = getBaseNamesForStep(currentStepObj);
+        if (!currentStepObj) return true;
 
-        // Построим объект с нужными ключами
+        const baseNames = Array.from(
+            new Set(currentStepObj.fields.map((f) => f.name.split(".")[0]))
+        );
         const dataToValidate = {};
         for (const key of baseNames) {
             dataToValidate[key] = currentForm[key];
         }
-
+        console.log(currentStep, currentStepObj, baseNames, dataToValidate);
         try {
-            // Берём "частичную" схему: подмножество полей по baseNames
-            // если schema.pick доступен (ZodObject)
-            let partialSchema;
-            if (schema && typeof schema.pick === "function") {
-                const pickMap = Object.fromEntries(
-                    baseNames.map((k) => [k, true])
-                );
-                partialSchema = schema.pick(pickMap).partial();
-            } else {
-                // fallback: валидировать целиком (плохой вариант), но обычно schema.pick есть
-                partialSchema = schema;
-            }
-
+            const partialSchema =
+                schema && typeof schema.pick === "function"
+                    ? schema
+                          .pick(
+                              Object.fromEntries(
+                                  baseNames.map((k) => [k, true])
+                              )
+                          )
+                          .partial()
+                    : schema;
             partialSchema.parse(dataToValidate);
             return true;
         } catch (err) {
-            // поддержка разных форматов ZodError: err.errors или err.issues
+            console.log(err);
 
-            console.log("*************", err);
             const issues = err.errors ?? err.issues ?? [];
             errors = mapZodErrors(issues);
-
             return false;
-        }
-    }
-
-    // Переход к следующему шагу с валидацией текущего
-    async function nextStep() {
-        if (!currentStepObj) return;
-
-        const ok = await validateCurrentStep();
-
-        if (!ok) return;
-
-        if (currentStep < totalSteps - 1) {
-            currentStep += 1;
-            // можно сфокусировать первый инпут — позже
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        } else {
-            // последний шаг — сабмит всей формы
-
-            await handleSubmit();
-        }
-    }
-
-    function prevStep() {
-        if (currentStep > 0) {
-            currentStep -= 1;
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-        if (currentStep === 0) {
-            goto(redirectTo); // редирект на список, если это первый шаг
         }
     }
 
@@ -175,14 +154,13 @@
                 await createItem(type, validData);
                 alert("Создано успешно");
                 resetForm(form, initializeForm(), type, "new");
-                goto(redirectTo);
             } else {
                 await updateItem(type, slug, validData);
                 alert("Изменения сохранены");
                 resetForm(form, initializeForm(), type, slug);
-                goto(redirectTo);
             }
-            // например, редирект или уведомление
+
+            goto(redirectTo);
         } catch (err) {
             const issues = err.errors ?? err.issues ?? [];
             errors = mapZodErrors(issues);
@@ -192,10 +170,33 @@
             isLoading = false;
         }
     }
+
+    async function nextStep() {
+        if (!currentStepObj) return;
+
+        const ok = await validateCurrentStep();
+        if (!ok) return;
+
+        if (currentStep < totalSteps - 1) {
+            currentStep += 1;
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+            await handleSubmit();
+        }
+    }
+
+    function prevStep() {
+        if (currentStep > 0) {
+            currentStep -= 1;
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+            goto(redirectTo);
+        }
+    }
 </script>
 
 <div class="wizard">
-    <!-- Прогресс / заголовок шага -->
+    <!-- Header -->
     <div class="wizard-header">
         <div class="steps">
             {#each steps as s, i}
@@ -214,46 +215,29 @@
         <button
             on:click={() => goto(redirectTo)}
             type="button"
-            class="close-btn"
+            class="close-btn">×</button
         >
-            ×
-        </button>
     </div>
 
-    <!-- Текущий шаг -->
+    <!-- Content -->
     <div class="wizard-content">
         {#if currentStepObj}
             <fieldset>
                 <legend>{currentStepObj.title}</legend>
 
                 {#each currentStepObj.fields as field}
-                    {#if field.localized}
-                        {#each Object.keys($form[field.name] ?? Object.fromEntries(SUPPORTED_LANGUAGES.map( (l) => [l, ""] ))) as lang}
-                            <FormField
-                                field={{
-                                    ...field,
-                                    label: `${field.label} (${lang.toUpperCase()})`,
-                                    localized: false,
-                                }}
-                                bind:value={$form[field.name][lang]}
-                                errors={errors[field.name]?.[lang] ?? {}}
-                                fieldName={`${field.name}.${lang}`}
-                            />
-                        {/each}
-                    {:else}
-                        <FormField
-                            {field}
-                            bind:value={$form[field.name]}
-                            errors={errors[field.name] ?? {}}
-                            fieldName={field.name}
-                        />
-                    {/if}
+                    <FormField
+                        {field}
+                        bind:value={$form[field.name]}
+                        errors={errors[field.name] ?? {}}
+                        fieldName={field.name}
+                    />
                 {/each}
             </fieldset>
         {/if}
     </div>
 
-    <!-- Навигация по шагам -->
+    <!-- Footer -->
     <div class="wizard-footer">
         <MyButton
             width="width-auto"
@@ -264,9 +248,7 @@
             Назад
         </MyButton>
 
-        <div class="step-counter">
-            Шаг {currentStep + 1} из {totalSteps}
-        </div>
+        <div class="step-counter">Шаг {currentStep + 1} из {totalSteps}</div>
 
         <MyButton
             width="width-auto"
@@ -296,9 +278,7 @@
         align-items: center;
         height: 100%;
         position: relative;
-    }
-
-    /* header фиксированный */
+    } /* header фиксированный */
     .wizard-header {
         flex-shrink: 0;
         display: flex;
@@ -310,9 +290,7 @@
         position: sticky;
         top: 0;
         z-index: 10;
-    }
-
-    /* контент прокручивается */
+    } /* контент прокручивается */
     .wizard-content {
         width: 100%;
         flex: 1;
@@ -320,12 +298,9 @@
         padding: var(--space-vertical-md) 0;
         display: flex;
         flex-direction: column;
-        gap: 1rem;
-        /* Важно для скролла */
+        gap: 1rem; /* Важно для скролла */
         min-height: 0;
-    }
-
-    /* footer фиксированный */
+    } /* footer фиксированный */
     .wizard-footer {
         flex-shrink: 0;
         display: flex;
@@ -339,13 +314,11 @@
         bottom: 0;
         z-index: 10;
     }
-
     .steps {
         display: flex;
         gap: 0.5rem;
         flex-wrap: wrap;
     }
-
     fieldset {
         border: 1px solid var(--color-gray-300);
         padding: var(--space-vertical-sm);
@@ -354,20 +327,17 @@
         font-size: var(--text-xs);
         margin: 0;
     }
-
     legend {
         font-weight: bolder;
         text-decoration: underline;
         padding: 0 var(--space-horizontal-xs);
     }
-
     .error {
         color: var(--color-error);
         font-size: var(--text-sm);
         text-align: center;
         margin-top: var(--space-vertical-xs);
     }
-
     .close-btn {
         display: flex;
         align-items: center;
@@ -383,45 +353,35 @@
         cursor: pointer;
         transition: all var(--transition-fast);
     }
-
     .close-btn:hover,
     .close-btn:focus {
         color: var(--color-error);
         background: var(--color-gray-200);
-    }
-
-    /* Для темной темы */
+    } /* Для темной темы */
     @media (prefers-color-scheme: dark) {
         .wizard-header,
         .wizard-footer {
             background: var(--color-dark);
             border-color: var(--color-gray-700);
         }
-
         fieldset {
             border-color: var(--color-gray-700);
             background: var(--color-dark);
         }
-    }
-
-    /* Адаптивность для мобильных */
+    } /* Адаптивность для мобильных */
     @media (max-width: 768px) {
         .wizard-header {
             padding: var(--space-vertical-xs) 0;
         }
-
         .wizard-content {
             padding: var(--space-vertical-sm) 0;
         }
-
         .wizard-footer {
             padding: var(--space-vertical-xs) 0;
         }
-
         .steps {
             gap: 0.25rem;
         }
-
         fieldset {
             padding: var(--space-vertical-xs);
         }

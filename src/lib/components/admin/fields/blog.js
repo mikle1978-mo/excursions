@@ -1,99 +1,132 @@
-import { createLocalizedDefault } from "$lib/utils/createLocalizedDefault";
+import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
 export const blogSteps = [
     {
         title: "Общие данные",
+        default: [],
         fields: [
             {
                 name: "active",
-                label: "Активна",
+                label: "Активен",
                 type: "checkbox",
                 default: true,
             },
-            { name: "slug", label: "Slug", type: "text", required: true },
             {
-                name: "author",
-                label: "Автор",
+                name: "slug",
+                label: "Slug",
                 type: "text",
-                localized: true,
-                default: createLocalizedDefault("text"),
+                required: true,
+                default: "",
             },
             {
-                name: "publishDate",
-                label: "Дата публикации",
-                type: "date",
-                default: new Date().toISOString().split("T")[0],
+                name: "h1",
+                label: "H1 заголовок",
+                type: "object",
+                default: {},
+                fields: SUPPORTED_LANGUAGES.map((lang) => ({
+                    name: lang,
+                    label: lang.toUpperCase(),
+                    type: "text",
+                    default: "",
+                })),
+            },
+            {
+                name: "subtitle",
+                label: "Подзаголовок",
+                type: "object",
+                default: {},
+                fields: SUPPORTED_LANGUAGES.map((lang) => ({
+                    name: lang,
+                    label: lang.toUpperCase(),
+                    type: "text",
+                    default: "",
+                })),
             },
         ],
     },
     {
         title: "Контент",
+        default: [],
         fields: [
-            {
-                name: "title",
-                label: "Заголовок статьи",
-                type: "text",
-                localized: true,
-                default: createLocalizedDefault("text"),
-                required: true,
-            },
-            {
-                name: "h1",
-                label: "H1 заголовок",
-                type: "text",
-                localized: true,
-                default: createLocalizedDefault("text"),
-            },
-            {
-                name: "subtitle",
-                label: "Подзаголовок",
-                type: "text",
-                localized: true,
-                default: createLocalizedDefault("text"),
-            },
             {
                 name: "content",
                 label: "Параграфы",
-                type: "arrayParagraphs",
-                localized: true, // текст на несколько языков
-                default: createLocalizedDefault("array"), // [{ text: {ru, en}, image: null }]
-                extra: {
-                    imageUploader: true, // чтобы рендерить инпут фото внутри параграфа
-                },
+                type: "arrayObjects",
+                default: [],
+                fields: [
+                    {
+                        name: "text",
+                        label: "Текст",
+                        type: "object",
+                        default: {},
+                        fields: SUPPORTED_LANGUAGES.map((lang) => ({
+                            name: lang,
+                            label: lang.toUpperCase(),
+                            type: "textarea",
+                            default: "",
+                        })),
+                    },
+                    {
+                        name: "image",
+                        label: "Изображение",
+                        type: "text",
+                        default: "",
+                    },
+                ],
             },
         ],
     },
     {
-        title: "SEO и мета",
+        title: "SEO",
+        default: [],
         fields: [
             {
-                name: "metaTitle",
-                label: "Meta заголовок",
-                type: "text",
-                localized: true,
-                default: createLocalizedDefault("text"),
-                required: true,
+                name: "title",
+                label: "Мета Заголовок",
+                type: "object",
+                default: {},
+                fields: SUPPORTED_LANGUAGES.map((lang) => ({
+                    name: lang,
+                    label: lang.toUpperCase(),
+                    type: "text",
+                    default: "",
+                })),
             },
             {
                 name: "metaDescription",
                 label: "Meta Description",
-                type: "textarea",
-                localized: true,
-                default: createLocalizedDefault("text"),
+                type: "object",
+                default: {},
+                fields: SUPPORTED_LANGUAGES.map((lang) => ({
+                    name: lang,
+                    label: lang.toUpperCase(),
+                    type: "textarea",
+                    default: "",
+                })),
             },
             {
                 name: "keywords",
                 label: "Ключевые слова",
-                type: "array",
-                localized: true,
-                default: createLocalizedDefault("array"),
+                type: "object",
+                default: {},
+                fields: SUPPORTED_LANGUAGES.map((lang) => ({
+                    name: lang,
+                    label: lang.toUpperCase(),
+                    type: "array",
+                    default: [],
+                })),
             },
             {
                 name: "tags",
                 label: "Теги",
-                type: "array",
-                localized: true,
-                default: createLocalizedDefault("array"),
+                type: "object",
+                default: {},
+                fields: SUPPORTED_LANGUAGES.map((lang) => ({
+                    name: lang,
+                    label: lang.toUpperCase(),
+                    type: "array",
+                    default: [],
+                })),
             },
         ],
     },

@@ -47,6 +47,8 @@
     export let locale;
     export let translations;
 
+    console.log(item);
+
     export function getI18nLabel(obj, key, locale) {
         return obj?.[key]?.[locale] ?? key;
     }

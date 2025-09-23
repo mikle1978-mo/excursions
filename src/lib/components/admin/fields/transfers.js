@@ -96,7 +96,7 @@ export const transferSteps = [
             {
                 name: "car",
                 label: "Автомобиль",
-                type: "group",
+                type: "object",
                 fields: [
                     { name: "model", label: "Модель", type: "text" },
                     { name: "seats", label: "Количество мест", type: "number" },

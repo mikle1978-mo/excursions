@@ -99,7 +99,7 @@ ${listEntries("places")}
 ${dynamicEntries(excursions, "excursions")}
 ${dynamicEntries(yachts, "yachts")}
 ${dynamicEntries(cars, "cars")}
-${dynamicEntries(cars, "transfers")}
+${dynamicEntries(transfers, "transfers")}
 ${dynamicEntries(places, "places")}
 </urlset>`;
 

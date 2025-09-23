@@ -4,6 +4,8 @@ const COLLECTIONS = [
     { name: "excursions", type: "excursion" },
     { name: "yachts", type: "yacht" },
     { name: "cars", type: "car" },
+    { name: "transfers", type: "transfer" },
+    { name: "places", type: "place" },
     // сюда можно в будущем добавить:
     // { name: "real_estate", type: "real_estate" },
     // { name: "transfers", type: "transfer" },

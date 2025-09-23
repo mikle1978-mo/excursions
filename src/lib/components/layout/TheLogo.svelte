@@ -2,11 +2,7 @@
     import { locale, getLocalizedPath } from "$lib/stores/locale";
 </script>
 
-<a
-    href={getLocalizedPath($locale)}
-    class="logo"   
-    aria-label="go main"
->
+<a href={getLocalizedPath($locale)} class="logo" aria-label="go main">
     <div class="target">
         <div class="ring ring1"></div>
         <div class="ring ring2"></div>

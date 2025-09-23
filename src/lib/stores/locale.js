@@ -31,7 +31,7 @@ export function setLocale(lang) {
  */
 export function getLocalizedPath(locale, path = "") {
     if (!path) {
-        return locale === "en" ? "/" : `/${locale}`;
+        return locale === "en" ? "" : `/${locale}`;
     }
 
     return locale === "en" ? `/${path}` : `/${locale}/${path}`;

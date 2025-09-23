@@ -6,7 +6,7 @@
     import { page } from "$app/stores";
     import FilterButton from "../UI/buttons/FilterButton.svelte";
     import TheBurger from "../UI/buttons/TheBurger.svelte";
-    const showSearchOn = ["/excursions", "yachts", "cars"];
+    const showSearchOn = ["/excursions", "/yachts", "/cars"];
 </script>
 
 <header class="header">
