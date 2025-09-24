@@ -1,3 +1,5 @@
+import { currentYear } from "$lib/constants/date";
+
 export const main_page = {
     title: {
         ru: `Все, что нужно для комфортного отдыха в Кемере!`,
@@ -6,8 +8,8 @@ export const main_page = {
     pages: [
         {
             title: {
-                ru: "Экскурсии для всех",
-                en: "Excursions for everyone",
+                ru: `Экскурсии в Кемере ${currentYear}`,
+                en: "Kemer Excursions ${currentYear}",
             },
             link: "excursions",
             img: "/images/excursions/excursion_default.webp",

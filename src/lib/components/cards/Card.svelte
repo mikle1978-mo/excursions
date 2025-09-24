@@ -67,8 +67,11 @@
     });
 </script>
 
-<a class="card" href={getLocalizedPath($locale, `${type}/${slug}`)}>
-    <div class="card__image-wrapper">
+<div class="card">
+    <a
+        href={getLocalizedPath($locale, `${type}/${slug}`)}
+        class="card__image-wrapper"
+    >
         <img
             src={imageSrcset.src}
             srcset={imageSrcset.srcset}
@@ -103,11 +106,15 @@
                 {getLabelByKey(meta.labels, "VIP").label[$locale]}
             </span>
         {/if}
-    </div>
+    </a>
 
     <div class="card__content">
         <div class="card__header">
-            <h2 class="card__title">{title}</h2>
+            <h2 class="card__title">
+                <a href={getLocalizedPath($locale, `${type}/${slug}`)}
+                    >{title}</a
+                >
+            </h2>
             <Rating {rating} {reviewsCount} locale={$locale} />
         </div>
 
@@ -131,7 +138,7 @@
             </div>
         </div>
     </div>
-</a>
+</div>
 
 <style>
     .card {

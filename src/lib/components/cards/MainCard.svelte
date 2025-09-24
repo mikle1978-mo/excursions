@@ -27,17 +27,16 @@
     });
 </script>
 
-<a
-    class="card"
-    href={$locale === "en" ? `/${slug}` : `/${$locale}/${slug}`}
-    transition:fly={{ y: 20, duration: 500 }}
->
-    <div class="card__image-wrapper">
+<div class="card" transition:fly={{ y: 20, duration: 500 }}>
+    <a
+        href={$locale === "en" ? `/${slug}` : `/${$locale}/${slug}`}
+        class="card__image-wrapper"
+    >
         <img
             {src}
             {srcset}
             sizes="(max-width: 400px) 100vw, (max-width: 768px) 50vw, 33vw"
-            alt="servise"
+            alt={title[$locale]}
             class="card__image"
             {loading}
             fetchpriority={loading === "eager" ? "high" : "auto"}
@@ -45,14 +44,18 @@
             width="600"
             height="338"
         />
-    </div>
+    </a>
 
     <div class="card__content">
         <div class="card__header">
-            <h2 class="card__title">{title[$locale]}</h2>
+            <h2 class="card__title">
+                <a href={$locale === "en" ? `/${slug}` : `/${$locale}/${slug}`}
+                    >{title[$locale]}</a
+                >
+            </h2>
         </div>
     </div>
-</a>
+</div>
 
 <style>
     .card {
