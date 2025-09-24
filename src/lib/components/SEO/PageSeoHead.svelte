@@ -24,7 +24,7 @@
     <title>{seo.title} | {baseName}</title>
     <meta name="description" content={seo.description} />
     <meta name="keywords" content={metaKeywords} />
-    <link rel="canonical" href={getHref("en")} />
+    <link rel="canonical" href={getHref(locale)} />
 
     {#each SUPPORTED_LANGUAGES as value}
         <link rel="alternate" hreflang={value} href={getHref(value)} />
