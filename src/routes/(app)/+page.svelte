@@ -2,6 +2,7 @@
     import { main_page } from "$lib/i18n/main_page";
     import { locale } from "$lib/stores/locale";
     import MainCard from "$lib/components/cards/MainCard.svelte";
+    import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
     import { page } from "$app/stores";
     import { fly, slide } from "svelte/transition";
@@ -38,7 +39,7 @@
     <!-- hreflang -->
     <link rel="alternate" hreflang="ru" href={`${baseUrl}/ru`} />
     <link rel="alternate" hreflang="en" href={`${baseUrl}`} />
-    <link rel="alternate" hreflang="x-default" href={`${baseUrl}`} />
+    <link rel="alternate" hreflang="x-default" href={baseUrl} />
 
     <!-- Open Graph (OG) -->
     <meta property="og:type" content="website" />

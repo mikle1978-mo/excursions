@@ -9,7 +9,7 @@
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
 
-    $: canonicalUrl = `${baseUrl}/${$locale}`;
+    $: canonicalUrl = $locale === "en" ? `${baseUrl}` : `${baseUrl}/${$locale}`;
 
     let isMounted = false;
 
@@ -26,6 +26,10 @@
             ru: "Все для комфортного отдыха в Кемере: экскурсии, аренда яхт и автомобилей, трансферы.",
             en: "Everything for a comfortable stay in Kemer: excursions, yacht and car rentals, and transfers.",
         },
+        keywords: {
+            ru: "отдых, кемере, экскурсии, аренда, яхт, автомобилей, трансферы, комфортного, бизнеса, турции",
+            en: "kemer, vacation, comfortable, excursions, yacht, car, rentals, transfers, stay, everything",
+        },
     };
 </script>
 
@@ -37,7 +41,7 @@
     <!-- hreflang -->
     <link rel="alternate" hreflang="ru" href={`${baseUrl}/ru`} />
     <link rel="alternate" hreflang="en" href={`${baseUrl}/en`} />
-    <link rel="alternate" hreflang="x-default" href={`${baseUrl}/en`} />
+    <link rel="alternate" hreflang="x-default" href={`${baseUrl}`} />
 
     {#each main_page.pages.slice(0, 3) as item}
         <link rel="preload" as="image" href={item.img} type="image/webp" />
