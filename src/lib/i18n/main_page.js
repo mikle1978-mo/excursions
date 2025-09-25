@@ -43,8 +43,8 @@ export const main_page = {
         },
         {
             title: {
-                ru: "Аренда автомобилей",
-                en: "Car Rentals",
+                ru: `Аренда авто в Кемере ${currentYear}`,
+                en: `Car Rental in Kemer ${currentYear}`,
             },
             link: "cars",
             img: "/images/cars/car_default.webp",
