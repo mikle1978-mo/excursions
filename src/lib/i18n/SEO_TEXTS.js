@@ -38,37 +38,37 @@ export const excursions_SEO_TEXT = {
 
 export const yachts_SEO_TEXT = {
     ru: {
-        title: `Аренда яхт в Кемере ${currentYear} — прогулки и морские туры`,
-        description: `Аренда яхт в Кемере ${currentYear} с капитаном. Морские прогулки, рыбалка, индивидуальные туры по красивейшим бухтам Кемера. Комфортабельные яхты и честные цены без посредников.`,
+        title: `Аренда яхт в Кемере ${currentYear} — яхты, лодки и морские прогулки`,
+        description: `Аренда яхт и катеров в Кемере ${currentYear}. Прогулки по бухтам, рыбалка и индивидуальные туры с капитаном. Комфортабельные яхты, честные цены без посредников и онлайн-бронирование без предоплаты.`,
         keywords:
-            "аренда яхт Кемер, яхты в Кемере, морская прогулка Кемер, аренда лодки Кемер, яхта с капитаном Кемер, прогулка на яхте Кемер, частная яхта Кемер",
+            "аренда яхт в кемере, яхты в кемере, морская прогулка кемер, аренда лодки в кемере, прогулка на яхте кемер, частная яхта кемер, прокат яхт кемер",
         h1: `Аренда яхт в Кемере ${currentYear} с подробными описаниями и удобным бронированием`,
-        topText: `<p>Откройте для себя яхты в Кемере в ${currentYear} году. Мы подготовили подробные описания каждой яхты, актуальные цены и отзывы. Все яхты можно забронировать онлайн без предоплаты. Выбирайте морские прогулки, рыбалку или индивидуальные туры по живописным бухтам Кемера с проверенными организаторами и наслаждайтесь комфортным отдыхом.</p>`,
-        bottomText: `<p>Кемер — популярный курорт на побережье Турции, предлагающий разнообразные варианты аренды яхт в ${currentYear} году. Здесь вы найдете как небольшие частные яхты для спокойных прогулок, так и большие суда для компании друзей или семьи. Прокат яхт в Кемере позволяет исследовать живописные бухты, чистейшие пляжи и окрестности Анталии, наслаждаясь красотой Средиземного моря. </p>
-        <p>Любители активного отдыха могут выбрать рыбалку или водные виды спорта, а ценители спокойствия — просто насладиться прогулкой на яхте с комфортом. Все яхты предоставляются с капитаном и оборудованием, что делает отдых безопасным и приятным.</p>
-        <p>Благодаря разнообразию яхт и маршрутов каждый найдет подходящий вариант — от романтических прогулок на закате до полноценного морского приключения. Забронируйте яхту онлайн и откройте для себя красоту Кемера с моря.</p>`,
+        topText: `<p>Откройте для себя аренду яхт в Кемере в ${currentYear} году. Мы собрали подробные описания каждой яхты, актуальные цены и отзывы туристов. Все яхты можно забронировать онлайн без предоплаты. Выбирайте прогулки по бухтам, рыбалку или индивидуальные туры с опытными капитанами и наслаждайтесь отдыхом на Средиземном море.</p>`,
+        bottomText: `<p>Кемер — один из лучших курортов Турции для аренды яхт в ${currentYear} году. Здесь доступны как небольшие яхты для романтических прогулок вдвоём, так и просторные катера для компаний друзей или семейного отдыха. Прокат яхт в Кемере позволяет исследовать живописные бухты, уединённые пляжи и морские маршруты вдоль побережья Анталии.</p>
+        <p>Любители активного отдыха могут выбрать рыбалку, снорклинг или водные развлечения, а ценители спокойствия — просто насладиться комфортной прогулкой на яхте. Все суда предоставляются с капитаном и необходимым оборудованием, что делает отдых безопасным и удобным.</p>
+        <p>Аренда яхт в Кемере включает как популярные маршруты с посещением известных бухт, так и уникальные индивидуальные туры для тех, кто хочет открыть скрытые жемчужины побережья. Благодаря разнообразию предложений каждый найдёт подходящий вариант — от коротких морских прогулок до полного дня в море. Забронируйте яхту онлайн и откройте Кемер с новой стороны.</p>`,
     },
     en: {
-        title: `Yacht Rental in Kemer ${currentYear} — Private Cruises & Boat Tours`,
-        description: `Yacht rental in Kemer ${currentYear} with skipper. Private cruises, fishing trips, and scenic tours to Kemer’s bays. Comfortable yachts at fair prices without intermediaries.`,
+        title: `Yacht Rental in Kemer ${currentYear} — Yachts, Boats & Sea Trips`,
+        description: `Yacht and boat rental in Kemer ${currentYear}. Cruises to scenic bays, fishing trips, and private tours with a skipper. Comfortable yachts, fair prices without intermediaries, and online booking with no prepayment.`,
         keywords:
-            "yacht rental Kemer, boat trip Kemer, private yacht Kemer, Kemer yacht tour, boat hire Kemer, sailing Kemer, rent a yacht Kemer",
+            "yacht rental in Kemer, yachts in Kemer, boat trip Kemer, boat hire in Kemer, private yacht Kemer, rent a yacht Kemer, Kemer yacht charter",
         h1: `Yacht Rental in Kemer ${currentYear} with Detailed Descriptions and Easy Booking`,
-        topText: `<p>Discover yachts in Kemer in ${currentYear}. We have prepared detailed descriptions of each yacht, up-to-date prices, and reviews. All yachts can be booked online with no prepayment. Choose from private cruises, fishing trips, or scenic tours to Kemer’s bays with trusted organizers and enjoy a comfortable vacation.</p>`,
-        bottomText: `<p>Kemer is a popular resort on Turkey’s coast, offering a variety of yacht rental options in ${currentYear}. You can find small private yachts for relaxed trips as well as larger vessels for groups of friends or family. Yacht rental in Kemer allows you to explore picturesque bays, pristine beaches, and the surroundings of Antalya, enjoying the beauty of the Mediterranean Sea.</p>
-        <p>Active travelers can enjoy fishing or water sports, while those seeking relaxation can simply enjoy a comfortable yacht ride. All yachts come with a skipper and equipment, ensuring a safe and pleasant experience.</p>
-        <p>With a wide selection of yachts and routes, everyone can find a perfect option — from romantic sunset cruises to full-fledged sea adventures. Book your yacht online and discover Kemer’s beauty from the sea.</p>`,
+        topText: `<p>Discover yacht rental in Kemer in ${currentYear}. We provide detailed descriptions of each yacht, up-to-date prices, and real reviews. All yachts can be booked online with no prepayment. Choose cruises to bays, fishing trips, or private tours with experienced skippers and enjoy the Mediterranean Sea.</p>`,
+        bottomText: `<p>Kemer is one of the best resorts in Turkey for yacht rental in ${currentYear}. You can find small yachts for romantic trips as well as spacious boats for families or groups of friends. Renting a yacht in Kemer allows you to explore picturesque bays, hidden beaches, and sea routes along the Antalya coast.</p>
+        <p>Active travelers can choose fishing, snorkeling, or water activities, while those seeking relaxation can simply enjoy a comfortable yacht cruise. All vessels come with a skipper and equipment, making your trip both safe and enjoyable.</p>
+        <p>Yacht rental in Kemer includes both popular routes to famous bays and exclusive private tours for those who want to discover hidden gems of the coast. With a wide range of offers, everyone will find the perfect option — from short sea trips to a full day at sea. Book your yacht online and see Kemer from a new perspective.</p>`,
     },
     tr: {
-        title: `Kemer'de Yat Kiralama ${currentYear} — Özel Tekne Turları`,
-        description: `Kemer'de ${currentYear} kaptanlı yat kiralama. Özel turlar, balıkçılık gezileri ve Kemer'in koylarına manzaralı deniz turları. Konforlu yatlar, aracısız ve uygun fiyatlarla.`,
+        title: `Kemer'de Yat Kiralama ${currentYear} — Yatlar, Tekneler ve Deniz Turları`,
+        description: `Kemer'de ${currentYear} yat ve tekne kiralama. Koylara geziler, balık tutma turları ve kaptanlı özel rotalar. Konforlu yatlar, aracısız uygun fiyatlar ve ön ödemesiz online rezervasyon.`,
         keywords:
-            "Kemer yat kiralama, Kemer tekne turu, özel yat Kemer, Kemer tekne kiralama, yat gezisi Kemer, kaptanlı yat Kemer, Kemer'de tekne",
-        h1: `Kemer'de ${currentYear} Yat Kiralama — Ayrıntılı Açıklamalar ve Kolay Rezervasyon`,
-        topText: `<p>${currentYear} için Kemer'deki yatları keşfedin. Her yatın ayrıntılı açıklamalarını, güncel fiyatlarını ve yorumlarını hazırladık. Tüm yatlar ön ödeme olmadan çevrimiçi olarak rezerve edilebilir. Özel turlar, balıkçılık gezileri veya Kemer'in koylarına manzaralı turları güvenilir organizatörlerle seçin ve konforlu bir tatilin tadını çıkarın.</p>`,
-        bottomText: `<p>Kemer, Türkiye'nin sahilinde popüler bir tatil beldesi olup, ${currentYear} için çeşitli yat kiralama seçenekleri sunmaktadır. Burada, sakin geziler için küçük özel yatlar ve arkadaşlar veya aile için büyük tekneler bulabilirsiniz. Kemer'de yat kiralama, muhteşem koyları, tertemiz plajları ve Antalya çevresini keşfetmenizi sağlar ve Akdeniz'in güzelliklerinin tadını çıkarmanıza olanak tanır.</p>
-        <p>Aktif tatilciler balıkçılık veya su sporları yapabilir, sakinliği sevenler ise sadece konforlu bir tekne gezisinin keyfini çıkarabilir. Tüm yatlar kaptan ve ekipman ile birlikte sunulmaktadır, bu da güvenli ve keyifli bir deneyim sağlar.</p>
-        <p>Çeşitli yatlar ve rotalar sayesinde herkes kendine uygun bir seçenek bulabilir — gün batımı romantik turlarından tam deniz maceralarına kadar. Yatınızı çevrimiçi rezerve edin ve Kemer'in güzelliklerini denizden keşfedin.</p>`,
+            "Kemer'de yat kiralama, Kemer yatları, Kemer tekne turu, Kemer tekne kiralama, özel yat Kemer, Kemer yat turu, Kemer yat kiralama fiyatları",
+        h1: `${currentYear} Kemer'de Yat Kiralama — Ayrıntılı Açıklamalar ve Kolay Rezervasyon`,
+        topText: `<p>${currentYear} yılında Kemer'de yat kiralamanın keyfini çıkarın. Her yat için ayrıntılı açıklamalar, güncel fiyatlar ve gerçek yorumlar hazırladık. Tüm yatlar ön ödeme olmadan çevrimiçi rezerve edilebilir. Koylara deniz turları, balıkçılık gezileri veya kaptanlı özel rotalar arasından seçim yaparak Akdeniz’in tadını çıkarın.</p>`,
+        bottomText: `<p>Kemer, ${currentYear} yılında Türkiye'de yat kiralamanın en popüler tatil merkezlerinden biridir. Burada, romantik geziler için küçük yatlardan aileler ve arkadaş grupları için geniş teknelere kadar birçok seçenek bulabilirsiniz. Kemer’de yat kiralama, Antalya kıyısındaki görkemli koyları, gizli plajları ve deniz rotalarını keşfetmenizi sağlar.</p>
+        <p>Aktif tatilciler balık tutma, şnorkelle yüzme veya su sporları yapabilir, sakinlik arayanlar ise konforlu bir yat gezisinin keyfini çıkarabilir. Tüm tekneler kaptan ve gerekli ekipman ile sunulur, böylece tatiliniz hem güvenli hem de keyifli olur.</p>
+        <p>Kemer'de yat kiralama hem ünlü koylara yapılan popüler rotaları hem de sahilin gizli güzelliklerini keşfetmek isteyenlere özel turları içerir. Geniş seçenekler sayesinde herkes kendine uygun bir tur bulabilir — kısa deniz gezilerinden tam günlük maceralara kadar. Yatınızı çevrimiçi rezerve edin ve Kemer'i denizden keşfedin.</p>`,
     },
 };
 

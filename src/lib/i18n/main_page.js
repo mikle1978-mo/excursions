@@ -9,7 +9,7 @@ export const main_page = {
         {
             title: {
                 ru: `Экскурсии в Кемере ${currentYear}`,
-                en: "Kemer Excursions ${currentYear}",
+                en: `Kemer Excursions ${currentYear}`,
             },
             link: "excursions",
             img: "/images/excursions/excursion_default.webp",
@@ -30,8 +30,8 @@ export const main_page = {
         },
         {
             title: {
-                ru: "Прогулки на яхте",
-                en: "Yacht Tours",
+                ru: `Аренда яхт в Кемере ${currentYear}`,
+                en: `Yacht Rent in Kemer ${currentYear}`,
             },
             link: "yachts",
             img: "/images/yachts/yacht_default.webp",
