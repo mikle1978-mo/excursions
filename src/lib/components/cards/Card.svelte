@@ -33,14 +33,16 @@
         ? (card[item.transmission]?.[$locale] ?? item.transmission)
         : "";
     $: detailTop = item.duration
-        ? `${item.duration} ${type === "transfers" ? card.minutes[$locale] : card.hours[$locale]}`
-        : (transmissionLabel ?? "");
+        ? ``
+        : // ? `${item.duration} ${type === "transfers" ? card.minutes[$locale] : card.hours[$locale]}`
+          (transmissionLabel ?? "");
     $: detailBottom =
         type === "transfers"
             ? `${card.before[$locale]} ${item.car.seats} ${card.people[$locale]}`
             : item.groupSize
-              ? `${card.before[$locale]} ${item.groupSize} ${card.people[$locale]}`
-              : (fuelLabel ?? "");
+              ? ``
+              : //   ? `${card.before[$locale]} ${item.groupSize} ${card.people[$locale]}`
+                (fuelLabel ?? "");
     $: rating = item.rating ?? 5;
     $: reviewsCount = item.reviewsCount ?? 10;
     $: meta = item.meta ?? {};
@@ -132,9 +134,9 @@
                         >{discount > 0 ? $oldPriceDisplay : ""}</span
                     > <span>{$priceDisplay}</span>
                 </span>
-                <span class="card__price-type">
+                <!-- <span class="card__price-type">
                     {priceTypeLabel}
-                </span>
+                </span> -->
             </div>
         </div>
     </div>
@@ -221,10 +223,10 @@
 
         /* Разрешаем перенос текста */
         white-space: normal;
-        line-clamp: 2;
+        line-clamp: 3;
         /* Ограничиваем максимум 2 строки */
         display: -webkit-box;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
 
         /* Обрезаем, если больше 2 строк */
@@ -282,11 +284,11 @@
         font-size: var(--text-lg);
         color: var(--color-gray-600);
     }
-    .card__price-type {
+    /* .card__price-type {
         display: none;
         font-size: var(--text-xs);
         color: var(--color-gray-600);
-    }
+    } */
 
     /* Медиазапросы */
 
@@ -303,9 +305,9 @@
         .card__footer {
             justify-content: space-between;
         }
-        .card__price-type {
+        /* .card__price-type {
             display: block;
-        }
+        } */
     }
     /* 768px — карточка ~237 */
     @media (min-width: 768px) {
