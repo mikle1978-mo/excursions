@@ -16,7 +16,14 @@ export const i18nArray = z.object(
 // --- параграф ---
 const paragraphSchema = z.object({
     text: i18nString, // локализованный текст
-    image: z.string().url().optional(), // необязательная картинка
+    images: z
+        .array(
+            z.object({
+                url: z.string(),
+                public_id: z.string(),
+            })
+        )
+        .optional(), // необязательная картинка
 });
 
 // --- схема блога ---
@@ -47,14 +54,4 @@ export const blogSchema = z.object({
     // необязательные доп. поля
     author: i18nString.optional(),
     publishDate: z.string().optional(), // ISO-дата
-    images: z
-        .array(
-            z.object({
-                url: z.string().url(),
-                public_id: z.string(),
-                paragraphIndex: z.number().optional(),
-                caption: i18nString.optional(),
-            })
-        )
-        .default([]),
 });

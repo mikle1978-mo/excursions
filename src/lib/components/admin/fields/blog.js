@@ -3,7 +3,6 @@ import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 export const blogSteps = [
     {
         title: "Общие данные",
-        default: [],
         fields: [
             {
                 name: "active",
@@ -19,8 +18,20 @@ export const blogSteps = [
                 default: "",
             },
             {
+                name: "title",
+                label: "Заголовок",
+                type: "object",
+                default: {},
+                fields: SUPPORTED_LANGUAGES.map((lang) => ({
+                    name: lang,
+                    label: lang.toUpperCase(),
+                    type: "text",
+                    default: "",
+                })),
+            },
+            {
                 name: "h1",
-                label: "H1 заголовок",
+                label: "H1",
                 type: "object",
                 default: {},
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
@@ -46,11 +57,10 @@ export const blogSteps = [
     },
     {
         title: "Контент",
-        default: [],
         fields: [
             {
                 name: "content",
-                label: "Параграфы",
+                label: "Параграф",
                 type: "arrayObjects",
                 default: [],
                 fields: [
@@ -67,10 +77,10 @@ export const blogSteps = [
                         })),
                     },
                     {
-                        name: "image",
-                        label: "Изображение",
-                        type: "text",
-                        default: "",
+                        name: "images",
+                        label: "Изображения",
+                        type: "imageUploader",
+                        default: [], // массив объектов {url, public_id}
                     },
                 ],
             },
@@ -78,20 +88,7 @@ export const blogSteps = [
     },
     {
         title: "SEO",
-        default: [],
         fields: [
-            {
-                name: "title",
-                label: "Мета Заголовок",
-                type: "object",
-                default: {},
-                fields: SUPPORTED_LANGUAGES.map((lang) => ({
-                    name: lang,
-                    label: lang.toUpperCase(),
-                    type: "text",
-                    default: "",
-                })),
-            },
             {
                 name: "metaDescription",
                 label: "Meta Description",
@@ -107,7 +104,7 @@ export const blogSteps = [
             {
                 name: "keywords",
                 label: "Ключевые слова",
-                type: "object",
+                type: "array",
                 default: {},
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
@@ -119,7 +116,7 @@ export const blogSteps = [
             {
                 name: "tags",
                 label: "Теги",
-                type: "object",
+                type: "array",
                 default: {},
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,

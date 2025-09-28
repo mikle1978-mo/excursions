@@ -1,5 +1,4 @@
 import { createLocalizedDefault } from "$lib/utils/createLocalizedDefault";
-import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
 export const excursionSteps = [
     {
@@ -11,37 +10,22 @@ export const excursionSteps = [
                 type: "checkbox",
                 default: true,
             },
-            {
-                name: "slug",
-                label: "Slug",
-                type: "text",
-                required: true,
-                default: "",
-            },
+            { name: "slug", label: "Slug", type: "text", required: true },
 
             {
                 name: "h1",
                 label: "Заголовок H1",
-                type: "object",
-                default: {},
-                fields: SUPPORTED_LANGUAGES.map((lang) => ({
-                    name: lang,
-                    label: lang.toUpperCase(),
-                    type: "text",
-                    default: "",
-                })),
+                type: "text",
+                localized: true,
+                required: true,
+                default: createLocalizedDefault("text"),
             },
             {
                 name: "subtitle",
                 label: "Подзаголовок",
-                type: "object",
-                default: {},
-                fields: SUPPORTED_LANGUAGES.map((lang) => ({
-                    name: lang,
-                    label: lang.toUpperCase(),
-                    type: "text",
-                    default: "",
-                })),
+                type: "text",
+                localized: true,
+                default: createLocalizedDefault("text"),
             },
 
             {
@@ -119,14 +103,9 @@ export const excursionSteps = [
             {
                 name: "description",
                 label: "Описание",
-                type: "object",
-                default: {},
-                fields: SUPPORTED_LANGUAGES.map((lang) => ({
-                    name: lang,
-                    label: lang.toUpperCase(),
-                    type: "textarea",
-                    default: "",
-                })),
+                type: "textarea",
+                localized: true,
+                default: createLocalizedDefault("text"),
             },
             {
                 name: "usp",
@@ -158,26 +137,17 @@ export const excursionSteps = [
             {
                 name: "title",
                 label: "Мета заголовок",
-                type: "object",
-                default: {},
-                fields: SUPPORTED_LANGUAGES.map((lang) => ({
-                    name: lang,
-                    label: lang.toUpperCase(),
-                    type: "text",
-                    default: "",
-                })),
+                type: "text",
+                localized: true,
+                required: true,
+                default: createLocalizedDefault("text"),
             },
             {
                 name: "metaDescription",
                 label: "Meta Description",
-                type: "object",
-                default: {},
-                fields: SUPPORTED_LANGUAGES.map((lang) => ({
-                    name: lang,
-                    label: lang.toUpperCase(),
-                    type: "textarea",
-                    default: "",
-                })),
+                type: "textarea",
+                localized: true,
+                default: createLocalizedDefault("text"),
             },
             {
                 name: "keywords",

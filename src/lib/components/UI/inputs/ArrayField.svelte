@@ -6,6 +6,11 @@
     // export let delimiter = /[,;\n]+/;
     export let label = "Элементы:";
     export let field = "";
+    export let fieldName = "";
+    console.log("ArrayField value:", value);
+    console.log("ArrayField fieldName:", fieldName);
+    console.log("ArrayField field:", field);
+
     export let errors = {};
 
     let inputValue = "";
@@ -63,7 +68,7 @@
         </div>
     </div>
 </div>
-<ErrorMessage {field} {errors} />
+<ErrorMessage field={fieldName} {errors} />
 
 <style>
     .label {
