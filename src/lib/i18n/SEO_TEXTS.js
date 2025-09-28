@@ -74,34 +74,37 @@ export const yachts_SEO_TEXT = {
 
 export const cars_SEO_TEXT = {
     ru: {
-        title: `Аренда авто в Кемере ${currentYear} — выгодно и удобно`,
-        description: `Прокат автомобилей в Кемере ${currentYear} без залога. Новые машины, полный бак, кондиционер. Быстрая подача, оформление за 5 минут. Комфортные авто на любой вкус и бюджет — седаны, внедорожники, кабриолеты. Забронируйте прямо сейчас!`,
+        title: `Аренда авто в Кемере ${currentYear} — прокат автомобилей без посредников`,
+        description: `Аренда авто в Кемере ${currentYear} без предоплаты. Новые автомобили, честные цены и удобное бронирование онлайн. Прокат машин для отдыха и путешествий по Турции.`,
         keywords:
-            "аренда авто Кемер, прокат машин Кемер, аренда автомобилей Кемер, авто без залога Кемер, прокат авто недорого Кемер, аренда кабриолета Кемер, аренда внедорожника Кемер",
-        h1: `Аренда авто в Кемере ${currentYear} с подробными описаниями и удобным бронированием`,
-        topText: `<p>Откройте для себя аренду автомобилей в Кемере в ${currentYear} году. Мы подготовили подробные описания каждой машины, актуальные цены и отзывы. Все авто можно забронировать онлайн без предоплаты. Выбирайте удобные седаны, вместительные внедорожники или стильные кабриолеты с проверенными организаторами и наслаждайтесь комфортным отдыхом.</p>`,
-        bottomText: `<p>Кемер — популярный курорт на побережье Турции, предлагающий разнообразные автомобили для аренды в ${currentYear} году. Здесь вы найдете как компактные машины для городских поездок, так и просторные внедорожники и кабриолеты для отдыха на побережье. Аренда авто в Кемере позволяет легко передвигаться по городу и окрестностям, посещать пляжи, достопримечательности и туристические маршруты.</p> 
-        <p>Быстрая подача, оформление за считанные минуты и прозрачные цены делают прокат автомобилей удобным и безопасным. Планируйте свои поездки с комфортом и свободой передвижения, выбирая аренду авто в Кемере онлайн.</p>`,
+            "аренда авто кемер, аренда автомобиля в кемере, аренда машин кемер, прокат авто кемер, прокат машин кемер, машина в аренду кемер, взять авто в аренду кемер, аренда авто без водителя кемер, аренда авто турция кемер",
+        h1: `Аренда авто в Кемере ${currentYear} — машины для путешествий и отдыха`,
+        topText: `<p>Планируете отпуск в Кемере? В ${currentYear} году аренда авто стала самым удобным способом изучить регион. У нас вы найдете автомобили разных классов — от бюджетных машин до премиум-авто и кабриолетов. Все автомобили доступны для бронирования онлайн без предоплаты.</p>`,
+        bottomText: `<p>Аренда автомобиля в Кемере позволяет свободно исследовать побережье Анталии, посещать достопримечательности и передвигаться без привязки к экскурсионным группам. В нашем каталоге представлены надежные и комфортабельные автомобили для любого бюджета.</p>
+        <p>Вы можете выбрать аренду авто на сутки, неделю или длительный срок. Доступны варианты с водителем и без, а также прокат минивэнов для семейных поездок. Все машины проходят регулярное техническое обслуживание и предоставляются в чистом и исправном состоянии.</p>
+        <p>Бронируйте аренду авто в Кемере онлайн и наслаждайтесь свободой путешествий по Турции с честными ценами и прозрачными условиями без скрытых платежей.</p>`,
     },
     en: {
-        title: `Car Rental in Kemer ${currentYear} — Fast & Convenient`,
-        description: `Rent a car in Kemer ${currentYear} without a deposit. Clean vehicles with full tank and A/C. Quick delivery, 5-minute paperwork. Comfortable cars for every taste and budget — sedans, SUVs, convertibles. Book your car today!`,
+        title: `Car Rental in Kemer ${currentYear} — Rent a Car Without Intermediaries`,
+        description: `Car rental in Kemer ${currentYear} with no prepayment. New cars, fair prices, and easy online booking. Rent a car for holidays and trips across Turkey.`,
         keywords:
-            "car rental Kemer, rent a car Kemer, hire a car Kemer, car hire Kemer, cheap car rental Kemer, SUV rental Kemer, convertible rental Kemer",
-        h1: `Car Rental in Kemer ${currentYear} with Detailed Descriptions and Easy Booking`,
-        topText: `<p>Discover car rental options in Kemer for ${currentYear}. We provide detailed descriptions, up-to-date prices, and reviews of each vehicle. All cars can be booked online with no prepayment. Choose convenient sedans, spacious SUVs, or stylish convertibles from trusted providers and enjoy a comfortable vacation.</p>`,
-        bottomText: `<p>Kemer is a popular resort on Turkey’s coast, offering a wide range of cars for rent in ${currentYear}. You can find compact cars for city trips, spacious SUVs for family outings, or convertibles for coastal drives. Car rental in Kemer allows you to explore beaches, landmarks, and tourist routes easily.</p>
-        <p>Quick delivery, 5-minute paperwork, and transparent prices make renting a car safe and convenient. Plan your trips with comfort and freedom by booking a car online in Kemer today.</p>`,
+            "car rental Kemer, rent a car Kemer, car hire Kemer, cheap car rental Kemer, car rental Turkey Kemer, car hire without driver Kemer, Kemer car rental prices, rent car Kemer Turkey",
+        h1: `Car Rental in Kemer ${currentYear} — Cars for Travel and Holidays`,
+        topText: `<p>Planning a vacation in Kemer? In ${currentYear}, renting a car is the most convenient way to explore the region. We offer vehicles of all classes — from budget cars to premium vehicles and convertibles. All cars are available for online booking with no prepayment required.</p>`,
+        bottomText: `<p>Car rental in Kemer allows you to explore Antalya’s coast, visit attractions, and travel freely without being tied to group tours. Our catalog features reliable and comfortable vehicles for every budget.</p>
+        <p>You can choose daily, weekly, or long-term rentals. Options with or without a driver are available, as well as minivans for family trips. All cars are regularly serviced and provided clean and in perfect condition.</p>
+        <p>Book your car rental in Kemer online and enjoy the freedom of traveling across Turkey with transparent conditions and no hidden fees.</p>`,
     },
     tr: {
-        title: `Kemer'de Araç Kiralama ${currentYear} — Hızlı ve Kolay`,
-        description: `Kemer'de depozitosuz araç kiralama ${currentYear}. Temiz araçlar, tam depo ve klima. Hızlı teslimat, 5 dakikada sözleşme. Sedan, SUV ve cabrio seçenekleriyle konforlu araçlar. Hemen araç kiralayın!`,
+        title: `Kemer'de Araç Kiralama ${currentYear} — Aracısız Uygun Fiyatlar`,
+        description: `Kemer'de ${currentYear} araç kiralama. Ön ödeme yok, yeni araçlar, şeffaf fiyatlar ve kolay online rezervasyon. Tatil ve Türkiye’deki geziler için araç kiralama.`,
         keywords:
-            "Kemer araç kiralama, Kemer araba kiralama, ucuz araç kiralama Kemer, SUV kiralama Kemer, cabrio kiralama Kemer, araç kiralama ofisi Kemer",
-        h1: `Kemer'de ${currentYear} Araç Kiralama — Ayrıntılı Açıklamalar ve Kolay Rezervasyon`,
-        topText: `<p>${currentYear} için Kemer'deki araç kiralama seçeneklerini keşfedin. Her aracın ayrıntılı açıklamaları, güncel fiyatları ve yorumları sunulmaktadır. Tüm araçlar ön ödeme olmadan çevrimiçi olarak rezerve edilebilir. Güvenilir organizatörlerden sedan, SUV veya cabrio araçlar seçin ve konforlu bir tatilin tadını çıkarın.</p>`,
-        bottomText: `<p>Kemer, Türkiye'nin sahilinde popüler bir tatil beldesi olup, ${currentYear} için çeşitli araç kiralama seçenekleri sunmaktadır. Burada şehir gezileri için kompakt araçlar, aile gezileri için geniş SUV’lar veya sahil gezileri için cabrio araçlar bulabilirsiniz. Kemer'de araç kiralama, plajları, tarihi yerleri ve turistik rotaları kolayca keşfetmenizi sağlar.</p>
-        <p>Hızlı teslimat, 5 dakikada sözleşme ve şeffaf fiyatlar, araç kiralamayı güvenli ve kolay hale getirir. Seyahatinizi rahat ve özgürce planlayın, Kemer'de aracınızı çevrimiçi rezerve edin.</p>`,
+            "Kemer araç kiralama, Kemer rent a car, Kemer araba kiralama, ucuz araç kiralama Kemer, Kemer araba kiralama fiyatları, şöförsüz araç kiralama Kemer, Türkiye Kemer araba kiralama",
+        h1: `Kemer'de ${currentYear} Araç Kiralama — Tatil ve Seyahat İçin Araçlar`,
+        topText: `<p>Kemer’de tatil mi planlıyorsunuz? ${currentYear} yılında bölgeyi keşfetmenin en kolay yolu araç kiralamaktır. Bütçe dostu otomobillerden premium araçlara ve cabrioletlere kadar her sınıfta araçlarımız mevcuttur. Tüm araçlar ön ödeme olmadan online rezerve edilebilir.</p>`,
+        bottomText: `<p>Kemer’de araç kiralayarak Antalya sahilini özgürce gezebilir, turistik yerlere ulaşabilir ve grup turlarına bağlı kalmadan seyahat edebilirsiniz. Kataloğumuzda her bütçeye uygun güvenilir ve konforlu araçlar bulunmaktadır.</p>
+        <p>Günlük, haftalık veya uzun dönem kiralama seçeneklerinden yararlanabilirsiniz. Şoförlü veya şoförsüz araçlar, ayrıca aile tatilleri için minibüsler de mevcuttur. Tüm araçlar düzenli bakım görür ve temiz, sorunsuz bir şekilde teslim edilir.</p>
+        <p>Kemer’de araç kiralamanızı online yapın ve Türkiye’yi özgürce keşfedin. Şeffaf şartlar ve gizli ücretler olmadan rahat bir seyahatin tadını çıkarın.</p>`,
     },
 };
 
