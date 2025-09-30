@@ -15,6 +15,10 @@
     export let schema; // Zod-схема (ZodObject)
     export let mode = "create"; // create | edit
     export let slug = ""; // для edit
+
+    console.log("33====================================");
+    console.log(slug);
+    console.log("33====================================");
     export let initialData = null; // исходные данные для edit
     export let type = ""; // тип сущности (excursion, tour и т.д.)
 

@@ -4,7 +4,7 @@
     export let value = [];
     export let placeholder = "Введите элементы (каждый с новой строки)";
     // export let delimiter = /[,;\n]+/;
-    export let label = "Элементы:";
+    // export let label = "Элементы:";
     export let field = "";
     export let fieldName = "";
     console.log("ArrayField value:", value);
@@ -37,17 +37,8 @@
 </script>
 
 <div class="label">
-    <slot>{label}</slot>
+    <slot>{field.label}:</slot>
     <div class="array-input">
-        <div class="input-group">
-            <textarea bind:value={inputValue} {placeholder}></textarea>
-            <MyButton
-                width="width-auto"
-                size="xs"
-                onclick={addItems}
-                type="button">Добавить</MyButton
-            >
-        </div>
         <div
             class={`items-list ${value.length > 0 ? "has-items" : "no-items"}`}
         >
@@ -65,6 +56,15 @@
                     </div>
                 </div>
             {/each}
+        </div>
+        <div class="input-group">
+            <textarea bind:value={inputValue} {placeholder}></textarea>
+            <MyButton
+                width="width-auto"
+                size="xs"
+                onclick={addItems}
+                type="button">Добавить</MyButton
+            >
         </div>
     </div>
 </div>

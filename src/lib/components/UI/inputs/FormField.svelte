@@ -9,9 +9,7 @@
     export let errors = {};
     export let fieldName = "";
 
-    console.log("====================================");
-    console.log("2222", field, fieldName);
-    console.log("====================================");
+   
 </script>
 
 {#if field.type === "object"}

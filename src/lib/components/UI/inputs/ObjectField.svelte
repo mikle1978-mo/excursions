@@ -1,5 +1,6 @@
 <script>
     import PrimitiveField from "./PrimitiveField.svelte";
+    import ArrayField from "./ArrayField.svelte";
     import ArrayObjectsField from "./ArrayObjectsField.svelte";
     import ObjectField from "./ObjectField.svelte"; // рекурсивно
 
@@ -29,6 +30,13 @@
             />
         {:else if subField.type === "arrayObjects"}
             <ArrayObjectsField
+                field={subField}
+                bind:value={value[subField.name]}
+                errors={errors[subField.name] ?? {}}
+                fieldName={`${fieldName}.${subField.name}`}
+            />
+        {:else if subField.type === "array"}
+            <ArrayField
                 field={subField}
                 bind:value={value[subField.name]}
                 errors={errors[subField.name] ?? {}}
