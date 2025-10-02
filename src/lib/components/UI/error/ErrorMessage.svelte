@@ -1,9 +1,6 @@
 <!-- ErrorMessage.svelte -->
 <script>
     export let field;
-    console.log("====================================");
-    console.log(field);
-    console.log("====================================");
     export let errors;
 
     function getError(errors, path) {

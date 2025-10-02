@@ -15,15 +15,24 @@ export const i18nArray = z.object(
 
 // --- параграф ---
 const paragraphSchema = z.object({
-    text: i18nString, // локализованный текст
+    text: i18nString,
     images: z
-        .array(
-            z.object({
-                url: z.string(),
-                public_id: z.string(),
-            })
+        .object(
+            Object.fromEntries(
+                SUPPORTED_LANGUAGES.map((lang) => [
+                    lang,
+                    z
+                        .array(
+                            z.object({
+                                url: z.string(),
+                                public_id: z.string(),
+                            })
+                        )
+                        .default([]),
+                ])
+            )
         )
-        .optional(), // необязательная картинка
+        .optional(),
 });
 
 // --- схема блога ---
@@ -42,6 +51,14 @@ export const blogSchema = z.object({
     title: i18nString,
     h1: i18nString,
     subtitle: i18nString.optional(),
+    main_images: z
+        .array(
+            z.object({
+                url: z.string(),
+                public_id: z.string(),
+            })
+        )
+        .optional(), // необязательная картинка
 
     // контент — массив параграфов
     content: z.array(paragraphSchema).default([]),

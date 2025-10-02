@@ -22,6 +22,7 @@ export const excursionSteps = [
                 name: "h1",
                 label: "Заголовок H1",
                 type: "object",
+                localized: true,
                 default: {},
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
@@ -35,6 +36,7 @@ export const excursionSteps = [
                 label: "Подзаголовок",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -120,6 +122,7 @@ export const excursionSteps = [
                 label: "Описание",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -132,6 +135,7 @@ export const excursionSteps = [
                 label: "УТП",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -144,6 +148,7 @@ export const excursionSteps = [
                 label: "Почему выбирают нас",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -156,6 +161,7 @@ export const excursionSteps = [
                 label: "Гарантии",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -174,6 +180,7 @@ export const excursionSteps = [
                 label: "Мета заголовок",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -186,6 +193,7 @@ export const excursionSteps = [
                 label: "Meta Description",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -198,6 +206,7 @@ export const excursionSteps = [
                 label: "Ключевые слова",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -215,6 +224,7 @@ export const excursionSteps = [
                 label: "Расписание",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -227,6 +237,7 @@ export const excursionSteps = [
                 label: "Что вы увидите",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -239,6 +250,7 @@ export const excursionSteps = [
                 label: "Включено в стоимость",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -251,6 +263,7 @@ export const excursionSteps = [
                 label: "Что взять с собой",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -263,6 +276,7 @@ export const excursionSteps = [
                 label: "Место встречи",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -292,6 +306,7 @@ export const excursionSteps = [
                 label: "Теги",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),

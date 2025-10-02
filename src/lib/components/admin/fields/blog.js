@@ -21,6 +21,8 @@ export const blogSteps = [
                 name: "title",
                 label: "Заголовок",
                 type: "object",
+                localized: true,
+                required: true,
                 default: {},
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
@@ -33,6 +35,8 @@ export const blogSteps = [
                 name: "h1",
                 label: "H1",
                 type: "object",
+                localized: true,
+                required: true,
                 default: {},
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
@@ -45,6 +49,7 @@ export const blogSteps = [
                 name: "subtitle",
                 label: "Подзаголовок",
                 type: "object",
+                localized: true,
                 default: {},
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
@@ -68,6 +73,7 @@ export const blogSteps = [
                         name: "text",
                         label: "Текст",
                         type: "object",
+                        localized: true,
                         default: {},
                         fields: SUPPORTED_LANGUAGES.map((lang) => ({
                             name: lang,
@@ -78,9 +84,16 @@ export const blogSteps = [
                     },
                     {
                         name: "images",
-                        label: "Изображения",
-                        type: "imageUploader",
-                        default: [], // массив объектов {url, public_id}
+                        label: "Изображениe",
+                        type: "object",
+                        localized: true,
+                        default: {},
+                        fields: SUPPORTED_LANGUAGES.map((lang) => ({
+                            name: lang,
+                            label: lang.toUpperCase(),
+                            type: "imageUploader",
+                            default: [], // массив объектов {url, public_id}
+                        })),
                     },
                 ],
             },
@@ -88,11 +101,19 @@ export const blogSteps = [
     },
     {
         title: "SEO",
+
         fields: [
+            {
+                name: "main_images",
+                label: "Главное фото",
+                type: "imageUploader",
+                default: [], // массив объектов {url, public_id}
+            },
             {
                 name: "metaDescription",
                 label: "Meta Description",
                 type: "object",
+                localized: true,
                 default: {},
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
@@ -104,7 +125,8 @@ export const blogSteps = [
             {
                 name: "keywords",
                 label: "Ключевые слова",
-                type: "array",
+                type: "object",
+                localized: true,
                 default: {},
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
@@ -116,7 +138,8 @@ export const blogSteps = [
             {
                 name: "tags",
                 label: "Теги",
-                type: "array",
+                type: "object",
+                localized: true,
                 default: {},
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,

@@ -25,3 +25,6 @@ User-agent: Yandex
 # Запретить индексацию URL с параметрами Google Ads
 Disallow: /*?gad_source=
 Disallow: /*?gbraid=
+
+
+Host: kemer.app

@@ -14,18 +14,20 @@
     let previews = [];
     let isUploading = false;
 
-    // Гарантируем уникальные ID для всех изображений
-    $: images = images.map((img) => ({
+    // Функция генерации уникального id
+    function generateId() {
+        return `img-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
+    }
+
+    // Локальная нормализация изображений — все объекты имеют id
+    $: normalizedImages = images.map((img) => ({
         ...img,
-        id:
-            img.id ||
-            img.public_id ||
-            `img-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
+        id: img.id || img.public_id || generateId(),
     }));
 
     function handleFileChange(event) {
-        selectedFiles = event.target.files;
-        previews = Array.from(selectedFiles).map((file, i) => ({
+        selectedFiles = Array.from(event.target.files);
+        previews = selectedFiles.map((file, i) => ({
             id: `preview-${Date.now()}-${i}-${Math.random().toString(36).slice(2, 6)}`,
             url: URL.createObjectURL(file),
             name: file.name,
@@ -34,56 +36,41 @@
     }
 
     async function uploadImages() {
+        if (!previews.length) return;
         isUploading = true;
+
         try {
-            const uploads = previews.map(async (preview) => {
-                const formData = new FormData();
-                formData.append("file", preview.file);
-                formData.append("folder", folder);
+            const uploaded = await Promise.all(
+                previews.map(async (preview) => {
+                    const formData = new FormData();
+                    formData.append("file", preview.file);
+                    formData.append("folder", folder);
 
-                const res = await fetch("/api/upload", {
-                    method: "POST",
-                    body: formData,
-                });
+                    const res = await fetch("/api/upload", {
+                        method: "POST",
+                        body: formData,
+                    });
+                    if (!res.ok) {
+                        const text = await res.text();
+                        throw new Error(`Upload failed: ${res.status} ${text}`);
+                    }
 
-                if (!res.ok) {
-                    const text = await res.text();
-                    throw new Error(`Upload failed: ${res.status} ${text}`);
-                }
-
-                const data = await res.json();
-
-                images = [
-                    ...images,
-                    {
+                    const data = await res.json();
+                    return {
                         url: data.url,
                         public_id: data.public_id,
-                        id:
-                            data.public_id ||
-                            `img-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
-                    },
-                ];
+                        id: data.public_id || generateId(),
+                    };
+                })
+            );
 
-                // освобождаем objectURL
-                try {
-                    URL.revokeObjectURL(preview.url);
-                } catch (e) {
-                    /* ignore */
-                }
-            });
+            images = [...images, ...uploaded];
 
-            await Promise.all(uploads);
-
-            // очистка превью и input
-            selectedFiles = [];
-            previews.forEach((p) => {
-                try {
-                    URL.revokeObjectURL(p.url);
-                } catch (e) {}
-            });
+            previews.forEach((p) => URL.revokeObjectURL(p.url));
             previews = [];
+            selectedFiles = [];
         } catch (err) {
-            console.error("Upload error:", err);
+            console.error(err);
             alert("Ошибка загрузки изображения: " + (err.message || err));
         } finally {
             isUploading = false;
@@ -91,11 +78,9 @@
     }
 
     async function removeImage(image) {
-        // optimistic UI update
-        const previousImages = images;
+        const previousImages = [...images];
         images = images.filter((img) => img.id !== image.id);
 
-        // если у изображения нет public_id — просто удалили локально
         if (!image.public_id) return;
 
         try {
@@ -103,35 +88,27 @@
                 `/api/upload?public_id=${encodeURIComponent(image.public_id)}`,
                 { method: "DELETE" }
             );
-
-            if (!res.ok) {
-                // если ресурс на сервере уже отсутствует — считаем удаление успешным
-                if (res.status === 404 || res.status === 410) {
-                    return;
-                }
+            if (!res.ok && res.status !== 404 && res.status !== 410) {
                 const text = await res.text();
                 throw new Error(`Server delete failed: ${res.status} ${text}`);
             }
-
-            // успешно удалено на сервере — всё ок
         } catch (err) {
-            console.error("Delete image error:", err);
-            // rollback UI — возвращаем изображение
-            images = previousImages;
+            console.error(err);
+            images = previousImages; // rollback
             alert("Ошибка удаления изображения: " + (err.message || err));
         }
     }
 
     function removePreview(id) {
-        previews = previews.filter((preview) => preview.id !== id);
+        previews = previews.filter((p) => p.id !== id);
     }
 
-    function handleDndConsider(event) {
-        images = event.detail.items;
-    }
-
-    function handleDndFinalize(event) {
-        images = event.detail.items;
+    function handleDnd(event) {
+        // Перезаписываем исходный массив images
+        images = event.detail.items.map((item) => ({
+            ...item,
+            id: item.id || generateId(),
+        }));
     }
 </script>
 
@@ -157,15 +134,17 @@
                         <img src={preview.url} alt={preview.name} />
                         <div class="actions">
                             <button
-                                on:click={() => removePreview(preview.id)}
                                 type="button"
-                                class="clear-btn">×</button
+                                class="clear-btn"
+                                on:click={() => removePreview(preview.id)}
+                                >×</button
                             >
                         </div>
                     </div>
                 {/each}
             </div>
         {/if}
+
         <MyButton
             width="half"
             onclick={uploadImages}
@@ -176,22 +155,22 @@
             {isUploading ? "Загрузка..." : "Загрузить"}
         </MyButton>
 
-        {#if images.length}
+        {#if normalizedImages.length}
             <h4>Загруженные (перетащите для сортировки):</h4>
             <div
                 class="items-list"
-                use:dndzone={{ items: images }}
-                on:consider={handleDndConsider}
-                on:finalize={handleDndFinalize}
+                use:dndzone={{ items: normalizedImages }}
+                on:consider={handleDnd}
+                on:finalize={handleDnd}
             >
-                {#each images as img (img.id)}
+                {#each normalizedImages as img (img.id)}
                     <div class="item image" data-id={img.id}>
                         <img src={img.url} alt="" />
                         <div class="actions">
                             <button
-                                on:click={() => removeImage(img)}
                                 type="button"
-                                class="clear-btn">×</button
+                                class="clear-btn"
+                                on:click={() => removeImage(img)}>×</button
                             >
                         </div>
                     </div>

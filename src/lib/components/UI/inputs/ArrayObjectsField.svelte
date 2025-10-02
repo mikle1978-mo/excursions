@@ -8,10 +8,6 @@
     export let errors = {};
     export let fieldName = "";
 
-    console.log("====================================");
-    console.log(errors, value);
-    console.log("====================================");
-
     function addItem() {
         const newItem = {};
         field.fields.forEach((f) => {

@@ -1,28 +1,17 @@
 <script>
-    import { onMount } from "svelte";
     import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
     import FormField from "$lib/components/UI/inputs/FormField.svelte";
     import { goto } from "$app/navigation";
-    import {
-        createFormStore,
-        setFormData,
-        resetForm,
-    } from "$lib/stores/universalFormStore";
+    import { createFormStore, resetForm } from "$lib/stores/universalFormStore";
     import { createItem, updateItem } from "$lib/utils/itemsActions.js";
-    import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
-    export let steps = []; // конфиг шагов и полей
-    export let schema; // Zod-схема (ZodObject)
+    export let steps = [];
+    export let schema;
     export let mode = "create"; // create | edit
-    export let slug = ""; // для edit
+    export let slug = "";
+    export let initialData = null;
+    export let type = "";
 
-    console.log("33====================================");
-    console.log(slug);
-    console.log("33====================================");
-    export let initialData = null; // исходные данные для edit
-    export let type = ""; // тип сущности (excursion, tour и т.д.)
-
-    let form = createFormStore(type, slug, initializeForm());
     let errors = {};
     let generalError = "";
     let isLoading = false;
@@ -31,71 +20,53 @@
     let currentStep = 0;
     $: totalSteps = steps?.length ?? 0;
     $: currentStepObj = steps?.[currentStep];
-    $: currentForm = $form;
+
+    function mergeDefaultsAndData(defaults, data) {
+        const merged = structuredClone(defaults);
+
+        Object.keys(defaults).forEach((key) => {
+            const defVal = defaults[key];
+            const dbVal = data?.[key];
+
+            if (dbVal === undefined) return;
+
+            if (Array.isArray(defVal) && Array.isArray(dbVal)) {
+                merged[key] = dbVal;
+            } else if (
+                typeof defVal === "object" &&
+                defVal !== null &&
+                typeof dbVal === "object" &&
+                dbVal !== null
+            ) {
+                merged[key] = { ...defVal, ...dbVal };
+            } else {
+                merged[key] = dbVal;
+            }
+        });
+
+        return merged;
+    }
 
     function initializeForm() {
         if (!steps) throw new Error("Steps не переданы в форму");
 
-        const formData = initialData ? structuredClone(initialData) : {};
-
+        const defaults = {};
         steps.forEach((step) => {
-            if (!step.fields)
-                throw new Error(`Step "${step.title}" не имеет fields`);
-
             step.fields.forEach((field) => {
-                switch (field.type) {
-                    case "object":
-                        if (!field.fields) {
-                            throw new Error(
-                                `Поле "${field.name}" типа object должно иметь fields`
-                            );
-                        }
-                        // Для объектов дефолт должен быть объект
-                        if (field.default === undefined)
-                            throw new Error(
-                                `Поле "${field.name}" типа object должно иметь default`
-                            );
-                        formData[field.name] = structuredClone(field.default);
-                        break;
-
-                    case "array":
-                    case "arrayObjects":
-                        // Дефолт для массива обязателен
-                        if (field.default === undefined)
-                            throw new Error(
-                                `Поле "${field.name}" типа ${field.type} должно иметь default`
-                            );
-                        formData[field.name] = structuredClone(field.default);
-                        break;
-
-                    case "checkbox":
-                        if (field.default === undefined)
-                            throw new Error(
-                                `Поле "${field.name}" типа checkbox должно иметь default`
-                            );
-                        formData[field.name] = field.default;
-                        break;
-
-                    default: // text, textarea и прочие
-                        if (field.default === undefined)
-                            throw new Error(
-                                `Поле "${field.name}" должно иметь default`
-                            );
-                        formData[field.name] = field.default;
-                }
+                defaults[field.name] = structuredClone(field.default);
             });
         });
 
-        return formData;
+        if (mode === "edit" && initialData) {
+            return mergeDefaultsAndData(defaults, initialData);
+        }
+
+        return defaults;
     }
 
-    onMount(() => {
-        if (mode === "edit" && slug && initialData) {
-            setFormData(form, initialData, type, slug);
-        }
-    });
+    let form = createFormStore(type, slug, initializeForm());
+    $: currentForm = $form;
 
-    // Валидация текущего шага
     async function validateCurrentStep() {
         errors = {};
         generalError = "";
@@ -109,7 +80,7 @@
         for (const key of baseNames) {
             dataToValidate[key] = currentForm[key];
         }
-        console.log(currentStep, currentStepObj, baseNames, dataToValidate);
+
         try {
             const partialSchema =
                 schema && typeof schema.pick === "function"
@@ -124,8 +95,6 @@
             partialSchema.parse(dataToValidate);
             return true;
         } catch (err) {
-            console.log(err);
-
             const issues = err.errors ?? err.issues ?? [];
             errors = mapZodErrors(issues);
             return false;
