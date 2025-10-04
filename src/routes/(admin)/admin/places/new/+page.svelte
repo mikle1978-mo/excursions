@@ -5,7 +5,7 @@
 
     // В режиме создания slug не нужен
     const mode = "create";
-    const type = "place";
+    const type = "places";
     const steps = placeSteps;
     const schema = placeSchema;
     console.log("Place steps:", steps);

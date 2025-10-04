@@ -6,7 +6,7 @@
 
     // В режиме создания slug не нужен
     const mode = "create";
-    const type = "excursion";
+    const type = "excursions";
     const steps = excursionSteps;
     const schema = excursionSchema;
 

@@ -5,7 +5,7 @@
 
     // В режиме создания slug не нужен
     const mode = "create";
-    const type = "car";
+    const type = "cars";
     const steps = carSteps;
     const schema = carSchema;
     console.log("Cars steps:", steps);

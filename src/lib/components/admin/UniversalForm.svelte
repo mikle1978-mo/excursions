@@ -15,7 +15,7 @@
     let errors = {};
     let generalError = "";
     let isLoading = false;
-    let redirectTo = `/admin/${type}s`;
+    let redirectTo = `/admin/${type}`;
 
     let currentStep = 0;
     $: totalSteps = steps?.length ?? 0;

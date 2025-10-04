@@ -5,7 +5,7 @@
 
     // В режиме создания slug не нужен
     const mode = "create";
-    const type = "transfer";
+    const type = "transfers";
     const steps = transferSteps;
     const schema = transferSchema;
     console.log("Transfer steps:", steps);

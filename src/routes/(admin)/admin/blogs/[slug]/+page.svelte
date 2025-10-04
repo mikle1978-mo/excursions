@@ -10,7 +10,7 @@
     let isLoading = true;
     let error = "";
     let initialData = {};
-    const type = "blog";
+    const type = "blogs";
 
     const { slug } = $page.params;
 

@@ -5,7 +5,7 @@
 
     // В режиме создания slug не нужен
     const mode = "create";
-    const type = "yacht";
+    const type = "yachts";
     const steps = yachtSteps;
     const schema = yachtSchema;
     console.log("Excursion steps:", steps);

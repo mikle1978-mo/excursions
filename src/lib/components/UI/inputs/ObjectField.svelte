@@ -1,22 +1,30 @@
 <script>
     import PrimitiveField from "./PrimitiveField.svelte";
     import ArrayField from "./ArrayField.svelte";
-    import ArrayObjectsField from "./ArrayObjectsField.svelte";
     import ObjectField from "./ObjectField.svelte"; // рекурсивно
 
-    export let field; // объектное поле из конфигурации (type="object")
-    export let value; // значение объекта
+    export let field; // конфигурация объекта
+    export let value; // bind:value сюда придет объект с данными
     export let errors = {};
-    export let fieldName = ""; // путь к полю, например "car.features"
+    export let fieldName = "";
 
-    // если value нет, берем дефолт
-    $: if (value === undefined && field.default !== undefined) {
-        value = field.default;
+    // Инициализация вложенных объектов
+    if (!value) {
+        value = {};
     }
+
+    // Для каждого под-поля, если объект/массив, гарантируем дефолт
+    field?.fields?.forEach((subField) => {
+        if (value[subField.name] === undefined) {
+            if (subField.type === "object") value[subField.name] = {};
+            else if (subField.type === "array") value[subField.name] = [];
+            else value[subField.name] = subField.default ?? "";
+        }
+    });
 </script>
 
 <fieldset>
-    {#if field.label}
+    {#if field?.label}
         <legend>{field.label}</legend>
     {/if}
 
@@ -25,28 +33,21 @@
             <ObjectField
                 field={subField}
                 bind:value={value[subField.name]}
-                errors={errors[subField.name] ?? {}}
-                fieldName={`${fieldName}.${subField.name}`}
-            />
-        {:else if subField.type === "arrayObjects"}
-            <ArrayObjectsField
-                field={subField}
-                bind:value={value[subField.name]}
-                errors={errors[subField.name] ?? {}}
+                errors={errors?.[subField.name] ?? {}}
                 fieldName={`${fieldName}.${subField.name}`}
             />
         {:else if subField.type === "array"}
             <ArrayField
                 field={subField}
                 bind:value={value[subField.name]}
-                errors={errors[subField.name] ?? {}}
+                errors={errors?.[subField.name] ?? {}}
                 fieldName={`${fieldName}.${subField.name}`}
             />
         {:else}
             <PrimitiveField
                 field={subField}
                 bind:value={value[subField.name]}
-                errors={errors[subField.name] ?? {}}
+                errors={errors?.[subField.name] ?? {}}
                 fieldName={`${fieldName}.${subField.name}`}
             />
         {/if}
@@ -56,11 +57,12 @@
 <style>
     fieldset {
         border: 1px solid var(--color-gray-400);
-        padding: 0.5rem;
+        padding: 0.6rem;
         margin-bottom: 1rem;
+        border-radius: var(--radius-sm);
     }
     legend {
-        font-weight: bold;
+        font-weight: 600;
         padding: 0 0.5rem;
     }
 </style>

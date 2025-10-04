@@ -14,26 +14,24 @@ export const i18nArray = z.object(
 );
 
 // --- параграф ---
-const paragraphSchema = z.object({
-    text: i18nString,
-    images: z
-        .object(
-            Object.fromEntries(
-                SUPPORTED_LANGUAGES.map((lang) => [
-                    lang,
-                    z
-                        .array(
-                            z.object({
-                                url: z.string(),
-                                public_id: z.string(),
-                            })
-                        )
-                        .default([]),
-                ])
-            )
-        )
-        .optional(),
-});
+const paragraphSchema = z.object(
+    Object.fromEntries(
+        SUPPORTED_LANGUAGES.map((lang) => [
+            lang,
+            z.object({
+                text: z.string().default(""),
+                image: z
+                    .array(
+                        z.object({
+                            url: z.string(),
+                            public_id: z.string(),
+                        })
+                    )
+                    .optional(), // теперь не обязательно
+            }),
+        ])
+    )
+);
 
 // --- схема блога ---
 export const blogSchema = z.object({

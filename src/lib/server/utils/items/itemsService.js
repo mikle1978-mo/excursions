@@ -103,6 +103,8 @@ export async function getItem(slug, collectionName) {
         .collection(`${collectionName}_translations`)
         .find({ itemSlug: slug })
         .toArray();
+
+    console.log(item, translation);
     return { item, translation };
 }
 

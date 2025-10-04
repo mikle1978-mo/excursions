@@ -10,7 +10,7 @@
     let isLoading = true;
     let error = "";
     let initialData = {};
-    const type = "excursion";
+    const type = "excursions";
     const { slug } = $page.params;
 
     onMount(async () => {

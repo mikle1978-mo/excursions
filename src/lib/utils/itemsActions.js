@@ -5,7 +5,8 @@ function getApiUrl(type) {
     return `/api/${type}`;
 }
 function getCollection(type) {
-    return type + "s";
+    // return type + "s";
+    return type;
 }
 
 /**

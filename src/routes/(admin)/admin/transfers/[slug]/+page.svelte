@@ -10,7 +10,7 @@
     let isLoading = true;
     let error = "";
     let initialData = {};
-    const type = "transfer";
+    const type = "transfers";
     const { slug } = $page.params;
 
     onMount(async () => {

@@ -1,23 +1,16 @@
 <script>
     import PrimitiveField from "$lib/components/UI/inputs/PrimitiveField.svelte";
     import ObjectField from "$lib/components/UI/inputs/ObjectField.svelte";
-    import ArrayObjectsField from "$lib/components/UI/inputs/ArrayObjectsField.svelte";
     import ArrayField from "$lib/components/UI/inputs/ArrayField.svelte";
 
     export let field;
     export let value;
     export let errors = {};
     export let fieldName = "";
-
-    console.log("FormField fieldName:", fieldName);
-    console.log("FormField value:", value);
-    console.log("FormField field:", field);
 </script>
 
 {#if field.type === "object"}
     <ObjectField {field} bind:value {errors} {fieldName} />
-{:else if field.type === "arrayObjects"}
-    <ArrayObjectsField {field} bind:value {errors} {fieldName} />
 {:else if field.type === "array"}
     <ArrayField {field} bind:value {errors} {fieldName} />
 {:else}

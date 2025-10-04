@@ -10,7 +10,7 @@
     let isLoading = true;
     let error = "";
     let initialData = {};
-    const type = "place";
+    const type = "places";
 
     const { slug } = $page.params;
 

@@ -1,133 +1,206 @@
 <script>
+    import PrimitiveField from "./PrimitiveField.svelte";
+    import ObjectField from "./ObjectField.svelte";
+    import ArrayField from "./ArrayField.svelte"; // рекурсивно (поддержка вложенных массивов)
     import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
     import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
-    export let value = [];
-    export let placeholder = "Введите элементы (каждый с новой строки)";
-    // export let delimiter = /[,;\n]+/;
-    // export let label = "Элементы:";
-    export let field = "";
-    export let fieldName = "";
-    console.log("ArrayField value:", value);
-    console.log("ArrayField fieldName:", fieldName);
-    console.log("ArrayField field:", field);
 
-    export let errors = {};
+    export let field = {}; // конфиг поля (type="array" или type="arrayObjects")
+    export let value = []; // массив примитивов или объектов
+    export let errors = {}; // ошибки для всего массива
+    export let fieldName = ""; // путь к полю, например "content"
 
-    let inputValue = "";
+    let inputValue = ""; // для добавления примитивов через textarea
 
-    function addItems() {
-        // Улучшенный парсинг с учетом всех случаев
-        const items = inputValue
-            .split("\n")
-            .map((item) => item.trim())
-            .filter((item) => item.length > 0);
+    // безопасный клон
+    function cloneDeep(obj) {
+        try {
+            return structuredClone(obj);
+        } catch {
+            return JSON.parse(JSON.stringify(obj ?? null));
+        }
+    }
 
-        if (items.length > 0) {
-            // Добавляем только новые уникальные элементы
-            const uniqueItems = items.filter((item) => !value.includes(item));
-            value = [...value, ...uniqueItems];
-            inputValue = "";
+    // гарантируем, что value — массив (если пришло что-то другое — приводим к [])
+    $: if (!Array.isArray(value)) {
+        value = [];
+    }
+
+    // считаем, что в конфиге массив объектов, если есть поле .fields
+    const isObjectArray =
+        Array.isArray(field.fields) && field.fields.length > 0;
+
+    function addItem() {
+        if (isObjectArray) {
+            // создаём новый объект на основе field.fields
+            const newItem = {};
+            for (const f of field.fields) {
+                if (f.type === "object") {
+                    // вложенный объект — берем default или пустой объект
+                    newItem[f.name] =
+                        f.default !== undefined ? cloneDeep(f.default) : {};
+                } else if (f.type === "array" || f.type === "arrayObjects") {
+                    // вложенный массив — берем default или пустой массив
+                    newItem[f.name] =
+                        f.default !== undefined ? cloneDeep(f.default) : [];
+                } else if (f.type === "checkbox") {
+                    newItem[f.name] =
+                        f.default !== undefined ? cloneDeep(f.default) : false;
+                } else {
+                    // примитив
+                    newItem[f.name] =
+                        f.default !== undefined ? cloneDeep(f.default) : "";
+                }
+            }
+            value = [...value, newItem];
+        } else {
+            // массив примитивов — парсим textarea построчно
+            const items = inputValue
+                .split("\n")
+                .map((it) => it.trim())
+                .filter((it) => it.length > 0);
+
+            if (items.length > 0) {
+                const unique = items.filter((it) => !value.includes(it));
+                if (unique.length) {
+                    value = [...value, ...unique];
+                }
+                inputValue = "";
+            }
         }
     }
 
     function removeItem(index) {
-        // Создаем новый массив через spread для гарантированного обновления
         value = [...value.slice(0, index), ...value.slice(index + 1)];
     }
 </script>
 
 <div class="label">
     <slot>{field.label}:</slot>
-    <div class="array-input">
-        <div
-            class={`items-list ${value.length > 0 ? "has-items" : "no-items"}`}
-        >
+
+    {#if isObjectArray}
+        <!-- Массив объектов -->
+        <div class="array-objects">
             {#each value as item, index (index)}
-                <div class="item">
-                    <span>{item}</span>
+                <fieldset class="array-item">
+                    <legend>{field.label} {index + 1}</legend>
+
+                    {#each field.fields as subField}
+                        {#if subField.type === "object"}
+                            <ObjectField
+                                field={subField}
+                                bind:value={item[subField.name]}
+                                errors={errors?.[index]?.[subField.name] ?? {}}
+                                fieldName={`${fieldName}[${index}].${subField.name}`}
+                            />
+                        {:else if subField.type === "array" || subField.type === "arrayObjects"}
+                            <!-- рекурсия: массив внутри объекта -->
+                            <ArrayField
+                                field={subField}
+                                bind:value={item[subField.name]}
+                                errors={errors?.[index]?.[subField.name] ?? {}}
+                                fieldName={`${fieldName}[${index}].${subField.name}`}
+                            />
+                        {:else}
+                            <PrimitiveField
+                                field={subField}
+                                bind:value={item[subField.name]}
+                                errors={errors?.[index]?.[subField.name] ?? {}}
+                                fieldName={`${fieldName}[${index}].${subField.name}`}
+                            />
+                        {/if}
+                    {/each}
+
                     <div class="actions">
                         <button
-                            on:click={() => removeItem(index)}
                             type="button"
-                            class="clear-btn"
+                            class="remove-btn"
+                            on:click={() => removeItem(index)}
                         >
-                            ×
+                            Удалить
                         </button>
                     </div>
-                </div>
+                </fieldset>
             {/each}
-        </div>
-        <div class="input-group">
-            <textarea bind:value={inputValue} {placeholder}></textarea>
-            <MyButton
-                width="width-auto"
-                size="xs"
-                onclick={addItems}
-                type="button">Добавить</MyButton
+
+            <MyButton type="button" onclick={addItem}
+                >Добавить {field.label}</MyButton
             >
         </div>
-    </div>
+    {:else}
+        <!-- Массив примитивов (поведение как было раньше) -->
+        <div class="array-input">
+            <div
+                class={`items-list ${value.length > 0 ? "has-items" : "no-items"}`}
+            >
+                {#each value as item, index (index)}
+                    <div class="item">
+                        <span>{item}</span>
+                        <div class="actions">
+                            <button
+                                on:click={() => removeItem(index)}
+                                type="button"
+                                class="clear-btn"
+                            >
+                                ×
+                            </button>
+                        </div>
+                    </div>
+                {/each}
+            </div>
+
+            <div class="input-group">
+                <textarea
+                    bind:value={inputValue}
+                    placeholder={field.placeholder ??
+                        "Введите элементы (каждый с новой строки)"}
+                ></textarea>
+                <MyButton
+                    width="width-auto"
+                    size="xs"
+                    onclick={addItem}
+                    type="button">Добавить</MyButton
+                >
+            </div>
+        </div>
+    {/if}
+
+    <ErrorMessage field={fieldName} {errors} />
 </div>
-<ErrorMessage field={fieldName} {errors} />
 
 <style>
-    .label {
+    .array-objects {
         display: flex;
         flex-direction: column;
-
-        gap: 0.3rem;
+        gap: 0.5rem;
     }
+
+    .array-item {
+        border: 1px solid var(--color-gray-400);
+        padding: 0.6rem;
+        border-radius: var(--radius-sm);
+    }
+
     .array-input {
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
     }
+
     .input-group {
         display: flex;
-        flex-direction: row;
-        align-items: flex-start;
         gap: 0.5rem;
+        align-items: flex-start;
     }
+
     textarea {
         width: 100%;
-        padding: 0.5rem 0.75rem;
-        border: 1px solid var(--color-gray-400);
+        padding: 0.5rem;
         border-radius: var(--radius-sm);
-        background-color: var(--color-light);
-        color: var(--color-text);
-        transition:
-            border var(--transition-fast),
-            box-shadow var(--transition-fast);
+        border: 1px solid var(--color-gray-400);
+        resize: vertical;
     }
 
-    textarea:focus {
-        outline: none;
-        border-color: var(--color-primary);
-        box-shadow: 0 0 0 2px rgba(74, 201, 126, 0.3);
-    }
-    .button {
-        padding: var(--space-vertical-xs) var(--space-horizontal-sm);
-        max-width: 20rem;
-        max-height: calc(var(--text-md) * 2);
-        border: none;
-        border-radius: 3rem;
-        cursor: pointer;
-        transition: 0.3s;
-        background-color: var(--color-primary);
-        margin: 0 auto;
-        color: inherit;
-        text-decoration: none;
-        color: var(--color-text);
-    }
-
-    .button:hover {
-        background-color: var(--primary-light);
-    }
-
-    .button:disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-    }
     .items-list {
         display: flex;
         flex-wrap: wrap;
@@ -142,10 +215,6 @@
         border-color: var(--color-success, green);
     }
 
-    .items-list.no-items {
-        border-color: var(--color-warning, red);
-    }
-
     .item {
         background: var(--color-bg);
         padding: 0.3rem 0.6rem;
@@ -154,35 +223,18 @@
         align-items: center;
         gap: 0.5rem;
     }
-    .clear-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
+
+    .clear-btn,
+    .remove-btn {
         background: none;
-        font-size: 1.5rem;
-        width: calc(var(--text-md) * 1.5);
-        height: calc(var(--text-md) * 1.5);
         border: none;
-        padding: 0;
-        border-radius: var(--radius-full);
-        color: var(--color-gray-500);
         cursor: pointer;
-        transition: all var(--transition-fast);
+        font-size: 1.1rem;
+        color: var(--color-error);
     }
 
-    .clear-btn:hover,
-    .clear-btn:focus {
-        color: var(--color-error);
-        background: var(--color-gray-200);
-    }
     .actions {
         display: flex;
         align-items: center;
-    }
-    @media (prefers-color-scheme: dark) {
-        textarea {
-            background: var(--color-gray-800);
-            border-color: var(--color-gray-600);
-        }
     }
 </style>
