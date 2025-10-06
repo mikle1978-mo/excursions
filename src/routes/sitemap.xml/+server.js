@@ -41,29 +41,45 @@ export async function GET() {
     const places = allSlugs.filter((i) => i.type === "place");
 
     const today = formatDate(new Date());
+    const HOMEPAGE_LASTMOD = "2025-10-06";
+    const getListLastmod = (items) => {
+        if (!items.length) return today;
+        const timestamps = items.map((i) =>
+            i.updatedAt
+                ? new Date(i.updatedAt).getTime()
+                : i.createdAt
+                ? new Date(i.createdAt).getTime()
+                : i._id
+                ? new ObjectId(i._id).getTimestamp().getTime()
+                : 0
+        );
+        return formatDate(new Date(Math.max(...timestamps)));
+    };
 
     const homepageEntries = SUPPORTED_LANGUAGES.map(
         (lang) => `
   <url>
     <loc>${makePath(lang)}</loc>
     ${makeAltLinks()}
-    <lastmod>${today}</lastmod>
+    <lastmod>${HOMEPAGE_LASTMOD}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>`
     ).join("");
 
-    const listEntries = (segment) =>
-        SUPPORTED_LANGUAGES.map(
+    const listEntries = (segment, items) => {
+        const lastmod = getListLastmod(items);
+        return SUPPORTED_LANGUAGES.map(
             (lang) => `
   <url>
     <loc>${makePath(lang, segment)}</loc>
     ${makeAltLinks(segment)}
-    <lastmod>${today}</lastmod>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>`
         ).join("");
+    };
 
     const dynamicEntries = (items, segment) =>
         items
