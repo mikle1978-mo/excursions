@@ -1,4 +1,4 @@
-import { createItem } from "$lib/server/utils/items/itemsService"; // путь к твоему универсальному файлу
+import { createItemInDB } from "$lib/server/utils/items/itemsService"; // путь к твоему универсальному файлу
 import { excursionSteps } from "$lib/components/admin/fields/excursions";
 import { excursionSchema } from "$lib/schemas/excursionSchema";
 import { json } from "@sveltejs/kit";
@@ -15,7 +15,7 @@ export async function POST({ request }) {
             );
         }
 
-        const slug = await createItem(
+        const slug = await createItemInDB(
             parsed.data,
             "excursions",
             excursionSteps
