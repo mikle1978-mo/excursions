@@ -33,7 +33,7 @@ export async function invalidateFullItemCache(slug, collectionName) {
  * @param {String} collectionName - имя основной коллекции
  * @param {Array} steps - массив шагов формы (для локализованных полей)
  */
-export async function createItem(data, collectionName, steps) {
+export async function createItemInDB(data, collectionName, steps) {
     const allFields = flattenFields(steps);
 
     // Основной документ (не локализованные поля)
@@ -72,16 +72,22 @@ export async function createItem(data, collectionName, steps) {
 
     const translations = SUPPORTED_LANGUAGES.map((lang) => {
         const t = { itemSlug: mainDoc.slug, lang };
+
         for (const field of localizedFields) {
-            const val = data[field.name]?.[lang];
-            if (val !== undefined && val !== null) {
-                t[field.name] = val;
-            } else if (field.default && field.default[lang] !== undefined) {
-                t[field.name] = field.default[lang];
+            const value = data[field.name];
+
+            if (Array.isArray(value) && field.type === "array") {
+                // 🔹 content или аналогичные массивы локализованных объектов
+                t[field.name] = value.map((item) => item?.[lang] || {});
+            } else if (value && typeof value === "object") {
+                // 🔹 обычные локализованные объекты (title, metaDescription и т.п.)
+                t[field.name] = value[lang] ?? "";
             } else {
+                // 🔹 fallback
                 t[field.name] = Array.isArray(field.default) ? [] : "";
             }
         }
+
         return t;
     });
 
@@ -94,24 +100,22 @@ export async function createItem(data, collectionName, steps) {
 }
 
 /**
- * Универсальная функция для получения элемента по slug для админки
+ * Универсальная функция для получения элемента по slug для админки с нормализацией со схемой
  */
-export async function getItem(slug, collectionName) {
+export async function getItemFromDB(slug, collectionName) {
     const db = await connectToDatabase();
     const item = await db.collection(collectionName).findOne({ slug });
     const translation = await db
         .collection(`${collectionName}_translations`)
         .find({ itemSlug: slug })
         .toArray();
-
-    console.log(item, translation);
     return { item, translation };
 }
 
 /**
  * Универсальная функция для получения элемента со всеми данными (для admin)
  */
-export async function getFullItem(slug, collectionName, lang = "en") {
+export async function getFullItemFromDB(slug, collectionName, lang = "en") {
     const db = await connectToDatabase();
 
     const item = await db.collection(collectionName).findOne({ slug });
@@ -190,7 +194,7 @@ export async function getFullItemCached(slug, collectionName, lang = null) {
     }
 
     // 2️⃣ Достаем из базы
-    const data = await getFullItem(slug, collectionName, lang);
+    const data = await getFullItemFromDB(slug, collectionName, lang);
     if (!data) return null;
 
     // 3️⃣ Безопасная рекурсивная сериализация
@@ -225,7 +229,7 @@ export async function getFullItemCached(slug, collectionName, lang = null) {
 /**
  * Универсальная функция для обновления элемента
  */
-export async function updateItem(slug, data, collectionName, steps) {
+export async function updateItemInDB(slug, data, collectionName, steps) {
     const db = await connectToDatabase();
     const allFields = flattenFields(steps);
 
@@ -251,17 +255,23 @@ export async function updateItem(slug, data, collectionName, steps) {
         .deleteMany({ itemSlug: slug });
 
     const translations = SUPPORTED_LANGUAGES.map((lang) => {
-        const t = { itemSlug: mainDoc.slug || slug, lang };
+        const t = { itemSlug: mainDoc.slug, lang };
+
         for (const field of localizedFields) {
-            const val = data[field.name]?.[lang];
-            if (val !== undefined && val !== null) {
-                t[field.name] = val;
-            } else if (field.default && field.default[lang] !== undefined) {
-                t[field.name] = field.default[lang];
+            const value = data[field.name];
+
+            if (Array.isArray(value) && field.type === "array") {
+                // 🔹 content или аналогичные массивы локализованных объектов
+                t[field.name] = value.map((item) => item?.[lang] || {});
+            } else if (value && typeof value === "object") {
+                // 🔹 обычные локализованные объекты (title, metaDescription и т.п.)
+                t[field.name] = value[lang] ?? "";
             } else {
+                // 🔹 fallback
                 t[field.name] = Array.isArray(field.default) ? [] : "";
             }
         }
+
         return t;
     });
 
@@ -277,7 +287,7 @@ export async function updateItem(slug, data, collectionName, steps) {
 /**
  * Универсальная функция для удаления элемента
  */
-export async function deleteItem(slug, collectionName) {
+export async function deleteItemFromDB(slug, collectionName) {
     const db = await connectToDatabase();
     await db.collection(collectionName).deleteOne({ slug });
     await db

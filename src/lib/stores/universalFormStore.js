@@ -53,7 +53,6 @@ export function createFormStore(type, slug, initialForm) {
  * @param {string} slug - slug записи
  */
 export function setFormData(store, data, type = "excursion", slug = "new") {
-    console.log("setFormData called, incoming data:", data, "slug:", slug);
     const current = get(store);
 
     const allKeys = Array.from(

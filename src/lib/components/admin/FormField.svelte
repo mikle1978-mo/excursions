@@ -1,7 +1,7 @@
 <script>
-    import PrimitiveField from "$lib/components/UI/inputs/PrimitiveField.svelte";
-    import ObjectField from "$lib/components/UI/inputs/ObjectField.svelte";
-    import ArrayField from "$lib/components/UI/inputs/ArrayField.svelte";
+    import PrimitiveField from "$lib/components/admin/PrimitiveField.svelte";
+    import ObjectField from "$lib/components/admin/ObjectField.svelte";
+    import ArrayField from "$lib/components/admin/ArrayField.svelte";
 
     export let field;
     export let value;

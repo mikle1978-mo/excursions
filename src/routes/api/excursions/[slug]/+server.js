@@ -1,42 +1,54 @@
-// src/routes/api/excursions/[slug]/+server.js
+// src/routes/api/places/[slug]/+server.js
 import { json } from "@sveltejs/kit";
-import { excursionSteps } from "$lib/components/admin/fields/excursions";
+import { excursionSteps as steps } from "$lib/components/admin/fields/excursions"; // ← псевдоним
+import { mergeWithSchema } from "$lib/utils/mergeWithSchema";
+import { mergeWithTranslations } from "$lib/utils/mergeWithTranslations";
 import {
-    getItem,
-    updateItem,
-    deleteItem,
+    getItemFromDB,
+    updateItemInDB,
+    deleteItemFromDB,
 } from "$lib/server/utils/items/itemsService";
 
+const type = "excursions";
+
 /**
- * Получение экскурсии по slug
+ * Получение места по slug
  */
 export async function GET({ params }) {
     try {
-        const result = await getItem(params.slug, "excursions");
+        const result = await getItemFromDB(params.slug, type);
         if (!result.item) return new Response(null, { status: 404 });
 
-        return json(result, { status: 200 });
+        // 🟢 Нормализуем по схеме
+        const schemaFields = steps.flatMap((step) => step.fields);
+
+        // 1️⃣ Объединяем перевод с item
+        const itemWithTranslations = mergeWithTranslations(
+            result.item,
+            result.translation,
+            schemaFields
+        );
+
+        // 2️⃣ Применяем mergeWithSchema
+        const mergedItem = mergeWithSchema(schemaFields, itemWithTranslations);
+
+        return json({ ...result, item: mergedItem }, { status: 200 });
     } catch (err) {
-        console.error("Ошибка при получении экскурсии:", err);
+        console.error(`Ошибка при получении ${type}:`, err);
         return json({ error: "Ошибка сервера" }, { status: 500 });
     }
 }
 
 /**
- * Обновление экскурсии
+ * Обновление места
  */
 export async function PUT({ request, params }) {
     try {
         const data = await request.json();
-        const slug = await updateItem(
-            params.slug,
-            data,
-            "excursions",
-            excursionSteps
-        );
+        const slug = await updateItemInDB(params.slug, data, type, steps);
         return json({ success: true, slug }, { status: 200 });
     } catch (err) {
-        console.error("Ошибка при обновлении экскурсии:", err);
+        console.error(`Ошибка при обновлении ${type}:`, err);
         return json(
             { error: err.message || "Ошибка сервера" },
             { status: 500 }
@@ -45,14 +57,14 @@ export async function PUT({ request, params }) {
 }
 
 /**
- * Удаление экскурсии
+ * Удаление места
  */
 export async function DELETE({ params }) {
     try {
-        await deleteItem(params.slug, "excursions");
+        await deleteItemFromDB(params.slug, type);
         return json({ success: true }, { status: 200 });
     } catch (err) {
-        console.error("Ошибка при удалении экскурсии:", err);
+        console.error(`Ошибка при удалении ${type}:`, err);
         return json({ error: "Ошибка сервера" }, { status: 500 });
     }
 }

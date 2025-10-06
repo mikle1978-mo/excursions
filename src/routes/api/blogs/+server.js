@@ -1,5 +1,5 @@
 import { createItem } from "$lib/server/utils/items/itemsService"; // путь к твоему универсальному файлу
-import { blogSteps } from "$lib/components/admin/fields/blog";
+import { blogSteps } from "$lib/components/admin/fields/blogs";
 import { blogSchema } from "$lib/schemas/blogSchemas";
 import { json } from "@sveltejs/kit";
 

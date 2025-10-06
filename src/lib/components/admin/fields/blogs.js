@@ -93,14 +93,16 @@ export const blogSteps = [
             {
                 name: "content",
                 label: "Абзацы",
-                type: "array",
+                type: "object", // объект с языками
                 localized: true,
-                default: [],
+                default: Object.fromEntries(
+                    SUPPORTED_LANGUAGES.map((lang) => [lang, []])
+                ),
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
-                    label: lang.toUpperCase(),
-                    type: "object",
-                    default: { text: "", image: [] },
+                    label: "абзацы на " + lang.toUpperCase(),
+                    type: "array", // массив абзацев
+                    default: [],
                     fields: [
                         {
                             name: "text",

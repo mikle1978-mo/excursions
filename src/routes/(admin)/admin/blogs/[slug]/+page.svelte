@@ -2,55 +2,36 @@
     import { onMount } from "svelte";
     import UniversalForm from "$lib/components/admin/UniversalForm.svelte";
     import { blogSchema } from "$lib/schemas/blogSchemas";
-    import { blogSteps } from "$lib/components/admin/fields/blog";
+    import { blogSteps } from "$lib/components/admin/fields/blogs";
     import { getItem } from "$lib/utils/itemsActions";
-    import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
     import { page } from "$app/stores";
+
+    const type = "blogs";
+    const { slug } = $page.params;
 
     let isLoading = true;
     let error = "";
     let initialData = {};
-    const type = "blogs";
 
-    const { slug } = $page.params;
+    const steps = blogSteps;
+    const schema = blogSchema;
+    const mode = "edit";
 
     onMount(async () => {
         try {
-            const { item, translation } = await getItem(type, slug);
-
-            // Начинаем с копии item
-            const data = { ...item };
-
-            // Для каждого ключа из перевода собираем структуру { en: value, ru: value }
-            const localizedFields = Object.keys(translation[0]).filter(
-                (key) => key !== "lang" && key !== "_id" && key !== "itemSlug"
-            );
-
-            for (const field of localizedFields) {
-                data[field] = Object.fromEntries(
-                    SUPPORTED_LANGUAGES.map((lang) => [
-                        lang,
-                        translation.find((t) => t.lang === lang)?.[field] ?? "",
-                    ])
-                );
+            const response = await getItem(type, slug);
+            if (!response?.item) {
+                error = "Элемент не найден";
+                return;
             }
-            // 🔹 Логируем данные перед установкой в форму
-            console.log(
-                "Data received from DB before initialData assignment:",
-                data
-            );
-            initialData = data;
+            initialData = response.item;
         } catch (e) {
-            console.error(e);
+            console.error("Ошибка при загрузке статьи:", e);
             error = "Ошибка загрузки данных статьи";
         } finally {
             isLoading = false;
         }
     });
-
-    const steps = blogSteps;
-    const schema = blogSchema;
-    const mode = "edit";
 </script>
 
 {#if isLoading}

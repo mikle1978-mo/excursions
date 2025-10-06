@@ -9,8 +9,6 @@
     export let placeholder;
 
     // Логируем входные данные
-    console.log("ArrayObjects field:", fieldName);
-    console.log("ArrayObjects initial value:", value);
 
     // Если value нет, берем дефолт из шага
     $: if (value === undefined && field.default !== undefined) {

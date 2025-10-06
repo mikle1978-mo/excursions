@@ -1,6 +1,6 @@
 <script>
     import UniversalForm from "$lib/components/admin/UniversalForm.svelte";
-    import { blogSteps } from "$lib/components/admin/fields/blog";
+    import { blogSteps } from "$lib/components/admin/fields/blogs";
     import { blogSchema } from "$lib/schemas/blogSchemas";
 
     // В режиме создания slug не нужен

@@ -1,6 +1,6 @@
 <script>
     import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
-    import FormField from "$lib/components/UI/inputs/FormField.svelte";
+    import FormField from "$lib/components/admin/FormField.svelte";
     import { goto } from "$app/navigation";
     import { createFormStore, resetForm } from "$lib/stores/universalFormStore";
     import { createItem, updateItem } from "$lib/utils/itemsActions.js";
@@ -22,29 +22,27 @@
     $: currentStepObj = steps?.[currentStep];
 
     function mergeDefaultsAndData(defaults, data) {
-        const merged = structuredClone(defaults);
+        if (Array.isArray(defaults) && Array.isArray(data)) {
+            return data; // при редактировании массивы лучше просто заменить
+        }
 
-        Object.keys(defaults).forEach((key) => {
-            const defVal = defaults[key];
-            const dbVal = data?.[key];
-
-            if (dbVal === undefined) return;
-
-            if (Array.isArray(defVal) && Array.isArray(dbVal)) {
-                merged[key] = dbVal;
-            } else if (
-                typeof defVal === "object" &&
-                defVal !== null &&
-                typeof dbVal === "object" &&
-                dbVal !== null
-            ) {
-                merged[key] = { ...defVal, ...dbVal };
-            } else {
-                merged[key] = dbVal;
+        if (
+            typeof defaults === "object" &&
+            defaults !== null &&
+            typeof data === "object" &&
+            data !== null
+        ) {
+            const result = structuredClone(defaults);
+            for (const key of Object.keys(data)) {
+                result[key] =
+                    key in defaults
+                        ? mergeDefaultsAndData(defaults[key], data[key])
+                        : structuredClone(data[key]);
             }
-        });
+            return result;
+        }
 
-        return merged;
+        return data !== undefined ? data : defaults;
     }
 
     function initializeForm() {
@@ -65,7 +63,14 @@
     }
 
     let form = createFormStore(type, slug, initializeForm());
+
+    $: if (mode === "edit" && initialData) {
+        const merged = initializeForm();
+        resetForm(form, merged, type, slug);
+    }
+
     $: currentForm = $form;
+    $: console.log("Current Form Data:", currentForm);
 
     async function validateCurrentStep() {
         errors = {};

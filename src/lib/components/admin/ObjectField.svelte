@@ -2,25 +2,12 @@
     import PrimitiveField from "./PrimitiveField.svelte";
     import ArrayField from "./ArrayField.svelte";
     import ObjectField from "./ObjectField.svelte"; // рекурсивно
+    import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
 
-    export let field; // конфигурация объекта
-    export let value; // bind:value сюда придет объект с данными
-    export let errors = {};
+    export let field; // { label, fields: [...] }
+    export let value = {}; // bind:value — объект данных
+    export let errors = {}; // ошибки по объекту
     export let fieldName = "";
-
-    // Инициализация вложенных объектов
-    if (!value) {
-        value = {};
-    }
-
-    // Для каждого под-поля, если объект/массив, гарантируем дефолт
-    field?.fields?.forEach((subField) => {
-        if (value[subField.name] === undefined) {
-            if (subField.type === "object") value[subField.name] = {};
-            else if (subField.type === "array") value[subField.name] = [];
-            else value[subField.name] = subField.default ?? "";
-        }
-    });
 </script>
 
 <fieldset>
@@ -28,7 +15,7 @@
         <legend>{field.label}</legend>
     {/if}
 
-    {#each field.fields as subField}
+    {#each field.fields ?? [] as subField}
         {#if subField.type === "object"}
             <ObjectField
                 field={subField}
@@ -52,6 +39,8 @@
             />
         {/if}
     {/each}
+
+    <ErrorMessage field={fieldName} {errors} />
 </fieldset>
 
 <style>
