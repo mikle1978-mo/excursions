@@ -6,9 +6,8 @@ const COLLECTIONS = [
     { name: "cars", type: "car" },
     { name: "transfers", type: "transfer" },
     { name: "places", type: "place" },
-    // сюда можно в будущем добавить:
+    // можно добавить позже:
     // { name: "real_estate", type: "real_estate" },
-    // { name: "transfers", type: "transfer" },
 ];
 
 export async function GET() {
@@ -27,10 +26,28 @@ export async function GET() {
 
             const items = await db
                 .collection(name)
-                .find({}, { projection: { slug: 1 } })
+                .find(
+                    {},
+                    {
+                        projection: {
+                            slug: 1,
+                            createdAt: 1,
+                            updatedAt: 1,
+                            _id: 1, // нужно для fallback по дате
+                        },
+                    }
+                )
                 .toArray();
 
-            results.push(...items.map((item) => ({ slug: item.slug, type })));
+            results.push(
+                ...items.map((item) => ({
+                    slug: item.slug,
+                    type,
+                    createdAt: item.createdAt,
+                    updatedAt: item.updatedAt,
+                    _id: item._id,
+                }))
+            );
         }
 
         return new Response(JSON.stringify(results), {

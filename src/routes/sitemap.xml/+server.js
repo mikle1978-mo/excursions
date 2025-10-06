@@ -1,25 +1,17 @@
 import { GET as getSlugs } from "../api/sitemap-slugs/+server.js";
-import {
-    SUPPORTED_LANGUAGES,
-    NON_EN_LANGUAGES,
-} from "$lib/constants/supportedLanguages";
+import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
+import { ObjectId } from "mongodb"; // <-- для извлечения времени из _id
 
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5173";
 
-// Генератор URL с учётом структуры (без префикса для "en")
 const makePath = (lang, segment = "", slug = "") => {
     const prefix = lang === "en" ? "" : `/${lang}`;
     const path = [segment, slug].filter(Boolean).join("/");
-
-    // Если path пустой (главная страница языка)
-    if (!path) {
-        return `${VITE_BASE_URL}${prefix}`;
-    }
-
-    return `${VITE_BASE_URL}${prefix}/${path}`;
+    return path
+        ? `${VITE_BASE_URL}${prefix}/${path}`
+        : `${VITE_BASE_URL}${prefix}`;
 };
 
-// Альтернативные языковые ссылки для <xhtml:link>
 const makeAltLinks = (segment = "", slug = "") =>
     SUPPORTED_LANGUAGES.map(
         (lang) =>
@@ -35,56 +27,82 @@ const makeAltLinks = (segment = "", slug = "") =>
         slug
     )}" />`;
 
+// Форматирование даты в ISO (например: 2025-10-06)
+const formatDate = (date) => new Date(date).toISOString().split("T")[0];
+
 export async function GET() {
     const res = await getSlugs();
     const allSlugs = await res.json();
 
-    const excursions = allSlugs.filter((item) => item.type === "excursion");
-    const yachts = allSlugs.filter((item) => item.type === "yacht");
-    const cars = allSlugs.filter((item) => item.type === "car");
-    const transfers = allSlugs.filter((item) => item.type === "transfer");
-    const places = allSlugs.filter((item) => item.type === "place");
+    const excursions = allSlugs.filter((i) => i.type === "excursion");
+    const yachts = allSlugs.filter((i) => i.type === "yacht");
+    const cars = allSlugs.filter((i) => i.type === "car");
+    const transfers = allSlugs.filter((i) => i.type === "transfer");
+    const places = allSlugs.filter((i) => i.type === "place");
 
-    // Главная страница
+    const today = formatDate(new Date());
+
     const homepageEntries = SUPPORTED_LANGUAGES.map(
         (lang) => `
   <url>
     <loc>${makePath(lang)}</loc>
     ${makeAltLinks()}
+    <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>`
     ).join("");
 
-    // Списки /excursions, /cars, /yachts
     const listEntries = (segment) =>
         SUPPORTED_LANGUAGES.map(
             (lang) => `
   <url>
     <loc>${makePath(lang, segment)}</loc>
     ${makeAltLinks(segment)}
+    <lastmod>${today}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>`
         ).join("");
 
-    // Динамические маршруты /excursions/slug и т.п.
     const dynamicEntries = (items, segment) =>
         items
-            .map((item) =>
-                SUPPORTED_LANGUAGES.map(
+            .map((item) => {
+                // 1) prefer updatedAt
+                // 2) fallback to createdAt
+                // 3) fallback to ObjectId timestamp (если createdAt нет)
+                // 4) в крайнем случае today
+                let lastmod;
+                if (item.updatedAt) {
+                    lastmod = formatDate(item.updatedAt);
+                } else if (item.createdAt) {
+                    lastmod = formatDate(item.createdAt);
+                } else if (item._id) {
+                    try {
+                        // item._id может быть строкой или ObjectId — ObjectId ctor умеет принимать строку
+                        lastmod = formatDate(
+                            new ObjectId(item._id).getTimestamp()
+                        );
+                    } catch (e) {
+                        lastmod = today;
+                    }
+                } else {
+                    lastmod = today;
+                }
+
+                return SUPPORTED_LANGUAGES.map(
                     (lang) => `
   <url>
     <loc>${makePath(lang, segment, item.slug)}</loc>
     ${makeAltLinks(segment, item.slug)}
-    <changefreq>weekly</changefreq>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>`
-                ).join("")
-            )
+                ).join("");
+            })
             .join("");
 
-    // Генерация XML
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

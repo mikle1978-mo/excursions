@@ -51,6 +51,7 @@ export async function createItemInDB(data, collectionName, steps) {
     }
 
     mainDoc.createdAt = new Date();
+    mainDoc.updatedAt = new Date();
     mainDoc.rating = 0;
     mainDoc.reviewsCount = 0;
 
@@ -247,7 +248,15 @@ export async function updateItemInDB(slug, data, collectionName, steps) {
         mainDoc.slug = data.slug.trim().toLowerCase();
     }
 
-    await db.collection(collectionName).updateOne({ slug }, { $set: mainDoc });
+    await db.collection(collectionName).updateOne(
+        { slug },
+        {
+            $set: {
+                ...mainDoc,
+                updatedAt: new Date(),
+            },
+        }
+    );
 
     // Обновляем переводы
     await db
