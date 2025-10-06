@@ -125,11 +125,11 @@ export async function GET() {
   xmlns:xhtml="http://www.w3.org/1999/xhtml"
 >
 ${homepageEntries}
-${listEntries("excursions")}
-${listEntries("yachts")}
-${listEntries("cars")}
-${listEntries("transfers")}
-${listEntries("places")}
+${listEntries("excursions", excursions)}
+${listEntries("yachts", yachts)}
+${listEntries("cars", cars)}
+${listEntries("transfers", transfers)}
+${listEntries("places", places)}
 ${dynamicEntries(excursions, "excursions")}
 ${dynamicEntries(yachts, "yachts")}
 ${dynamicEntries(cars, "cars")}
