@@ -111,5 +111,18 @@ export const main_page = {
                 { url: "/images/places/place_default-800.webp", width: "800w" },
             ],
         },
+        {
+            title: {
+                ru: "Новости/События",
+                en: "News/Events",
+            },
+            link: "blogs",
+            img: "/images/blogs/blog_default.webp",
+            set: [
+                { url: "/images/blogs/blog_default-400.webp", width: "400w" },
+                { url: "/images/blogs/blog_default-600.webp", width: "600w" },
+                { url: "/images/blogs/blog_default-800.webp", width: "800w" },
+            ],
+        },
     ],
 };

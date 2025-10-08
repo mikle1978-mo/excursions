@@ -40,6 +40,19 @@ export const blogSteps = [
                 })),
             },
             {
+                name: "description",
+                label: "Описание",
+                type: "object",
+                default: {},
+                localized: true,
+                fields: SUPPORTED_LANGUAGES.map((lang) => ({
+                    name: lang,
+                    label: lang.toUpperCase(),
+                    type: "textarea",
+                    default: "",
+                })),
+            },
+            {
                 name: "h1",
                 label: "H1",
                 type: "object",
@@ -85,6 +98,12 @@ export const blogSteps = [
                 type: "date",
                 default: "",
             },
+            {
+                name: "images",
+                label: "Главное фото",
+                type: "imageUploader",
+                default: [], // массив объектов {url, public_id}
+            },
         ],
     },
     {
@@ -125,12 +144,6 @@ export const blogSteps = [
     {
         title: "SEO",
         fields: [
-            {
-                name: "main_images",
-                label: "Главное фото",
-                type: "imageUploader",
-                default: [], // массив объектов {url, public_id}
-            },
             {
                 name: "metaDescription",
                 label: "Meta Description",

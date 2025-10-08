@@ -196,3 +196,35 @@ export const places_SEO_TEXT = {
         <p>Herkes için bir şeyler var — huzurlu doğa yürüyüşleri, aktif rotalar veya tarihi mekanlara kültürel geziler. Rahat bir şekilde seyahat edin ve Kemer'in en iyi yerlerini keşfedin.</p>`,
     },
 };
+export const blogs_SEO_TEXT = {
+    ru: {
+        title: `Новости и события Кемера`,
+        description: `Читайте последние новости и события Кемера — фестивали, праздники, культурные мероприятия, открытия и полезные обновления для туристов и жителей.`,
+        keywords:
+            "новости Кемера, события Кемера, фестивали Кемера, мероприятия Кемер, туризм Кемер, афиша Кемер, новости Турции",
+        h1: `Актуальные новости и события в Кемере`,
+        topText: `<p>Следите за последними новостями и событиями в Кемере. Здесь вы найдете информацию о фестивалях, концертах, культурных мероприятиях, открытиях новых мест и полезных новостях для туристов и жителей.</p>`,
+        bottomText: `<p>Мы регулярно обновляем раздел, чтобы вы всегда были в курсе актуальных событий Кемера: от ярких праздников и гастрономических фестивалей до спортивных соревнований и природных новостей региона.</p>
+        <p>Будьте в центре событий, открывайте для себя интересные места, знакомьтесь с местной культурой и планируйте отдых с учетом последних новостей Кемера.</p>`,
+    },
+    en: {
+        title: `News and Events in Kemer`,
+        description: `Stay updated with the latest news and events in Kemer — festivals, holidays, cultural activities, openings, and useful updates for tourists and locals.`,
+        keywords:
+            "Kemer news, Kemer events, Kemer festivals, Kemer activities, Kemer tourism, Kemer guide, Turkey news",
+        h1: `Latest News and Events in Kemer`,
+        topText: `<p>Keep up with the latest news and events happening in Kemer. Find information about festivals, concerts, cultural activities, new openings, and useful updates for both tourists and locals.</p>`,
+        bottomText: `<p>We regularly update this section so you can stay informed about what’s happening in Kemer — from vibrant festivals and cultural events to sports competitions and regional news.</p>
+        <p>Stay connected to the life of the city, discover new places, experience the local culture, and plan your time in Kemer with the most up-to-date information.</p>`,
+    },
+    tr: {
+        title: `Kemer'de Haberler ve Etkinlikler`,
+        description: `Kemer'deki en son haberler ve etkinliklerle güncel kalın — festivaller, kutlamalar, kültürel etkinlikler, açılışlar ve turistler ile yerel halk için faydalı bilgiler.`,
+        keywords:
+            "Kemer haberleri, Kemer etkinlikleri, Kemer festivalleri, Kemer aktiviteleri, Kemer turizmi, Kemer rehberi, Türkiye haberleri",
+        h1: `Kemer'deki Güncel Haberler ve Etkinlikler`,
+        topText: `<p>Kemer'de gerçekleşen en son haberler ve etkinliklerden haberdar olun. Festivaller, konserler, kültürel etkinlikler, yeni mekan açılışları ve turistler ile yerel halk için yararlı bilgileri burada bulabilirsiniz.</p>`,
+        bottomText: `<p>Bu bölümü düzenli olarak güncelliyoruz, böylece Kemer'deki canlı festivallerden spor etkinliklerine ve bölgesel gelişmelere kadar her şeyden haberdar olabilirsiniz.</p>
+        <p>Şehrin hayatına yakın olun, yeni yerler keşfedin, yerel kültürü deneyimleyin ve Kemer'deki zamanınızı en güncel bilgilerle planlayın.</p>`,
+    },
+};

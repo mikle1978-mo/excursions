@@ -5,6 +5,7 @@ import {
     yachts_SEO_TEXT,
     cars_SEO_TEXT,
     transfers_SEO_TEXT,
+    blogs_SEO_TEXT,
 } from "$lib/i18n/SEO_TEXTS.js";
 
 export const pageListConfig = {
@@ -27,5 +28,9 @@ export const pageListConfig = {
     places: {
         seoText: places_SEO_TEXT,
         defaultImage: "place_default.webp",
+    },
+    blogs: {
+        seoText: blogs_SEO_TEXT,
+        defaultImage: "blog_default.webp",
     },
 };

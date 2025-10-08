@@ -1,6 +1,7 @@
 <script>
     import Card from "$lib/components/cards/Card.svelte";
     import PlacesCard from "../cards/PlacesCard.svelte";
+    import BlogsCard from "../cards/BlogsCard.svelte";
     import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
     import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
     import InfoBlock from "$lib/components/layout/InfoBlock.svelte";
@@ -110,6 +111,12 @@
                 {#each filteredItems as item, i (item.slug)}
                     {#if type === "places"}
                         <PlacesCard {item} loading={i < 5 ? "eager" : "lazy"} />
+                    {:else if type === "blogs"}
+                        <BlogsCard
+                            {item}
+                            {type}
+                            loading={i < 5 ? "eager" : "lazy"}
+                        />
                     {:else}
                         <Card
                             {item}
@@ -119,6 +126,7 @@
                     {/if}
                 {/each}
             </div>
+
             <div class="description-block">
                 {@html config?.seoText?.[$localeStore]?.bottomText ??
                     config?.seoText?.en?.bottomText}
@@ -311,6 +319,9 @@
 
     /* Адаптивность */
     @media (max-width: 768px) {
+        h1 {
+            padding: 0 var(--space-horizontal-sm);
+        }
         .description-block :global(p) {
             padding: 0 var(--space-horizontal-sm);
             font-size: var(--text-sm);

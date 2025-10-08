@@ -42,4 +42,10 @@ export const nav_items = [
         rel: "",
         submenu: [],
     },
+    {
+        title: { ru: "новости/события", en: "news/events" },
+        link: "blogs",
+        rel: "",
+        submenu: [],
+    },
 ];

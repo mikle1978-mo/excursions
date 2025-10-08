@@ -1,5 +1,17 @@
 <script>
-    import { locale, getLocalizedPath } from "$lib/stores/locale";
+    import { locale } from "$lib/stores/locale";
+
+    // Генерируем локализованный путь
+    function getLocalizedPath(currentLocale, path = "") {
+        // Убираем начальные и конечные слэши
+        path = path.replace(/^\/+|\/+$/g, "");
+        if (!path) {
+            return currentLocale === "en" ? "/" : `/${currentLocale}`;
+        }
+        return currentLocale === "en"
+            ? `/${path}`
+            : `/${currentLocale}/${path}`;
+    }
 </script>
 
 <a href={getLocalizedPath($locale)} class="logo" aria-label="go main">
@@ -10,7 +22,6 @@
         <div class="ring ring4"></div>
         <div class="ring ring5"></div>
     </div>
-
     <span class="logo_title">Kemer.app</span>
 </a>
 

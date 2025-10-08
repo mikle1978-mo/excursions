@@ -9,7 +9,7 @@ export const EN_VALID_ROUTES = [
     "yachts",
     "transfers",
     "places",
-    "blog",
+    "blogs",
     "thanks",
     "cars",
     "faq",
