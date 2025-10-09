@@ -165,6 +165,7 @@
     }
 
     h1 {
+        margin-top: var(--space-vertical-xs);
         text-align: center;
         font-size: var(--text-xl);
     }
