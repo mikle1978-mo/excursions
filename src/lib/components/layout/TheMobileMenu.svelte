@@ -155,7 +155,7 @@
     .nav-item {
         display: flex;
         align-items: center;
-        padding: var(--space-vertical-sm) var(--space-horizontal-sm);
+        padding: var(--space-vertical-xs) var(--space-horizontal-sm);
         text-transform: uppercase;
         text-decoration: none;
         color: var(--color-text);

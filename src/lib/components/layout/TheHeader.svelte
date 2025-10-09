@@ -16,7 +16,9 @@
             <Search />
         {/if}
         <div class="line_right">
-            <FilterButton />
+            {#if showSearchOn.some((p) => $page.url.pathname.includes(p))}
+                <FilterButton />
+            {/if}
 
             <TheBurger />
         </div>
@@ -39,8 +41,7 @@
     }
 
     .line_right {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
+        display: flex;
         align-items: center;
         gap: var(--space-horizontal-md);
         height: 100%;

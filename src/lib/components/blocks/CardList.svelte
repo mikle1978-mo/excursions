@@ -82,20 +82,23 @@
 />
 
 <div class="content">
-    <SidebarFilters
-        {type}
-        items={allItems}
-        on:filtersChanged={(e) => {
-            setFilters(e.detail);
-            console.log("Filters changed:", e.detail);
-        }}
-    />
-    <InfoBlock
-        {infoVisible}
-        filteredCount={filteredItems.length}
-        onReset={resetAllFilters}
-        {type}
-    />
+    {#if type !== "blogs" && type !== "places"}
+        <SidebarFilters
+            {type}
+            items={allItems}
+            on:filtersChanged={(e) => {
+                setFilters(e.detail);
+                console.log("Filters changed:", e.detail);
+            }}
+        />
+        <InfoBlock
+            {infoVisible}
+            filteredCount={filteredItems.length}
+            onReset={resetAllFilters}
+            {type}
+        />
+    {/if}
+
     <main>
         <div class="main_page">
             <h1>
