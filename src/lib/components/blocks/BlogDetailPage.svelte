@@ -14,13 +14,12 @@
     import InfoBlockArray from "$lib/components/blocks/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/blocks/InfoBlockString.svelte";
     import MapBlock from "./MapBlock.svelte";
-    import PlaceSeoSchema from "../SEO/PlaceSeoSchema.svelte";
-    import PlaceSeoHead from "../SEO/PlaceSeoHead.svelte";
+    import BlogSeoSchema from "../SEO/BlogSeoSchema.svelte";
+    import BlogSeoHead from "$lib/components/SEO/BlogSeoHead.svelte";
     import { formatDate } from "$lib/utils/dateFormatter";
 
     export let item;
     export let locale;
-    console.log("BlogDetailPage item:", item);
 
     $: effectiveLocale = locale ?? $localeStore;
 
@@ -47,10 +46,9 @@
     $: mainImage = item.images?.[0]?.url ?? defaultImage;
 </script>
 
-<PlaceSeoSchema {item} {locale} breadcrumbs={breadcrumbsList} />
+<BlogSeoSchema {item} {locale} breadcrumbs={breadcrumbsList} />
 
-<PlaceSeoHead
-    baseName="Kemer.app"
+<BlogSeoHead
     locale={effectiveLocale}
     slug={item.slug}
     title={currentTranslation.title}
@@ -58,8 +56,10 @@
         currentTranslation.subtitle ??
         ""}
     keywords={currentTranslation.metaKeywords ?? ""}
-    image={item.images?.[0]?.url ??
-        `${baseUrl}/images/places/place_default.webp`}
+    publishDate={item.publishDate}
+    updatedAt={item.updatedAt}
+    author={currentTranslation.author ?? "Kemer.app"}
+    image={item.images?.[0]?.url ?? `${baseUrl}/images/blogs/blog_default.webp`}
     imageAlt={`Photo ${currentTranslation.title}`}
 />
 
