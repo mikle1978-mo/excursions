@@ -6,6 +6,7 @@ const COLLECTIONS = [
     { name: "cars", type: "car" },
     { name: "transfers", type: "transfer" },
     { name: "places", type: "place" },
+    { name: "blogs", type: "blog" },
     // можно добавить позже:
     // { name: "real_estate", type: "real_estate" },
 ];

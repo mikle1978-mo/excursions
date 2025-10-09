@@ -39,6 +39,7 @@ export async function GET() {
     const cars = allSlugs.filter((i) => i.type === "car");
     const transfers = allSlugs.filter((i) => i.type === "transfer");
     const places = allSlugs.filter((i) => i.type === "place");
+    const blogs = allSlugs.filter((i) => i.type === "blog");
 
     const today = formatDate(new Date());
     const HOMEPAGE_LASTMOD = "2025-10-06";
@@ -130,11 +131,13 @@ ${listEntries("yachts", yachts)}
 ${listEntries("cars", cars)}
 ${listEntries("transfers", transfers)}
 ${listEntries("places", places)}
+${listEntries("blogs", blogs)}
 ${dynamicEntries(excursions, "excursions")}
 ${dynamicEntries(yachts, "yachts")}
 ${dynamicEntries(cars, "cars")}
 ${dynamicEntries(transfers, "transfers")}
 ${dynamicEntries(places, "places")}
+${dynamicEntries(blogs, "blogs")}
 </urlset>`;
 
     return new Response(xml, {
