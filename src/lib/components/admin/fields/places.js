@@ -1,5 +1,13 @@
 import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
+const emptyI18nString = Object.fromEntries(
+    SUPPORTED_LANGUAGES.map((lang) => [lang, ""])
+);
+
+const emptyI18nArray = Object.fromEntries(
+    SUPPORTED_LANGUAGES.map((lang) => [lang, []])
+);
+
 export const placeSteps = [
     {
         title: "Общие данные",
@@ -17,12 +25,12 @@ export const placeSteps = [
                 required: true,
                 default: "",
             },
-
             {
                 name: "h1",
                 label: "Заголовок H1",
                 type: "object",
-                default: {},
+                localized: true,
+                default: emptyI18nString,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -34,7 +42,8 @@ export const placeSteps = [
                 name: "subtitle",
                 label: "Подзаголовок",
                 type: "object",
-                default: {},
+                localized: true,
+                default: emptyI18nString,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -46,7 +55,8 @@ export const placeSteps = [
                 name: "author",
                 label: "Автор / источник",
                 type: "object",
-                default: {},
+                localized: true,
+                default: emptyI18nString,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -63,7 +73,8 @@ export const placeSteps = [
                 name: "description",
                 label: "Описание",
                 type: "object",
-                default: {},
+                localized: true,
+                default: emptyI18nString,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -75,7 +86,8 @@ export const placeSteps = [
                 name: "history",
                 label: "История",
                 type: "object",
-                default: {},
+                localized: true,
+                default: emptyI18nArray,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -87,7 +99,8 @@ export const placeSteps = [
                 name: "highlights",
                 label: "Особенности / must-see",
                 type: "object",
-                default: {},
+                localized: true,
+                default: emptyI18nArray,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -104,7 +117,8 @@ export const placeSteps = [
                 name: "address",
                 label: "Адрес",
                 type: "object",
-                default: {},
+                localized: true,
+                default: emptyI18nString,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -133,7 +147,8 @@ export const placeSteps = [
                 name: "title",
                 label: "Мета заголовок",
                 type: "object",
-                default: {},
+                localized: true,
+                default: emptyI18nString,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -145,7 +160,8 @@ export const placeSteps = [
                 name: "metaDescription",
                 label: "Meta Description",
                 type: "object",
-                default: {},
+                localized: true,
+                default: emptyI18nString,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -157,7 +173,8 @@ export const placeSteps = [
                 name: "keywords",
                 label: "Ключевые слова",
                 type: "object",
-                default: {},
+                localized: true,
+                default: emptyI18nArray,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -186,7 +203,8 @@ export const placeSteps = [
                 name: "tags",
                 label: "Теги",
                 type: "object",
-                default: {},
+                localized: true,
+                default: emptyI18nArray,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
