@@ -17,7 +17,7 @@
     export let image = `${baseUrl}/images/blogs/blog_default.webp`;
     export let imageAlt = "Photo";
 
-    const urlPath = "blog";
+    const urlPath = "blogs";
 
     function getHref(lang) {
         const langPrefix = lang === "en" ? "" : `/${lang}`;

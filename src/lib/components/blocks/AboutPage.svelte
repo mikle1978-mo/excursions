@@ -11,6 +11,8 @@
     export let baseName;
     export let urlPath;
 
+    console.log({ seoText, baseUrl, baseName, urlPath });
+
     const images = [
         { url: "/images/about/about1.webp" },
         { url: "/images/about/about2.webp" },
@@ -83,7 +85,7 @@
     {baseUrl}
     {baseName}
     locale={$localeStore}
-    {urlPath}
+    type={urlPath}
     seo={seoText[$localeStore] ?? seoText.en}
     image={`${baseUrl}/images/about/about1.webp`}
 />
