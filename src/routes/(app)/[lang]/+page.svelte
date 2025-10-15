@@ -40,7 +40,7 @@
 
     <!-- hreflang -->
     <link rel="alternate" hreflang="ru" href={`${baseUrl}/ru`} />
-    <link rel="alternate" hreflang="en" href={`${baseUrl}/en`} />
+    <link rel="alternate" hreflang="en" href={`${baseUrl}`} />
     <link rel="alternate" hreflang="x-default" href={`${baseUrl}`} />
 
     {#each main_page.pages.slice(0, 3) as item}
