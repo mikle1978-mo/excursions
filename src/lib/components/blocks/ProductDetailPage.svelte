@@ -95,7 +95,7 @@
     breadcrumbs={breadcrumbsList}
 />
 
-<ProductSeoHead
+<!-- <ProductSeoHead
     {baseUrl}
     {baseName}
     urlPath={`${type}s`}
@@ -111,7 +111,7 @@
     availability={item.active ? "in stock" : "out of stock"}
     brand={item.brand ?? ""}
     locale={$localeStore}
-/>
+/> -->
 
 {#if isModalOpen}
     <Modal on:close={closeModal}>

@@ -28,11 +28,9 @@
 
     const canonical = getHref("en");
 
-    $: metaKeywords = keywords?.trim()
-        ? keywords.trim()
-        : description?.trim()
-          ? extractKeywords(description).join(", ")
-          : "";
+    $: metaKeywords =
+        keywords ||
+        (description ? extractKeywords(description).join(", ") : "");
 </script>
 
 <svelte:head>

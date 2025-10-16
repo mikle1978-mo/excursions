@@ -16,6 +16,8 @@
 
     const urlPath = "places";
 
+    console.log("key", keywords);
+
     function getHref(lang) {
         const langPrefix = lang === "en" ? "" : `/${lang}`;
         return `${baseUrl}${langPrefix}/${urlPath}/${slug}`
@@ -25,11 +27,9 @@
 
     const canonical = getHref("en");
 
-    $: metaKeywords = keywords?.trim()
-        ? keywords.trim()
-        : description?.trim()
-          ? extractKeywords(description).join(", ")
-          : "";
+    $: metaKeywords =
+        keywords ||
+        (description ? extractKeywords(description).join(", ") : "");
 </script>
 
 <svelte:head>

@@ -1,17 +1,72 @@
 <script>
+    import ProductSeoHead from "$lib/components/SEO/ProductSeoHead.svelte";
+    import ProductSeoSchema from "$lib/components/SEO/ProductSeoSchema.svelte";
+    import { typeLabels } from "$lib/constants/typeLabels.js";
     import ProductDetailPage from "$lib/components/blocks/ProductDetailPage.svelte";
-    import { locale } from "$lib/stores/locale";
-    import { excursion_page } from "$lib/i18n/excursion_page.js";
+    import { pageDetailsConfig } from "$lib/config/pageDetailsConfig.js";
+    import { getLocalizedPath } from "$lib/stores/locale.js";
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const baseName = import.meta.env.VITE_BASE_NAME;
+    export let data;
+    const { item, rating, reviewsCount, lang } = data;
 
-    export let data; // данные из load функции
-    const { item, reviewsCount, rating } = data;
+    let type = item.type ?? "excursions";
+    const config = pageDetailsConfig[type];
+
+    let currentTranslation = item.translations.find((t) => t.lang === lang);
+    // Хлебные крошки
+    $: breadcrumbsList = [
+        {
+            label: lang === "ru" ? "Главная" : "Home",
+            href: getLocalizedPath(lang, ""),
+        },
+        {
+            label: typeLabels[type]?.[lang] ?? type,
+            href: getLocalizedPath(lang, `${type}`),
+        },
+        {
+            label: currentTranslation?.title || item?.slug,
+            href: null,
+        },
+    ];
 </script>
 
+<!-- SEO (всё серверное) -->
+<ProductSeoHead
+    {baseUrl}
+    {baseName}
+    urlPath={`${type}`}
+    slug={item.slug}
+    title={currentTranslation.title}
+    description={currentTranslation.metaDescription}
+    keywords={currentTranslation.keywords}
+    image={item.images?.[0]?.url ??
+        `${baseUrl}/images/${type}/${config.defaultImage}` ??
+        `${baseUrl}/images/excursions/excursion_default.webp`}
+    imageAlt={`Photo ${currentTranslation.title}`}
+    amount={item.price?.toString() ?? "0"}
+    currency="USD"
+    availability={item.active ? "in stock" : "out of stock"}
+    brand={item.brand ?? ""}
+    locale={lang}
+/>
+
+<ProductSeoSchema
+    {item}
+    {type}
+    locale={lang}
+    {baseUrl}
+    {rating}
+    reviewCount={reviewsCount}
+    brand={baseName}
+    breadcrumbs={breadcrumbsList}
+/>
+
 <ProductDetailPage
-    type="car"
+    {type}
     {item}
     {rating}
     {reviewsCount}
-    locale={$locale}
-    translations={excursion_page}
+    locale={data.lang}
+    translations={config.translations}
 />

@@ -158,6 +158,7 @@ export async function getFullItemFromDB(slug, collectionName, lang = "en") {
             ...item,
             _id: item._id.toString(),
             translations: safeTranslations,
+            type: collectionName,
         },
         reviews: safeReviews,
         reviewsCount,

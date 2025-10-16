@@ -10,7 +10,7 @@
     import { onMount } from "svelte";
     import { locale as localeStore } from "$lib/stores/locale.js";
     import Scroll from "../promotions/Scroll.svelte";
-    import { pageListConfig } from "$lib/constants/pageListConfig";
+    import { pageListConfig } from "$lib/config/pageListConfig";
 
     export let data;
 
