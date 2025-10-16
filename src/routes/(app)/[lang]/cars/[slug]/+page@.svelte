@@ -15,7 +15,7 @@
 
     let currentTranslation = item.translations.find((t) => t.lang === lang);
     // Хлебные крошки
-    $: breadcrumbsList = [
+    const breadcrumbsList = [
         {
             label: lang === "ru" ? "Главная" : "Home",
             href: getLocalizedPath(lang, ""),

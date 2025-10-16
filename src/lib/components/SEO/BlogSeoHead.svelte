@@ -10,6 +10,9 @@
     export let title = "";
     export let description = "";
     export let keywords = "";
+
+    console.log("key", keywords);
+
     export let publishDate = "";
     export let updatedAt = "";
     export let author = "";
@@ -28,7 +31,7 @@
 
     const canonical = getHref("en");
 
-    $: metaKeywords =
+    const metaKeywords =
         keywords ||
         (description ? extractKeywords(description).join(", ") : "");
 </script>

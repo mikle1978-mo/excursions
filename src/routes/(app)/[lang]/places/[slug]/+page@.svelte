@@ -19,7 +19,7 @@
     console.log(currentTranslation);
 
     // Хлебные крошки
-    $: breadcrumbsList = [
+    const breadcrumbsList = [
         {
             label: lang === "ru" ? "Главная" : "Home",
             href: getLocalizedPath(lang, ""),

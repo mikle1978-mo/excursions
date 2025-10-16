@@ -10,12 +10,14 @@
     export let data;
     const { item, rating, reviewsCount, lang } = data;
 
+    console.log(data);
+
     let type = item.type ?? "excursions";
     const config = pageDetailsConfig[type];
 
     let currentTranslation = item.translations.find((t) => t.lang === lang);
     // Хлебные крошки
-    $: breadcrumbsList = [
+    const breadcrumbsList = [
         {
             label: lang === "ru" ? "Главная" : "Home",
             href: getLocalizedPath(lang, ""),

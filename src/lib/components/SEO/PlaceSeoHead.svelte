@@ -27,7 +27,7 @@
 
     const canonical = getHref("en");
 
-    $: metaKeywords =
+    const metaKeywords =
         keywords ||
         (description ? extractKeywords(description).join(", ") : "");
 </script>

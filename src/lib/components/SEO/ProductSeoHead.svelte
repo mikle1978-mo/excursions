@@ -7,6 +7,7 @@
     export let locale = "en"; // fallback
     export let urlPath = ""; // пример: 'cars'
     export let slug = "";
+    export let keywords = "";
 
     export let title = "";
     export let description = "";
@@ -34,9 +35,9 @@
     const ogLocale = ogLocales[locale] || "en_US";
 
     // Автогенерация keywords (если прям нужны)
-    $: metaKeywords = description?.trim()
-        ? extractKeywords(description).join(", ")
-        : "";
+    const metaKeywords =
+        keywords ||
+        (description ? extractKeywords(description).join(", ") : "");
 
     // OG alternate locales
     const ogAlternateLocales = SUPPORTED_LANGUAGES.filter(
