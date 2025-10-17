@@ -14,8 +14,6 @@
     import InfoBlockArray from "$lib/components/blocks/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/blocks/InfoBlockString.svelte";
     import MapBlock from "./MapBlock.svelte";
-    import BlogSeoSchema from "../SEO/BlogSeoSchema.svelte";
-    import BlogSeoHead from "$lib/components/SEO/BlogSeoHead.svelte";
     import { formatDate } from "$lib/utils/dateFormatter";
 
     export let item;
@@ -45,23 +43,6 @@
     const defaultImage = `/images/places/place_default.webp`;
     $: mainImage = item.images?.[0]?.url ?? defaultImage;
 </script>
-
-<BlogSeoSchema {item} {locale} breadcrumbs={breadcrumbsList} />
-
-<BlogSeoHead
-    locale={effectiveLocale}
-    slug={item.slug}
-    title={currentTranslation.title}
-    description={currentTranslation.metaDescription ??
-        currentTranslation.subtitle ??
-        ""}
-    keywords={currentTranslation.metaKeywords ?? ""}
-    publishDate={item.publishDate}
-    updatedAt={item.updatedAt}
-    author={currentTranslation.author ?? "Kemer.app"}
-    image={item.images?.[0]?.url ?? `${baseUrl}/images/blogs/blog_default.webp`}
-    imageAlt={`Photo ${currentTranslation.title}`}
-/>
 
 <div class="content">
     <WhatsApp />

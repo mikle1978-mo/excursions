@@ -13,8 +13,6 @@
     import InfoBlockArray from "$lib/components/blocks/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/blocks/InfoBlockString.svelte";
     import MapBlock from "./MapBlock.svelte";
-    import PlaceSeoSchema from "../SEO/PlaceSeoSchema.svelte";
-    import PlaceSeoHead from "../SEO/PlaceSeoHead.svelte";
 
     export let item;
     export let locale;
@@ -43,22 +41,6 @@
     const defaultImage = `/images/places/place_default.webp`;
     $: mainImage = item.images?.[0]?.url ?? defaultImage;
 </script>
-
-<PlaceSeoSchema {item} {locale} breadcrumbs={breadcrumbsList} />
-
-<PlaceSeoHead
-    baseName="Kemer.app"
-    locale={effectiveLocale}
-    slug={item.slug}
-    title={currentTranslation.title}
-    description={currentTranslation.metaDescription ??
-        currentTranslation.subtitle ??
-        ""}
-    keywords={currentTranslation.metaKeywords ?? ""}
-    image={item.images?.[0]?.url ??
-        `${baseUrl}/images/places/place_default.webp`}
-    imageAlt={`Photo ${currentTranslation.title}`}
-/>
 
 <div class="content">
     <WhatsApp />

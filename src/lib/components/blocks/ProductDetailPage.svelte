@@ -11,13 +11,11 @@
     import ProductDetailsBlock from "$lib/components/blocks/ProductDetailsBlock.svelte";
     import Galery from "$lib/components/layout/Galery.svelte";
     import Rating from "$lib/components/UI/rating/Rating.svelte";
-    import ProductSeoHead from "$lib/components/SEO/ProductSeoHead.svelte";
     import Modal from "$lib/components/UI/Modal.svelte";
     import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
     import Share from "$lib/components/UI/buttons/Share.svelte";
     import InfoBlockArray from "$lib/components/blocks/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/blocks/InfoBlockString.svelte";
-    import ProductSeoSchema from "../SEO/ProductSeoSchema.svelte";
     import AboutBlock from "$lib/components/blocks/AboutBlock.svelte";
     import IconImage from "$lib/icons/IconImage.svelte";
     import IconBriefcase from "$lib/icons/IconBriefcase.svelte";
@@ -83,35 +81,6 @@
         },
     ];
 </script>
-
-<ProductSeoSchema
-    {item}
-    {type}
-    locale={effectiveLocale}
-    {baseUrl}
-    {rating}
-    reviewCount={reviewsCount}
-    brand="Kemer.app"
-    breadcrumbs={breadcrumbsList}
-/>
-
-<!-- <ProductSeoHead
-    {baseUrl}
-    {baseName}
-    urlPath={`${type}s`}
-    slug={item.slug}
-    title={currentTranslation.title}
-    description={currentTranslation.metaDescription}
-    keywords={currentTranslation.keywords}
-    image={item.images?.[0]?.url ??
-        `${baseUrl}/images/${type}s/${type}_default.webp`}
-    imageAlt={`Photo ${currentTranslation.title}`}
-    amount={item.price?.toString() ?? "0"}
-    currency="USD"
-    availability={item.active ? "in stock" : "out of stock"}
-    brand={item.brand ?? ""}
-    locale={$localeStore}
-/> -->
 
 {#if isModalOpen}
     <Modal on:close={closeModal}>
