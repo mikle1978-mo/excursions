@@ -27,17 +27,43 @@ const makePath = (lang, segment = "", slug = "") => {
 //         slug
 //     )}" />`;
 
-const makeAltLinks = (segment = "", slug = "") => {
-    const links = SUPPORTED_LANGUAGES.map(
-        (lang) =>
-            `<xhtml:link rel="alternate" hreflang="${lang}" href="${makePath(
-                lang,
-                segment,
-                slug
-            )}" />`
-    ).join("\n");
+// const makeAltLinks = (segment = "", slug = "") => {
+//     const links = SUPPORTED_LANGUAGES.map(
+//         (lang) =>
+//             `<xhtml:link rel="alternate" hreflang="${lang}" href="${makePath(
+//                 lang,
+//                 segment,
+//                 slug
+//             )}" />`
+//     ).join("\n");
 
-    // Добавляем x-default только если это главная страница
+//     // Добавляем x-default только если это главная страница
+//     if (!segment && !slug) {
+//         return (
+//             links +
+//             `\n<xhtml:link rel="alternate" hreflang="x-default" href="${makePath(
+//                 "en"
+//             )}" />`
+//         );
+//     }
+
+//     return links;
+// };
+
+const makeAltLinks = (currentLang, segment = "", slug = "") => {
+    // Ссылки на другие языки, исключая текущий
+    const links = SUPPORTED_LANGUAGES.filter((lang) => lang !== currentLang)
+        .map(
+            (lang) =>
+                `<xhtml:link rel="alternate" hreflang="${lang}" href="${makePath(
+                    lang,
+                    segment,
+                    slug
+                )}" />`
+        )
+        .join("\n");
+
+    // Добавляем x-default только для главной страницы
     if (!segment && !slug) {
         return (
             links +
