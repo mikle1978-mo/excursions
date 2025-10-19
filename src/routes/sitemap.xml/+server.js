@@ -12,20 +12,43 @@ const makePath = (lang, segment = "", slug = "") => {
         : `${VITE_BASE_URL}${prefix}`;
 };
 
-const makeAltLinks = (segment = "", slug = "") =>
-    SUPPORTED_LANGUAGES.map(
+// const makeAltLinks = (segment = "", slug = "") =>
+//     SUPPORTED_LANGUAGES.map(
+//         (lang) =>
+//             `<xhtml:link rel="alternate" hreflang="${lang}" href="${makePath(
+//                 lang,
+//                 segment,
+//                 slug
+//             )}" />`
+//     ).join("\n") +
+//     `\n<xhtml:link rel="alternate" hreflang="x-default" href="${makePath(
+//         "en",
+//         segment,
+//         slug
+//     )}" />`;
+
+const makeAltLinks = (segment = "", slug = "") => {
+    const links = SUPPORTED_LANGUAGES.map(
         (lang) =>
             `<xhtml:link rel="alternate" hreflang="${lang}" href="${makePath(
                 lang,
                 segment,
                 slug
             )}" />`
-    ).join("\n") +
-    `\n<xhtml:link rel="alternate" hreflang="x-default" href="${makePath(
-        "en",
-        segment,
-        slug
-    )}" />`;
+    ).join("\n");
+
+    // Добавляем x-default только если это главная страница
+    if (!segment && !slug) {
+        return (
+            links +
+            `\n<xhtml:link rel="alternate" hreflang="x-default" href="${makePath(
+                "en"
+            )}" />`
+        );
+    }
+
+    return links;
+};
 
 // Форматирование даты в ISO (например: 2025-10-06)
 const formatDate = (date) => new Date(date).toISOString().split("T")[0];

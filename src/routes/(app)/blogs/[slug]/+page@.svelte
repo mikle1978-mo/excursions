@@ -1,7 +1,7 @@
 <script>
     import BlogDetailPage from "$lib/components/blocks/BlogDetailPage.svelte";
-    import BlogSeoHead from "$lib/components/SEO/BlogSeoHead.svelte";
     import BlogSeoSchema from "$lib/components/SEO/BlogSeoSchema.svelte";
+    import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
     import { typeLabels } from "$lib/constants/typeLabels.js";
     import { pageDetailsConfig } from "$lib/config/pageDetailsConfig.js";
     import { getLocalizedPath } from "$lib/stores/locale.js";
@@ -32,7 +32,7 @@
 </script>
 
 <!-- SEO (всё серверное) -->
-<BlogSeoHead
+<PageSeoHead
     {baseUrl}
     {baseName}
     urlPath={`${type}`}

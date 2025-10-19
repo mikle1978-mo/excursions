@@ -41,7 +41,7 @@
     <!-- hreflang -->
     <link rel="alternate" hreflang="ru" href={`${baseUrl}/ru`} />
     <link rel="alternate" hreflang="en" href={`${baseUrl}`} />
-    <link rel="alternate" hreflang="x-default" href={`${baseUrl}`} />
+    <!-- <link rel="alternate" hreflang="x-default" href={`${baseUrl}`} /> -->
 
     {#each main_page.pages.slice(0, 3) as item}
         <link rel="preload" as="image" href={item.img} type="image/webp" />

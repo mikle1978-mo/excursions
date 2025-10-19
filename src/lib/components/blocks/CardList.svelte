@@ -8,13 +8,15 @@
     import { useServiceFilters } from "$lib/hooks/useServiceFilters.js";
     import { resetFilters, setFilters } from "$lib/stores/filters.js";
     import { onMount } from "svelte";
-    import { locale as localeStore } from "$lib/stores/locale.js";
     import Scroll from "../promotions/Scroll.svelte";
     import { pageListConfig } from "$lib/config/pageListConfig";
 
+    const baseUrl = import.meta.env.VITE_BASE_URL;
+    const baseName = import.meta.env.VITE_BASE_NAME;
+
     export let data;
 
-    const { type, items } = data ?? {};
+    const { type, items, lang } = data ?? {};
 
     const config = pageListConfig[type];
 
@@ -76,9 +78,17 @@
 </script>
 
 <PageSeoHead
-    {type}
-    locale={$localeStore}
-    seo={config?.seoText?.[$localeStore] ?? config?.seoText?.en}
+    {baseUrl}
+    {baseName}
+    urlPath={type}
+    slug=""
+    title={config.seoText?.[lang]?.title ?? config.seoText?.en?.title}
+    description={config.seoText?.[lang]?.description ??
+        config.seoText?.en?.description}
+    keywords={config.seoText?.[lang]?.keywords ?? ""}
+    image={`${baseUrl}/images/${type}/${config.defaultImage}`}
+    imageAlt={`Banner for ${type}`}
+    locale={lang}
 />
 
 <div class="content">
@@ -102,11 +112,11 @@
     <main>
         <div class="main_page">
             <h1>
-                {config?.seoText?.[$localeStore]?.h1 ?? config?.seoText?.en?.h1}
+                {config?.seoText?.[lang]?.h1 ?? config?.seoText?.en?.h1}
             </h1>
 
             <div class="description-block">
-                {@html config?.seoText?.[$localeStore]?.topText ??
+                {@html config?.seoText?.[lang]?.topText ??
                     config?.seoText?.en?.topText}
             </div>
 
@@ -131,7 +141,7 @@
             </div>
 
             <div class="description-block">
-                {@html config?.seoText?.[$localeStore]?.bottomText ??
+                {@html config?.seoText?.[lang]?.bottomText ??
                     config?.seoText?.en?.bottomText}
             </div>
         </div>

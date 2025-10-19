@@ -1,6 +1,6 @@
 <script>
-    import PlaceSeoHead from "$lib/components/SEO/PlaceSeoHead.svelte";
     import PlaceSeoSchema from "$lib/components/SEO/PlaceSeoSchema.svelte";
+    import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
     import { typeLabels } from "$lib/constants/typeLabels.js";
     import PlaceDetailPage from "$lib/components/blocks/PlaceDetailPage.svelte";
     import { pageDetailsConfig } from "$lib/config/pageDetailsConfig.js";
@@ -36,7 +36,7 @@
 </script>
 
 <!-- SEO (всё серверное) -->
-<PlaceSeoHead
+<PageSeoHead
     {baseUrl}
     {baseName}
     urlPath={`${type}`}

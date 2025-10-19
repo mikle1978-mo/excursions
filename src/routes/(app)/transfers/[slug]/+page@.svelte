@@ -1,5 +1,5 @@
 <script>
-    import ProductSeoHead from "$lib/components/SEO/ProductSeoHead.svelte";
+    import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
     import ProductSeoSchema from "$lib/components/SEO/ProductSeoSchema.svelte";
     import { typeLabels } from "$lib/constants/typeLabels.js";
     import ProductDetailPage from "$lib/components/blocks/ProductDetailPage.svelte";
@@ -32,7 +32,7 @@
 </script>
 
 <!-- SEO (всё серверное) -->
-<ProductSeoHead
+<PageSeoHead
     {baseUrl}
     {baseName}
     urlPath={`${type}`}
