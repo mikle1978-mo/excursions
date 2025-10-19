@@ -1,6 +1,6 @@
 import { GET as getSlugs } from "../api/sitemap-slugs/+server.js";
 import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
-import { ObjectId } from "mongodb"; // <-- для извлечения времени из _id
+import { ObjectId } from "mongodb"; // для извлечения времени из _id
 
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5173";
 
@@ -12,46 +12,8 @@ const makePath = (lang, segment = "", slug = "") => {
         : `${VITE_BASE_URL}${prefix}`;
 };
 
-// const makeAltLinks = (segment = "", slug = "") =>
-//     SUPPORTED_LANGUAGES.map(
-//         (lang) =>
-//             `<xhtml:link rel="alternate" hreflang="${lang}" href="${makePath(
-//                 lang,
-//                 segment,
-//                 slug
-//             )}" />`
-//     ).join("\n") +
-//     `\n<xhtml:link rel="alternate" hreflang="x-default" href="${makePath(
-//         "en",
-//         segment,
-//         slug
-//     )}" />`;
-
-// const makeAltLinks = (segment = "", slug = "") => {
-//     const links = SUPPORTED_LANGUAGES.map(
-//         (lang) =>
-//             `<xhtml:link rel="alternate" hreflang="${lang}" href="${makePath(
-//                 lang,
-//                 segment,
-//                 slug
-//             )}" />`
-//     ).join("\n");
-
-//     // Добавляем x-default только если это главная страница
-//     if (!segment && !slug) {
-//         return (
-//             links +
-//             `\n<xhtml:link rel="alternate" hreflang="x-default" href="${makePath(
-//                 "en"
-//             )}" />`
-//         );
-//     }
-
-//     return links;
-// };
-
+// Генерация xhtml:link rel="alternate"
 const makeAltLinks = (currentLang, segment = "", slug = "") => {
-    // Ссылки на другие языки, исключая текущий
     const links = SUPPORTED_LANGUAGES.filter((lang) => lang !== currentLang)
         .map(
             (lang) =>
@@ -76,7 +38,7 @@ const makeAltLinks = (currentLang, segment = "", slug = "") => {
     return links;
 };
 
-// Форматирование даты в ISO (например: 2025-10-06)
+// Форматирование даты в ISO
 const formatDate = (date) => new Date(date).toISOString().split("T")[0];
 
 export async function GET() {
@@ -92,6 +54,7 @@ export async function GET() {
 
     const today = formatDate(new Date());
     const HOMEPAGE_LASTMOD = "2025-10-06";
+
     const getListLastmod = (items) => {
         if (!items.length) return today;
         const timestamps = items.map((i) =>
@@ -106,24 +69,26 @@ export async function GET() {
         return formatDate(new Date(Math.max(...timestamps)));
     };
 
+    // Главная страница
     const homepageEntries = SUPPORTED_LANGUAGES.map(
         (lang) => `
   <url>
     <loc>${makePath(lang)}</loc>
-    ${makeAltLinks()}
+    ${makeAltLinks(lang)}
     <lastmod>${HOMEPAGE_LASTMOD}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>`
     ).join("");
 
+    // Страницы списков (например, /excursions)
     const listEntries = (segment, items) => {
         const lastmod = getListLastmod(items);
         return SUPPORTED_LANGUAGES.map(
             (lang) => `
   <url>
     <loc>${makePath(lang, segment)}</loc>
-    ${makeAltLinks(segment)}
+    ${makeAltLinks(lang, segment)}
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -131,13 +96,10 @@ export async function GET() {
         ).join("");
     };
 
+    // Динамические страницы
     const dynamicEntries = (items, segment) =>
         items
             .map((item) => {
-                // 1) prefer updatedAt
-                // 2) fallback to createdAt
-                // 3) fallback to ObjectId timestamp (если createdAt нет)
-                // 4) в крайнем случае today
                 let lastmod;
                 if (item.updatedAt) {
                     lastmod = formatDate(item.updatedAt);
@@ -145,7 +107,6 @@ export async function GET() {
                     lastmod = formatDate(item.createdAt);
                 } else if (item._id) {
                     try {
-                        // item._id может быть строкой или ObjectId — ObjectId ctor умеет принимать строку
                         lastmod = formatDate(
                             new ObjectId(item._id).getTimestamp()
                         );
@@ -160,7 +121,7 @@ export async function GET() {
                     (lang) => `
   <url>
     <loc>${makePath(lang, segment, item.slug)}</loc>
-    ${makeAltLinks(segment, item.slug)}
+    ${makeAltLinks(lang, segment, item.slug)}
     <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
