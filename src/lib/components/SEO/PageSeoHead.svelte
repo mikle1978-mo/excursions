@@ -21,7 +21,7 @@
     export let availability = "in stock";
     export let brand = "";
 
-    // Canonical + hreflang
+    // Canonical
     function getHref(lang) {
         const langPrefix = lang === "en" ? "" : `/${lang}`;
         return `${baseUrl}${langPrefix}/${urlPath}/${slug}`
@@ -39,11 +39,6 @@
     const metaKeywords =
         keywords ||
         (description ? extractKeywords(description).join(", ") : "");
-
-    // OG alternate locales
-    const ogAlternateLocales = SUPPORTED_LANGUAGES.filter(
-        (lang) => lang !== locale
-    ).map((lang) => ogLocales[lang] || "en_US");
 </script>
 
 <svelte:head>
@@ -54,13 +49,6 @@
     {/if}
 
     <link rel="canonical" href={canonical} />
-
-    {#each SUPPORTED_LANGUAGES as lang}
-        {#if lang !== locale}
-            <link rel="alternate" hreflang={lang} href={getHref(lang)} />
-        {/if}
-    {/each}
-    <!-- <link rel="alternate" hreflang="x-default" href={getHref("en")} /> -->
 
     <!-- Open Graph -->
     <meta
@@ -74,12 +62,8 @@
     <meta property="og:image:alt" content={imageAlt} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={ogLocale} />
-    {#each ogAlternateLocales as altLocale}
-        <meta property="og:locale:alternate" content={altLocale} />
-    {/each}
 
     <!-- Product meta -->
-
     {#if amount}
         <meta property="product:price:amount" content={amount} />
         <meta property="product:price:currency" content={currency} />

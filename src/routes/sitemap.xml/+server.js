@@ -1,8 +1,9 @@
 import { GET as getSlugs } from "../api/sitemap-slugs/+server.js";
-import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 import { ObjectId } from "mongodb"; // для извлечения времени из _id
 
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5173";
+
+const SUPPORTED_LANGUAGES = ["en", "ru"]; // если не импортируешь
 
 const makePath = (lang, segment = "", slug = "") => {
     const prefix = lang === "en" ? "" : `/${lang}`;
@@ -10,32 +11,6 @@ const makePath = (lang, segment = "", slug = "") => {
     return path
         ? `${VITE_BASE_URL}${prefix}/${path}`
         : `${VITE_BASE_URL}${prefix}`;
-};
-
-// Генерация xhtml:link rel="alternate"
-const makeAltLinks = (currentLang, segment = "", slug = "") => {
-    const links = SUPPORTED_LANGUAGES.filter((lang) => lang !== currentLang)
-        .map(
-            (lang) =>
-                `<xhtml:link rel="alternate" hreflang="${lang}" href="${makePath(
-                    lang,
-                    segment,
-                    slug
-                )}" />`
-        )
-        .join("\n");
-
-    // Добавляем x-default только для главной страницы
-    if (!segment && !slug) {
-        return (
-            links +
-            `\n<xhtml:link rel="alternate" hreflang="x-default" href="${makePath(
-                "en"
-            )}" />`
-        );
-    }
-
-    return links;
 };
 
 // Форматирование даты в ISO
@@ -74,7 +49,6 @@ export async function GET() {
         (lang) => `
   <url>
     <loc>${makePath(lang)}</loc>
-    ${makeAltLinks(lang)}
     <lastmod>${HOMEPAGE_LASTMOD}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -88,7 +62,6 @@ export async function GET() {
             (lang) => `
   <url>
     <loc>${makePath(lang, segment)}</loc>
-    ${makeAltLinks(lang, segment)}
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -121,7 +94,6 @@ export async function GET() {
                     (lang) => `
   <url>
     <loc>${makePath(lang, segment, item.slug)}</loc>
-    ${makeAltLinks(lang, segment, item.slug)}
     <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
@@ -133,7 +105,6 @@ export async function GET() {
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-  xmlns:xhtml="http://www.w3.org/1999/xhtml"
 >
 ${homepageEntries}
 ${listEntries("excursions", excursions)}
