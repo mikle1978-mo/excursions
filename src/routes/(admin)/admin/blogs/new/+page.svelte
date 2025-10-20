@@ -5,7 +5,7 @@
 
     // В режиме создания slug не нужен
     const mode = "create";
-    const type = "blog";
+    const type = "blogs";
     const steps = blogSteps;
     const schema = blogSchema;
     console.log("Blog steps:", steps);

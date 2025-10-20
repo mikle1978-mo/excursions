@@ -106,6 +106,40 @@ export const blogSteps = [
             },
         ],
     },
+    // {
+    //     title: "Контент",
+    //     fields: [
+    //         {
+    //             name: "content",
+    //             label: "Абзацы",
+    //             type: "object", // объект с языками
+    //             localized: true,
+    //             default: Object.fromEntries(
+    //                 SUPPORTED_LANGUAGES.map((lang) => [lang, []])
+    //             ),
+    //             fields: SUPPORTED_LANGUAGES.map((lang) => ({
+    //                 name: lang,
+    //                 label: "абзацы на " + lang.toUpperCase(),
+    //                 type: "array", // массив абзацев
+    //                 default: [],
+    //                 fields: [
+    //                     {
+    //                         name: "text",
+    //                         label: "Текст",
+    //                         type: "textarea",
+    //                         default: "",
+    //                     },
+    //                     {
+    //                         name: "image",
+    //                         label: "Изображение (необязательно)",
+    //                         type: "imageUploader",
+    //                         default: [], // массив {url, public_id}
+    //                     },
+    //                 ],
+    //             })),
+    //         },
+    //     ],
+    // },
     {
         title: "Контент",
         fields: [
@@ -115,13 +149,26 @@ export const blogSteps = [
                 type: "object", // объект с языками
                 localized: true,
                 default: Object.fromEntries(
-                    SUPPORTED_LANGUAGES.map((lang) => [lang, []])
+                    SUPPORTED_LANGUAGES.map((lang) => [
+                        lang,
+                        [
+                            {
+                                text: "",
+                                image: [], // массив {url, public_id}
+                            },
+                        ],
+                    ])
                 ),
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: "абзацы на " + lang.toUpperCase(),
                     type: "array", // массив абзацев
-                    default: [],
+                    default: [
+                        {
+                            text: "",
+                            image: [], // массив {url, public_id}
+                        },
+                    ],
                     fields: [
                         {
                             name: "text",
@@ -140,7 +187,6 @@ export const blogSteps = [
             },
         ],
     },
-
     {
         title: "SEO",
         fields: [
