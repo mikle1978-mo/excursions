@@ -62,7 +62,7 @@
         name="description"
         content={error_404.text[lang] ?? error_404.text.en}
     />
-    <meta name="robots" content="noindex, follow" />
+    <meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
 <main>
