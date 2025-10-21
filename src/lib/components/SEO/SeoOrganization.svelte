@@ -4,7 +4,7 @@
     export let url = "https://kemer.app";
     export let logo = "https://kemer.app/icon-192.png";
     export let sameAs = [
-        "https://t.me/MikleGromov",
+        "https://t.me/kemerapp",
         "https://www.instagram.com/kemer.app",
         "https://wa.me/905356062642",
         "https://www.facebook.com/profile.php?id=61578033954306",
@@ -29,6 +29,7 @@
         contactPoint: {
             "@type": "ContactPoint",
             telephone: "+90-535-606-26-42",
+            email: "info@kemer.app",
             contactType: "customer service",
             availableLanguage: ["Russian", "English", "Turkish"],
             areaServed: "TR",

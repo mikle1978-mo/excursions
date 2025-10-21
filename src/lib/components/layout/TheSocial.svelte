@@ -3,7 +3,7 @@
 
 <div class="icons-line">
     <a
-        href="https://t.me/MikleGromov"
+        href="https://t.me/kemerapp"
         class="link"
         aria-label="telegram"
         rel="nofollow"
