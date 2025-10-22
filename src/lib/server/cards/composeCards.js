@@ -11,6 +11,10 @@ import { enrichCard } from "$lib/helpers/enrichCard";
  * @param {string} [options.reviewCollection] - Название коллекции отзывов (по умолчанию "reviews")
  * @returns {Promise<Array>} Обогащённые карточки
  */
+
+/**
+ * Универсальный сборщик карточек из разных коллекций
+ */
 export async function composeCards({
     type,
     translationCollection = `${type}_translations`,
@@ -18,89 +22,96 @@ export async function composeCards({
 }) {
     const db = await connectToDatabase();
 
-    const rawItems = await db
-        .collection(type)
-        .aggregate([
-            { $sample: { size: 100 } },
-            {
-                $lookup: {
-                    from: translationCollection,
-                    localField: "slug",
-                    foreignField: "itemSlug",
-                    as: "translations",
-                },
+    // 💡 Выбираем тип выборки: случайно или по дате
+    const pipeline = [];
+
+    if (type === "blogs" || type === "places") {
+        pipeline.push(
+            { $sort: { createdAt: -1 } }, // последние сначала
+            { $limit: 100 }
+        );
+    } else {
+        pipeline.push({ $sample: { size: 100 } }); // случайно
+    }
+
+    pipeline.push(
+        {
+            $lookup: {
+                from: translationCollection,
+                localField: "slug",
+                foreignField: "itemSlug",
+                as: "translations",
             },
-            {
-                $addFields: {
-                    title: {
-                        $arrayToObject: {
-                            $map: {
-                                input: "$translations",
-                                as: "t",
-                                in: { k: "$$t.lang", v: "$$t.title" },
-                            },
+        },
+        {
+            $addFields: {
+                title: {
+                    $arrayToObject: {
+                        $map: {
+                            input: "$translations",
+                            as: "t",
+                            in: { k: "$$t.lang", v: "$$t.title" },
                         },
                     },
-                    description: {
-                        $arrayToObject: {
-                            $map: {
-                                input: "$translations",
-                                as: "t",
-                                in: { k: "$$t.lang", v: "$$t.description" },
-                            },
+                },
+                description: {
+                    $arrayToObject: {
+                        $map: {
+                            input: "$translations",
+                            as: "t",
+                            in: { k: "$$t.lang", v: "$$t.description" },
                         },
                     },
                 },
             },
-            {
-                $lookup: {
-                    from: reviewCollection,
-                    let: { item_slug: "$slug" },
-                    pipeline: [
-                        {
-                            $match: {
-                                $expr: { $eq: ["$itemSlug", "$$item_slug"] },
-                            },
+        },
+        {
+            $lookup: {
+                from: reviewCollection,
+                let: { item_slug: "$slug" },
+                pipeline: [
+                    {
+                        $match: {
+                            $expr: { $eq: ["$itemSlug", "$$item_slug"] },
                         },
-                        {
-                            $group: {
-                                _id: null,
-                                count: { $sum: 1 },
-                                avgRating: { $avg: "$rating" },
-                            },
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            count: { $sum: 1 },
+                            avgRating: { $avg: "$rating" },
                         },
+                    },
+                ],
+                as: "reviewsStats",
+            },
+        },
+        {
+            $addFields: {
+                reviewsCount: {
+                    $ifNull: [{ $arrayElemAt: ["$reviewsStats.count", 0] }, 0],
+                },
+                rating: {
+                    $ifNull: [
+                        {
+                            $round: [
+                                {
+                                    $arrayElemAt: [
+                                        "$reviewsStats.avgRating",
+                                        0,
+                                    ],
+                                },
+                                1,
+                            ],
+                        },
+                        null,
                     ],
-                    as: "reviewsStats",
                 },
             },
-            {
-                $addFields: {
-                    reviewsCount: {
-                        $ifNull: [
-                            { $arrayElemAt: ["$reviewsStats.count", 0] },
-                            0,
-                        ],
-                    },
-                    rating: {
-                        $ifNull: [
-                            {
-                                $round: [
-                                    {
-                                        $arrayElemAt: [
-                                            "$reviewsStats.avgRating",
-                                            0,
-                                        ],
-                                    },
-                                    1,
-                                ],
-                            },
-                            null,
-                        ],
-                    },
-                },
-            },
-        ])
-        .toArray();
+        }
+    );
+
+    const rawItems = await db.collection(type).aggregate(pipeline).toArray();
 
     const items = rawItems.map(
         ({ _id, translations = [], reviewsStats = [], ...rest }) => ({

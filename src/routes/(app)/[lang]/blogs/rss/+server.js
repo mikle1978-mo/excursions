@@ -65,7 +65,11 @@ export async function GET({ params, url }) {
     ).toUTCString()}</pubDate>
     <guid isPermaLink="true">${makeLink(item.slug)}</guid>
     ${authorName ? `<author>${authorEmail} (${authorName})</author>` : ""}
-    ${imageUrl ? `<enclosure url="${imageUrl}" type="image/jpeg" />` : ""}
+    ${
+        imageUrl
+            ? `<enclosure url="${imageUrl}" type="image/webp" length="12345"/>`
+            : ""
+    }
 </item>`;
         })
         .join("");
@@ -76,12 +80,15 @@ export async function GET({ params, url }) {
     <title><![CDATA[${channelTitle}]]></title>
     <link>${makeLink("")}</link>
     <description><![CDATA[${channelDescription}]]></description>
+     <language>${lang}</language>
+    <generator>Kemer.app RSS Generator</generator>
     <atom:link href="https://kemer.app${rssPath}" rel="self" type="application/rss+xml" />
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <ttl>60</ttl>
     <image>
-    <url>https://kemer.app/images/blogs/blog_default.webp</url>
+    <url>https://kemer.app/images/blogs/blog_default.jpeg</url>
     <title><![CDATA[Kemer.app Blog]]></title>
-    <link>https://kemer.app/</link>
+    <link>${makeLink("")}</link>
 </image>
 
     ${rssItems}
