@@ -8,7 +8,6 @@
     const type = "places";
     const steps = placeSteps;
     const schema = placeSchema;
-    console.log("Place steps:", steps);
 </script>
 
 <UniversalForm {steps} {schema} {mode} {type} />

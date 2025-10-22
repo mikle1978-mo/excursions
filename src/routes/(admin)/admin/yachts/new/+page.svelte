@@ -8,7 +8,6 @@
     const type = "yachts";
     const steps = yachtSteps;
     const schema = yachtSchema;
-    console.log("Excursion steps:", steps);
 </script>
 
 <UniversalForm {steps} {schema} {mode} {type} />

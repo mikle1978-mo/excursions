@@ -1,6 +1,6 @@
 <script>
     import TextInput from "$lib/components/UI/inputs/textInput/TextInput.svelte";
-    import TexrAreaInput from "$lib/components/UI/inputs/textareaInput/TexrAreaInput.svelte";
+    import TextAreaInput from "$lib/components/UI/inputs/textareaInput/TextAreaInput.svelte";
     import NumberInput from "$lib/components/UI/inputs/numberInput/NumberInput.svelte";
     import CheckBoxInput from "$lib/components/UI/inputs/checkboxInput/CheckBoxInput.svelte";
     import SelectInput from "$lib/components/UI/inputs/selectInput/SelectInput.svelte";
@@ -22,7 +22,7 @@
 {#if field.type === "text"}
     <TextInput bind:value label={field.label} field={fieldName} {errors} />
 {:else if field.type === "textarea"}
-    <TexrAreaInput bind:value label={field.label} field={fieldName} {errors} />
+    <TextAreaInput bind:value label={field.label} field={fieldName} {errors} />
 {:else if field.type === "number"}
     <NumberInput bind:value label={field.label} field={fieldName} {errors} />
 {:else if field.type === "checkbox"}

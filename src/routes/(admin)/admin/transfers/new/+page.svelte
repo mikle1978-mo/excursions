@@ -8,7 +8,6 @@
     const type = "transfers";
     const steps = transferSteps;
     const schema = transferSchema;
-    console.log("Transfer steps:", steps);
 </script>
 
 <UniversalForm {steps} {schema} {mode} {type} />

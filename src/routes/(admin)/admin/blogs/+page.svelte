@@ -6,7 +6,6 @@
     let items = structuredClone(data.items);
 
     export let columnMap = LIST_COLUMNS;
-    console.log(" ");
 </script>
 
 <AdminItemList type="blogs" {columnMap} {items} />

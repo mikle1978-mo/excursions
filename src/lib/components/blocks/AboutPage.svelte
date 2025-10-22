@@ -11,8 +11,6 @@
     export let baseName;
     export let urlPath;
 
-    console.log({ seoText, baseUrl, baseName, urlPath });
-
     const images = [
         { url: "/images/about/about1.webp" },
         { url: "/images/about/about2.webp" },

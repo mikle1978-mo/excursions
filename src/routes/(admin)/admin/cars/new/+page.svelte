@@ -8,7 +8,6 @@
     const type = "cars";
     const steps = carSteps;
     const schema = carSchema;
-    console.log("Cars steps:", steps);
 </script>
 
 <UniversalForm {steps} {schema} {mode} {type} />

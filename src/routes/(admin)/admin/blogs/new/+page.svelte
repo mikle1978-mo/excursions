@@ -8,7 +8,6 @@
     const type = "blogs";
     const steps = blogSteps;
     const schema = blogSchema;
-    console.log("Blog steps:", steps);
 </script>
 
 <UniversalForm {steps} {schema} {mode} {type} />

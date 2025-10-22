@@ -9,8 +9,6 @@
     const type = "excursions";
     const steps = excursionSteps;
     const schema = excursionSchema;
-
-    console.log("Excursion steps:", steps);
 </script>
 
 <UniversalForm {steps} {schema} {mode} {type} />

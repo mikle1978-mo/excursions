@@ -9,14 +9,11 @@
     const baseName = import.meta.env.VITE_BASE_NAME;
     export let data;
     const { item, rating, reviewsCount, lang } = data;
-    console.log(data);
 
     let type = item.type ?? "excursions";
     const config = pageDetailsConfig[type];
 
     let currentTranslation = item.translations.find((t) => t.lang === lang);
-
-    console.log(currentTranslation);
 
     // Хлебные крошки
     const breadcrumbsList = [
