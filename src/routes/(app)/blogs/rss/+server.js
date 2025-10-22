@@ -18,7 +18,7 @@ const channelData = {
 };
 
 /** @type {import('./$types').RequestHandler} */
-export async function GET({ params }) {
+export async function GET({ params, url }) {
     const lang = params.lang || "en";
     const { title: channelTitle, description: channelDescription } =
         channelData[lang] || channelData.en;
@@ -40,8 +40,14 @@ export async function GET({ params }) {
             : `https://kemer.app/${lang}/blogs/${slug}`;
 
     const rssItems = items
-        .map(
-            (item) => `
+        .map((item) => {
+            const authorName = item.author?.[lang] || "";
+            const authorEmail = "no-reply@kemer.app";
+            const imageUrl =
+                item.images?.[0]?.url ||
+                item.content?.[lang]?.[0]?.image?.[0]?.url;
+
+            return `
 <item>
     <title><![CDATA[${item.title[lang]}]]></title>
     <link>${makeLink(item.slug)}</link>
@@ -49,17 +55,21 @@ export async function GET({ params }) {
     <pubDate>${new Date(
         item.publishDate || item.createdAt
     ).toUTCString()}</pubDate>
-    <guid>${makeLink(item.slug)}</guid>
-</item>`
-        )
+    <guid isPermaLink="true">${makeLink(item.slug)}</guid>
+    ${authorName ? `<author>${authorEmail} (${authorName})</author>` : ""}
+    ${imageUrl ? `<enclosure url="${imageUrl}" type="image/jpeg" />` : ""}
+</item>`;
+        })
         .join("");
 
     const rss = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
     <title><![CDATA[${channelTitle}]]></title>
     <link>${makeLink("")}</link>
     <description><![CDATA[${channelDescription}]]></description>
+    <atom:link href="${url.href}" rel="self" type="application/rss+xml" />
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     ${rssItems}
 </channel>
 </rss>`;
