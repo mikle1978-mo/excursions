@@ -87,7 +87,7 @@ export async function GET({ params, url }) {
     <ttl>60</ttl>
     <image>
     <url>https://kemer.app/images/blogs/blog_default.jpeg</url>
-    <title><![CDATA[Kemer.app Blog]]></title>
+    <title><![CDATA[${channelTitle}]]></title>
     <link>${makeLink("")}</link>
 </image>
 
