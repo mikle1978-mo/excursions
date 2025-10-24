@@ -9,6 +9,7 @@
     export let schema;
     export let mode = "create"; // create | edit
     export let slug = "";
+
     export let initialData = null;
     export let type = "";
 
@@ -171,11 +172,41 @@
             goto(redirectTo);
         }
     }
+
+    async function publishToSocials() {
+        const confirmPublish = confirm("Опубликовать пост в Telegram?");
+        if (!confirmPublish) return; // если пользователь нажал «Отмена» — выходим
+
+        const res = await fetch("/api/social", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                type,
+                slug: $form.slug,
+                title: $form.title,
+                description: $form.description,
+                image: $form.image,
+                url: `https://kemer.app/blogs/${$form.slug || slug}`,
+                url_ru: `https://kemer.app/ru/blogs/${$form.slug || slug}`,
+            }),
+        });
+
+        const result = await res.json();
+        alert(result.success ? "✅ Опубликовано!" : "❌ Ошибка публикации");
+    }
 </script>
 
 <div class="wizard">
     <!-- Header -->
     <div class="wizard-header">
+        {#if type === "blogs"}
+            <MyButton
+                onclick={publishToSocials}
+                type="button"
+                size="xs"
+                width="width-sm">🚀 TG</MyButton
+            >
+        {/if}
         <div class="steps">
             {#each steps as s, i}
                 <MyButton
@@ -261,6 +292,8 @@
         flex-shrink: 0;
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        width: 100%;
         gap: 1rem;
         padding: var(--space-vertical-sm) 0;
         background: var(--color-bg);

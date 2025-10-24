@@ -8,6 +8,7 @@ import {
     updateItemInDB,
     deleteItemFromDB,
 } from "$lib/server/utils/items/itemsService";
+import { updateAllSocial, deleteAllSocial } from "$lib/server/social/index.js";
 
 const type = "blogs";
 
@@ -46,6 +47,7 @@ export async function PUT({ request, params }) {
     try {
         const data = await request.json();
         const slug = await updateItemInDB(params.slug, data, type, steps);
+        await updateAllSocial({ ...data, slug, type });
         return json({ success: true, slug }, { status: 200 });
     } catch (err) {
         console.error(`Ошибка при обновлении ${type}:`, err);
@@ -61,6 +63,7 @@ export async function PUT({ request, params }) {
  */
 export async function DELETE({ params }) {
     try {
+        await deleteAll({ slug });
         await deleteItemFromDB(params.slug, type);
         return json({ success: true }, { status: 200 });
     } catch (err) {
