@@ -52,20 +52,7 @@ export const blogSteps = [
                     default: "",
                 })),
             },
-            {
-                name: "h1",
-                label: "H1",
-                type: "object",
-                localized: true,
-                required: true,
-                default: emptyI18nString,
-                fields: SUPPORTED_LANGUAGES.map((lang) => ({
-                    name: lang,
-                    label: lang.toUpperCase(),
-                    type: "text",
-                    default: "",
-                })),
-            },
+
             {
                 name: "subtitle",
                 label: "Подзаголовок",
@@ -190,6 +177,20 @@ export const blogSteps = [
     {
         title: "SEO",
         fields: [
+            {
+                name: "h1",
+                label: "H1",
+                type: "object",
+                localized: true,
+                required: true,
+                default: emptyI18nString,
+                fields: SUPPORTED_LANGUAGES.map((lang) => ({
+                    name: lang,
+                    label: lang.toUpperCase(),
+                    type: "text",
+                    default: "",
+                })),
+            },
             {
                 name: "metaDescription",
                 label: "Meta Description",
