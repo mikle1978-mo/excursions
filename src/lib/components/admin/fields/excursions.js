@@ -302,6 +302,14 @@ export const excursionSteps = [
                 ],
             },
             {
+                name: "videoUrl",
+                label: "YouTube видео",
+                type: "text",
+                placeholder:
+                    "Вставьте ссылку на YouTube (например, https://youtu.be/abc123)",
+                default: "",
+            },
+            {
                 name: "tags",
                 label: "Теги",
                 type: "object",

@@ -12,7 +12,7 @@
     .description-block {
         color: var(--color-gray-700);
         line-height: 1.6;
-        margin: 1em 0;
+        /* margin: 1em 0; */
     }
 
     /* Стили для всего HTML контента внутри блока */

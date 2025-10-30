@@ -33,6 +33,7 @@
     import PriceBlock from "$lib/components/blocks/PriceBlock.svelte";
     import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
     import ScheduleBlock from "$lib/components/blocks/ScheduleBlock.svelte";
+    import YouTubeVideo from "$lib/components/blocks/YouTubeVideo.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -126,6 +127,15 @@
                 />
 
                 <Description item={currentTranslation.description} />
+
+                {#if item.videoUrl}
+                    <YouTubeVideo
+                        videoUrl={item.videoUrl}
+                        title={currentTranslation.title}
+                        poster={item.images?.[0]?.url ??
+                            `${baseUrl}/images/${type}s/${type}_default.webp`}
+                    />
+                {/if}
 
                 <GaleryCollage
                     images={item.images}
