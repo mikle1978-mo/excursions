@@ -7,6 +7,8 @@
     import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
 
     export let seoText;
+    console.log("dddd", seoText);
+
     export let baseUrl;
     export let baseName;
     export let urlPath;
@@ -85,6 +87,9 @@
     locale={$localeStore}
     type={urlPath}
     seo={seoText[$localeStore] ?? seoText.en}
+    title={seoText[$localeStore]?.title}
+    description={seoText[$localeStore]?.description}
+    keywords={seoText[$localeStore]?.keywords}
     image={`${baseUrl}/images/about/about1.webp`}
 />
 
