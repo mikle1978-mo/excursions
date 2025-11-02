@@ -1,9 +1,11 @@
 import { GET as getSlugs } from "../api/sitemap-slugs/+server.js";
 import { ObjectId } from "mongodb"; // для извлечения времени из _id
+import {
+    NON_EN_LANGUAGES,
+    SUPPORTED_LANGUAGES,
+} from "$lib/constants/supportedLanguages.js";
 
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5173";
-
-const SUPPORTED_LANGUAGES = ["en", "ru"]; // если не импортируешь
 
 const makePath = (lang, segment = "", slug = "") => {
     const prefix = lang === "en" ? "" : `/${lang}`;
@@ -28,7 +30,7 @@ export async function GET() {
     const blogs = allSlugs.filter((i) => i.type === "blog");
 
     const today = formatDate(new Date());
-    const HOMEPAGE_LASTMOD = "2025-10-06";
+    const HOMEPAGE_LASTMOD = "2025-11-02";
 
     const getListLastmod = (items) => {
         if (!items.length) return today;
@@ -45,13 +47,32 @@ export async function GET() {
     };
 
     // Главная страница
-    const homepageEntries = SUPPORTED_LANGUAGES.map(
-        (lang) => `
+    const homepageEntries = `
+  <url>
+    <loc>${VITE_BASE_URL}/</loc>
+    <lastmod>${HOMEPAGE_LASTMOD}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  ${NON_EN_LANGUAGES.map(
+      (lang) => `
   <url>
     <loc>${makePath(lang)}</loc>
     <lastmod>${HOMEPAGE_LASTMOD}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>`
+  ).join("")}
+`;
+
+    // Страница "О нас"
+    const aboutEntries = SUPPORTED_LANGUAGES.map(
+        (lang) => `
+  <url>
+    <loc>${makePath(lang, "about")}</loc>
+    <lastmod>${HOMEPAGE_LASTMOD}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
   </url>`
     ).join("");
 
@@ -107,6 +128,7 @@ export async function GET() {
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 >
 ${homepageEntries}
+${aboutEntries}
 ${listEntries("excursions", excursions)}
 ${listEntries("yachts", yachts)}
 ${listEntries("cars", cars)}

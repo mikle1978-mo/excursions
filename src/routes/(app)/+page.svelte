@@ -10,7 +10,7 @@
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
 
-    $: canonicalUrl = `${baseUrl}`;
+    $: canonicalUrl = `${baseUrl}/`;
 
     let isMounted = false;
 
@@ -38,7 +38,7 @@
 
     <!-- hreflang -->
     <link rel="alternate" hreflang="ru" href={`${baseUrl}/ru`} />
-    <link rel="alternate" hreflang="en" href={`${baseUrl}`} />
+    <link rel="alternate" hreflang="en" href={`${baseUrl}/`} />
     <!-- <link rel="alternate" hreflang="x-default" href={baseUrl} /> -->
 
     <!-- Open Graph (OG) -->
