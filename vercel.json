@@ -29,12 +29,6 @@
 
     "redirects": [
         {
-            "source": "",
-            "has": [{ "type": "host", "value": "kemer.app" }],
-            "destination": "/",
-            "permanent": true
-        },
-        {
             "source": "/(.*)",
             "has": [{ "type": "host", "value": "www.kemer.app" }],
             "destination": "https://kemer.app/$1",
