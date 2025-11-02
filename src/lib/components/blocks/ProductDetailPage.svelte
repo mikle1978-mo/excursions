@@ -341,9 +341,9 @@
                     onBook={openModal}
                 />
             </div>
-            {#if type === "excursion"}
-                <AboutBlock />
-            {/if}
+
+            <AboutBlock />
+
             {#if item.slug}
                 <ReviewsList itemSlug={item.slug} locale={effectiveLocale} />
             {/if}

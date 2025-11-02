@@ -49,6 +49,9 @@
     <p class="highlight">{t.highlighted}</p>
     <blockquote class="quote">“{t.quote}”</blockquote>
     <p class="text">{t.paragraph2}</p>
+    <div class="license">
+        <img alt="license" src="/images/other/license.webp" />
+    </div>
     <a href={getLocalizedPath($locale, "about")} class="read-more">{t.link}</a>
 </section>
 
