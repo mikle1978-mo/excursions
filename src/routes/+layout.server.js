@@ -1,3 +1,5 @@
+//layout.server.js
+
 import { error } from "@sveltejs/kit";
 import { EN_VALID_ROUTES } from "$lib/constants/routes";
 import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";

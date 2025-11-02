@@ -3,7 +3,7 @@ export const contacts_list = {
     mail: { ru: "Наша почта", en: "Our mail" },
     tg: { ru: "Наш телеграм", en: "Our telegram" },
     mail_link: "info@taptap.name",
-    tg_link: "https://t.me/MikleGromov",
+    tg_link: "tg://resolve?domain=kemerapp",
     rel: "nofollow",
     target: "_blank",
 };

@@ -4,10 +4,11 @@
 
 <a
     id="whatsapp"
-    href="https://wa.me/message/P3KXH7AFMVV4C1"
+    href="https://api.whatsapp.com/send?phone=905356062642"
+    target="_blank"
+    rel="noopener noreferrer nofollow"
     class="whatsapp-btn"
     aria-label="Ватсап: +905356062642"
-    rel="nofollow"
 >
     <div class="btn-icon">
         <IconWhatsapp name="whatsapp" />

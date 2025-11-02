@@ -4,9 +4,9 @@
     export let url = "https://kemer.app";
     export let logo = "https://kemer.app/icon-192.png";
     export let sameAs = [
-        "https://t.me/kemerapp",
+        "tg://resolve?domain=kemerapp",
         "https://www.instagram.com/kemer.app",
-        "https://wa.me/905356062642",
+        "https://api.whatsapp.com/send?phone=905356062642",
         "https://www.facebook.com/profile.php?id=61578033954306",
     ];
 

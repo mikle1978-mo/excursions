@@ -3,7 +3,7 @@
 
 <div class="icons-line">
     <a
-        href="https://t.me/kemerapp"
+        href="tg://resolve?domain=kemerapp"
         class="link"
         aria-label="telegram"
         rel="nofollow"
@@ -64,11 +64,11 @@
         </svg>
     </a>
     <a
-        href="https://wa.me/905356062642"
+        href="https://api.whatsapp.com/send?phone=905356062642"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
         class="link"
         aria-label="whatsapp"
-        rel="nofollow"
-        target="_blank"
     >
         <svg
             class="icon"

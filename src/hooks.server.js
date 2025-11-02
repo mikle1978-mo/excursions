@@ -1,5 +1,7 @@
 // src/hooks.server.js
 import { connectToDatabase } from "$lib/server/mongodb";
+import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
+
 import { redirect } from "@sveltejs/kit";
 
 let warmedUp = false;
@@ -31,5 +33,14 @@ export async function handle({ event, resolve }) {
         await connectToDatabase();
     }
 
-    return resolve(event);
+    // 🌐 Определяем язык страницы (универсально)
+    const pathname = event.url.pathname;
+    const foundLang = SUPPORTED_LANGUAGES.find(
+        (lang) => pathname === `/${lang}` || pathname.startsWith(`/${lang}/`)
+    );
+    const lang = foundLang || "en"; // "en" — язык по умолчанию
+
+    return resolve(event, {
+        transformPageChunk: ({ html }) => html.replace("%lang%", lang),
+    });
 }
