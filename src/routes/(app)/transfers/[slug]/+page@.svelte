@@ -13,7 +13,7 @@
     let type = item.type ?? "excursions";
     const config = pageDetailsConfig[type];
 
-    let currentTranslation = item.translations.find((t) => t.lang === lang);
+    let currentTranslation = item; // все поля уже на нужном языке
     // Хлебные крошки
     const breadcrumbsList = [
         {

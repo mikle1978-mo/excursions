@@ -2,24 +2,32 @@ import { composeCards } from "$lib/server/cards/composeCards";
 import { getCache, setCache } from "$lib/server/cache.js";
 import { CACHE_TTL_SECONDS } from "$lib/constants/cacheTtlSeconds";
 
-const CACHE_KEY = "transfers"; // Можно включить язык, тип и т.п.
+export async function load(event) {
+    const { params, route } = event;
+    const lang = params.lang || "en";
 
-export async function load() {
+    // ✅ Берём именно route.id, не route
+    const type = route?.id?.split("/").filter(Boolean).at(-1).startsWith("[")
+        ? route.id.split("/").filter(Boolean).at(-2)
+        : route.id.split("/").filter(Boolean).at(-1);
+
+    const CACHE_KEY = `${type}_${lang}`; // 👈 уникально для языка и типа
+
     let items = await getCache(CACHE_KEY);
 
     if (!items) {
-        // Если нет кеша — грузим из базы
         items = await composeCards({
-            type: CACHE_KEY,
-            translationCollection: `${CACHE_KEY}_translations`,
-            lang: "en",
+            type,
+
+            lang,
         });
-        // Сохраняем в кеш на сутки
+
         await setCache(CACHE_KEY, items, CACHE_TTL_SECONDS);
     }
 
     return {
-        type: CACHE_KEY,
+        type,
         items,
+        lang,
     };
 }

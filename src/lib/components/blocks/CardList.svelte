@@ -4,6 +4,7 @@
     import BlogsCard from "../cards/BlogsCard.svelte";
     import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
     import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
+    import EventSeoSchema from "../SEO/EventSeoSchema.svelte";
     import InfoBlock from "$lib/components/layout/InfoBlock.svelte";
     import { useServiceFilters } from "$lib/hooks/useServiceFilters.js";
     import { resetFilters, setFilters } from "$lib/stores/filters.js";
@@ -17,7 +18,6 @@
     export let data;
 
     const { type, items, lang } = data ?? {};
-
     const config = pageListConfig[type];
 
     let allItems = items || [];
@@ -90,6 +90,11 @@
     imageAlt={`Banner for ${type}`}
     locale={lang}
 />
+{#if type === "excursions"}
+    {#each filteredItems as item}
+        <EventSeoSchema {item} locale={lang} />
+    {/each}
+{/if}
 
 <div class="content">
     {#if type !== "blogs" && type !== "places"}

@@ -56,8 +56,7 @@
     const openModal = () => (isModalOpen = true);
     const closeModal = () => (isModalOpen = false);
 
-    $: currentTranslation =
-        item?.translations?.find((t) => t.lang === effectiveLocale) ?? {};
+    $: currentTranslation = item;
 
     // Хлебные крошки
     const typeLabels = {

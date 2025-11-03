@@ -119,24 +119,21 @@ export async function getItemFromDB(slug, collectionName) {
 export async function getFullItemFromDB(slug, collectionName, lang = "en") {
     const db = await connectToDatabase();
 
+    // Основной документ
     const item = await db.collection(collectionName).findOne({ slug });
     if (!item) return null;
 
-    const translations = await db
+    // Один перевод для нужного языка
+    const translation = await db
         .collection(`${collectionName}_translations`)
-        .find({ itemSlug: slug })
-        .toArray();
+        .findOne({ itemSlug: slug, lang });
 
+    // Отзывы
     const reviews = await db
         .collection("reviews")
         .find({ itemSlug: slug })
         .sort({ date: -1 })
         .toArray();
-
-    const safeTranslations = translations.map((t) => ({
-        ...t,
-        _id: t._id.toString(),
-    }));
 
     const safeReviews = reviews.map((r) => ({
         ...r,
@@ -153,13 +150,22 @@ export async function getFullItemFromDB(slug, collectionName, lang = "en") {
               ) / 10
             : null;
 
+    // ⚡ Затираем поля перевода прямо на объект
+    const safeItem = {
+        ...item,
+        _id: item._id.toString(),
+        type: collectionName,
+    };
+    if (translation) {
+        for (const key in translation) {
+            if (key !== "_id" && key !== "itemSlug" && key !== "lang") {
+                safeItem[key] = translation[key];
+            }
+        }
+    }
+
     return {
-        item: {
-            ...item,
-            _id: item._id.toString(),
-            translations: safeTranslations,
-            type: collectionName,
-        },
+        item: safeItem,
         reviews: safeReviews,
         reviewsCount,
         rating,

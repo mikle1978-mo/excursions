@@ -1,6 +1,7 @@
 <script>
     import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
     import ProductSeoSchema from "$lib/components/SEO/ProductSeoSchema.svelte";
+    import EventSeoSchema from "$lib/components/SEO/EventSeoSchema.svelte";
     import { typeLabels } from "$lib/constants/typeLabels.js";
     import ProductDetailPage from "$lib/components/blocks/ProductDetailPage.svelte";
     import { pageDetailsConfig } from "$lib/config/pageDetailsConfig.js";
@@ -13,7 +14,7 @@
     let type = item.type ?? "excursions";
     const config = pageDetailsConfig[type];
 
-    let currentTranslation = item.translations.find((t) => t.lang === lang);
+    let currentTranslation = item; // все поля уже на нужном языке
     // Хлебные крошки
     const breadcrumbsList = [
         {
@@ -61,6 +62,7 @@
     brand={baseName}
     breadcrumbs={breadcrumbsList}
 />
+<EventSeoSchema {item} locale={lang} />
 
 <ProductDetailPage
     {type}

@@ -16,14 +16,14 @@
     const defaultImage = `/images/${type}/${type.endsWith("s") ? type.slice(0, -1) : type}_default.webp`;
 
     $: slug = item.slug;
-    $: title = item.title?.[$locale] ?? "";
+    $: title = item.title ?? "";
     $: image = item.images?.[0]?.url ?? defaultImage;
     $: priceDisplay = formatPrice(item.price);
     $: oldPriceDisplay = formatPrice(getOldPrice(item.price, item.discount));
     $: priceType =
         item.priceType && card[item.priceType] ? item.priceType : "per_person";
 
-    $: priceTypeLabel = card[priceType]?.[$locale] ?? "";
+    $: priceTypeLabel = card[priceType] ?? "";
 
     $: discount = item.discount ?? 0;
     $: discountEnd = item.discountEnd ?? 0;
