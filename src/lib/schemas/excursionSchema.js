@@ -64,5 +64,9 @@ export const excursionSchema = z.object({
     whatToBring: i18nArray.optional(),
     meetingPoint: i18nString.optional(),
     tags: i18nArray.optional(),
-    videoUrl: z.string().url("Должен быть корректный URL").optional(),
+    videoUrl: z
+        .string()
+        .url("Должен быть корректный URL")
+        .or(z.literal("")) // пустая строка тоже валидна
+        .optional(),
 });
