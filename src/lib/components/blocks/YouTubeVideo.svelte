@@ -22,7 +22,7 @@
     const openVideo = () => (showVideo = true);
 </script>
 
-{#if videoId}
+{#if videoId && videoId.trim() !== ""}
     <div class="video-wrapper">
         {#if !showVideo}
             <button
