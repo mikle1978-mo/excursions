@@ -124,5 +124,18 @@ export const main_page = {
                 { url: "/images/blogs/blog_default-800.webp", width: "800w" },
             ],
         },
+        {
+            title: {
+                ru: "О нас",
+                en: "About Us",
+            },
+            link: "about",
+            img: "/images/about/about5.webp",
+            set: [
+                { url: "/images/about/about5-400.webp", width: "400w" },
+                { url: "/images/about/about5-600.webp", width: "600w" },
+                { url: "/images/about/about5-800.webp", width: "800w" },
+            ],
+        },
     ],
 };
