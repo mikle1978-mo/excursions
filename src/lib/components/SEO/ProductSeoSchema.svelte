@@ -74,15 +74,6 @@
                     inLanguage: locale,
                 },
             }),
-        provider: {
-            "@type": "Organization",
-            name: brand,
-            url: baseUrl,
-        },
-        areaServed: {
-            "@type": "Place",
-            name: "Kemer",
-        },
     };
 
     // Генерация BreadcrumbList из переданного breadcrumbs
