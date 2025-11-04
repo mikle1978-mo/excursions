@@ -106,6 +106,7 @@
                 "✔ Поставщики яхт и водных развлечений",
                 "✔ Отели и апартаменты, проверенные нами лично",
             ],
+            coffee: "Если вам нравится наш проект и вы хотите поддержать развитие честного туризма в Кемере — купите нам кофе ☕",
         },
 
         en: {
@@ -138,6 +139,7 @@
                 "✔ Yacht and water activity providers",
                 "✔ Hotels and apartments personally vetted by us",
             ],
+            coffee: "If you like our project and want to support the development of honest tourism in Kemer — buy us a coffee ☕",
         },
 
         tr: {
@@ -169,6 +171,7 @@
                 "✔ Yat ve su aktiviteleri sağlayıcıları",
                 "✔ Tarafımızdan kişisel olarak denetlenen oteller ve daireler",
             ],
+            coffee: "Projemizi beğendiyseniz ve Kemer'de dürüst turizmin gelişimini desteklemek istiyorsanız — bize bir kahve ısmarlayın ☕",
         },
     };
 
@@ -219,6 +222,16 @@
                 <li>{partner}</li>
             {/each}
         </ul>
+        <div class="text">{t.coffee}</div>
+        <div style="text-align: center;">
+            <a href="https://www.buymeacoffee.com/kemer.app" target="_blank">
+                <img
+                    src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
+                    alt="Buy Me A Coffee"
+                    style="height: 50px; width: 181px;"
+                />
+            </a>
+        </div>
     </main>
 </div>
 
