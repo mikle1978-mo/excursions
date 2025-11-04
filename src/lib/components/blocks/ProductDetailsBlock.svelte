@@ -132,7 +132,7 @@
         width: 100%;
         display: grid;
         gap: 10px;
-        padding: var(--space-vertical-md);
+        /* padding: var(--space-vertical-md); */
     }
     .detail {
         display: flex;

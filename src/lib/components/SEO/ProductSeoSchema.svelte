@@ -14,12 +14,8 @@
     const productUrl =
         baseUrl + getLocalizedPath(locale, `${type}s/${item.slug}`);
     const image = item.images?.map((img) => img.url) ?? [imageFallback];
-    const title =
-        item.translations?.find((t) => t.lang === locale)?.title ?? item.slug;
-    const description =
-        item.translations?.find((t) => t.lang === locale)?.metaDescription ??
-        item.translations?.find((t) => t.lang === locale)?.description ??
-        "";
+    const title = item.title ?? item.slug;
+    const description = item.metaDescription ?? item.description ?? "";
 
     const hasValidRating =
         typeof rating === "number" && rating >= 1 && rating <= 5;

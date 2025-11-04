@@ -15,6 +15,8 @@
 
     const priceStore = formatPrice(price);
     const oldPriceStore = formatPrice(getOldPrice(price, discount));
+    $: isDiscountActive =
+        discount > 0 && Object.values(remaining).some((val) => +val > 0);
 
     let remaining = {
         days: "00",
@@ -123,7 +125,7 @@
 <aside class="booking-card">
     <div class="price-block">
         <div class="price-row">
-            {#if remaining && discount > 0}
+            {#if isDiscountActive}
                 <span class="discount">-{discount}%</span>
                 <span class="old-price">{$oldPriceStore}</span>
             {/if}
@@ -137,7 +139,7 @@
             >
         {/if}
 
-        {#if remaining && discount > 0}
+        {#if isDiscountActive}
             <div class="discount-timer">
                 {#each Object.entries(remaining) as [key, value]}
                     <div class="time-block">

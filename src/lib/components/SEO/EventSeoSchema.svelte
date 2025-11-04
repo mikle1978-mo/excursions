@@ -91,46 +91,13 @@
 
     const now = new Date();
 
-    // startDate logic:
-    // priority: item.startDate || item.start || item.days (first) || now + 3 days
-    let startDate =
-        toDateOrNull(item.startDate) || toDateOrNull(item.start) || null;
-    if (!startDate && Array.isArray(item.days) && item.days.length) {
-        // if days stored as date strings
-        startDate = toDateOrNull(item.days[0]) || null;
-    }
-    if (!startDate) {
-        // competitor-like behaviour: now + 3 days
-        startDate = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
-        // set a default hour (e.g., 14:00) to look realistic
-        startDate.setHours(14, 0, 0, 0);
-    }
+    // startDate = сегодня + 3 дня
+    let startDate = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+    startDate.setHours(14, 0, 0, 0); // поставить дефолтное время 14:00
 
-    // endDate logic:
-    // if item.endDate present -> use it
-    // else if item.duration present -> add duration (hours if <=24, else days)
-    // else default +5 hours (typical day tour)
-    let endDate = toDateOrNull(item.endDate) || null;
-    const durationNum = item.duration != null ? Number(item.duration) : null;
-
-    if (!endDate) {
-        if (durationNum && !isNaN(durationNum)) {
-            if (durationNum > 24) {
-                // treat as days if >24
-                endDate = new Date(
-                    startDate.getTime() + durationNum * 24 * 60 * 60 * 1000
-                );
-            } else {
-                // treat as hours
-                endDate = new Date(
-                    startDate.getTime() + durationNum * 60 * 60 * 1000
-                );
-            }
-        } else {
-            // default +5 hours
-            endDate = new Date(startDate.getTime() + 5 * 60 * 60 * 1000);
-        }
-    }
+    // endDate = сегодня + 6 дней
+    let endDate = new Date(now.getTime() + 6 * 24 * 60 * 60 * 1000);
+    endDate.setHours(14, 0, 0, 0);
 
     // offers: price and currency
     const price = item.price != null ? item.price : (item.minPrice ?? 0);
