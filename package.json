@@ -20,6 +20,7 @@
     "dependencies": {
         "@upstash/redis": "^1.35.1",
         "cloudinary": "^2.7.0",
+        "dotenv": "^17.2.3",
         "leaflet": "^1.9.4",
         "mongodb": "^6.16.0",
         "svelte-dnd-action": "^0.9.61",

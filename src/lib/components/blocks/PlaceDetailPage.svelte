@@ -20,10 +20,7 @@
     $: effectiveLocale = locale ?? $localeStore;
 
     // перевод для текущей локали
-    $: currentTranslation =
-        item?.translations?.find((t) => t.lang === effectiveLocale) ??
-        item?.translations?.find((t) => t.lang === "en") ??
-        {};
+    $: currentTranslation = item ?? {};
 
     // хлебные крошки
     $: breadcrumbsList = [
