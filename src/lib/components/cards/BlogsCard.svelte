@@ -17,8 +17,8 @@
     const defaultImage = `/images/${type}/${type.endsWith("s") ? type.slice(0, -1) : type}_default.webp`;
 
     $: slug = item.slug;
-    $: title = item.title?.[$locale] ?? "";
-    $: description = item.description?.[$locale] ?? "";
+    $: title = item.title ?? "";
+    $: description = item.description ?? "";
     $: publishDate = item.publishDate ?? "";
     $: image = item.images?.[0]?.url ?? defaultImage;
     $: priceDisplay = formatPrice(item.price);
@@ -115,13 +115,12 @@
             <h2 class="card__title">
                 <a href={getLocalizedPath($locale, `${type}/${slug}`)}
                     >{title}</a
-                >
+                > <span class="card__detail-top">{description} </span>
             </h2>
         </div>
 
         <div class="card__footer">
             <div class="card__details">
-                <span class="card__detail-top">{description} </span>
                 <span class="card__detail-bottom">
                     {formatDate(publishDate, $locale)}
                 </span>
@@ -243,9 +242,18 @@
         gap: var(--space-vertical-xxs);
     }
 
-    .card__detail-top,
-    .card__detail-bottom {
+    .card__detail-top {
         font-size: var(--text-xs);
+        font-weight: 400;
+        color: var(--color-gray-600);
+        display: flex;
+        align-items: center;
+        gap: var(--space-horizontal-xxs);
+    }
+
+    .card__detail-bottom {
+        font-size: calc(var(--text-xs) * 0.9);
+        font-weight: 400;
         color: var(--color-gray-600);
         display: flex;
         align-items: center;

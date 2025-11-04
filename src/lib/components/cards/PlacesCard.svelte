@@ -11,14 +11,12 @@
     const defaultImage = `/images/${type}/${type.endsWith("s") ? type.slice(0, -1) : type}_default.webp`;
 
     $: slug = item.slug;
-    $: title = item.title?.[$locale] ?? "";
+    $: title = item.title ?? "";
     $: image = item.images?.[0]?.url ?? defaultImage;
 
     let imageSrcset = { src: image, srcset: "" };
 
-    $: translation =
-        item?.translations?.find((t) => t.lang === $locale) ||
-        item?.translations?.find((t) => t.lang === "en");
+    $: translation = item;
 
     function onImageError(event) {
         if (event.target.src !== defaultImage) {
