@@ -15,6 +15,7 @@
     import InfoBlockString from "$lib/components/blocks/InfoBlockString.svelte";
     import MapBlock from "./MapBlock.svelte";
     import { formatDate } from "$lib/utils/dateFormatter";
+    import BuyMeACoffe from "$lib/components/UI/buttons/BuyMeACoffe.svelte";
 
     export let item;
 
@@ -71,6 +72,7 @@
                     item={currentTranslation.author}
                 />
             {/if}
+            <BuyMeACoffe locale={effectiveLocale} />
         </section>
     </main>
 </div>
