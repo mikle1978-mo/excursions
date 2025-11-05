@@ -111,8 +111,19 @@
     <link rel="icon" href="/favicon-32x32.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <meta name="theme-color" content="#ffffff" />
+    <!-- for miralink verification -->
     <meta name="b4d2ca1f28ced862e56d30dc82da7cd4" content="" />
     <!-- for miralink verification -->
+    <!-- for travelpayouts verification -->
+    <script data-noptimize="1" data-cfasync="false" data-wpfc-render="false">
+        (function () {
+            var script = document.createElement("script");
+            script.async = 1;
+            script.src = "https://emrld.cc/NDcxNDIz.js?t=471423";
+            document.head.appendChild(script);
+        })();
+    </script>
+    <!-- for travelpayouts verification -->
 </svelte:head>
 
 <slot />
