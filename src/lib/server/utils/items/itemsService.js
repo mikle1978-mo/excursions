@@ -96,7 +96,7 @@ export async function createItemInDB(data, collectionName, steps) {
         .collection(`${collectionName}_translations`)
         .insertMany(translations);
     await redis.del(collectionName);
-
+    await invalidateListCache(collectionName);
     return mainDoc.slug;
 }
 
@@ -295,6 +295,7 @@ export async function updateItemInDB(slug, data, collectionName, steps) {
         .collection(`${collectionName}_translations`)
         .insertMany(translations);
     await redis.del(collectionName);
+    await invalidateListCache(collectionName); // ✅ добавляем
     await invalidateFullItemCache(slug, collectionName);
 
     return mainDoc.slug || slug;
@@ -310,6 +311,18 @@ export async function deleteItemFromDB(slug, collectionName) {
         .collection(`${collectionName}_translations`)
         .deleteMany({ itemSlug: slug });
     await redis.del(collectionName);
+    await invalidateListCache(collectionName);
     await invalidateFullItemCache(slug, collectionName);
     return true;
+}
+
+/**
+ * Инвалидируем кеш списка элементов по типу (и всем языкам)
+ */
+export async function invalidateListCache(collectionName) {
+    const keys = await redis.keys(`list:${collectionName}:*`);
+    if (keys.length) {
+        await redis.del(keys);
+        console.log(`[Cache] Инвалидирован список: ${collectionName}`);
+    }
 }
