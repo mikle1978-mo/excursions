@@ -30,5 +30,6 @@
     .text {
         font-size: var(--text-md);
         line-height: 1.6;
+        text-align: center;
     }
 </style>
