@@ -22,7 +22,16 @@ export async function composeCards({
     const pipeline = [];
 
     // 💡 Выборка: блоги и места по дате, остальное случайно
-    if (type === "blogs" || type === "places") {
+    // 💡 Выборка: блоги — по дате публикации (если нет, по дате создания),
+    // места — по дате создания, остальное — случайно
+    if (type === "blogs") {
+        pipeline.push({
+            $addFields: {
+                sortDate: { $ifNull: ["$publishDate", "$createdAt"] },
+            },
+        });
+        pipeline.push({ $sort: { sortDate: -1 } }, { $limit: 100 });
+    } else if (type === "places") {
         pipeline.push({ $sort: { createdAt: -1 } }, { $limit: 100 });
     } else {
         pipeline.push({ $sample: { size: 100 } });

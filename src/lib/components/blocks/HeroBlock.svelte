@@ -24,7 +24,7 @@
             src={heroImage.src}
             srcset={heroImage.srcset}
             sizes="(max-width: 768px) 100vw, 100vw"
-            alt={title || ""}
+            alt={title || "cover"}
             decoding="async"
             loading="lazy"
             class="hero-img"

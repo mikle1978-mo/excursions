@@ -78,7 +78,7 @@
             src={imageSrcset.src}
             srcset={imageSrcset.srcset}
             sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
-            alt={`${title} ${type}`}
+            alt={`${title} `}
             class="card__image"
             {loading}
             fetchpriority={loading === "eager" ? "high" : "auto"}
