@@ -26,8 +26,8 @@ export const blogSteps = [
                 default: "",
             },
             {
-                name: "title",
-                label: "Заголовок",
+                name: "h1",
+                label: "H1",
                 type: "object",
                 localized: true,
                 required: true,
@@ -178,8 +178,8 @@ export const blogSteps = [
         title: "SEO",
         fields: [
             {
-                name: "h1",
-                label: "H1",
+                name: "title",
+                label: "Meta Title",
                 type: "object",
                 localized: true,
                 required: true,
@@ -191,6 +191,7 @@ export const blogSteps = [
                     default: "",
                 })),
             },
+
             {
                 name: "metaDescription",
                 label: "Meta Description",

@@ -3,7 +3,7 @@ import { redis } from "../src/lib/server/redis.js";
 
 async function main() {
     try {
-        const key = "blogs_ru"; // <- твой ключ
+        const key = "blogs_en"; // <- твой ключ
         const deleted = await redis.del(key);
         console.log(`🧹 Ключ "${key}" удалён:`, deleted);
     } catch (err) {
