@@ -34,6 +34,8 @@
     import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
     import ScheduleBlock from "$lib/components/blocks/ScheduleBlock.svelte";
     import YouTubeVideo from "$lib/components/blocks/YouTubeVideo.svelte";
+    import RelatedSlider from "$lib/components/UI/carousels/RelatedSlider.svelte";
+    import RelatedCard from "$lib/components/cards/RelatedCard.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -346,6 +348,11 @@
             {#if item.slug}
                 <ReviewsList itemSlug={item.slug} locale={effectiveLocale} />
             {/if}
+            <!-- <RelatedSlider {item}>
+                <div slot="card" let:item>
+                    <RelatedCard {item} />
+                </div>
+            </RelatedSlider> -->
         </main>
     </div>
 {/if}

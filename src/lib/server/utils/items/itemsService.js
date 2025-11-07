@@ -18,16 +18,6 @@ function isLocalizedField(name, steps) {
 }
 
 /**
- * Инвалидируем кеш конкретного элемента
- */
-export async function invalidateFullItemCache(slug, collectionName) {
-    const keys = await redis.keys(`fullItem_${collectionName}_${slug}_*`);
-    if (keys.length) {
-        await redis.del(keys);
-    }
-}
-
-/**
  * Универсальная функция для создания нового элемента
  * @param {Object} data - данные элемента
  * @param {String} collectionName - имя основной коллекции
@@ -324,5 +314,15 @@ export async function invalidateListCache(collectionName) {
     if (keys.length) {
         await redis.del(keys);
         console.log(`[Cache] Инвалидирован список: ${collectionName}`);
+    }
+}
+
+/**
+ * Инвалидируем кеш конкретного элемента
+ */
+export async function invalidateFullItemCache(slug, collectionName) {
+    const keys = await redis.keys(`fullItem_${collectionName}_${slug}_*`);
+    if (keys.length) {
+        await redis.del(keys);
     }
 }
