@@ -10,7 +10,7 @@
     import { resetFilters, setFilters } from "$lib/stores/filters.js";
     import { onMount } from "svelte";
     import Scroll from "../promotions/Scroll.svelte";
-    import { pageListConfig } from "$lib/config/pageListConfig";
+    import { pageListConfig } from "$lib/config/lists/list.seo.config";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;

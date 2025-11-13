@@ -1,4 +1,4 @@
-import { connectToDatabase } from "$lib/server/mongodb";
+import { connectToDatabase } from "$lib/server/db/mongodb";
 
 /** @type {import('./$types').RequestHandler} */
 export async function GET({ params }) {

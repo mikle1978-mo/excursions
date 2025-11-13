@@ -3,7 +3,7 @@
     import { formatPrice } from "$lib/utils/priceFormatter";
     import getOldPrice from "$lib/utils/getOldPrice";
     import Rating from "../UI/rating/Rating.svelte";
-    import { getCloudinarySrcset } from "$lib/utils/optimizeCloudinary.js";
+    import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
     import { getLocalizedPath } from "$lib/stores/locale";
 
     export let item;

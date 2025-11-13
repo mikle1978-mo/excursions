@@ -1,5 +1,5 @@
 <script>
-    import { getCloudinarySrcset } from "$lib/utils/optimizeCloudinary.js";
+    import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
     export let url = "";
     export let alt = "";
     export let widths = [400, 600, 980]; // можно менять при вызове

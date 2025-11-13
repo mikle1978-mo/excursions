@@ -1,5 +1,5 @@
 <script>
-    import { main_page } from "$lib/i18n/main_page";
+    import { homeConfig } from "$lib/config/layout/home.config";
     import { locale } from "$lib/stores/locale";
     import MainCard from "$lib/components/cards/MainCard.svelte";
     import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
@@ -64,7 +64,7 @@
     />
 
     <!-- preload first 3 images -->
-    {#each main_page.pages.slice(0, 3) as item}
+    {#each homeConfig.pages.slice(0, 3) as item}
         {#if item.set && item.set.length > 0}
             <link
                 rel="preload"
@@ -88,11 +88,11 @@
     <main>
         <div class="main_page">
             <h1>
-                {main_page.title[$locale]}
+                {homeConfig.title[$locale]}
             </h1>
 
             <div class="grid">
-                {#each main_page.pages as item, i}
+                {#each homeConfig.pages as item, i}
                     <MainCard {item} loading={"eager"} />
                 {/each}
             </div>

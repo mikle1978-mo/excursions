@@ -3,7 +3,7 @@
     import IconClock from "$lib/icons/IconClock.svelte";
     import IconGroup from "$lib/icons/IconGroup.svelte";
     import ShareIcon from "../UI/buttons/ShareIcon.svelte";
-    import { getCloudinarySrcset } from "$lib/utils/optimizeCloudinary.js";
+    import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
 
     export let imageUrl = "/rafting.jpg";
     export let title = "Rafting from Kemer";

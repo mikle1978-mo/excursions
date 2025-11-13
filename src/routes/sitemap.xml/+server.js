@@ -1,4 +1,4 @@
-import { GET as getSlugs } from "../api/sitemap-slugs/+server.js";
+import { GET as getSlugs } from "../api/sitemap/+server.js";
 import { ObjectId } from "mongodb"; // для извлечения времени из _id
 import {
     NON_EN_LANGUAGES,

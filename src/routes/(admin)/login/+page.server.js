@@ -4,6 +4,7 @@ import { env } from "$env/dynamic/private";
 
 const ADMIN_USERNAME = env.ADMIN_USERNAME;
 const ADMIN_PASSWORD = env.ADMIN_PASSWORD;
+console.log("ENV:", env);
 
 export const actions = {
     default: async ({ request, cookies }) => {

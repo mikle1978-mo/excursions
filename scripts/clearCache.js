@@ -1,9 +1,9 @@
 import "dotenv/config";
-import { redis } from "../src/lib/server/redis.js";
+import { redis } from "../src/lib/server/db/redis.js";
 
 async function main() {
     try {
-        const key = "blogs_en"; // <- твой ключ
+        const key = "excursions_ru"; // <- твой ключ
         const deleted = await redis.del(key);
         console.log(`🧹 Ключ "${key}" удалён:`, deleted);
     } catch (err) {

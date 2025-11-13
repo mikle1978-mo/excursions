@@ -1,5 +1,5 @@
 // src/routes/api/warmup/+server.js
-import { connectToDatabase } from "$lib/server/mongodb";
+import { connectToDatabase } from "$lib/server/db/mongodb";
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function GET() {

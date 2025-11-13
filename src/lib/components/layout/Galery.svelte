@@ -3,7 +3,7 @@
     import Modal from "$lib/components/UI/Modal.svelte";
     import { locale } from "$lib/stores/locale";
     import { gallery_texts } from "$lib/i18n/gallery";
-    import { getCloudinarySrcset } from "$lib/utils/optimizeCloudinary.js";
+    import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
     const defaultImage = `/images/excursions/excursion_default.webp`;
 
     export let images = [];

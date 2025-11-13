@@ -1,5 +1,5 @@
 import { json } from "@sveltejs/kit";
-import { connectToDatabase } from "$lib/server/mongodb";
+import { connectToDatabase } from "$lib/server/db/mongodb";
 
 /** @type {import('./$types').RequestHandler} */
 export async function POST({ request, getClientAddress }) {

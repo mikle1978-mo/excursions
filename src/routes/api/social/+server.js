@@ -2,7 +2,7 @@ import {
     publishToAllSocial,
     updateAllSocial,
     deleteAllSocial,
-} from "$lib/server/social/index.js";
+} from "$lib/server/services/shared/social/index.js";
 import { json } from "@sveltejs/kit";
 
 export async function POST({ request }) {

@@ -2,7 +2,7 @@
     import { locale, getLocalizedPath } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
     import { get } from "svelte/store";
-    import { getCloudinarySrcset } from "$lib/utils/optimizeCloudinary.js";
+    import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
 
     export let item;
     export let type = "places"; // тип контента

@@ -1,5 +1,5 @@
 <script>
-    import { main_page } from "$lib/i18n/main_page";
+    import { homeConfig } from "$lib/config/layout/home.config";
     import { locale } from "$lib/stores/locale";
     import MainCard from "$lib/components/cards/MainCard.svelte";
     import { onMount } from "svelte";
@@ -43,7 +43,7 @@
     <link rel="alternate" hreflang="en" href={`${baseUrl}`} />
     <!-- <link rel="alternate" hreflang="x-default" href={`${baseUrl}`} /> -->
 
-    {#each main_page.pages.slice(0, 3) as item}
+    {#each homeConfig.pages.slice(0, 3) as item}
         <link rel="preload" as="image" href={item.img} type="image/webp" />
     {/each}
 </svelte:head>
@@ -52,11 +52,11 @@
     <main>
         <div class="main_page">
             <h1>
-                {main_page.title[$locale]}
+                {homeConfig.title[$locale]}
             </h1>
 
             <div class="grid">
-                {#each main_page.pages as item, i}
+                {#each homeConfig.pages as item, i}
                     <MainCard {item} loading={i < 3 ? "eager" : "lazy"} />
                 {/each}
             </div>

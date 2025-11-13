@@ -11,7 +11,7 @@ function scanDir(dir, prefix = "") {
         const fullPath = path.join(dir, item);
         const isLast = index === items.length - 1;
         const stats = fs.statSync(fullPath);
-        const connector = isLast ? "└---" : "+---";
+        const connector = isLast ? "L---" : "+---";
         if (stats.isDirectory()) {
             console.log(`${prefix}${connector}${item}`);
             scanDir(fullPath, `${prefix}${isLast ? "    " : "|   "}`);

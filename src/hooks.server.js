@@ -1,5 +1,5 @@
 // src/hooks.server.js
-import { connectToDatabase } from "$lib/server/mongodb";
+import { connectToDatabase } from "$lib/server/db/mongodb";
 import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 
 import { redirect } from "@sveltejs/kit";

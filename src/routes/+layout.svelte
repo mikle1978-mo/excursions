@@ -4,7 +4,7 @@
     import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import { onMount } from "svelte";
-    import { initCurrencyService } from "$lib/services/currencyService";
+
     import { locale as localeStore, setLocale } from "$lib/stores/locale.js";
     import { browser } from "$app/environment";
     import SeoOrganization from "$lib/components/SEO/SeoOrganization.svelte";
@@ -63,8 +63,6 @@
             document.documentElement.lang = value;
             console.log("Set lang:", value);
         });
-        initCurrencyService();
-        const interval = setInterval(initCurrencyService, 30 * 60 * 1000);
 
         // 👇 Добавляем метрику
         (function (m, e, t, r, i, k, a) {

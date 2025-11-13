@@ -1,4 +1,4 @@
-import { connectToDatabase } from "$lib/server/mongodb";
+import { connectToDatabase } from "$lib/server/db/mongodb";
 
 export async function load({ params }) {
     const lang = params.lang || "en";
