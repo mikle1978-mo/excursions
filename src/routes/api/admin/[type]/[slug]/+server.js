@@ -53,11 +53,11 @@ export async function GET({ params }) {
 }
 
 /**
- * Обновление места
+ * Обновление
  */
 export async function PUT({ request, params }) {
-    const typeParam = params.type;
-    const config = collectionsConfig[typeParam];
+    const { type, slug } = params;
+    const config = collectionsConfig[type];
     if (!config)
         return json({ error: "Unknown collection type" }, { status: 400 });
 
@@ -65,7 +65,7 @@ export async function PUT({ request, params }) {
 
     try {
         const data = await request.json();
-        const slug = await updateItemInDB(params.slug, data, type, steps);
+        const slug = await updateItemInDB(slug, data, type, steps);
         await updateAllSocial({ ...data, slug, type });
         return json({ success: true, slug }, { status: 200 });
     } catch (err) {
@@ -82,9 +82,6 @@ export async function PUT({ request, params }) {
  */
 export async function DELETE({ params }) {
     const { type, slug } = params;
-    console.log("====================================");
-    console.log(params);
-    console.log("====================================");
 
     if (!collectionsConfig[type])
         return json({ error: `Unknown collection ${type}` }, { status: 400 });

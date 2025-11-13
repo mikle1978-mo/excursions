@@ -13,7 +13,7 @@ export async function deleteItemFromDB(slug, collectionName) {
     await db
         .collection(`${collectionName}_translations`)
         .deleteMany({ itemSlug: slug });
-    await redis.del(collectionName);
+
     await invalidateListCache(collectionName);
     await invalidateFullItemCache(slug, collectionName);
     return true;

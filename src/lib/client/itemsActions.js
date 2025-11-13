@@ -93,7 +93,7 @@ export async function duplicateItem(type, slug) {
     const collection = getCollection(type);
     if (!confirm("Дублировать элемент?")) return;
 
-    const res = await fetch(`${getApiUrl(collection)}/duplicate`, {
+    const res = await fetch(`${getApiUrl(collection)}/${slug}/duplicate`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
