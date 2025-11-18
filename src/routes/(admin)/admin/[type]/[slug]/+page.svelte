@@ -5,6 +5,7 @@
     import { page } from "$app/stores";
 
     $: type = $page.params.type;
+    $: slug = $page.params.slug;
     export let data;
 
     const { item } = data.itemData;
@@ -23,5 +24,5 @@
 {:else if error}
     <p class="error">{error}</p>
 {:else}
-    <UniversalForm {mode} {item} {type} />
+    <UniversalForm {mode} {item} {type} {slug} />
 {/if}

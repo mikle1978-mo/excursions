@@ -1,6 +1,7 @@
 // src/hooks.server.js
 import { connectToDatabase } from "$lib/server/db/mongodb";
 import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
+import { getExchangeRates } from "$lib/server/services/shared/currency/exchange.service";
 
 import { redirect } from "@sveltejs/kit";
 
@@ -9,7 +10,7 @@ let warmedUp = false;
 /** @type {import('@sveltejs/kit').Handle} */
 export async function handle({ event, resolve }) {
     // 410 Gone для удалённых префиксов
-    const removedPrefixes = ["/catalog/", "/landings/", "/cart/", "/en/"];
+    const removedPrefixes = ["/catalog/", "/landings/", "/cart/"];
 
     if (
         removedPrefixes.some((prefix) => event.url.pathname.startsWith(prefix))
@@ -39,6 +40,9 @@ export async function handle({ event, resolve }) {
         (lang) => pathname === `/${lang}` || pathname.startsWith(`/${lang}/`)
     );
     const lang = foundLang || "en"; // "en" — язык по умолчанию
+
+    // 💰 Получаем валюты и кладём в locals
+    event.locals.exchangeRates = await getExchangeRates();
 
     return resolve(event, {
         transformPageChunk: ({ html }) => html.replace("%lang%", lang),

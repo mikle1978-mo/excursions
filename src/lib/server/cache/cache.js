@@ -1,17 +1,75 @@
 import { redis } from "$lib/server/db/redis.js";
-const oneDayInSeconds = 24 * 60 * 60;
+import { collectionsConfig } from "$lib/config/app.config.js";
 
-export async function getCache(key) {
-    const data = await redis.get(key);
-    console.log(
-        data
-            ? `✅ Кеш найден по ключу: ${key}`
-            : `❌ Кеш пустой по ключу: ${key}`
-    );
-    return data;
-}
+// Универсальный кеш
+export const cache = {
+    async getItem(type, { slug, lang }) {
+        const cfg = collectionsConfig[type]?.cacheConfig;
+        if (!cfg)
+            throw new Error(`Cache config not found for collection: ${type}`);
 
-export async function setCache(key, value, ttlSeconds = oneDayInSeconds) {
-    console.log(`💾 Сохраняем в кеш: ${key}`);
-    await redis.set(key, value, { ex: ttlSeconds });
-}
+        const key = `${cfg.prefix}:fullItem:${slug}:${lang}`;
+        const data = await redis.get(key);
+        return data ? JSON.parse(data) : null;
+    },
+
+    async setItem(type, { slug, lang }, value) {
+        const cfg = collectionsConfig[type]?.cacheConfig;
+        if (!cfg)
+            throw new Error(`Cache config not found for collection: ${type}`);
+
+        const key = `${cfg.prefix}:fullItem:${slug}:${lang}`;
+        await redis.set(key, JSON.stringify(value), { ex: cfg.ttl });
+    },
+
+    async getList(type, { lang }) {
+        const cfg = collectionsConfig[type]?.cacheConfig;
+        if (!cfg)
+            throw new Error(`Cache config not found for collection: ${type}`);
+
+        const key = `${cfg.prefix}:list:${lang}`;
+        const data = await redis.get(key);
+        return data ? JSON.parse(data) : null;
+    },
+
+    async setList(type, { lang }, value) {
+        const cfg = collectionsConfig[type]?.cacheConfig;
+        if (!cfg)
+            throw new Error(`Cache config not found for collection: ${type}`);
+
+        const key = `${cfg.prefix}:list:${lang}`;
+        await redis.set(key, JSON.stringify(value), { ex: cfg.ttl });
+    },
+
+    /**
+     * 🔹 Универсальный метод инвалидирования по паттерну
+     *
+     * Формат ключей в Redis:
+     *
+     * 1. Full item для конкретного языка:
+     *    {prefix}:fullItem:{slug}:{lang}
+     *    Пример: excursions:fullItem:rafting:ru
+     *
+     * 2. Full item для всех языков:
+     *    {prefix}:fullItem:{slug}:*
+     *    Пример: excursions:fullItem:rafting:*
+     *
+     * 3. Список элементов для конкретного языка:
+     *    {prefix}:list:{lang}
+     *    Пример: excursions:list:ru
+     *
+     * 4. Список элементов для всех языков:
+     *    {prefix}:list:*
+     *    Пример: excursions:list:*
+     *
+     * Чтобы инвалидировать любой из этих кейсов, используйте паттерн:
+     * await cache.invalidateKeysByPattern('excursions:fullItem:rafting:ru')
+     * await cache.invalidateKeysByPattern('excursions:list:*')
+     */
+    async invalidateKeysByPattern(pattern) {
+        const keys = await redis.keys(pattern);
+        if (keys.length) {
+            await redis.del(keys);
+        }
+    },
+};

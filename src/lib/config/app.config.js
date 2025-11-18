@@ -14,8 +14,10 @@ import { footerConfig } from "$lib/config/layout/footer.config.js";
 import { headerConfig } from "$lib/config/layout/header.config.js";
 import { aboutConfig } from "$lib/config/layout/about.config.js";
 
+import { currencyConfig } from "$lib/config/services/currency.config.js";
+
 // === Конфиги layout’а (главная, футер, хедер и т.д.)
-export const layoutConfig = {
+const layoutConfig = {
     home: homeConfig,
     footer: footerConfig,
     header: headerConfig,
@@ -82,3 +84,9 @@ export const collectionsConfig = Object.fromEntries(
         },
     ])
 );
+
+export const appConfig = {
+    layout: layoutConfig,
+    collections: collectionsConfig,
+    currency: currencyConfig, // <<<<<< добавили сюда
+};

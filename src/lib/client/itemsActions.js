@@ -57,8 +57,8 @@ export async function createItem(type, data) {
  * Обновление
  */
 export async function updateItem(type, slug, data) {
-    const collection = getCollection(type);
-    const res = await fetch(`${getApiUrl(collection)}/${slug}`, {
+    const url = `${getApiUrl(type)}/${slug}`;
+    const res = await fetch(url, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -114,13 +114,12 @@ export async function duplicateItem(type, slug) {
 /**
  * Обновление статуса "active"
  */
-export async function toggleItemActive(type, slug, active) {
-    const res = await fetch(`${getApiUrl(type)}/toggle-active`, {
-        method: "POST",
+export async function toggleItemActive(type, slug) {
+    const res = await fetch(`${getApiUrl(type)}/${slug}/toggle-active`, {
+        method: "PATCH",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ slug, active }),
     });
 
     if (!res.ok) {
@@ -128,5 +127,6 @@ export async function toggleItemActive(type, slug, active) {
         throw new Error(err.error || "Ошибка при обновлении статуса");
     }
 
-    return true;
+    const data = await res.json();
+    return data.active; // возвращаем новый статус
 }

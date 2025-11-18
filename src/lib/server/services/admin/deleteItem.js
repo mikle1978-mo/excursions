@@ -1,20 +1,13 @@
 import { connectToDatabase } from "$lib/server/db/mongodb";
-import { redis } from "$lib/server/db/redis";
-import { flattenFields } from "$lib/server/services/shared/flattenFields";
-import { isLocalizedField } from "$lib/server/services/shared/isLocalizedField";
-import { invalidateListCache } from "$lib/server/services/shared/invalidateListCache";
-import { invalidateFullItemCache } from "$lib/server/services/shared/invalidateFullItemCache";
+import { invalidateCache } from "$lib/server/cache/invalidateAfterChange.js";
 
-export async function deleteItemFromDB(slug, collectionName) {
-    console.log(slug, collectionName);
+export async function deleteItemFromDB(slug, type) {
+    console.log(slug, type);
 
     const db = await connectToDatabase();
-    await db.collection(collectionName).deleteOne({ slug });
-    await db
-        .collection(`${collectionName}_translations`)
-        .deleteMany({ itemSlug: slug });
+    await db.collection(type).deleteOne({ slug });
+    await db.collection(`${type}_translations`).deleteMany({ itemSlug: slug });
 
-    await invalidateListCache(collectionName);
-    await invalidateFullItemCache(slug, collectionName);
+    await invalidateCache(type, slug);
     return true;
 }

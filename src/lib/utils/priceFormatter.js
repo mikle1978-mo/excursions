@@ -1,34 +1,14 @@
-import { locale } from "../stores/locale";
-import { selectedCurrency, exchangeRates } from "../stores/currency";
-import { derived } from "svelte/store";
+import { currencyConfig } from "$lib/config/services/currency.config.js";
 
-export function formatPrice(priceInUSD) {
-    return derived(
-        [selectedCurrency, exchangeRates, locale],
-        ([$selectedCurrency, $exchangeRates, $locale]) => {
-            const currency = $selectedCurrency || "USD";
-            const rate = $exchangeRates[currency] || 1;
-            const convertedPrice = priceInUSD * rate;
+export function formatPrice(amount, currency) {
+    const cur =
+        currencyConfig.currencies[currency] ||
+        currencyConfig.currencies[currencyConfig.base];
 
-            // Используем локаль на основе языка (например, ru → ru-RU)
-            const localeMap = {
-                USD: "en-US",
-                EUR: "de-DE",
-                RUB: "ru-RU",
-                TRY: "tr-TR",
-            };
-
-            const formatter = new Intl.NumberFormat(
-                localeMap[currency] || "en-US",
-                {
-                    style: "currency",
-                    currency,
-                    currencyDisplay: "symbol",
-                    maximumFractionDigits: 2,
-                }
-            );
-
-            return formatter.format(convertedPrice);
-        }
-    );
+    return new Intl.NumberFormat(cur.locale, {
+        style: "currency",
+        currency,
+        currencyDisplay: "symbol",
+        maximumFractionDigits: 2,
+    }).format(amount);
 }

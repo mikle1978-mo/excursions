@@ -4,10 +4,8 @@ import { json } from "@sveltejs/kit";
 import { collectionsConfig } from "$lib/config/app.config.js";
 import { mergeWithSchema } from "$lib/utils/mergeWithSchema";
 import { mergeWithTranslations } from "$lib/utils/mergeWithTranslations";
-import {
-    getItemFromDB,
-    updateItemInDB,
-} from "$lib/server/services/public/items/itemsService";
+import { getItemFromDB } from "$lib/server/services/public/items/itemsService";
+import { updateItemInDB } from "$lib/server/services/admin/updateItem.js";
 import { deleteItemFromDB } from "$lib/server/services/admin/deleteItem.js";
 import {
     updateAllSocial,
@@ -57,6 +55,7 @@ export async function GET({ params }) {
  */
 export async function PUT({ request, params }) {
     const { type, slug } = params;
+
     const config = collectionsConfig[type];
     if (!config)
         return json({ error: "Unknown collection type" }, { status: 400 });
@@ -65,9 +64,13 @@ export async function PUT({ request, params }) {
 
     try {
         const data = await request.json();
-        const slug = await updateItemInDB(slug, data, type, steps);
-        await updateAllSocial({ ...data, slug, type });
-        return json({ success: true, slug }, { status: 200 });
+
+        // ✅ получаем новый слаг, если он поменялся
+        const newSlug = await updateItemInDB(slug, data, type, steps);
+
+        await updateAllSocial({ ...data, slug: newSlug, type });
+
+        return json({ success: true, slug: newSlug }, { status: 200 });
     } catch (err) {
         console.error(`Ошибка при обновлении ${type}:`, err);
         return json(

@@ -1,17 +1,16 @@
 import { connectToDatabase } from "$lib/server/db/mongodb";
-import { redis } from "$lib/server/db/redis";
 import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages";
 import { flattenFields } from "$lib/server/services/shared/flattenFields";
 import { isLocalizedField } from "$lib/server/services/shared/isLocalizedField";
-import { invalidateListCache } from "$lib/server/services/shared/invalidateListCache";
+import { invalidateCache } from "$lib/server/cache/invalidateAfterChange.js";
 
 /**
  * Универсальная функция для создания нового элемента
  * @param {Object} data - данные элемента
- * @param {String} collectionName - имя основной коллекции
+ * @param {String} type - имя основной коллекции
  * @param {Array} steps - массив шагов формы (для локализованных полей)
  */
-export async function createItemInDB(data, collectionName, steps) {
+export async function createItemInDB(data, type, steps) {
     const allFields = flattenFields(steps);
 
     // Основной документ (не локализованные поля)
@@ -35,14 +34,12 @@ export async function createItemInDB(data, collectionName, steps) {
 
     const db = await connectToDatabase();
 
-    const exists = await db
-        .collection(collectionName)
-        .findOne({ slug: mainDoc.slug });
+    const exists = await db.collection(type).findOne({ slug: mainDoc.slug });
     if (exists) {
         throw new Error("Такой slug уже существует");
     }
 
-    await db.collection(collectionName).insertOne(mainDoc);
+    await db.collection(type).insertOne(mainDoc);
 
     // Локализованные поля
     const localizedFields = allFields.filter((f) =>
@@ -70,10 +67,8 @@ export async function createItemInDB(data, collectionName, steps) {
         return t;
     });
 
-    await db
-        .collection(`${collectionName}_translations`)
-        .insertMany(translations);
-    await redis.del(collectionName);
-    await invalidateListCache(collectionName);
+    await db.collection(`${type}_translations`).insertMany(translations);
+
+    await invalidateCache(type);
     return mainDoc.slug;
 }

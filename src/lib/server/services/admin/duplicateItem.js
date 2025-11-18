@@ -1,8 +1,6 @@
 // src/lib/server/services/admin/duplicateItem.js
 import { connectToDatabase } from "$lib/server/db/mongodb";
-import { redis } from "$lib/server/db/redis";
-import { invalidateListCache } from "$lib/server/services/shared/invalidateListCache";
-import { invalidateFullItemCache } from "$lib/server/services/shared/invalidateFullItemCache";
+import { invalidateCache } from "$lib/server/cache/invalidateAfterChange.js";
 
 export async function duplicateItem(slug, type) {
     const db = await connectToDatabase();
@@ -35,8 +33,7 @@ export async function duplicateItem(slug, type) {
         await db.collection(`${type}_translations`).insertMany(newTranslations);
     }
 
-    await invalidateListCache(type);
-    await invalidateFullItemCache(slug, type);
+    await invalidateCache(type);
 
     return newSlug;
 }
