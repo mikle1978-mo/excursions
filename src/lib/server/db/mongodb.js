@@ -8,9 +8,9 @@ if (!env.MONGODB_URI) {
 
 // Конфигурация подключения
 const MONGODB_OPTIONS = {
-    connectTimeoutMS: 5000,
+    connectTimeoutMS: 10000,
     socketTimeoutMS: 30000,
-    serverSelectionTimeoutMS: 5000,
+    serverSelectionTimeoutMS: 10000,
     maxPoolSize: 50,
     retryWrites: true,
     w: "majority",

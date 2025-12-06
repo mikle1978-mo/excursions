@@ -89,6 +89,7 @@
         width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        padding: 0 var(--space-vertical-sm);
         gap: var(--space-vertical-xs);
     }
 

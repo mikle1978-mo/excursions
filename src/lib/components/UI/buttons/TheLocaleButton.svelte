@@ -1,12 +1,11 @@
 <script>
     import { locale, setLocale } from "$lib/stores/locale.js";
-    import { goto } from "$app/navigation";
     import { get } from "svelte/store";
     import { page } from "$app/stores";
     import { fly } from "svelte/transition";
     import {
         SUPPORTED_LANGUAGES,
-        NON_EN_LANGUAGES,
+        LANG_META,
     } from "$lib/constants/supportedLanguages";
 
     let isOpen = false;
@@ -21,31 +20,36 @@
         const currentPath = get(page).url.pathname;
         let segments = currentPath.split("/").filter(Boolean);
 
-        if (segments.length && NON_EN_LANGUAGES.includes(segments[0])) {
-            segments.shift();
+        // Не трогаем admin и api
+        if (segments[0] === "admin" || segments[0] === "api") {
+            setLocale(lang);
+            isOpen = false;
+            return;
         }
 
-        if (NON_EN_LANGUAGES.includes(lang)) {
+        // если первый сегмент — язык, заменяем
+        if (SUPPORTED_LANGUAGES.includes(segments[0])) {
+            segments[0] = lang;
+        } else {
             segments.unshift(lang);
         }
 
         const newPath = "/" + segments.join("/");
 
         setLocale(lang);
-        goto(newPath, { replaceState: true });
+        // ❗ НЕ goto — он делает SPA
+        window.location.assign(newPath);
+
         isOpen = false;
     };
 
-    const toggleDropdown = () => {
-        isOpen = !isOpen;
-    };
+    const toggleDropdown = () => (isOpen = !isOpen);
 </script>
 
 <div class="locale-container">
     <button
         class="locale-button {isOpen ? 'open' : ''}"
         onclick={toggleDropdown}
-        aria-label="Выбрать язык"
         aria-expanded={isOpen}
     >
         <span>{$locale.toUpperCase()}</span>
@@ -58,7 +62,7 @@
                     class="locale-option {$locale === lang ? 'selected' : ''}"
                     onclick={() => changeLanguage(lang)}
                 >
-                    <span>{lang.toLocaleUpperCase()}</span>
+                    <span>{LANG_META[lang].flag} </span>
                 </button>
             {/each}
         </div>

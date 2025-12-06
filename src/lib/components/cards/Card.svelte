@@ -7,19 +7,30 @@
     import Rating from "../UI/rating/Rating.svelte";
     import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
     import { get } from "svelte/store";
+    import { selectedCurrency } from "$lib/stores/currency.js";
+    import { appConfig } from "$lib/config/app.config.js";
 
     export let item;
     export let type;
-    let imageSrcset = { src: image, srcset: "" };
-
+    export let lang;
     export let loading = "lazy";
+
+    const config = appConfig.collections[type].cardConfig || {};
+
     const defaultImage = `/images/${type}/${type.endsWith("s") ? type.slice(0, -1) : type}_default.webp`;
 
-    $: slug = item.slug;
-    $: title = item.title ?? "";
-    $: image = item.images?.[0]?.url ?? defaultImage;
-    $: priceDisplay = formatPrice(item.price);
-    $: oldPriceDisplay = formatPrice(getOldPrice(item.price, item.discount));
+    const slug = item.slug;
+    const title = item.title ?? "";
+    const image = item.image ?? defaultImage;
+    let imageSrcset = { src: image, srcset: "" };
+    // подписка на store
+    let currency = "USD";
+    $: $selectedCurrency, (currency = $selectedCurrency);
+    $: priceDisplay = formatPrice(item.price, currency);
+    $: oldPriceDisplay = formatPrice(
+        getOldPrice(item.price, item.discount),
+        currency
+    );
     $: priceType =
         item.priceType && card[item.priceType] ? item.priceType : "per_person";
 
@@ -43,8 +54,8 @@
               ? ``
               : //   ? `${card.before[$locale]} ${item.groupSize} ${card.people[$locale]}`
                 (fuelLabel ?? "");
-    $: rating = item.rating ?? 5;
-    $: reviewsCount = item.reviewsCount ?? 10;
+    const rating = item.rating ?? 5;
+    const reviewsCount = item.reviewsCount ?? 10;
     $: meta = item.meta ?? {};
     // $: imageSrcset = getCloudinarySrcset(image, [400, 600, 800, 980]);
 
@@ -70,10 +81,7 @@
 </script>
 
 <div class="card">
-    <a
-        href={getLocalizedPath($locale, `${type}/${slug}`)}
-        class="card__image-wrapper"
-    >
+    <a href={`${lang}/${type}/${slug}`} class="card__image-wrapper">
         <img
             src={imageSrcset.src}
             srcset={imageSrcset.srcset}
@@ -113,11 +121,16 @@
     <div class="card__content">
         <div class="card__header">
             <h2 class="card__title">
-                <a href={getLocalizedPath($locale, `${type}/${slug}`)}
-                    >{title}</a
-                >
+                <a href={`${lang}/${type}/${slug}`}>{title}</a>
             </h2>
-            <Rating {rating} {reviewsCount} locale={$locale} />
+            {#if config.fields?.includes("metaDescription")}
+                <span>
+                    {item.metaDescription}
+                </span>
+            {/if}
+            {#if config.fields?.includes("rating")}
+                <Rating {rating} {reviewsCount} locale={$locale} />
+            {/if}
         </div>
 
         <div class="card__footer">
@@ -127,17 +140,18 @@
                     {detailBottom}
                 </span>
             </div>
-
-            <div class="card__price">
-                <span class="card__price-value">
-                    <span class="card__old-price"
-                        >{discount > 0 ? $oldPriceDisplay : ""}</span
-                    > <span>{$priceDisplay}</span>
-                </span>
-                <!-- <span class="card__price-type">
+            {#if config.fields?.includes("price")}
+                <div class="card__price">
+                    <span class="card__price-value">
+                        <span class="card__old-price"
+                            >{discount > 0 ? oldPriceDisplay : ""}</span
+                        > <span>{priceDisplay}</span>
+                    </span>
+                    <!-- <span class="card__price-type">
                     {priceTypeLabel}
                 </span> -->
-            </div>
+                </div>
+            {/if}
         </div>
     </div>
 </div>

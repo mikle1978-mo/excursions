@@ -1,10 +1,12 @@
 import { redis } from "$lib/server/db/redis.js";
-import { collectionsConfig } from "$lib/config/app.config.js";
+import { appConfig } from "$lib/config/app.config.js";
+
+const cacheConfig = appConfig.cache;
 
 // Универсальный кеш
 export const cache = {
     async getItem(type, { slug, lang }) {
-        const cfg = collectionsConfig[type]?.cacheConfig;
+        const cfg = cacheConfig[type];
         if (!cfg)
             throw new Error(`Cache config not found for collection: ${type}`);
 
@@ -14,7 +16,7 @@ export const cache = {
     },
 
     async setItem(type, { slug, lang }, value) {
-        const cfg = collectionsConfig[type]?.cacheConfig;
+        const cfg = cacheConfig[type];
         if (!cfg)
             throw new Error(`Cache config not found for collection: ${type}`);
 
@@ -23,7 +25,7 @@ export const cache = {
     },
 
     async getList(type, { lang }) {
-        const cfg = collectionsConfig[type]?.cacheConfig;
+        const cfg = cacheConfig[type];
         if (!cfg)
             throw new Error(`Cache config not found for collection: ${type}`);
 
@@ -33,7 +35,7 @@ export const cache = {
     },
 
     async setList(type, { lang }, value) {
-        const cfg = collectionsConfig[type]?.cacheConfig;
+        const cfg = cacheConfig[type];
         if (!cfg)
             throw new Error(`Cache config not found for collection: ${type}`);
 

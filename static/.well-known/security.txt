@@ -1,0 +1,10 @@
+# Security contact information for Kemer.app
+# RFC 9116 standard: https://www.rfc-editor.org/rfc/rfc9116
+
+Contact: mailto:security@kemer.app
+Encryption: https://kemer.app/pgp-key.txt
+Acknowledgements: https://kemer.app/security-hall-of-fame
+Preferred-Languages: en, ru
+
+# Policy URL (если есть отдельная страница с политикой безопасности)
+Policy: https://kemer.app/security-policy

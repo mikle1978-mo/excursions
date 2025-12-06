@@ -193,10 +193,19 @@
 }
 
 /* ===== Темная тема ===== */
+/* ===== Темная тема ===== */
 @media (prefers-color-scheme: dark) {
     :root {
         --color-bg: var(--color-dark);
+        --color-bg-rgb: var(--color-dark-rgb); /* Критически важно! */
         --color-text: var(--color-light);
+        --color-text-rgb: var(--color-light-rgb); /* Также важно */
+
+        /* Обновляем RGB значения для системных цветов */
+        --color-primary-rgb: var(--color-primary-rgb); /* Остается тем же */
+        --color-secondary-rgb: var(--color-secondary-rgb); /* Остается тем же */
+        --color-accent-rgb: var(--color-accent-rgb); /* Остается тем же */
+
         --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
         --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.6);
         --shadow-lg: 0 10px 24px rgba(0, 0, 0, 0.7);

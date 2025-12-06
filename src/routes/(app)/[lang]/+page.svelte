@@ -1,63 +1,40 @@
 <script>
-    import { homeConfig } from "$lib/config/layout/home.config";
-    import { locale } from "$lib/stores/locale";
+    import { appConfig } from "$lib/config/app.config.js";
     import MainCard from "$lib/components/cards/MainCard.svelte";
-    import { onMount } from "svelte";
+    import SeoRenderer from "$lib/components/SEO/SeoRenderer.svelte";
+
     import { page } from "$app/stores";
     import { fly, slide } from "svelte/transition";
+    export let data;
 
-    const baseUrl = import.meta.env.VITE_BASE_URL;
-    const baseName = import.meta.env.VITE_BASE_NAME;
+    const { lang } = data ?? {};
 
-    $: canonicalUrl = $locale === "en" ? `${baseUrl}` : `${baseUrl}/${$locale}`;
-
-    let isMounted = false;
-
-    onMount(() => {
-        isMounted = true;
-    });
-
-    const SEO = {
-        title: {
-            ru: "Отдых в Кемере — экскурсии, аренда яхт и авто, трансфер",
-            en: "Kemer Vacation — Tours, Yacht & Car Rentals, Transfers",
-        },
-        description: {
-            ru: "Все для комфортного отдыха в Кемере: экскурсии, аренда яхт и автомобилей, трансферы.",
-            en: "Everything for a comfortable stay in Kemer: excursions, yacht and car rentals, and transfers.",
-        },
-        keywords: {
-            ru: "отдых, кемере, экскурсии, аренда, яхт, автомобилей, трансферы, комфортного, бизнеса, турции",
-            en: "kemer, vacation, comfortable, excursions, yacht, car, rentals, transfers, stay, everything",
-        },
-    };
+    const homeConfig = appConfig.pages.home;
+    const type = "home";
 </script>
 
+<!-- SEO для страницы -->
+<SeoRenderer {type} {lang} />
+
 <svelte:head>
-    <title>{SEO.title[$locale]}</title>
-    <meta name="description" content={SEO.description[$locale]} />
-    <link rel="canonical" href={canonicalUrl} />
-
-    <!-- hreflang -->
-    <link rel="alternate" hreflang="ru" href={`${baseUrl}/ru`} />
-    <link rel="alternate" hreflang="en" href={`${baseUrl}`} />
-    <!-- <link rel="alternate" hreflang="x-default" href={`${baseUrl}`} /> -->
-
-    {#each homeConfig.pages.slice(0, 3) as item}
-        <link rel="preload" as="image" href={item.img} type="image/webp" />
-    {/each}
+    <!-- // Google AdSense -->
+    <script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5449189100205390"
+        crossorigin="anonymous"
+    ></script>
 </svelte:head>
 
 <div class="content">
     <main>
         <div class="main_page">
             <h1>
-                {homeConfig.title[$locale]}
+                {homeConfig.h1[lang]}
             </h1>
 
             <div class="grid">
                 {#each homeConfig.pages as item, i}
-                    <MainCard {item} loading={i < 3 ? "eager" : "lazy"} />
+                    <MainCard {item} loading={"eager"} {lang} />
                 {/each}
             </div>
         </div>
@@ -120,7 +97,7 @@
     /* 768+ — 2 колонки (можешь оставить 2, если не хочешь мельчить) */
     @media (min-width: 768px) {
         .grid {
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr;
         }
     }
 

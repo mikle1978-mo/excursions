@@ -1,7 +1,10 @@
+<!--  WhatsApp.svelte -->
+
 <script>
     import IconWhatsapp from "$lib/icons/IconWhatsapp.svelte";
 </script>
 
+<!-- <div class="test-style">TEST</div> -->
 <a
     id="whatsapp"
     href="https://api.whatsapp.com/send?phone=905356062642"

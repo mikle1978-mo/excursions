@@ -5,17 +5,18 @@
     import ShareIcon from "../UI/buttons/ShareIcon.svelte";
     import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
 
-    export let imageUrl = "/rafting.jpg";
+    export let images = [];
     export let title = "Rafting from Kemer";
     export let subtitle = "Adrenaline and nature";
     export let rating;
     export let reviewsCount;
-    export let locale = "en";
-
-    $: effectiveLocale = locale || "en";
+    export let lang;
 
     // Для HeroBlock вычисляем srcset
-    $: heroImage = getCloudinarySrcset(imageUrl, [400, 800, 1200, 1600, 1920]);
+    let heroImage = getCloudinarySrcset(
+        images[0].url,
+        [400, 800, 1200, 1600, 1920]
+    );
 </script>
 
 <div class="hero">
@@ -33,7 +34,7 @@
     <div class="hero-content">
         <div class="top-row">
             {#if rating}
-                <Rating {rating} {reviewsCount} locale={effectiveLocale} />
+                <Rating {rating} {reviewsCount} locale={lang} />
             {/if}
             <ShareIcon />
         </div>

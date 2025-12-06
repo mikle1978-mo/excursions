@@ -1,12 +1,10 @@
 <script>
+    import { appConfig } from "$lib/config/app.config";
     import { onMount } from "svelte";
-    import {
-        locale as localeStore,
-        getLocalizedPath,
-    } from "$lib/stores/locale";
+
     import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
     import HeroBlock from "$lib/components/blocks/HeroBlock.svelte";
-    import ReviewsList from "$lib/components/layout/ReviewsList.svelte";
+    import ReviewsList from "$lib/components/blocks/ReviewsList.svelte";
     import BookingCard from "$lib/components/blocks/BookingCard.svelte";
     import ProductDetailsBlock from "$lib/components/blocks/ProductDetailsBlock.svelte";
     import Galery from "$lib/components/layout/Galery.svelte";
@@ -34,25 +32,24 @@
     import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
     import ScheduleBlock from "$lib/components/blocks/ScheduleBlock.svelte";
     import YouTubeVideo from "$lib/components/blocks/YouTubeVideo.svelte";
-    import RelatedSlider from "$lib/components/UI/carousels/RelatedSlider.svelte";
+    import RelatedSlider from "$lib/components/blocks/RelatedSlider.svelte";
     import RelatedCard from "$lib/components/cards/RelatedCard.svelte";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
 
     export let type;
+    export let lang;
     export let item;
-
     export let rating;
     export let reviewsCount;
-    export let locale;
-    export let translations;
+
+    const config = appConfig.collections[type]?.detailPage;
+    console.log("55555", config);
 
     export function getI18nLabel(obj, key, locale) {
         return obj?.[key]?.[locale] ?? key;
     }
-
-    $: effectiveLocale = locale ?? $localeStore;
 
     let isModalOpen = false;
     const openModal = () => (isModalOpen = true);
@@ -70,12 +67,12 @@
 
     $: breadcrumbsList = [
         {
-            label: effectiveLocale === "ru" ? "Главная" : "Home",
-            href: getLocalizedPath(effectiveLocale, ""),
+            label: lang === "ru" ? "Главная" : "Home",
+            href: "/",
         },
         {
-            label: typeLabels[type]?.[effectiveLocale] ?? type,
-            href: getLocalizedPath(effectiveLocale, `${type}s`),
+            label: typeLabels[type]?.[lang] ?? type,
+            href: `${type}`,
         },
         {
             label: currentTranslation?.title || item?.slug,
@@ -93,10 +90,10 @@
 {#if !item}
     <div class="error-page">
         <h1 class="error-title">
-            {effectiveLocale === "ru" ? "Объект не найден" : "Item not found"}
+            {lang === "ru" ? "Объект не найден" : "Item not found"}
         </h1>
-        <a href={`/${effectiveLocale}/${type}s`}>
-            ← {effectiveLocale === "ru" ? "Вернуться к списку" : "Back to list"}
+        <a href={`/${lang}/${type}s`}>
+            ← {lang === "ru" ? "Вернуться к списку" : "Back to list"}
         </a>
     </div>
 {:else}
@@ -114,13 +111,13 @@
                 subtitle={currentTranslation.subtitle}
                 {rating}
                 {reviewsCount}
-                locale={effectiveLocale}
+                locale={lang}
             />
             <section class="top_block">
-                <ProductDetailsBlock {type} {item} {locale} />
+                <ProductDetailsBlock {type} {item} {lang} />
                 <PriceBlock
                     {type}
-                    locale={effectiveLocale}
+                    locale={lang}
                     price={item.price}
                     priceType={item.priceType}
                     discount={item.discount}
@@ -145,87 +142,55 @@
 
                 {#if currentTranslation.schedule}
                     <ScheduleBlock
-                        title={getI18nLabel(
-                            translations,
-                            "schedule",
-                            effectiveLocale
-                        )}
+                        title={"schedule"}
                         items={currentTranslation.schedule}
                         icon={IconList}
                     />
                 {/if}
                 {#if currentTranslation.requiredDocuments}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "requiredDocuments",
-                            effectiveLocale
-                        )}
+                        title={"requiredDocuments"}
                         items={currentTranslation.requiredDocuments}
                     />
                 {/if}
 
                 {#if currentTranslation.insuranceDescription}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "insuranceDescription",
-                            effectiveLocale
-                        )}
+                        title={"insuranceDescription"}
                         items={currentTranslation.insuranceDescription}
                     />
                 {/if}
 
                 {#if currentTranslation.insuranceExclusions}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "insuranceExclusions",
-                            effectiveLocale
-                        )}
+                        title={"insuranceExclusions"}
                         items={currentTranslation.insuranceExclusions}
                     />
                 {/if}
 
                 {#if currentTranslation.extraTimePolicy}
                     <InfoBlockString
-                        title={getI18nLabel(
-                            translations,
-                            "extraTimePolicy",
-                            effectiveLocale
-                        )}
+                        title={"extraTimePolicy"}
                         item={currentTranslation.extraTimePolicy}
                     />
                 {/if}
 
                 {#if currentTranslation.fuelPolicy}
                     <InfoBlockString
-                        title={getI18nLabel(
-                            translations,
-                            "fuelPolicy",
-                            effectiveLocale
-                        )}
+                        title={"fuelPolicy"}
                         item={currentTranslation.fuelPolicy}
                     />
                 {/if}
 
                 {#if currentTranslation.accidentInstructions}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "accidentInstructions",
-                            effectiveLocale
-                        )}
+                        title={"accidentInstructions"}
                         items={currentTranslation.accidentInstructions}
                     />
                 {/if}
                 {#if currentTranslation.whatYouSee}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "whatYouSee",
-                            effectiveLocale
-                        )}
+                        title={"whatYouSee"}
                         items={currentTranslation.whatYouSee}
                         icon={IconImage}
                     />
@@ -233,11 +198,7 @@
 
                 {#if currentTranslation.whatToBring}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "whatToBring",
-                            effectiveLocale
-                        )}
+                        title={"whatToBring"}
                         items={currentTranslation.whatToBring}
                         icon={IconBriefcase}
                     />
@@ -245,11 +206,7 @@
 
                 {#if currentTranslation.includes}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "includes",
-                            effectiveLocale
-                        )}
+                        title={"includes"}
                         items={currentTranslation.includes}
                         icon={IconGift}
                     />
@@ -257,66 +214,42 @@
 
                 {#if currentTranslation.rentalConditions}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "rentalConditions",
-                            effectiveLocale
-                        )}
+                        title={"rentalConditions"}
                         items={currentTranslation.rentalConditions}
                     />
                 {/if}
 
                 {#if currentTranslation.servicesDetails}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "servicesDetails",
-                            effectiveLocale
-                        )}
+                        title={"servicesDetails"}
                         items={currentTranslation.servicesDetails}
                     />
                 {/if}
 
                 {#if currentTranslation.meetingPoint}
                     <InfoBlockString
-                        title={getI18nLabel(
-                            translations,
-                            "meetingPoint",
-                            effectiveLocale
-                        )}
+                        title={"meetingPoint"}
                         item={currentTranslation.meetingPoint}
                         icon={IconMapPin}
                     />
                 {/if}
                 {#if currentTranslation.whyChooseUs}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "whyChooseUs",
-                            effectiveLocale
-                        )}
+                        title={"whyChooseUs"}
                         items={currentTranslation.whyChooseUs}
                         icon={IconThumbsUp}
                     />
                 {/if}
                 {#if currentTranslation.usp}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "usp",
-                            effectiveLocale
-                        )}
+                        title={"usp"}
                         items={currentTranslation.usp}
                         icon={IconPlus}
                     />
                 {/if}
                 {#if currentTranslation.guarantees}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "guarantees",
-                            effectiveLocale
-                        )}
+                        title={"guarantees"}
                         items={currentTranslation.guarantees}
                         icon={IconClipBoard}
                     />
@@ -324,11 +257,7 @@
 
                 {#if currentTranslation.notes}
                     <InfoBlockArray
-                        title={getI18nLabel(
-                            translations,
-                            "notes",
-                            effectiveLocale
-                        )}
+                        title={"notes"}
                         items={currentTranslation.notes}
                     />
                 {/if}
@@ -338,7 +267,7 @@
                     id="book-button"
                     active={item.active}
                     {type}
-                    locale={effectiveLocale}
+                    locale={lang}
                     onBook={openModal}
                 />
             </div>
@@ -346,7 +275,7 @@
             <AboutBlock />
 
             {#if item.slug}
-                <ReviewsList itemSlug={item.slug} locale={effectiveLocale} />
+                <ReviewsList itemSlug={item.slug} locale={lang} />
             {/if}
             <!-- <RelatedSlider {item}>
                 <div slot="card" let:item>

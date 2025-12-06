@@ -1,10 +1,10 @@
 <script>
     export let title = "Расписание";
-    export let items = []; // массив строк
+    export let schedule = []; // массив строк
     export let icon = null;
 </script>
 
-{#if items.length > 0}
+{#if schedule.length > 0}
     <div class="info-block">
         <h2 class="title-with-icon">
             {#if icon}
@@ -14,7 +14,7 @@
         </h2>
 
         <ul class="timeline">
-            {#each items as item}
+            {#each schedule as item}
                 <li class="timeline-item">{item}</li>
             {/each}
         </ul>

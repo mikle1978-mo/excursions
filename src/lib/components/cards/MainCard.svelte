@@ -1,39 +1,42 @@
 <script>
-    import { locale } from "$lib/stores/locale.js";
-    import { onMount } from "svelte";
+    import { appConfig } from "$lib/config/app.config";
 
     export let item;
+    export let lang;
     export let loading = "lazy"; // по умолчанию
 
-    const {
-        title = { ru: "Фото ссылки", en: "Link photo" },
-        img: image = "/images/excursions/excursion_default.webp",
-        set = [],
-        link: slug = "",
-    } = item;
+    const defaultImages = appConfig.defaultImage;
+    const link = item.link;
+    const title = item.title;
+    const type = item.type;
 
-    // Преобразуем массив set в строку для srcset
-    $: srcset = set.length
-        ? set.map(({ url, width }) => `${url} ${width}`).join(", ")
-        : "";
+    // ключ для картинки
+    const { default: img, set = [] } = defaultImages[type] || {
+        default: "/images/excursions/excursions_default.webp",
+        set: [],
+    };
 
-    // Основное изображение берем либо первое из set, либо дефолтное
-    $: src = set.length ? set[0].url : image;
+    // генерируем srcset
+    const srcset =
+        set.length > 0
+            ? set
+                  .map((img) => `/images/${type}/${img.url} ${img.width}`)
+                  .join(", ")
+            : "";
 
-    let isMounted = false;
-
-    onMount(() => {
-        isMounted = true;
-    });
+    // основной src
+    const src = set.length
+        ? `/images/${type}/${set[0].url}`
+        : `/images/${type}/${img}`;
 </script>
 
 <div class="card" transition:fly={{ y: 20, duration: 500 }}>
-    <a href={`/${$locale}/${slug}`} class="card__image-wrapper">
+    <a href={`/${lang}/${link}`} class="card__image-wrapper">
         <img
             {src}
             {srcset}
             sizes="(max-width: 400px) 100vw, (max-width: 768px) 50vw, 33vw"
-            alt={title[$locale]}
+            alt={defaultImages[type]?.alt?.[lang] ?? title[lang] ?? "Photo"}
             class="card__image"
             {loading}
             fetchpriority={loading === "eager" ? "high" : "auto"}
@@ -46,9 +49,7 @@
     <div class="card__content">
         <div class="card__header">
             <h2 class="card__title">
-                <a href={$locale === "en" ? `/${slug}` : `/${$locale}/${slug}`}
-                    >{title[$locale]}</a
-                >
+                <a href={`/${lang}/${link}`}>{title[lang]}</a>
             </h2>
         </div>
     </div>

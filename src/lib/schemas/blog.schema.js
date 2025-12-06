@@ -11,7 +11,14 @@ export const i18nArray = z.object(
         SUPPORTED_LANGUAGES.map((lang) => [lang, z.array(z.string())])
     )
 );
-
+export const zDateField = z
+    .string()
+    .optional()
+    .transform((val) => (val ? new Date(val) : null))
+    .refine(
+        (val) => val === null || !isNaN(val.getTime()),
+        "Некорректная дата"
+    );
 // Контент
 const paragraphSchema = z.object({
     text: z.string().min(1, "Текст обязателен"),
@@ -40,7 +47,7 @@ export const blogsSchema = z.object({
     subtitle: i18nString.optional(),
     description: i18nString.optional(),
     author: i18nString.optional(),
-    publishDate: z.string().optional(),
+    publishDate: zDateField,
     content: contentSchema,
     images: z
         .array(z.object({ url: z.string(), public_id: z.string() }))

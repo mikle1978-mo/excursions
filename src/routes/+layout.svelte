@@ -1,8 +1,6 @@
+<!-- src\routes\+layout.svelte -->
+
 <script>
-    import TheFooter from "$lib/components/layout/TheFooter.svelte";
-    import TheHeader from "$lib/components/layout/TheHeader.svelte";
-    import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
-    import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import { onMount } from "svelte";
 
     import { locale as localeStore, setLocale } from "$lib/stores/locale.js";

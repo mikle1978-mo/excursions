@@ -4,7 +4,7 @@
     import { onDestroy } from "svelte";
     import { SORT_OPTIONS } from "$lib/constants/filtersConfig";
 
-    export let type;
+    export let type = "";
 
     let selectedSort = null;
 

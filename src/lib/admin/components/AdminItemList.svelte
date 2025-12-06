@@ -6,7 +6,7 @@
     import ExportCSVButton from "$lib/components/UI/buttons/ExportCSVButton.svelte";
     import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
     import { goto } from "$app/navigation";
-    import { collectionsConfig } from "$lib/config/app.config";
+    import { appConfig } from "$lib/config/app.config";
     import {
         deleteItem,
         duplicateItem,
@@ -17,15 +17,11 @@
     export let meta = { total: 0 };
     export let type;
 
-    const key = collectionsConfig[type]
-        ? type
-        : type.endsWith("s") && collectionsConfig[type.slice(0, -1)]
-          ? type.slice(0, -1)
-          : null;
+    const listAdmin = appConfig.listAdmin;
 
-    if (!key) throw new Error(`Не найден конфиг для типа ${type}`);
+    if (!listAdmin) throw new Error(`Не найден конфиг для типа ${type}`);
 
-    const columns = collectionsConfig[key].adminListConfig?.fields || [];
+    const columns = listAdmin[type].fields || [];
 
     let sortKey =
         columns.find((col) => col.name === "createdAt")?.name ||

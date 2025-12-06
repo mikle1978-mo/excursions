@@ -1,7 +1,7 @@
 import { currentYear } from "$lib/constants/date";
 
 export const homeConfig = {
-    title: {
+    h1: {
         ru: `Все, что нужно для комфортного отдыха в Кемере!`,
         en: `Everything you need for a comfortable vacation in Kemer!`,
     },
@@ -12,21 +12,7 @@ export const homeConfig = {
                 en: `Kemer Excursions ${currentYear}`,
             },
             link: "excursions",
-            img: "/images/excursions/excursion_default.webp",
-            set: [
-                {
-                    url: "/images/excursions/excursion_default-400.webp",
-                    width: "400w",
-                },
-                {
-                    url: "/images/excursions/excursion_default-600.webp",
-                    width: "600w",
-                },
-                {
-                    url: "/images/excursions/excursion_default-800.webp",
-                    width: "800w",
-                },
-            ],
+            type: "excursions",
         },
         {
             title: {
@@ -34,12 +20,7 @@ export const homeConfig = {
                 en: `Yacht Rent in Kemer ${currentYear}`,
             },
             link: "yachts",
-            img: "/images/yachts/yacht_default.webp",
-            set: [
-                { url: "/images/yachts/yacht_default-400.webp", width: "400w" },
-                { url: "/images/yachts/yacht_default-600.webp", width: "600w" },
-                { url: "/images/yachts/yacht_default-800.webp", width: "800w" },
-            ],
+            type: "yachts",
         },
         {
             title: {
@@ -47,12 +28,7 @@ export const homeConfig = {
                 en: `Car Rental in Kemer ${currentYear}`,
             },
             link: "cars",
-            img: "/images/cars/car_default.webp",
-            set: [
-                { url: "/images/cars/car_default-400.webp", width: "400w" },
-                { url: "/images/cars/car_default-600.webp", width: "600w" },
-                { url: "/images/cars/car_default-800.webp", width: "800w" },
-            ],
+            type: "cars",
         },
         {
             title: {
@@ -60,21 +36,7 @@ export const homeConfig = {
                 en: "Property Rental",
             },
             link: "development",
-            img: "/images/property/property_default.webp",
-            set: [
-                {
-                    url: "/images/property/property_default-400.webp",
-                    width: "400w",
-                },
-                {
-                    url: "/images/property/property_default-600.webp",
-                    width: "600w",
-                },
-                {
-                    url: "/images/property/property_default-800.webp",
-                    width: "800w",
-                },
-            ],
+            type: "properties",
         },
         {
             title: {
@@ -82,21 +44,7 @@ export const homeConfig = {
                 en: "Transfer",
             },
             link: "transfers/aeroport-antalya-mercedes-vito",
-            img: "/images/transfers/transfer_default.webp",
-            set: [
-                {
-                    url: "/images/transfers/transfer_default-400.webp",
-                    width: "400w",
-                },
-                {
-                    url: "/images/transfers/transfer_default-600.webp",
-                    width: "600w",
-                },
-                {
-                    url: "/images/transfers/transfer_default-800.webp",
-                    width: "800w",
-                },
-            ],
+            type: "transfers",
         },
         {
             title: {
@@ -104,12 +52,7 @@ export const homeConfig = {
                 en: "Places",
             },
             link: "places",
-            img: "/images/places/place_default.webp",
-            set: [
-                { url: "/images/places/place_default-400.webp", width: "400w" },
-                { url: "/images/places/place_default-600.webp", width: "600w" },
-                { url: "/images/places/place_default-800.webp", width: "800w" },
-            ],
+            type: "places",
         },
         {
             title: {
@@ -117,12 +60,7 @@ export const homeConfig = {
                 en: "News/Events",
             },
             link: "blogs",
-            img: "/images/blogs/blog_default.webp",
-            set: [
-                { url: "/images/blogs/blog_default-400.webp", width: "400w" },
-                { url: "/images/blogs/blog_default-600.webp", width: "600w" },
-                { url: "/images/blogs/blog_default-800.webp", width: "800w" },
-            ],
+            type: "blogs",
         },
         {
             title: {
@@ -130,12 +68,21 @@ export const homeConfig = {
                 en: "About Us",
             },
             link: "about",
-            img: "/images/about/about5.webp",
-            set: [
-                { url: "/images/about/about5-400.webp", width: "400w" },
-                { url: "/images/about/about5-600.webp", width: "600w" },
-                { url: "/images/about/about5-800.webp", width: "800w" },
-            ],
+            type: "about",
         },
     ],
+    seo: {
+        title: {
+            ru: "Отдых в Кемере — экскурсии, аренда яхт и авто, трансфер",
+            en: "Kemer Vacation — Tours, Yacht & Car Rentals, Transfers",
+        },
+        description: {
+            ru: "Все для комфортного отдыха в Кемере: экскурсии, аренда яхт и автомобилей, трансферы.",
+            en: "Everything for a comfortable stay in Kemer: excursions, yacht and car rentals, and transfers.",
+        },
+        keywords: {
+            ru: "отдых, кемере, экскурсии, аренда, яхт, автомобилей, трансферы, комфортного, бизнеса, турции",
+            en: "kemer, vacation, comfortable, excursions, yacht, car, rentals, transfers, stay, everything",
+        },
+    },
 };

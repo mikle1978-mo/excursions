@@ -25,6 +25,13 @@ export async function updateItemInDB(slug, data, type, steps) {
         mainDoc.slug = data.slug.trim().toLowerCase();
     }
 
+    // mainDoc — объект с полями для обновления
+    if (mainDoc.publishDate && typeof mainDoc.publishDate === "string") {
+        mainDoc.publishDate = new Date(mainDoc.publishDate);
+    }
+    if (mainDoc.discountEnd && typeof mainDoc.discountEnd === "string") {
+        mainDoc.discountEnd = new Date(mainDoc.discountEnd);
+    }
     await db.collection(type).updateOne(
         { slug },
         {

@@ -1,10 +1,10 @@
 <script>
-    export let item = "";
+    export let description = "";
 </script>
 
-{#if item}
+{#if description}
     <div class="description-block">
-        {@html item}
+        {@html description}
     </div>
 {/if}
 
@@ -12,6 +12,7 @@
     .description-block {
         color: var(--color-gray-700);
         line-height: 1.6;
+        padding: 0;
         /* margin: 1em 0; */
     }
 
@@ -126,6 +127,12 @@
 
         .description-block :global(h3) {
             font-size: var(--text-md);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .description-block {
+            padding: 0 var(--space-vertical-sm);
         }
     }
 </style>

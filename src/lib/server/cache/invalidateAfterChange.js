@@ -1,6 +1,8 @@
 // src/lib/server/cache/invalidateAfterChange.js
 import { cache } from "$lib/server/cache/cache.js";
-import { collectionsConfig } from "$lib/config/app.config.js";
+import { appConfig } from "$lib/config/app.config.js";
+
+const cacheConfig = appConfig.cache;
 
 /**
  * Инвалидирует кеш для списка и fullItem после изменения/создания/удаления
@@ -8,7 +10,7 @@ import { collectionsConfig } from "$lib/config/app.config.js";
  * @param {string} [slug] - slug элемента (необязательный)
  */
 export async function invalidateCache(type, slug) {
-    const cfg = collectionsConfig[type]?.cacheConfig;
+    const cfg = cacheConfig[type];
     if (!cfg) throw new Error(`Cache config not found for collection: ${type}`);
     const prefix = cfg.prefix;
 

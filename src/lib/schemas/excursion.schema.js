@@ -14,6 +14,15 @@ export const i18nArray = z.object(
     )
 );
 
+export const zDateField = z
+    .string()
+    .optional()
+    .transform((val) => (val ? new Date(val) : null))
+    .refine(
+        (val) => val === null || !isNaN(val.getTime()),
+        "Некорректная дата"
+    );
+
 /**
  * Схема валидации экскурсии с поддержкой i18n по языкам из SUPPORTED_LANGUAGES
  */
@@ -29,14 +38,7 @@ export const excursionsSchema = z.object({
     price: z.union([z.string(), z.number()]).transform(Number).optional(),
     priceType: z.enum(["per_person", "per_trip", "per_hour"]).optional(),
     discount: z.union([z.string(), z.number()]).transform(Number).optional(),
-    discountEnd: z
-        .string()
-        .optional()
-        .refine(
-            (val) => !val || !isNaN(new Date(val).getTime()),
-            "discountEnd должен быть корректной датой"
-        ),
-
+    discountEnd: zDateField,
     images: z
         .array(
             z.object({

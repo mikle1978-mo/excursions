@@ -90,9 +90,7 @@ export function setFormData(store, data, type = "excursion", slug = "new") {
     if (typeof localStorage !== "undefined") {
         localStorage.removeItem(getStorageKey(type, slug));
     }
-
     const currentForm = get(store);
-    console.log("setFormData after setting, form.slug:", currentForm.slug);
 }
 
 /**

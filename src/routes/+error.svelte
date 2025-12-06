@@ -97,34 +97,6 @@
         color: var(--color-text);
     }
 
-    h1 {
-        font-size: var(--text-xl);
-        margin-bottom: var(--space-vertical-sm);
-        color: var(--color-primary);
-    }
-
-    p {
-        font-size: var(--text-md);
-        margin-bottom: var(--space-vertical-md);
-        color: var(--color-text);
-    }
-
-    a.button {
-        display: inline-block;
-        padding: 0.75rem 1.5rem;
-        background-color: var(--color-primary);
-        color: var(--color-light);
-        border-radius: var(--radius-md);
-        text-decoration: none;
-        font-weight: bold;
-        transition: background-color var(--transition-normal);
-        cursor: pointer;
-    }
-
-    a.button:hover {
-        background-color: var(--color-primary-hover);
-    }
-
     @keyframes fadeIn {
         to {
             opacity: 1;

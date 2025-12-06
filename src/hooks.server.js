@@ -41,6 +41,9 @@ export async function handle({ event, resolve }) {
     );
     const lang = foundLang || "en"; // "en" — язык по умолчанию
 
+    // САМЫЙ ВАЖНЫЙ МОМЕНТ
+    event.locals.lang = lang;
+
     // 💰 Получаем валюты и кладём в locals
     event.locals.exchangeRates = await getExchangeRates();
 

@@ -7,12 +7,16 @@
 
     export let price = 0;
     export let priceType = ""; // 'per_day', 'per_hour', ...
-    export let locale = "en";
+    export let lang = "en";
     export let discount = 0; // Discount percentage, e.g., 10 for 10%
+
+    console.log(price, priceType, lang, discount);
+
     export let discountEnd = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000)
         .toISOString()
         .split("T")[0]; // Optional end date for the discount
 
+    console.log(price, discount, discountEnd);
     const priceStore = formatPrice(price);
     const oldPriceStore = formatPrice(getOldPrice(price, discount));
     $: isDiscountActive =
@@ -106,10 +110,8 @@
         tr: "indirim süresi",
     };
 
-    function getPriceTypeLabel(type, locale) {
-        return (
-            priceTypeLabels[type]?.[locale] || priceTypeLabels[type]?.en || ""
-        );
+    function getPriceTypeLabel(type, lang) {
+        return priceTypeLabels[type]?.[lang] || priceTypeLabels[type]?.en || "";
     }
 
     onMount(() => {
@@ -127,16 +129,14 @@
         <div class="price-row">
             {#if isDiscountActive}
                 <span class="discount">-{discount}%</span>
-                <span class="old-price">{$oldPriceStore}</span>
+                <span class="old-price">{oldPriceStore}</span>
             {/if}
 
-            <span class="price">{$priceStore}</span>
+            <span class="price">{priceStore}</span>
         </div>
 
         {#if priceType}
-            <span class="per-person"
-                >{getPriceTypeLabel(priceType, locale)}</span
-            >
+            <span class="per-person">{getPriceTypeLabel(priceType, lang)}</span>
         {/if}
 
         {#if isDiscountActive}
@@ -145,12 +145,12 @@
                     <div class="time-block">
                         <div class="number">{value}</div>
                         <div class="label">
-                            {timeUnits[locale][keyMap[key]]}
+                            {timeUnits[lang][keyMap[key]]}
                         </div>
                     </div>
                 {/each}
             </div>
-            <span class="discountEndLabel">{discountEndLabels[locale]}</span>
+            <span class="discountEndLabel">{discountEndLabels[lang]}</span>
         {/if}
     </div>
 </aside>

@@ -1,24 +1,15 @@
 <script>
     import Card from "$lib/components/cards/Card.svelte";
-    import PlacesCard from "../cards/PlacesCard.svelte";
-    import BlogsCard from "../cards/BlogsCard.svelte";
     import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
-    import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
-    import EventSeoSchema from "../SEO/EventSeoSchema.svelte";
-    import InfoBlock from "$lib/components/layout/InfoBlock.svelte";
     import { useServiceFilters } from "$lib/hooks/useServiceFilters.js";
     import { resetFilters, setFilters } from "$lib/stores/filters.js";
-    import { onMount } from "svelte";
-    import Scroll from "../promotions/Scroll.svelte";
-    import { pageListConfig } from "$lib/config/lists/list.seo.config";
+    import { appConfig } from "$lib/config/app.config";
 
-    const baseUrl = import.meta.env.VITE_BASE_URL;
-    const baseName = import.meta.env.VITE_BASE_NAME;
+    export let type;
+    export let items;
+    export let lang;
 
-    export let data;
-
-    const { type, items, lang } = data ?? {};
-    const config = pageListConfig[type];
+    const config = appConfig.list?.[type] || {};
 
     let allItems = items || [];
     let filteredItems = [];
@@ -32,129 +23,50 @@
         update();
     }
 
-    let lastScrollTop = 0;
-    let infoVisible = false;
-    let accumulatedDeltaDown = 0;
-    let accumulatedDeltaUp = 0;
-
-    onMount(() => {
-        const contentEl = document.querySelector("main");
-        if (contentEl) {
-            contentEl.addEventListener("scroll", handleScroll);
-        }
-        return () => {
-            if (contentEl) {
-                contentEl.removeEventListener("scroll", handleScroll);
-            }
-        };
-    });
-
-    function handleScroll(event) {
-        const currentScroll = event.target.scrollTop;
-        const delta = currentScroll - lastScrollTop;
-
-        if (delta > 0) {
-            accumulatedDeltaDown += delta;
-            accumulatedDeltaUp = 0;
-            if (accumulatedDeltaDown >= 10 && infoVisible) {
-                infoVisible = false;
-                accumulatedDeltaDown = 0;
-            }
-        } else if (delta < 0) {
-            accumulatedDeltaUp += -delta;
-            accumulatedDeltaDown = 0;
-            if (accumulatedDeltaUp >= 150 && !infoVisible) {
-                infoVisible = true;
-                accumulatedDeltaUp = 0;
-            }
-        }
-
-        lastScrollTop = currentScroll;
-    }
-
     function resetAllFilters() {
         resetFilters();
     }
 </script>
 
-<PageSeoHead
-    {baseUrl}
-    {baseName}
-    urlPath={type}
-    slug=""
-    title={config.seoText?.[lang]?.title ?? config.seoText?.en?.title}
-    description={config.seoText?.[lang]?.description ??
-        config.seoText?.en?.description}
-    keywords={config.seoText?.[lang]?.keywords ?? ""}
-    image={`${baseUrl}/images/${type}/${config.defaultImage}`}
-    imageAlt={`Banner for ${type}`}
-    locale={lang}
-/>
-{#if type === "excursions"}
-    {#each filteredItems as item}
-        <EventSeoSchema {item} locale={lang} />
-    {/each}
-{/if}
+<main>
+    <div class="main_page">
+        <h1 class="title">
+            {config?.listText?.[lang]?.h1 ?? config?.listText?.en?.h1}
+        </h1>
 
-<div class="content">
-    {#if type !== "blogs" && type !== "places"}
-        <SidebarFilters
-            {type}
-            items={allItems}
-            on:filtersChanged={(e) => {
-                setFilters(e.detail);
-                console.log("Filters changed:", e.detail);
-            }}
-        />
-        <InfoBlock
-            {infoVisible}
-            filteredCount={filteredItems.length}
-            onReset={resetAllFilters}
-            {type}
-        />
-    {/if}
-
-    <main>
-        <div class="main_page">
-            <h1>
-                {config?.seoText?.[lang]?.h1 ?? config?.seoText?.en?.h1}
-            </h1>
-
-            <div class="description-block">
-                {@html config?.seoText?.[lang]?.topText ??
-                    config?.seoText?.en?.topText}
-            </div>
-
-            <div class="grid">
-                {#each filteredItems as item, i (item.slug)}
-                    {#if type === "places"}
-                        <PlacesCard {item} loading={i < 5 ? "eager" : "lazy"} />
-                    {:else if type === "blogs"}
-                        <BlogsCard
-                            {item}
-                            {type}
-                            loading={i < 5 ? "eager" : "lazy"}
-                        />
-                    {:else}
-                        <Card
-                            {item}
-                            loading={i < 5 ? "eager" : "lazy"}
-                            {type}
-                        />
-                    {/if}
-                {/each}
-            </div>
-
-            <div class="description-block">
-                {@html config?.seoText?.[lang]?.bottomText ??
-                    config?.seoText?.en?.bottomText}
-            </div>
+        <div class="description-block">
+            {@html config?.listText?.[lang]?.topText ??
+                config?.listText?.en?.topText}
         </div>
-    </main>
-</div>
+
+        {#if config.filters && Object.keys(config.filters).length}
+            <SidebarFilters
+                {type}
+                items={allItems}
+                on:filtersChanged={(e) => setFilters(e.detail)}
+            />
+            <InfoBlock
+                filteredCount={filteredItems.length}
+                onReset={resetAllFilters}
+                {type}
+            />
+        {/if}
+
+        <div class="grid">
+            {#each filteredItems as item, i (item.slug)}
+                <Card {item} {type} {lang} loading={i < 5 ? "eager" : "lazy"} />
+            {/each}
+        </div>
+
+        <div class="description-block">
+            {@html config?.listText?.[lang]?.bottomText ??
+                config?.listText?.en?.bottomText}
+        </div>
+    </div>
+</main>
 
 <style>
-    .content {
+    /* .content {
         position: relative;
         display: flex;
         align-items: flex-start;
@@ -170,7 +82,7 @@
         flex-grow: 1;
         border-top: 1px solid var(--color-gray-500);
         border-bottom: 1px solid var(--color-gray-500);
-    }
+    } */
 
     .main_page {
         display: flex;
@@ -179,7 +91,7 @@
         width: 100%;
     }
 
-    h1 {
+    .title {
         margin-top: var(--space-vertical-xs);
         text-align: center;
         font-size: var(--text-xl);

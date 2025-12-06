@@ -1,142 +1,103 @@
-// src/lib/server/cards/composeCards.js
-import { connectToDatabase } from "$lib/server/db/mongodb";
-import { enrichCard } from "$lib/helpers/enrichCard";
+// src/lib/server/services/shared/cards/composeCards.js
 
-/**
- * Универсальный сборщик карточек с применением перевода
- * @param {Object} options
- * @param {string} options.type - Название основной коллекции (например, "excursions", "yachts")
- * @param {string} [options.translationCollection] - Название коллекции переводов (по умолчанию `${type}_translations`)
- * @param {string} [options.reviewCollection] - Название коллекции отзывов (по умолчанию "reviews")
- * @param {string} [options.lang] - Язык перевода (по умолчанию "en")
- * @returns {Promise<Array>} Обогащённые карточки
- */
-export async function composeCards({
-    type,
-    translationCollection = `${type}_translations`,
-    reviewCollection = "reviews",
-    lang = "en",
-}) {
-    const db = await connectToDatabase();
+import { appConfig } from "$lib/config/app.config.js";
+import { enrichCard } from "$lib/helpers/enrichCard.js";
 
-    const pipeline = [];
+export async function composeCards({ db, type, lang = "en" }) {
+    const collectionCfg = appConfig.collections[type];
+    if (!collectionCfg) throw new Error(`Unknown collection type: ${type}`);
 
-    // 💡 Выборка: блоги и места по дате, остальное случайно
-    // 💡 Выборка: блоги — по дате публикации (если нет, по дате создания),
-    // места — по дате создания, остальное — случайно
-    // 💡 Выборка: блоги — по дате публикации (если нет, по дате создания),
-    // места — по дате создания, остальное — случайно
-    if (type === "blogs") {
-        // Показываем только активные блоги
-        pipeline.push({
-            $match: {
-                active: true,
-            },
-        });
+    const cardCfg = collectionCfg.cardConfig;
+    if (!cardCfg?.fields)
+        throw new Error(`Missing cardConfig.fields for ${type}`);
 
-        // Добавляем поле сортировки (fallback: publishDate → createdAt)
-        pipeline.push({
-            $addFields: {
-                sortDate: { $ifNull: ["$publishDate", "$createdAt"] },
-            },
-        });
+    const listCfg = appConfig.list[type] ?? {};
 
-        pipeline.push({ $sort: { sortDate: -1 } }, { $limit: 100 });
-    } else if (type === "places") {
-        pipeline.push({ $sort: { createdAt: -1 } }, { $limit: 100 });
-    } else {
-        pipeline.push({ $sample: { size: 100 } });
-    }
+    // ===== PROJECTION =====
+    const projection = Object.fromEntries(cardCfg.fields.map((f) => [f, 1]));
 
-    // Подтягиваем переводы
-    pipeline.push({
-        $lookup: {
-            from: translationCollection,
-            localField: "slug",
-            foreignField: "itemSlug",
-            as: "translations",
-        },
-    });
+    // ===== MATCH =====
+    const match = { active: true };
 
-    // Подсчёт отзывов
-    pipeline.push({
-        $lookup: {
-            from: reviewCollection,
-            let: { item_slug: "$slug" },
-            pipeline: [
-                { $match: { $expr: { $eq: ["$itemSlug", "$$item_slug"] } } },
-                {
-                    $group: {
-                        _id: null,
-                        count: { $sum: 1 },
-                        avgRating: { $avg: "$rating" },
-                    },
+    // ===== SORT / SAMPLE / LIMIT =====
+    const sort = listCfg.sortOptions?.default ?? null;
+    const limit = listCfg.limit ?? 100;
+    const sample = listCfg.sample ?? null;
+
+    const pipeline = [{ $match: match }];
+    if (sort) pipeline.push({ $sort: sort });
+    if (sample) pipeline.push({ $sample: { size: sample } });
+    pipeline.push({ $limit: limit });
+    pipeline.push({ $project: projection });
+
+    // ===== EXECUTE =====
+    let items = await db.collection(type).aggregate(pipeline).toArray();
+
+    // ===== TRANSLATIONS =====
+    const slugs = items.map((i) => i.slug);
+    const translations = await db
+        .collection(`${type}_translations`)
+        .find({ itemSlug: { $in: slugs }, lang })
+        .toArray();
+
+    // ===== REVIEWS =====
+    const reviewCollection = "reviews"; // или из конфига, если нужно
+    const reviewStats = await db
+        .collection(reviewCollection)
+        .aggregate([
+            { $match: { itemSlug: { $in: slugs } } },
+            {
+                $group: {
+                    _id: "$itemSlug",
+                    reviewsCount: { $sum: 1 },
+                    rating: { $avg: "$rating" },
                 },
-            ],
-            as: "reviewsStats",
-        },
-    });
-
-    // Выбираем перевод для нужного языка и вычисляем reviewsCount/rating
-    pipeline.push({
-        $addFields: {
-            translation: {
-                $arrayElemAt: [
-                    {
-                        $filter: {
-                            input: "$translations",
-                            as: "t",
-                            cond: { $eq: ["$$t.lang", lang] },
-                        },
-                    },
-                    0,
-                ],
             },
-            reviewsCount: {
-                $ifNull: [{ $arrayElemAt: ["$reviewsStats.count", 0] }, 0],
+        ])
+        .toArray();
+    const reviewMap = Object.fromEntries(
+        reviewStats.map((r) => [
+            r._id,
+            {
+                reviewsCount: r.reviewsCount,
+                rating: Math.round(r.rating * 10) / 10,
             },
-            rating: {
-                $ifNull: [
-                    {
-                        $round: [
-                            { $arrayElemAt: ["$reviewsStats.avgRating", 0] },
-                            1,
-                        ],
-                    },
-                    null,
-                ],
-            },
-        },
-    });
-
-    const rawItems = await db.collection(type).aggregate(pipeline).toArray();
-
-    // ⚡ Перекрываем оригинальные поля карточки переводом
-    const items = rawItems.map(
-        ({ translation = {}, reviewsStats, translations, ...rest }) => {
-            const item = { ...rest };
-
-            // Перекрываем поля переводом, если они есть
-            for (const key in translation) {
-                if (translation[key] != null) {
-                    item[key] = translation[key];
-                }
-            }
-
-            // Преобразуем _id основного документа в строку
-            if (item._id) {
-                item._id = item._id.toString();
-            }
-
-            // Оставляем статистику отзывов, _id тоже приводим к строке
-            item.reviewsStats = reviewsStats.map((r) => ({
-                ...r,
-                _id: r._id ? r._id.toString() : undefined,
-            }));
-
-            return item;
-        }
+        ])
     );
 
-    return enrichCard(items);
+    // ===== APPLY TRANSLATIONS, IMAGE, REVIEWS =====
+    items = items.map((item) => {
+        const tr = translations.find((t) => t.itemSlug === item.slug) ?? {};
+
+        // Перевод только нужных полей
+        (cardCfg.translationFields || []).forEach((f) => {
+            if (tr[f] !== undefined) item[f] = tr[f];
+        });
+
+        // Первая картинка
+
+        if (item.images?.length) item.image = item.images[0].url;
+
+        // reviewsCount и rating — только если есть в конфиге
+        if (
+            cardCfg.fields.includes("reviewsCount") &&
+            cardCfg.fields.includes("rating")
+        ) {
+            if (reviewMap[item.slug]) {
+                item.reviewsCount = reviewMap[item.slug].reviewsCount;
+                item.rating = reviewMap[item.slug].rating;
+            } else {
+                item.reviewsCount = 0;
+                item.rating = 0;
+            }
+        }
+
+        // Убираем массив images, чтобы не тянуть лишние данные
+        delete item.images;
+
+        return item;
+    });
+
+    // ===== ENRICH =====
+    return enrichCard(items, lang);
 }

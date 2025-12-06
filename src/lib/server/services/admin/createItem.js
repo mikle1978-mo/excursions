@@ -27,6 +27,13 @@ export async function createItemInDB(data, type, steps) {
         throw new Error("Slug обязателен");
     }
 
+    if (data.publishDate) {
+        mainDoc.publishDate = new Date(data.publishDate);
+    }
+    if (mainDoc.discountEnd && typeof mainDoc.discountEnd === "string") {
+        mainDoc.discountEnd = new Date(mainDoc.discountEnd);
+    }
+
     mainDoc.createdAt = new Date();
     mainDoc.updatedAt = new Date();
     mainDoc.rating = 0;

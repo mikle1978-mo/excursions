@@ -2,7 +2,7 @@
     import { filters } from "$lib/stores/filters.js";
     import { FILTER_CONFIG } from "$lib/constants/filtersConfig.js";
     import { sidebarOpen } from "$lib/stores/sidebar.js";
-    import { selectedCurrency, exchangeRates } from "$lib/stores/currency.js";
+    import { selectedCurrency } from "$lib/stores/currency.js";
     import { createEventDispatcher } from "svelte";
 
     import PriceFilter from "$lib/components/filters/PriceFilter.svelte";
@@ -15,7 +15,7 @@
     const dispatch = createEventDispatcher();
 
     $: currentCurrency = $selectedCurrency;
-    $: currentRate = $exchangeRates[currentCurrency] || 1;
+    $: currentRate = currentCurrency || 1;
 
     $: priceRange = computePriceRange();
     $: durationRange = computeDurationRange();

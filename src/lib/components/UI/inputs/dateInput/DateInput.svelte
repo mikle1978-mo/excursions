@@ -1,3 +1,5 @@
+<!-- 
+src\lib\components\UI\inputs\dateInput\DateInput.svelte -->
 <script>
     import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
 

@@ -1,5 +1,5 @@
 import { connectToDatabase } from "$lib/server/db/mongodb";
-import { collectionsConfig } from "$lib/config/app.config";
+import { appConfig } from "$lib/config/app.config";
 
 /**
  * Получение списка элементов для админки
@@ -8,13 +8,14 @@ import { collectionsConfig } from "$lib/config/app.config";
  * @returns {Promise<{ data: Array, meta: { total: number } }>}
  */
 export async function getAdminList(type, lang = "ru") {
+    const listAdmin = appConfig.listAdmin;
     // Получаем конфиг коллекции
-    const config = collectionsConfig[type];
+    const config = listAdmin[type];
 
     if (!config) throw new Error(`Неизвестный тип коллекции: ${type}`);
 
     const db = await connectToDatabase();
-    const listFields = config.adminListConfig?.fields || [];
+    const listFields = config?.fields || [];
 
     // разделяем поля
     const mainFields = listFields.filter((f) => !f.lang).map((f) => f.name);

@@ -13,10 +13,9 @@ export const currencyConfig = {
         RUB: 80,
     },
     currencies: {
-        // ⚡ все данные для форматирования
-        USD: { symbol: "$", locale: "en-US" },
-        EUR: { symbol: "€", locale: "de-DE" },
-        TRY: { symbol: "₺", locale: "tr-TR" },
-        RUB: { symbol: "₽", locale: "ru-RU" },
+        USD: { code: "USD", symbol: "$", locale: "en-US" },
+        EUR: { code: "EUR", symbol: "€", locale: "de-DE" },
+        TRY: { code: "TRY", symbol: "₺", locale: "tr-TR" },
+        RUB: { code: "RUB", symbol: "₽", locale: "ru-RU" },
     },
 };

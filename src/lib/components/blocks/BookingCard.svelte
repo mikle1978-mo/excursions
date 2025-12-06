@@ -72,7 +72,7 @@
                 <span class="old-price">{$oldPriceStore}</span>
             {/if}
 
-            <span class="price">{$priceStore}</span>
+            <span class="price">{priceStore}</span>
         </div>
 
         {#if priceType}
