@@ -1,6 +1,6 @@
 // src/lib/config/blocks/priceCard.config.js
 
-export const priceCardConfig = {
+export const priceBlockConfig = {
     ui: {
         discount: {
             showOldPrice: true,

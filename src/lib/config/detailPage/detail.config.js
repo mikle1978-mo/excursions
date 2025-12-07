@@ -1,38 +1,58 @@
+import IconImage from "$lib/icons/IconImage.svelte";
+import IconBriefcase from "$lib/icons/IconBriefcase.svelte";
+import IconGift from "$lib/icons/IconGift.svelte";
+import IconList from "$lib/icons/IconList.svelte";
+import IconMapPin from "$lib/icons/IconMapPin.svelte";
+import IconPlus from "$lib/icons/IconPlus.svelte";
+import IconThumbsUp from "$lib/icons/IconThumbsUp.svelte";
+import IconClipBoard from "$lib/icons/IconClipBoard.svelte";
+
 export const detail = {
     // ===== EXCURSIONS =====
     excursions: {
         sections: [
             {
                 component: "HeroBlock",
-                uses: [
+                fields: [
                     "title",
                     "images",
                     "subtitle",
                     "rating",
                     "reviewsCount",
-                    "lang",
                 ],
             },
             {
                 component: "PriceBlock",
-                uses: [
+                fields: [
                     "price",
                     "discount",
-                    "oldPrice",
                     "priceType",
                     "discountEnd",
                     "lang",
                 ],
             },
-            { component: "Description", uses: ["description"] },
-            { component: "ProductDetailsBlock", uses: ["details"] },
-            { component: "ScheduleBlock", uses: ["schedule"] },
-            { component: "InfoBlockArray", uses: ["whatYouSee"] },
-            { component: "GaleryCollage", uses: ["images"] },
-            { component: "YouTubeVideo", uses: ["youtube"] },
-            { component: "ReviewsList", uses: ["slug"] },
-            { component: "RelatedSlider", uses: ["related"] },
-            { component: "BookingCard", uses: ["slug", "price"] },
+            // {
+            //     component: "ProductDetailsBlock",
+            //     fields: ["distance", "duration", "groupSize", "start", "lang"],
+            // },
+            { component: "Description", fields: ["description"] },
+            { component: "ScheduleBlock", fields: ["schedule", "lang"] }, //ленг прокидываем для заголовков
+            { component: "InfoBlockArray", fields: ["whatYouSee", "lang"] },
+            { component: "InfoBlockArray", fields: ["whyChooseUs", "lang"] },
+            { component: "InfoBlockArray", fields: ["whatToBring", "lang"] },
+            { component: "InfoBlockArray", fields: ["guarantees", "lang"] },
+            { component: "InfoBlockArray", fields: ["includes", "lang"] },
+            { component: "InfoBlockArray", fields: ["usp", "lang"] },
+            { component: "MeetingPoint", fields: ["meetingPoint", "lang"] },
+            { component: "GaleryCollage", fields: ["images"] },
+            {
+                component: "YouTubeVideo",
+                fields: ["videoUrl", "title", "images", "lang"],
+            },
+            { component: "ReviewsList", fields: ["slug"] },
+            { component: "RelatedSlider", fields: ["related"] },
+            { component: "AboutBlock", fields: [] },
+            { component: "ButtonBlock", fields: ["active", "type"] },
         ],
     },
 

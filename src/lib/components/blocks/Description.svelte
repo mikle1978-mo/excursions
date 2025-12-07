@@ -1,5 +1,7 @@
 <script>
-    export let description = "";
+    export let props;
+    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
+    const description = data.description;
 </script>
 
 {#if description}

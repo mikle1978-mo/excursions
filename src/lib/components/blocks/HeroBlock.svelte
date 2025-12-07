@@ -5,12 +5,15 @@
     import ShareIcon from "../UI/buttons/ShareIcon.svelte";
     import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
 
-    export let images = [];
-    export let title = "Rafting from Kemer";
-    export let subtitle = "Adrenaline and nature";
-    export let rating;
-    export let reviewsCount;
-    export let lang;
+    export let props;
+    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
+
+    const title = data.title;
+    const subtitle = data.subtitle;
+    const rating = data.rating;
+    const reviewsCount = data.reviewsCount;
+    const lang = data.lang;
+    const images = data.images || [];
 
     // Для HeroBlock вычисляем srcset
     let heroImage = getCloudinarySrcset(

@@ -1,19 +1,30 @@
 <script>
-    export let title = "";
-    export let item = [];
-    export let icon = null;
+    import { appConfig } from "$lib/config/app.config";
+    export let props;
+
+    // Превращаем fields в объект
+    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
+
+    // Достаём массив значений
+    const lang = data?.lang || "en";
+    const meetingPoint = data?.meetingPoint || "";
+
+    // Конфиг
+    const config = appConfig.blocks?.meeting || {};
+    const title = config.title?.[lang] ?? "";
+    const Icon = config.icon ?? null;
 </script>
 
-{#if item}
+{#if meetingPoint}
     <div class="info-block">
         <h2 class="title-with-icon">
-            {#if icon}
-                <svelte:component this={icon} class="icon" />
+            {#if Icon}
+                <svelte:component this={Icon} class="icon" />
             {/if}
             {title}:
         </h2>
         <div class="info-list">
-            <span>{item}</span>
+            <span>{meetingPoint}</span>
         </div>
     </div>
 {/if}

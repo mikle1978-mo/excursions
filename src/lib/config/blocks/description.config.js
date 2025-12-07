@@ -1,1 +1,1 @@
-export const descriptionConfig = {};
+export const descriptionBlockConfig = {};

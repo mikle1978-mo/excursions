@@ -3,7 +3,7 @@
     import { onMount } from "svelte";
     import { page } from "$app/stores";
     import { goto } from "$app/navigation";
-    import Galery from "../layout/Galery.svelte";
+    import Galery from "$lib/components/blocks/GaleryCollage.svelte";
     import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
     import BuyMeACoffe from "$lib/components/UI/buttons/BuyMeACoffe.svelte";
 

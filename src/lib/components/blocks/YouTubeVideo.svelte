@@ -1,7 +1,13 @@
 <script>
-    export let videoUrl;
-    export let title = "YouTube видео";
-    export let poster = "/images/video-poster.webp"; // по умолчанию
+    import { appConfig } from "$lib/config/app.config";
+
+    export let props;
+    const config = appConfig?.blocks?.youtube;
+    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
+    const videoUrl = data.videoUrl || "";
+    const lang = data.lang || "en";
+    const title = data.title || config.defaultTitle[lang];
+    const poster = data.images[0].url || config.defaultPoster;
 
     function getYouTubeId(url) {
         try {
@@ -16,7 +22,7 @@
         }
     }
 
-    $: videoId = getYouTubeId(videoUrl);
+    let videoId = getYouTubeId(videoUrl);
     let showVideo = false;
 
     const openVideo = () => (showVideo = true);

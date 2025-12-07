@@ -6,9 +6,9 @@
 
     const defaultImage = `/images/excursions/excursion_default.webp`;
 
-    export let images = [];
+    export let items = [];
     export let title = "";
-
+    const images = items || [];
     let selectedIndex = 0;
     let isModalOpen = false;
 
@@ -89,7 +89,7 @@
         width: 100%;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-        padding: 0 var(--space-vertical-sm);
+        padding: 0;
         gap: var(--space-vertical-xs);
     }
 
@@ -134,5 +134,10 @@
         text-align: center;
         font-size: var(--text-sm);
         color: var(--color-text);
+    }
+    @media (max-width: 480px) {
+        .image-collage {
+            padding: 0 var(--space-vertical-sm);
+        }
     }
 </style>

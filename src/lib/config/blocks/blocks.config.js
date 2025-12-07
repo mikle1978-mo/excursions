@@ -1,16 +1,18 @@
-import { heroBlockConfig } from "./blocks/hero.config.js";
-import { priceBlockConfig } from "./blocks/price.config.js";
-import { bookingBlockConfig } from "./blocks/booking.config.js";
+import { heroBlockConfig } from "$lib/config/blocks/hero.config.js";
+import { priceBlockConfig } from "$lib/config/blocks/priceBlock.config.js";
+import { bookingBlockConfig } from "$lib/config/blocks/booking.config.js";
 
 // пустые или почти пустые
-import { descriptionConfig } from "./blocks/description.config.js";
-import { infoBlockArrayConfig } from "./blocks/infoBlockArray.config.js";
-import { infoBlockStringConfig } from "./blocks/infoBlockString.config.js";
-import { scheduleConfig } from "./blocks/schedule.config.js";
-import { galleryConfig } from "./blocks/gallery.config.js";
-import { youtubeConfig } from "./blocks/youtube.config.js";
-import { relatedConfig } from "./blocks/related.config.js";
-import { reviewsConfig } from "./blocks/reviews.config.js";
+import { descriptionBlockConfig } from "$lib/config/blocks/description.config.js";
+import { infoBlockArrayConfig } from "$lib/config/blocks/infoBlockArray.config.js";
+import { infoBlockStringConfig } from "$lib/config/blocks/infoBlockString.config.js";
+import { scheduleConfig } from "$lib/config/blocks/schedule.config.js";
+import { galleryConfig } from "$lib/config/blocks/gallery.config.js";
+import { youtubeConfig } from "$lib/config/blocks/youtube.config.js";
+import { relatedConfig } from "$lib/config/blocks/related.config.js";
+import { reviewsConfig } from "$lib/config/blocks/reviews.config.js";
+import { meetingPoint } from "$lib/config/blocks/meetingPoint.config";
+import { buttonBlockConfig } from "$lib/config/blocks/buttonBlock.config";
 
 export const blocksConfig = {
     hero: heroBlockConfig,
@@ -18,12 +20,14 @@ export const blocksConfig = {
     booking: bookingBlockConfig,
 
     // простые блоки
-    description: descriptionConfig,
+    description: descriptionBlockConfig,
     infoArray: infoBlockArrayConfig,
     infoString: infoBlockStringConfig,
     schedule: scheduleConfig,
+    meeting: meetingPoint,
     gallery: galleryConfig,
     youtube: youtubeConfig,
     related: relatedConfig,
     reviews: reviewsConfig,
+    button: buttonBlockConfig,
 };

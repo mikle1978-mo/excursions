@@ -292,7 +292,7 @@ svg {
 }
 
 .container {
-    padding: var(--space-vertical-md) 0;
+    padding: 0 var(--space-vertical-md);
     margin: 0 auto;
     width: 100%;
     max-width: var(--max-width-container);
@@ -306,7 +306,7 @@ svg {
     display: grid;
     grid-template-rows: minmax(32px, 6%) 1fr;
     align-items: flex-start;
-    padding: 0px;
+    padding-top: var(--space-vertical-sm);
     gap: var(--space-vertical-md);
     width: 100%;
     height: 100%;
@@ -365,7 +365,7 @@ summary::-webkit-details-marker {
 
 @media (max-width: 1440px) {
     .container {
-        padding: var(--space-vertical-md) var(--space-horizontal-md);
+        padding: 0 var(--space-vertical-md);
         margin: 0;
     }
 }
@@ -376,7 +376,7 @@ summary::-webkit-details-marker {
         --max-font-size: 16px;
     }
     .container {
-        padding: var(--space-vertical-sm) var(--space-horizontal-sm);
+        padding: 0 var(--space-vertical-sm);
     }
     .page {
         grid-template-rows: minmax(32px, 5%) 1fr;
@@ -390,7 +390,7 @@ summary::-webkit-details-marker {
         --max-font-size: 14px;
     }
     .container {
-        padding: var(--space-vertical-sm) 0;
+        padding: 0;
     }
 }
 

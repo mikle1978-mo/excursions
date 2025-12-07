@@ -1,5 +1,5 @@
 <script>
-    import AboutPage from "$lib/components/blocks/AboutPage.svelte";
+    import AboutPage from "$lib/components/pages/AboutPage.svelte";
     import { about_SEO_TEXT } from "$lib/i18n/LIST_TEXTS.js";
 
     const baseUrl = import.meta.env.VITE_BASE_URL;

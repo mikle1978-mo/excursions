@@ -1,7 +1,7 @@
 <script>
     import SeoRenderer from "$lib/components/seo/SeoRenderer.svelte";
     import SchemasRenderer from "$lib/components/seo/SchemasRenderer.svelte";
-    import CardList from "$lib/components/blocks/CardList.svelte";
+    import CardList from "$lib/components/pages/CardList.svelte";
     import FiltersBlock from "$lib/components/blocks/FiltersBlock.svelte";
 
     export let data;

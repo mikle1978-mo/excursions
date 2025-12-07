@@ -1,9 +1,16 @@
 <script>
+    import { appConfig } from "$lib/config/app.config";
     import { onMount, tick } from "svelte";
     import { locale } from "$lib/stores/locale";
     import { reviews_list } from "$lib/i18n/reviews_list";
 
-    export let itemSlug = "";
+    export let props;
+    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
+
+    const slug = data.slug || "";
+    const lang = data.lang || "en";
+    const config = appConfig?.blocks?.reviews;
+    let itemSlug = slug;
 
     let reviews = [];
     let showForm = false;

@@ -5,18 +5,19 @@
     import MyButton from "../UI/buttons/MyButton.svelte";
     import getOldPrice from "$lib/utils/getOldPrice";
 
-    export let price = 0;
-    export let priceType = ""; // 'per_day', 'per_hour', ...
-    export let lang = "en";
-    export let discount = 0; // Discount percentage, e.g., 10 for 10%
+    export let props;
+    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
 
-    console.log(price, priceType, lang, discount);
+    const price = data.price;
+    const priceType = data.priceType;
+    const discount = data.discount;
+    const discountEnd = data.discountEnd;
+    const lang = data.lang;
 
-    export let discountEnd = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000)
-        .toISOString()
-        .split("T")[0]; // Optional end date for the discount
+    // export let discountEnd = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000)
+    //     .toISOString()
+    //     .split("T")[0]; // Optional end date for the discount
 
-    console.log(price, discount, discountEnd);
     const priceStore = formatPrice(price);
     const oldPriceStore = formatPrice(getOldPrice(price, discount));
     $: isDiscountActive =

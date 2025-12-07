@@ -11,8 +11,8 @@
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
     import InfoBlockArray from "$lib/components/blocks/InfoBlockArray.svelte";
-    import InfoBlockString from "$lib/components/blocks/InfoBlockString.svelte";
-    import MapBlock from "./MapBlock.svelte";
+    import InfoBlockString from "$lib/components/blocks/MeetingPoint.svelte";
+    import MapBlock from "../blocks/MapBlock.svelte";
     import BuyMeACoffe from "$lib/components/UI/buttons/BuyMeACoffe.svelte";
 
     export let item;

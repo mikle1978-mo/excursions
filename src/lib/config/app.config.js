@@ -64,6 +64,7 @@ export const collectionsConfig = Object.fromEntries(
 export const appConfig = {
     layout: layoutConfig,
     pages: pagesConfig,
+    blocks: blocksConfig,
     collections: collectionsConfig,
     services: {
         currency: currencyConfig,

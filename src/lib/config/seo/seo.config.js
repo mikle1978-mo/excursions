@@ -118,9 +118,9 @@ export const seo = {
                     "экскурсии, экскурсии в кемере, экскурсии кемер, кемер экскурсии, экскурсии анталия, экскурсии в турции, экскурсии из кемера",
             },
             item: {
-                title: "{{name}} — Экскурсии в Кемере",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Экскурсии в Кемере",
+                description: "{{metaDescription}}",
+                alt: "Фото экскурсии - {{title}}",
             },
         },
         en: {

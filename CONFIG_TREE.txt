@@ -47,8 +47,8 @@
 |   |   +---cardConfig
 |   |   |   +---fields[]
 |   |   |   L---translationFields[]
-|   |   +---defaultImage
-|   |   L---reviewCollection
+|   |   L---detailPage
+|   |       L---sections[]
 |   +---yachts
 |   |   +---label
 |   |   +---icon
@@ -66,8 +66,8 @@
 |   |   +---cardConfig
 |   |   |   +---fields[]
 |   |   |   L---translationFields[]
-|   |   +---defaultImage
-|   |   L---reviewCollection
+|   |   L---detailPage
+|   |       L---sections[]
 |   +---cars
 |   |   +---label
 |   |   +---icon
@@ -85,8 +85,8 @@
 |   |   +---cardConfig
 |   |   |   +---fields[]
 |   |   |   L---translationFields[]
-|   |   +---defaultImage
-|   |   L---reviewCollection
+|   |   L---detailPage
+|   |       L---sections[]
 |   +---transfers
 |   |   +---label
 |   |   +---icon
@@ -104,8 +104,8 @@
 |   |   +---cardConfig
 |   |   |   +---fields[]
 |   |   |   L---translationFields[]
-|   |   +---defaultImage
-|   |   L---reviewCollection
+|   |   L---detailPage
+|   |       L---sections[]
 |   +---places
 |   |   +---label
 |   |   +---icon
@@ -123,8 +123,8 @@
 |   |   +---cardConfig
 |   |   |   +---fields[]
 |   |   |   L---translationFields[]
-|   |   +---defaultImage
-|   |   L---reviewCollection
+|   |   L---detailPage
+|   |       L---sections[]
 |   +---blogs
 |   |   +---label
 |   |   +---icon
@@ -142,8 +142,8 @@
 |   |   +---cardConfig
 |   |   |   +---fields[]
 |   |   |   L---translationFields[]
-|   |   +---defaultImage
-|   |   L---reviewCollection
+|   |   L---detailPage
+|   |       L---sections[]
 |   L---faqs
 |       +---label
 |       +---icon
@@ -161,8 +161,8 @@
 |       +---cardConfig
 |       |   +---fields[]
 |       |   L---translationFields[]
-|       +---defaultImage
-|       L---reviewCollection
+|       L---detailPage
+|           L---sections[]
 +---services
 |   L---currency
 |       +---enabled
@@ -178,20 +178,54 @@
 |       |   L---RUB
 |       L---currencies
 |           +---USD
+|           |   +---code
 |           |   +---symbol
 |           |   L---locale
 |           +---EUR
+|           |   +---code
 |           |   +---symbol
 |           |   L---locale
 |           +---TRY
+|           |   +---code
 |           |   +---symbol
 |           |   L---locale
 |           L---RUB
+|               +---code
 |               +---symbol
 |               L---locale
 +---seo
+|   +---home
+|   |   +---ru
+|   |   |   +---list
+|   |   |   |   +---title
+|   |   |   |   +---description
+|   |   |   |   +---keywords
+|   |   |   |   L---twitter
+|   |   |   L---item
+|   |   |       +---title
+|   |   |       +---description
+|   |   |       L---image
+|   |   +---en
+|   |   |   +---list
+|   |   |   |   +---title
+|   |   |   |   +---description
+|   |   |   |   +---keywords
+|   |   |   |   L---twitter
+|   |   |   L---item
+|   |   |       +---title
+|   |   |       +---description
+|   |   |       L---image
+|   |   L---tr
+|   |       +---list
+|   |       |   +---title
+|   |       |   +---description
+|   |       |   +---keywords
+|   |       |   L---twitter
+|   |       L---item
+|   |           +---title
+|   |           +---description
+|   |           L---image
 |   +---about
-|   |   +---defaultImage
 |   |   +---ru
 |   |   |   +---list
 |   |   |   |   +---title
@@ -223,7 +257,6 @@
 |   |           +---description
 |   |           L---image
 |   +---excursions
-|   |   +---defaultImage
 |   |   +---ru
 |   |   |   +---list
 |   |   |   |   +---title
@@ -241,7 +274,7 @@
 |   |   |   L---item
 |   |   |       +---title
 |   |   |       +---description
-|   |   |       L---image
+|   |   |       L---alt
 |   |   L---tr
 |   |       +---list
 |   |       |   +---title
@@ -252,7 +285,6 @@
 |   |           +---description
 |   |           L---image
 |   +---yachts
-|   |   +---defaultImage
 |   |   +---ru
 |   |   |   +---list
 |   |   |   |   +---title
@@ -281,7 +313,6 @@
 |   |           +---description
 |   |           L---image
 |   +---cars
-|   |   +---defaultImage
 |   |   +---ru
 |   |   |   +---list
 |   |   |   |   +---title
@@ -310,7 +341,6 @@
 |   |           +---description
 |   |           L---image
 |   +---transfers
-|   |   +---defaultImage
 |   |   +---ru
 |   |   |   +---list
 |   |   |   |   +---title
@@ -339,7 +369,6 @@
 |   |           +---description
 |   |           L---image
 |   +---places
-|   |   +---defaultImage
 |   |   +---ru
 |   |   |   +---list
 |   |   |   |   +---title
@@ -368,7 +397,6 @@
 |   |           +---description
 |   |           L---image
 |   +---blogs
-|   |   +---defaultImage
 |   |   +---ru
 |   |   |   +---list
 |   |   |   |   +---title
@@ -397,7 +425,6 @@
 |   |           +---description
 |   |           L---image
 |   L---faqs
-|       +---defaultImage
 |       +---ru
 |       |   +---list
 |       |   |   +---title
@@ -589,6 +616,67 @@
 |   |   L---fields[]
 |   L---faqs
 |       L---fields[]
++---defaultImage
+|   +---excursions
+|   |   +---default
+|   |   +---alt
+|   |   |   +---ru
+|   |   |   L---en
+|   |   L---set[]
+|   +---yachts
+|   |   +---default
+|   |   +---alt
+|   |   |   +---ru
+|   |   |   L---en
+|   |   L---set[]
+|   +---cars
+|   |   +---default
+|   |   +---alt
+|   |   |   +---ru
+|   |   |   L---en
+|   |   L---set[]
+|   +---properties
+|   |   +---default
+|   |   +---alt
+|   |   |   +---ru
+|   |   |   L---en
+|   |   L---set[]
+|   +---transfers
+|   |   +---default
+|   |   +---alt
+|   |   |   +---ru
+|   |   |   L---en
+|   |   L---set[]
+|   +---places
+|   |   +---default
+|   |   +---alt
+|   |   |   +---ru
+|   |   |   L---en
+|   |   L---set[]
+|   +---blogs
+|   |   +---default
+|   |   +---alt
+|   |   |   +---ru
+|   |   |   L---en
+|   |   L---set[]
+|   +---faqs
+|   |   +---default
+|   |   +---alt
+|   |   |   +---ru
+|   |   |   L---en
+|   |   L---set[]
+|   +---home
+|   |   +---default
+|   |   +---alt
+|   |   |   +---ru
+|   |   |   L---en
+|   |   L---set[]
+|   L---about
+|       +---default
+|       +---alt
+|       |   +---ru
+|       |   L---en
+|       L---set[]
 L---languages
     +---supported[]
     L---meta

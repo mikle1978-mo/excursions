@@ -1,16 +1,21 @@
 <script>
-    export let title = "Расписание";
-    export let schedule = []; // массив строк
-    export let icon = null;
+    import IconList from "$lib/icons/IconList.svelte";
+    import { appConfig } from "$lib/config/app.config";
+
+    export let props;
+
+    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
+
+    const schedule = data.schedule || [];
+    const lang = data.lang || "en";
+    const config = appConfig?.blocks?.schedule;
 </script>
 
 {#if schedule.length > 0}
     <div class="info-block">
         <h2 class="title-with-icon">
-            {#if icon}
-                <svelte:component this={icon} class="icon" />
-            {/if}
-            {title}:
+            <IconList />
+            {config.title[lang] || title}:
         </h2>
 
         <ul class="timeline">
@@ -25,9 +30,10 @@
     .info-block {
         width: 100%;
         background: var(--color-bg);
-        padding: var(--space-vertical-md);
+        padding: 0;
         border-radius: var(--radius-md);
         border: 1px solid var(--color-gray-300);
+        padding: var(--space-vertical-sm);
     }
 
     .title-with-icon {
@@ -72,6 +78,11 @@
         }
         .timeline-item {
             color: var(--color-gray-300);
+        }
+    }
+    @media (max-width: 480px) {
+        .info-block {
+            padding: 0 var(--space-vertical-sm);
         }
     }
 </style>

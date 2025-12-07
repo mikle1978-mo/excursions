@@ -13,7 +13,7 @@
     import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
     import Share from "$lib/components/UI/buttons/Share.svelte";
     import InfoBlockArray from "$lib/components/blocks/InfoBlockArray.svelte";
-    import InfoBlockString from "$lib/components/blocks/InfoBlockString.svelte";
+    import InfoBlockString from "$lib/components/blocks/MeetingPoint.svelte";
     import AboutBlock from "$lib/components/blocks/AboutBlock.svelte";
     import IconImage from "$lib/icons/IconImage.svelte";
     import IconBriefcase from "$lib/icons/IconBriefcase.svelte";
@@ -45,7 +45,6 @@
     export let reviewsCount;
 
     const config = appConfig.collections[type]?.detailPage;
-    console.log("55555", config);
 
     export function getI18nLabel(obj, key, locale) {
         return obj?.[key]?.[locale] ?? key;

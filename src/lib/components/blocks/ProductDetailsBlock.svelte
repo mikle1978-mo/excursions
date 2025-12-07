@@ -1,19 +1,16 @@
 <script>
     import Clock from "$lib/icons/IconClock.svelte";
-    import Group from "$lib/icons/IconGroup.svelte";
-    import Distance from "$lib/icons/IconDistance.svelte";
+
     import Start from "$lib/icons/IconStart.svelte";
+    import IconClock from "$lib/icons/IconClock.svelte";
+    import IconGroup from "$lib/icons/IconGroup.svelte";
+    import IconDistance from "$lib/icons/IconDistance.svelte";
 
-    export let type;
-    export let item;
-    export let locale = "en";
-
-    const iconComponents = {
-        clock: Clock,
-        group: Group,
-        distance: Distance,
-        start: Start,
-    };
+    export let distance;
+    export let start;
+    export let groupSize;
+    export let duration;
+    export let lang = "en";
 
     // Конфиг с метками и путями к данным для каждого типа
     const fieldsConfig = {
@@ -101,7 +98,7 @@
 </script>
 
 <div class="details">
-    {#if fieldsConfig[type]}
+    <!-- {#if fieldsConfig[type]}
         {#each fieldsConfig[type] as field}
             {#if getNested(item, field.key) !== null && getNested(item, field.key) !== undefined && getNested(item, field.key) !== ""}
                 <div class="detail">
@@ -124,6 +121,22 @@
                 </div>
             {/if}
         {/each}
+    {/if} -->
+    {#if start}
+        <IconClock />
+        <span class="value">{start}</span>
+    {/if}
+    {#if distance}
+        <IconDistance />
+        <span class="value">{distance}</span>
+    {/if}
+    {#if duration}
+        <IconClock />
+        <span class="value">{duration}</span>
+    {/if}
+    {#if groupSize}
+        <IconGroup />
+        <span class="value">{groupSize}</span>
     {/if}
 </div>
 

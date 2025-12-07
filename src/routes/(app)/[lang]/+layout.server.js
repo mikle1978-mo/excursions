@@ -20,7 +20,7 @@ export async function load({ url }) {
 
     // Если первый сегмент не поддерживаемый язык — 404
     if (!supported.includes(lang)) {
-        throw error(404, "Page Not Found global", segments);
+        throw error(404, "Page Not Found - global layout", segments);
     }
 
     return {
