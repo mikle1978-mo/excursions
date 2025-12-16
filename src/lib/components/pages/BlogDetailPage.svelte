@@ -6,7 +6,7 @@
     import HeroBlock from "$lib/components/blocks/HeroBlock.svelte";
     import GaleryCollage from "$lib/components/layout/GaleryCollage.svelte";
     import BlogContent from "$lib/components/blocks/BlogContent.svelte";
-    import Description from "$lib/components/blocks/Description.svelte";
+    import Description from "$lib/components/blocks/HtmlBlock.svelte";
     import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
     import TheBurger from "$lib/components/UI/buttons/TheBurger.svelte";
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";

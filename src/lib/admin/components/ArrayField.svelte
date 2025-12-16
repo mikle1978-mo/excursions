@@ -5,7 +5,7 @@
     import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
     import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
 
-    export let field = {}; // конфиг поля (type="array" или type="arrayObjects")
+    export let field = {}; // конфиг поля (type="array" )
     export let value = []; // массив примитивов или объектов
     export let errors = {}; // ошибки для всего массива
     export let fieldName = ""; // путь к полю, например "content"
@@ -39,7 +39,7 @@
                     // вложенный объект — берем default или пустой объект
                     newItem[f.name] =
                         f.default !== undefined ? cloneDeep(f.default) : {};
-                } else if (f.type === "array" || f.type === "arrayObjects") {
+                } else if (f.type === "array") {
                     // вложенный массив — берем default или пустой массив
                     newItem[f.name] =
                         f.default !== undefined ? cloneDeep(f.default) : [];
@@ -93,7 +93,7 @@
                                 errors={errors?.[index]?.[subField.name] ?? {}}
                                 fieldName={`${fieldName}[${index}].${subField.name}`}
                             />
-                        {:else if subField.type === "array" || subField.type === "arrayObjects"}
+                        {:else if subField.type === "array"}
                             <!-- рекурсия: массив внутри объекта -->
                             <ArrayField
                                 field={subField}

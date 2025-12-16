@@ -22,6 +22,7 @@ export const carsFormConfig = [
                 label: "Заголовок H1",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -48,6 +49,44 @@ export const carsFormConfig = [
                 label: "Год выпуска",
                 type: "number",
                 default: new Date().getFullYear(),
+            },
+            {
+                name: "fuel",
+                label: "Тип топлива",
+                type: "select",
+                default: "petrol",
+                options: [
+                    { value: "petrol", label: "Бензин" },
+                    { value: "diesel", label: "Дизель" },
+                    { value: "hybrid", label: "Гибрид" },
+                    { value: "electric", label: "Электро" },
+                ],
+            },
+
+            {
+                name: "transmission",
+                label: "Коробка передач",
+                type: "select",
+                default: "automatic",
+                options: [
+                    { value: "automatic", label: "Автомат" },
+                    { value: "manual", label: "Механика" },
+                ],
+            },
+
+            {
+                name: "bodyType",
+                label: "Тип кузова",
+                type: "select",
+                default: "sedan",
+                options: [
+                    { value: "sedan", label: "Седан" },
+                    { value: "suv", label: "SUV" },
+                    { value: "hatchback", label: "Хэтчбек" },
+                    { value: "van", label: "Минивэн" },
+                    { value: "pickup", label: "Пикап" },
+                    { value: "convertible", label: "Кабриолет" },
+                ],
             },
             { name: "seats", label: "Мест", type: "number", default: 4 },
             { name: "doors", label: "Дверей", type: "number", default: 4 },
@@ -127,6 +166,7 @@ export const carsFormConfig = [
                 label: "Описание",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -139,6 +179,7 @@ export const carsFormConfig = [
                 label: "УТП",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -151,6 +192,7 @@ export const carsFormConfig = [
                 label: "Почему выбирают нас",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -163,6 +205,7 @@ export const carsFormConfig = [
                 label: "Гарантии",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -175,6 +218,7 @@ export const carsFormConfig = [
                 label: "Политика по топливу",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -187,6 +231,7 @@ export const carsFormConfig = [
                 label: "Перерасход времени/км",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -204,6 +249,7 @@ export const carsFormConfig = [
                 label: "Описание страховки",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -216,6 +262,7 @@ export const carsFormConfig = [
                 label: "Инструкции при ДТП",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -228,6 +275,7 @@ export const carsFormConfig = [
                 label: "Условия аренды",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -240,6 +288,7 @@ export const carsFormConfig = [
                 label: "Входит в аренду",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -252,6 +301,7 @@ export const carsFormConfig = [
                 label: "Что взять с собой",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -264,6 +314,7 @@ export const carsFormConfig = [
                 label: "Исключения",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -276,6 +327,7 @@ export const carsFormConfig = [
                 label: "Документы",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -288,6 +340,7 @@ export const carsFormConfig = [
                 label: "Дополнительно",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -305,6 +358,7 @@ export const carsFormConfig = [
                 label: "Мета заголовок",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),

@@ -23,8 +23,8 @@ export const seo = {
                     "Все для идеального отдыха в Кемере — экскурсии, аренда яхт и авто, трансферы без переплат.",
             },
             item: {
-                title: "{{name}} — Экскурсии в Кемере",
-                description: "{{shortDescription}}",
+                title: "{{title}} — Экскурсии в Кемере",
+                description: "{{metaDescription}}",
                 image: "{{mainPhoto}}",
             },
         },
@@ -39,8 +39,8 @@ export const seo = {
                     "Everything for the perfect vacation in Kemer — excursions, yacht & car rentals, transfers with no extra fees.",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
+                title: "{{title}} — Excursion in Kemer",
+                description: "{{metaDescription}}",
                 image: "{{mainPhoto}}",
             },
         },
@@ -55,8 +55,8 @@ export const seo = {
                     "Kemer'de mükemmel bir tatil için her şey — turlar, yat & araç kiralama, transferler, aracısız.",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
+                title: "{{title}} — Excursion in Kemer",
+                description: "{{metaDescription}}",
                 image: "{{mainPhoto}}",
             },
         },
@@ -72,8 +72,8 @@ export const seo = {
                     "Почему туристы выбирают нас — честно, прозрачно и без переплат.",
             },
             item: {
-                title: "{{name}} — Экскурсии в Кемере",
-                description: "{{shortDescription}}",
+                title: "{{title}} — Экскурсии в Кемере",
+                description: "{{metaDescription}}",
                 image: "{{mainPhoto}}",
             },
         },
@@ -88,8 +88,8 @@ export const seo = {
                     "Why travelers choose us — honest, transparent, no extra fees.",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
+                title: "{{title}} — Excursion in Kemer",
+                description: "{{metaDescription}}",
                 image: "{{mainPhoto}}",
             },
         },
@@ -103,8 +103,8 @@ export const seo = {
                 twitter: "Neden bizi seçiyorlar? Şeffaf ve güvenilir hizmet.",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
+                title: "{{title}} — Excursion in Kemer",
+                description: "{{metaDescription}}",
                 image: "{{mainPhoto}}",
             },
         },
@@ -144,9 +144,9 @@ export const seo = {
                     "turlar, Kemer turları, Kemer gezileri, Kemer'den turlar, Antalya turları, Türkiye turları, Kemer'den geziler",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Kemer'de Gezi",
+                description: "{{metaDescription}}",
+                alt: "Gezi fotoğrafı - {{title}}",
             },
         },
     },
@@ -159,9 +159,9 @@ export const seo = {
                     "аренда яхт в кемере, яхты в кемере, морская прогулка кемер, аренда лодки в кемере, прогулка на яхте кемер, частная яхта кемер, прокат яхт кемер",
             },
             item: {
-                title: "{{name}} — Экскурсии в Кемере",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Яхты в Кемере",
+                description: "{{metaDescription}}",
+                alt: "Фото яхты - {{title}}",
             },
         },
         en: {
@@ -172,9 +172,9 @@ export const seo = {
                     "yacht rental in Kemer, yachts in Kemer, boat trip Kemer, boat hire in Kemer, private yacht Kemer, rent a yacht Kemer, Kemer yacht charter",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Yacht rent in Kemer",
+                description: "{{metaDescription}}",
+                alt: "Yacht photo - {{title}}",
             },
         },
         tr: {
@@ -185,9 +185,9 @@ export const seo = {
                     "Kemer'de yat kiralama, Kemer yatları, Kemer tekne turu, Kemer tekne kiralama, özel yat Kemer, Kemer yat turu, Kemer yat kiralama fiyatları",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Kemer'de Yat Kiralama",
+                description: "{{metaDescription}}",
+                alt: "Yat fotoğrafı - {{title}}",
             },
         },
     },
@@ -200,9 +200,9 @@ export const seo = {
                     "аренда авто кемер, аренда автомобиля в кемере, аренда машин кемер, прокат авто кемер, прокат машин кемер, машина в аренду кемер, взять авто в аренду кемер, аренда авто без водителя кемер, аренда авто турция кемер",
             },
             item: {
-                title: "{{name}} — Экскурсии в Кемере",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Авто в Кемере",
+                description: "{{metaDescription}}",
+                alt: "Фото авто - {{title}}",
             },
         },
         en: {
@@ -213,9 +213,9 @@ export const seo = {
                     "car rental Kemer, rent a car Kemer, car hire Kemer, cheap car rental Kemer, car rental Turkey Kemer, car hire without driver Kemer, Kemer car rental prices, rent car Kemer Turkey",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Car rent in Kemer",
+                description: "{{metaDescription}}",
+                alt: "Car photo - {{title}}",
             },
         },
         tr: {
@@ -226,9 +226,9 @@ export const seo = {
                     "Kemer araç kiralama, Kemer rent a car, Kemer araba kiralama, ucuz araç kiralama Kemer, Kemer araba kiralama fiyatları, şöförsüz araç kiralama Kemer, Türkiye Kemer araba kiralama",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Kemer'de Araba Kiralama",
+                description: "{{metaDescription}}",
+                alt: "Araba fotoğrafı - {{title}}",
             },
         },
     },
@@ -241,9 +241,9 @@ export const seo = {
                     "трансфер Анталия Кемер, такси Анталия Кемер, трансфер из аэропорта Анталии, индивидуальный трансфер в Кемер, трансфер Кемер, аэропорт Анталии трансфер",
             },
             item: {
-                title: "{{name}} — Экскурсии в Кемере",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Трансфер в Кемере",
+                description: "{{metaDescription}}",
+                alt: "Фото авто - {{title}}",
             },
         },
         en: {
@@ -254,9 +254,9 @@ export const seo = {
                     "Antalya Kemer transfer, taxi Antalya Kemer, Antalya airport transfer, private transfer to Kemer, Kemer transfer, Antalya airport shuttle",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Transfer in Kemer",
+                description: "{{metaDescription}}",
+                alt: "Car photo - {{title}}",
             },
         },
         tr: {
@@ -267,9 +267,9 @@ export const seo = {
                     "Antalya Kemer transfer, Antalya havalimanı transfer, Kemer özel transfer, Antalya Kemer taksi, Kemer transfer, Antalya havalimanı servis",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Kemer'de Transfer",
+                description: "{{metaDescription}}",
+                alt: "Araç fotoğrafı - {{title}}",
             },
         },
     },
@@ -282,9 +282,9 @@ export const seo = {
                     "достопримечательности Кемера, места Кемера, туризм Кемер, экскурсии, природные парки, исторические места, путешествия в Кемере",
             },
             item: {
-                title: "{{name}} — Экскурсии в Кемере",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Достопримечательности Кемере",
+                description: "{{metaDescription}}",
+                alt: "Фото достопримечательности - {{title}}",
             },
         },
         en: {
@@ -295,9 +295,9 @@ export const seo = {
                     "Kemer attractions, Kemer places, Kemer tourism, excursions, nature parks, historical sites, travel in Kemer",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Place in Kemer",
+                description: "{{metaDescription}}",
+                alt: "Place photo - {{title}}",
             },
         },
         tr: {
@@ -308,9 +308,9 @@ export const seo = {
                     "Kemer turistik yerleri, Kemer mekanları, Kemer turizmi, geziler, doğal parklar, tarihi yerler, Kemer'de seyahat",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Kemer'deki Mekan",
+                description: "{{metaDescription}}",
+                alt: "Mekan fotoğrafı - {{title}}",
             },
         },
     },
@@ -323,9 +323,9 @@ export const seo = {
                     "новости Кемера, события Кемера, фестивали Кемера, мероприятия Кемер, туризм Кемер, афиша Кемер, новости Турции",
             },
             item: {
-                title: "{{name}} — Экскурсии в Кемере",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Блог в Кемера",
+                description: "{{metaDescription}}",
+                alt: "Статья - {{title}}",
             },
         },
         en: {
@@ -336,9 +336,9 @@ export const seo = {
                     "Kemer news, Kemer events, Kemer festivals, Kemer activities, Kemer tourism, Kemer guide, Turkey news",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Blog in Kemer",
+                description: "{{metaDescription}}",
+                alt: "Blog article - {{title}}",
             },
         },
         tr: {
@@ -349,9 +349,9 @@ export const seo = {
                     "Kemer haberleri, Kemer etkinlikleri, Kemer festivalleri, Kemer aktiviteleri, Kemer turizmi, Kemer rehberi, Türkiye haberleri",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Kemer Blog Yazısı",
+                description: "{{metaDescription}}",
+                alt: "Blog yazısı - {{title}}",
             },
         },
     },
@@ -364,9 +364,9 @@ export const seo = {
                     "часто задаваемые вопросы Кемер, FAQ Кемер, информация Кемер, советы путешественникам Кемер, гид по Кемеру",
             },
             item: {
-                title: "{{name}} — Экскурсии в Кемере",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — FAQ о Кемере",
+                description: "{{metaDescription}}",
+                alt: "{{title}} — FAQ",
             },
         },
         en: {
@@ -377,9 +377,9 @@ export const seo = {
                     "Kemer FAQ, Kemer information, travel tips Kemer, Kemer guide",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — FAQ about Kemer",
+                description: "{{metaDescription}}",
+                alt: "{{title}} — FAQ",
             },
         },
         tr: {
@@ -390,9 +390,9 @@ export const seo = {
                     "Kemer SSS, Kemer bilgileri, Kemer seyahat ipuçları, Kemer rehberi",
             },
             item: {
-                title: "{{name}} — Excursion in Kemer",
-                description: "{{shortDescription}}",
-                image: "{{mainPhoto}}",
+                title: "{{title}} — Kemer Hakkında SSS",
+                description: "{{metaDescription}}",
+                alt: "{{title}} — SSS",
             },
         },
     },

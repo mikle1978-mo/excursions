@@ -7,6 +7,7 @@
     export let data;
     // безопасный деструктуринг
     const { type, lang, items } = data ?? {};
+    console.log("items-route", items);
 </script>
 
 <!-- SEO для страницы -->

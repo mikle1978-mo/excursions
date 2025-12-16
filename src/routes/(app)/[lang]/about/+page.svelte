@@ -1,9 +1,24 @@
+<!-- src\routes\(app)\[lang]\about\+page.svelte -->
 <script>
     import AboutPage from "$lib/components/pages/AboutPage.svelte";
-    import { about_SEO_TEXT } from "$lib/i18n/LIST_TEXTS.js";
+    import { appConfig } from "$lib/config/app.config";
+    import SeoRenderer from "$lib/components/SEO/SeoRenderer.svelte";
+    import SchemasRenderer from "$lib/components/SEO/SchemasRenderer.svelte";
+    import ProductDetailRenderer from "$lib/components/pages/ProductDetailRenderer.svelte";
 
-    const baseUrl = import.meta.env.VITE_BASE_URL;
-    const baseName = import.meta.env.VITE_BASE_NAME;
+    export let data;
+    // безопасный деструктуринг
+    const { type, lang, items } = data ?? {};
+
+    const item = appConfig.pages.about[lang]; // конфиг страницы About
 </script>
 
-<AboutPage seoText={about_SEO_TEXT} {baseUrl} {baseName} urlPath="about" />
+<!-- SEO для страницы -->
+<SeoRenderer {type} {lang} {item} />
+
+<!-- JSON-LD схемы для списка -->
+<SchemasRenderer {type} {lang} {item} />
+
+<ProductDetailRenderer {type} {item} {lang} />
+
+<!-- <AboutPage urlPath="about" /> -->

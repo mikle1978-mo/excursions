@@ -1,11 +1,11 @@
 <script>
     import { appConfig } from "$lib/config/app.config";
 
-    export let props;
     const config = appConfig?.blocks?.youtube;
-    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
+    export let data;
+    export let system;
     const videoUrl = data.videoUrl || "";
-    const lang = data.lang || "en";
+    const lang = system.lang || "en";
     const title = data.title || config.defaultTitle[lang];
     const poster = data.images[0].url || config.defaultPoster;
 
@@ -29,31 +29,40 @@
 </script>
 
 {#if videoId && videoId.trim() !== ""}
-    <div class="video-wrapper">
-        {#if !showVideo}
-            <button
-                class="poster"
-                on:click={openVideo}
-                aria-label={`Play video: ${title}`}
-            >
-                <img src={poster} alt={title} />
-                <div class="play-button">▶</div>
-            </button>
-        {:else}
-            <iframe
-                width="100%"
-                height="100%"
-                src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
-                frameborder="0"
-                allow="autoplay; encrypted-media"
-                allowfullscreen
-                {title}
-            ></iframe>
-        {/if}
+    <div class="video-outer">
+        <div class="video-wrapper">
+            {#if !showVideo}
+                <button
+                    class="poster"
+                    on:click={openVideo}
+                    aria-label={`Play video: ${title}`}
+                >
+                    <img src={poster} alt={title} />
+                    <div class="play-button">▶</div>
+                </button>
+            {:else}
+                <iframe
+                    src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
+                    allow="autoplay; encrypted-media"
+                    allowfullscreen
+                    {title}
+                ></iframe>
+            {/if}
+        </div>
     </div>
 {/if}
 
 <style>
+    .video-outer {
+        width: 100%;
+    }
+
+    /* Паддинги ТОЛЬКО тут */
+    @media (max-width: 480px) {
+        .video-outer {
+            padding: 0 var(--space-vertical-sm);
+        }
+    }
     .video-wrapper {
         position: relative;
         width: 100%;
@@ -67,6 +76,7 @@
         position: absolute;
         top: 0;
         left: 0;
+
         width: 100%;
         height: 100%;
     }

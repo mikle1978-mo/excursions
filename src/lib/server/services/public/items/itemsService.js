@@ -148,6 +148,10 @@ export async function getFullItemFromDB(slug, collectionName, lang = "en") {
         ...item,
         _id: item._id.toString(),
         type: collectionName,
+        // 👇 ВАЖНО
+        reviews: safeReviews,
+        reviewsCount,
+        rating,
     };
     if (translation) {
         for (const key in translation) {
@@ -159,9 +163,6 @@ export async function getFullItemFromDB(slug, collectionName, lang = "en") {
 
     return {
         item: safeItem,
-        reviews: safeReviews,
-        reviewsCount,
-        rating,
     };
 }
 

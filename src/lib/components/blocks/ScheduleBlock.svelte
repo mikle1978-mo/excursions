@@ -2,12 +2,11 @@
     import IconList from "$lib/icons/IconList.svelte";
     import { appConfig } from "$lib/config/app.config";
 
-    export let props;
-
-    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
+    export let data;
+    export let system;
 
     const schedule = data.schedule || [];
-    const lang = data.lang || "en";
+    const lang = system.lang || "en";
     const config = appConfig?.blocks?.schedule;
 </script>
 

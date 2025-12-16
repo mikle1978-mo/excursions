@@ -4,6 +4,7 @@
     const baseName = import.meta.env.VITE_BASE_NAME;
 
     export let type;
+
     export let lang;
     export let item = null; // если null → это список
 
@@ -12,6 +13,7 @@
 
     // получаем конфиг
     const cfg = appConfig.seo?.[type]?.[lang]?.[mode] ?? {};
+
     // дефолтные картинки
     const defaultImage = appConfig.defaultImage?.[type]?.default || "";
 

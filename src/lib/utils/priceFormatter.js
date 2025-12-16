@@ -1,11 +1,11 @@
+// utils/priceFormatter.js
 import { appConfig } from "$lib/config/app.config";
 
-export function formatPrice(amount, currency) {
+export function formatPrice(amount, currencyCode) {
     const currencyConfig = appConfig.services.currency;
 
-    // выбираем валюту из настроек
     const cur =
-        currencyConfig.currencies[currency] ||
+        currencyConfig.currencies[currencyCode] ||
         currencyConfig.currencies[currencyConfig.base];
 
     return new Intl.NumberFormat(cur.locale, {

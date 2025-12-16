@@ -1,26 +1,17 @@
-<!-- src/lib/components/blocks/InfoBlockArray.svelte -->
+<!-- src/lib/components/blocks/ListBlock.svelte -->
 <script>
     import { appConfig } from "$lib/config/app.config";
-    export let props;
+    export let data;
+    export let style = {};
 
-    // Превращаем fields в объект
-    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
-
-    // Находим ключ массива (любое поле кроме lang)
-    const arrayKey = Object.keys(data).find((k) => k !== "lang");
-
-    // Достаём массив значений
-    const fields = data[arrayKey] ?? [];
-    const lang = data?.lang || "en";
-    // Конфиг
-    const config = appConfig.blocks.infoArray[arrayKey] || {};
-    const title = config.title?.[lang] ?? "";
-    const Icon = config.icon ?? null;
+    const items = data.items ?? [];
+    const title = data.title ?? "";
+    const Icon = data.icon ?? null;
 </script>
 
-{#if fields.length > 0}
+{#if items.length > 0}
     <div class="info-block">
-        <h2 class="title-with-icon">
+        <h2 class="title-with-icon" data-variant={style.variant}>
             {#if Icon}
                 <svelte:component this={Icon} class="icon" />
             {/if}
@@ -28,7 +19,7 @@
         </h2>
 
         <ul class="info-list">
-            {#each fields as row}
+            {#each items as row}
                 <li>{row}</li>
             {/each}
         </ul>

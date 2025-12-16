@@ -3,7 +3,7 @@
     import { onMount } from "svelte";
     import { page } from "$app/stores";
     import { goto } from "$app/navigation";
-    import Galery from "$lib/components/blocks/GaleryCollage.svelte";
+    import Galery from "$lib/components/blocks/GalleryBlock.svelte";
     import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
     import BuyMeACoffe from "$lib/components/UI/buttons/BuyMeACoffe.svelte";
 
@@ -175,19 +175,6 @@
 
     const t = content[$localeStore] || content["en"];
 </script>
-
-<PageSeoHead
-    {baseUrl}
-    {baseName}
-    locale={$localeStore}
-    type={urlPath}
-    {urlPath}
-    seo={seoText[$localeStore] ?? seoText.en}
-    title={seoText[$localeStore]?.title}
-    description={seoText[$localeStore]?.description}
-    keywords={seoText[$localeStore]?.keywords}
-    image={`${baseUrl}/images/about/about1.webp`}
-/>
 
 <div class="content">
     <main class="about_page">

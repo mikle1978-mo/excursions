@@ -50,4 +50,40 @@ export const infoBlockArrayConfig = {
         },
         icon: IconClipBoard,
     },
+    //car
+    rentalConditions: {
+        title: {
+            ru: "Условия аренды",
+            en: "Rental conditions",
+        },
+        icon: IconClipBoard,
+    },
+    requiredDocuments: {
+        title: {
+            ru: "Необходимые документы",
+            en: "Required documents",
+        },
+        icon: IconClipBoard,
+    },
+    accidentInstructions: {
+        title: {
+            ru: "Инструкции при ДТП",
+            en: "Accident instructions",
+        },
+        icon: IconClipBoard,
+    },
+    insuranceDescription: {
+        title: {
+            ru: "Описание страховки",
+            en: "Insurance description",
+        },
+        icon: IconClipBoard,
+    },
+    insuranceExclusions: {
+        title: {
+            ru: "Исключение из страховки",
+            en: "Insurance exclusions",
+        },
+        icon: IconClipBoard,
+    },
 };

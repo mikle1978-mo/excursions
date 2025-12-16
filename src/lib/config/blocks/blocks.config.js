@@ -1,6 +1,7 @@
 import { heroBlockConfig } from "$lib/config/blocks/hero.config.js";
 import { priceBlockConfig } from "$lib/config/blocks/priceBlock.config.js";
 import { bookingBlockConfig } from "$lib/config/blocks/booking.config.js";
+import { textBlockConfig } from "./textBlock.config";
 
 // пустые или почти пустые
 import { descriptionBlockConfig } from "$lib/config/blocks/description.config.js";
@@ -13,6 +14,8 @@ import { relatedConfig } from "$lib/config/blocks/related.config.js";
 import { reviewsConfig } from "$lib/config/blocks/reviews.config.js";
 import { meetingPoint } from "$lib/config/blocks/meetingPoint.config";
 import { buttonBlockConfig } from "$lib/config/blocks/buttonBlock.config";
+import { productDetailsBlock } from "$lib/config/blocks/productDetailsBlock.config";
+import { text } from "@sveltejs/kit";
 
 export const blocksConfig = {
     hero: heroBlockConfig,
@@ -21,6 +24,7 @@ export const blocksConfig = {
 
     // простые блоки
     description: descriptionBlockConfig,
+    details: productDetailsBlock,
     infoArray: infoBlockArrayConfig,
     infoString: infoBlockStringConfig,
     schedule: scheduleConfig,
@@ -30,4 +34,5 @@ export const blocksConfig = {
     related: relatedConfig,
     reviews: reviewsConfig,
     button: buttonBlockConfig,
+    text: textBlockConfig,
 };

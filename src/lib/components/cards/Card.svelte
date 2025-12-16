@@ -1,155 +1,66 @@
 <script>
-    import { locale, getLocalizedPath } from "$lib/stores/locale.js";
-    import { onMount } from "svelte";
-    import { card } from "$lib/i18n/card";
-    import { formatPrice } from "$lib/utils/priceFormatter";
-    import getOldPrice from "$lib/utils/getOldPrice";
-    import Rating from "../UI/rating/Rating.svelte";
-    import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
-    import { get } from "svelte/store";
-    import { selectedCurrency } from "$lib/stores/currency.js";
-    import { appConfig } from "$lib/config/app.config.js";
+    import { CardPriceVM } from "$lib/features/card/card.price.vm.js";
+    import Rating from "$lib/components/UI/rating/Rating.svelte";
+    export let data;
+    // export let loading = "lazy";
 
-    export let item;
-    export let type;
-    export let lang;
-    export let loading = "lazy";
+    const priceVM = CardPriceVM(data.price);
 
-    const config = appConfig.collections[type].cardConfig || {};
-
-    const defaultImage = `/images/${type}/${type.endsWith("s") ? type.slice(0, -1) : type}_default.webp`;
-
-    const slug = item.slug;
-    const title = item.title ?? "";
-    const image = item.image ?? defaultImage;
-    let imageSrcset = { src: image, srcset: "" };
-    // подписка на store
-    let currency = "USD";
-    $: $selectedCurrency, (currency = $selectedCurrency);
-    $: priceDisplay = formatPrice(item.price, currency);
-    $: oldPriceDisplay = formatPrice(
-        getOldPrice(item.price, item.discount),
-        currency
-    );
-    $: priceType =
-        item.priceType && card[item.priceType] ? item.priceType : "per_person";
-
-    $: priceTypeLabel = card[priceType] ?? "";
-
-    $: discount = item.discount ?? 0;
-    $: discountEnd = item.discountEnd ?? 0;
-
-    $: fuelLabel = item.fuel ? (card[item.fuel]?.[$locale] ?? item.fuel) : "";
-    $: transmissionLabel = item.transmission
-        ? (card[item.transmission]?.[$locale] ?? item.transmission)
-        : "";
-    $: detailTop = item.duration
-        ? ``
-        : // ? `${item.duration} ${type === "transfers" ? card.minutes[$locale] : card.hours[$locale]}`
-          (transmissionLabel ?? "");
-    $: detailBottom =
-        type === "transfers"
-            ? `${card.before[$locale]} ${item.car.seats} ${card.people[$locale]}`
-            : item.groupSize
-              ? ``
-              : //   ? `${card.before[$locale]} ${item.groupSize} ${card.people[$locale]}`
-                (fuelLabel ?? "");
-    const rating = item.rating ?? 5;
-    const reviewsCount = item.reviewsCount ?? 10;
-    $: meta = item.meta ?? {};
-    // $: imageSrcset = getCloudinarySrcset(image, [400, 600, 800, 980]);
-
-    function onImageError(event) {
-        console.log(`Image error for ${event.target.src}`);
-
-        if (event.target.src !== defaultImage) {
-            event.target.src = defaultImage;
-            event.target.srcset = "";
+    function onImageError(e) {
+        if (e.target.src !== data.defaultImage) {
+            e.target.src = data.defaultImage;
+            e.target.srcset = "";
         }
     }
-
-    let isMounted = false;
-
-    function getLabelByKey(labelsArray, key) {
-        return labelsArray.find((item) => item.key === key);
-    }
-
-    onMount(async () => {
-        imageSrcset = getCloudinarySrcset(image, [400, 600, 800, 980]);
-        isMounted = true;
-    });
 </script>
 
 <div class="card">
-    <a href={`${lang}/${type}/${slug}`} class="card__image-wrapper">
+    <a href={data.href} class="card__image-wrapper">
         <img
-            src={imageSrcset.src}
-            srcset={imageSrcset.srcset}
-            sizes="(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw"
-            alt={`${title} `}
+            src={data.image.src}
+            srcset={data.image.srcset}
+            sizes={data.image.sizesAttr}
+            loading={data.image.loading}
+            decoding={data.image.decoding}
+            fetchpriority={data.image.fetchpriority}
+            width={data.image.width}
+            height={data.image.height}
+            alt={data.title}
             class="card__image"
-            {loading}
-            fetchpriority={loading === "eager" ? "high" : "auto"}
-            decoding="async"
-            width="600"
-            height="338"
-            onerror={onImageError}
         />
 
-        {#if getLabelByKey(meta.labels, "POPULAR")}
-            <span class="card__badge topright">
-                {getLabelByKey(meta.labels, "POPULAR").label[$locale]}
+        {#each data.badges as badge}
+            <span class={`card__badge ${badge.position}`}>
+                {badge.text}
             </span>
-        {/if}
-        {#if getLabelByKey(meta.labels, "DISCOUNT") && discount > 0 && new Date(discountEnd) > new Date()}
-            <span class="card__badge bottomleft">
-                {`-${discount}%`}
-            </span>
-        {/if}
-        {#if getLabelByKey(meta.labels, "NEW")}
-            <span class="card__badge topleft">
-                {getLabelByKey(meta.labels, "NEW").label[$locale]}
-            </span>
-        {/if}
-        {#if getLabelByKey(meta.labels, "VIP")}
-            <span class="card__badge bottomright">
-                {getLabelByKey(meta.labels, "VIP").label[$locale]}
-            </span>
-        {/if}
+        {/each}
     </a>
 
     <div class="card__content">
         <div class="card__header">
             <h2 class="card__title">
-                <a href={`${lang}/${type}/${slug}`}>{title}</a>
+                <a href={data.href}>{data.title}</a>
             </h2>
-            {#if config.fields?.includes("metaDescription")}
-                <span>
-                    {item.metaDescription}
-                </span>
-            {/if}
-            {#if config.fields?.includes("rating")}
-                <Rating {rating} {reviewsCount} locale={$locale} />
+
+            {#if data.rating}
+                <Rating
+                    rating={data.rating.value}
+                    reviewsCount={data.rating.count}
+                />
             {/if}
         </div>
 
         <div class="card__footer">
-            <div class="card__details">
-                <span class="card__detail-top">{detailTop} </span>
-                <span class="card__detail-bottom">
-                    {detailBottom}
-                </span>
-            </div>
-            {#if config.fields?.includes("price")}
+            {#if data.price.value}
                 <div class="card__price">
-                    <span class="card__price-value">
+                    {#if data.price.old}
                         <span class="card__old-price"
-                            >{discount > 0 ? oldPriceDisplay : ""}</span
-                        > <span>{priceDisplay}</span>
-                    </span>
-                    <!-- <span class="card__price-type">
-                    {priceTypeLabel}
-                </span> -->
+                            >{$priceVM.formattedPrice.old}</span
+                        >
+                    {/if}
+                    <span class="card__price-value"
+                        >{$priceVM.formattedPrice.current}</span
+                    >
                 </div>
             {/if}
         </div>
@@ -177,9 +88,11 @@
         position: relative;
         width: 100%;
         aspect-ratio: 16 / 9;
+        flex-shrink: 0;
     }
 
     .card__image {
+        display: block;
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -279,8 +192,9 @@
 
     .card__price {
         display: flex;
-        flex-direction: column;
+        /* flex-direction: column; */
         align-items: center;
+        gap: var(--space-horizontal-xs);
     }
 
     .card__price-value {

@@ -1,35 +1,79 @@
-// src\lib\components\blocks\detailComponents.js
+// src/lib/components/blocks/detailComponents.js
 
-import AboutBlock from "$lib/components/blocks/AboutBlock.svelte";
-import BookingCard from "$lib/components/blocks/BookingCard.svelte";
-import ButtonBlock from "$lib/components/blocks/ButtonBlock.svelte";
-import Description from "$lib/components/blocks/Description.svelte";
-import GaleryCollage from "$lib/components/blocks/GaleryCollage.svelte";
+/**
+ * detailComponents
+ *
+ * Реестр UI-блоков для detail-страниц.
+ * Компоненты:
+ * - не знают источник данных
+ * - получают data + system
+ * - выбираются конфигом страницы
+ */
+
+// ==================
+// LAYOUT / PAGE
+// ==================
 import HeroBlock from "$lib/components/blocks/HeroBlock.svelte";
-import InfoBlockArray from "$lib/components/blocks/InfoBlockArray.svelte";
-import MeetingPoint from "$lib/components/blocks/MeetingPoint.svelte";
+import AboutBlock from "$lib/components/blocks/AboutBlock.svelte";
+import ButtonBlock from "$lib/components/blocks/ButtonBlock.svelte";
+
+// ==================
+// TEXT CONTENT
+// ==================
+import TextBlock from "$lib/components/blocks/TextBlock.svelte";
+import HtmlBlock from "$lib/components/blocks/HtmlBlock.svelte";
+
+// ==================
+// LIST / ARRAY
+// ==================
+import ListBlock from "$lib/components/blocks/ListBlock.svelte";
+
+// ==================
+// MEDIA
+// ==================
+import GalleryBlock from "$lib/components/blocks/GalleryBlock.svelte";
+import YouTubeBlock from "$lib/components/blocks/YouTubeBlock.svelte";
 import MapBlock from "$lib/components/blocks/MapBlock.svelte";
-import PriceBlock from "$lib/components/blocks/PriceBlock.svelte";
+
+// ==================
+// STRUCTURED DATA
+// ==================
 import ProductDetailsBlock from "$lib/components/blocks/ProductDetailsBlock.svelte";
-import RelatedSlider from "$lib/components/blocks/RelatedSlider.svelte";
-import ReviewsList from "$lib/components/blocks/ReviewsList.svelte";
 import ScheduleBlock from "$lib/components/blocks/ScheduleBlock.svelte";
-import YouTubeVideo from "$lib/components/blocks/YouTubeVideo.svelte";
+import PriceBlock from "$lib/components/blocks/PriceBlock.svelte";
+import MeetingPoint from "$lib/components/blocks/MeetingPoint.svelte";
+
+// ==================
+// SOCIAL / RELATED
+// ==================
+import ReviewsBlock from "$lib/components/blocks/ReviewsBlock.svelte";
+import RelatedBlock from "$lib/components/blocks/RelatedBlock.svelte";
 
 export const detailComponents = {
-    AboutBlock,
-    BookingCard,
-    ButtonBlock,
-    Description,
-    GaleryCollage,
+    // layout
     HeroBlock,
-    InfoBlockArray,
+    AboutBlock,
+    ButtonBlock,
+
+    // text
+    TextBlock,
+    HtmlBlock,
+
+    // list
+    ListBlock,
+
+    // media
+    GalleryBlock,
+    YouTubeBlock,
     MapBlock,
-    MeetingPoint,
-    PriceBlock,
+
+    // structured
     ProductDetailsBlock,
-    RelatedSlider,
-    ReviewsList,
     ScheduleBlock,
-    YouTubeVideo,
+    PriceBlock,
+    MeetingPoint,
+
+    // social / related
+    ReviewsBlock,
+    RelatedBlock,
 };

@@ -1,12 +1,10 @@
 <script>
     import { appConfig } from "$lib/config/app.config";
-    export let props;
-
-    // Превращаем fields в объект
-    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
+    export let data;
+    export let system;
 
     // Достаём массив значений
-    const lang = data?.lang || "en";
+    const lang = system?.lang || "en";
     const meetingPoint = data?.meetingPoint || "";
 
     // Конфиг
@@ -33,7 +31,7 @@
     .info-block {
         width: 100%;
         background: var(--color-bg);
-        padding: var(--space-vertical-md);
+        padding: var(--space-vertical-sm);
         border-radius: var(--radius-md);
         border: 1px solid var(--color-gray-300);
     }

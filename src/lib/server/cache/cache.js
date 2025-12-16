@@ -31,7 +31,13 @@ export const cache = {
 
         const key = `${cfg.prefix}:list:${lang}`;
         const data = await redis.get(key);
-        return data ? JSON.parse(data) : null;
+        if (!data) return null;
+
+        // Если это уже объект/массив — просто возвращаем
+        if (typeof data === "object") return data;
+
+        // Иначе парсим строку
+        return JSON.parse(data);
     },
 
     async setList(type, { lang }, value) {

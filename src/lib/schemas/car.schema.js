@@ -62,7 +62,6 @@ export const carsSchema = z.object({
     guarantees: i18nArray.optional(),
     metaDescription: i18nString.optional(),
     keywords: i18nArray.optional(),
-    metaDescription: i18nString.optional(),
     description: i18nString.optional(),
     fuelPolicy: i18nString.optional(), // Политика по топливу
     extraTimePolicy: i18nString.optional(), // как считать перерасход (описание)

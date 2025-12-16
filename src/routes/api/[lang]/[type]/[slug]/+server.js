@@ -1,6 +1,5 @@
 // src/routes/api/[type]/[slug]/+server.js
 import { json } from "@sveltejs/kit";
-// import { blogSteps as steps } from "$lib/admin/forms/blog.form"; // ← псевдоним
 import { collectionsConfig } from "$lib/config/app.config.js";
 import { mergeWithSchema } from "$lib/utils/mergeWithSchema";
 import { mergeWithTranslations } from "$lib/utils/mergeWithTranslations";

@@ -1,156 +1,95 @@
 <script>
-    import Clock from "$lib/icons/IconClock.svelte";
+    import { appConfig } from "$lib/config/app.config";
+    const config = appConfig?.blocks?.details;
 
-    import Start from "$lib/icons/IconStart.svelte";
-    import IconClock from "$lib/icons/IconClock.svelte";
-    import IconGroup from "$lib/icons/IconGroup.svelte";
-    import IconDistance from "$lib/icons/IconDistance.svelte";
+    export let data;
+    export let system;
+    let lang = system?.lang || "en";
 
-    export let distance;
-    export let start;
-    export let groupSize;
-    export let duration;
-    export let lang = "en";
-
-    // Конфиг с метками и путями к данным для каждого типа
-    const fieldsConfig = {
-        car: [
-            { key: "fuel", labelRu: "Топливо", labelEn: "Fuel" },
-            { key: "seats", labelRu: "Мест", labelEn: "Seats" },
-            { key: "doors", labelRu: "Дверей", labelEn: "Doors" },
-            {
-                key: "distanceLimit",
-                labelRu: "Лимит км/день",
-                labelEn: "Distance Limit",
-            },
-            { key: "luggage", labelRu: "Багаж (л)", labelEn: "Luggage (l)" },
-            {
-                key: "minRentalPeriodValue",
-                labelRu: "Мин. период аренды",
-                labelEn: "Min Rental Period",
-            },
-        ],
-        excursion: [
-            {
-                key: "duration",
-                labelRu: "Длительность (ч)",
-                labelEn: "Duration (h)",
-                icon: "clock",
-            },
-            {
-                key: "groupSize",
-                labelRu: "Размер группы (чел)",
-                labelEn: "Group Size (per)",
-                icon: "group",
-            },
-            {
-                key: "distance",
-                labelRu: "Дистанция (км)",
-                labelEn: "Distance (km)",
-                icon: "distance",
-            },
-            {
-                key: "start",
-                labelRu: "Начало",
-                labelEn: "Start",
-                icon: "start",
-            },
-        ],
-        yacht: [
-            {
-                key: "duration",
-                labelRu: "Длительность (ч)",
-                labelEn: "Duration (h)",
-            },
-            {
-                key: "groupSize",
-                labelRu: "Вместимость (чел)",
-                labelEn: "Сapacity (per)",
-            },
-            {
-                key: "distance",
-                labelRu: "Дистанция (км)",
-                labelEn: "Distance (km)",
-            },
-            { key: "start", labelRu: "Начало", labelEn: "Start" },
-        ],
-        transfer: [
-            {
-                key: "duration",
-                labelRu: "Длительность (мин)",
-                labelEn: "Duration (мин)",
-            },
-            {
-                key: "car.model",
-                labelRu: "Модель машины",
-                labelEn: "Car Model",
-            },
-            { key: "car.seats", labelRu: "Мест", labelEn: "Seats" },
-        ],
-    };
-
-    // Помощник для доступа к вложенным свойствам по строке с точками
     function getNested(obj, path) {
-        return path
-            .split(".")
-            .reduce((o, k) => (o && o[k] !== undefined ? o[k] : null), obj);
+        return path.split(".").reduce((o, k) => o?.[k] ?? null, obj);
+    }
+
+    // Все ключи из config, кроме служебных
+    const allConfigKeys = Object.keys(config).filter(
+        (k) => k !== "title" && k !== "icon"
+    );
+
+    // Только те, что реально присутствуют в data
+    const activeFields = allConfigKeys.filter(
+        (k) => getNested(data, k) !== null
+    );
+
+    function formatValue(value, type, lang) {
+        if (type === "boolean") {
+            return value
+                ? lang === "ru"
+                    ? "Да"
+                    : "Yes"
+                : lang === "ru"
+                  ? "Нет"
+                  : "No";
+        }
+
+        return value;
     }
 </script>
 
 <div class="details">
-    <!-- {#if fieldsConfig[type]}
-        {#each fieldsConfig[type] as field}
-            {#if getNested(item, field.key) !== null && getNested(item, field.key) !== undefined && getNested(item, field.key) !== ""}
-                <div class="detail">
-                    <div class="detail_label">
-                        {#if field?.icon && iconComponents[field.icon]}
-                            <svelte:component
-                                this={iconComponents[field.icon]}
-                                class="icon"
-                            />
-                        {/if}
+    <h2 class="title-with-icon">
+        {#if config.icon}
+            <svelte:component this={config?.icon} class="icon" />
+        {/if}
+        {config?.title[lang]}:
+    </h2>
+    {#each activeFields as key}
+        {#if getNested(data, key)}
+            <div class="detail">
+                <div class="detail_label">
+                    {#if config[key].icon}
+                        <svelte:component
+                            this={config[key].icon}
+                            class="icon"
+                        />
+                    {/if}
 
-                        <span class="label"
-                            >{locale === "ru"
-                                ? field.labelRu
-                                : field.labelEn}:</span
-                        >
-                    </div>
-
-                    <span class="value">{getNested(item, field.key)}</span>
+                    <span class="label">
+                        {config[key].label[lang]}:
+                    </span>
                 </div>
-            {/if}
-        {/each}
-    {/if} -->
-    {#if start}
-        <IconClock />
-        <span class="value">{start}</span>
-    {/if}
-    {#if distance}
-        <IconDistance />
-        <span class="value">{distance}</span>
-    {/if}
-    {#if duration}
-        <IconClock />
-        <span class="value">{duration}</span>
-    {/if}
-    {#if groupSize}
-        <IconGroup />
-        <span class="value">{groupSize}</span>
-    {/if}
+
+                <span class="value">
+                    {formatValue(getNested(data, key), config[key]?.type, lang)}
+                </span>
+            </div>
+        {/if}
+    {/each}
 </div>
 
 <style>
     .details {
         width: 100%;
+        /* max-width: 700px; или 800/900 — под твой UI */
+        /* margin-right: auto; */
         display: grid;
         gap: 10px;
-        /* padding: var(--space-vertical-md); */
+        padding: 0 var(--space-vertical-sm);
+    }
+    .title-with-icon {
+        display: flex;
+        gap: var(--space-vertical-sm);
+        align-items: center;
+        font-size: var(--text-lg);
+        margin-bottom: var(--space-vertical-sm);
+        color: var(--color-text);
     }
     .detail {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        max-width: 500px; /* или любое подходящее */
+        margin: 0 auto; /* центрируем компонент строки */
+        width: 100%;
     }
     .detail_label {
         display: flex;

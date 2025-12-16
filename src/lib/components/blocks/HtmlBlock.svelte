@@ -1,12 +1,13 @@
 <script>
-    export let props;
-    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
-    const description = data.description;
+    export let data;
+    console.log(data);
+
+    const html = data.html;
 </script>
 
-{#if description}
+{#if html}
     <div class="description-block">
-        {@html description}
+        {@html html}
     </div>
 {/if}
 

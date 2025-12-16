@@ -1,3 +1,13 @@
+<!-- src\lib\components\pages\ProductDetailRenderer.svelte 
+
+CONFIG        → что рендерить
+NORMALIZER    → привести входные данные
+ADAPTER       → бизнес-логика
+VIEWMODEL     → UI-реактивность (ТОЛЬКО ТУТ)
+BLOCK         → отрисовать
+SYSTEM        → контекст
+-->
+
 <script>
     import { detailComponents } from "$lib/components/blocks/detailComponents.js";
     import { appConfig } from "$lib/config/app.config";
@@ -5,38 +15,52 @@
     export let type;
     export let lang;
     export let item;
-    export let rating;
-    export let reviewsCount;
+
+    const system = { lang, type };
+
+    console.log("item", item);
 
     const config = appConfig.collections[type]?.detailPage;
+    console.log("config", type, config);
 
     // список секций по типу
     const sections = config?.sections ?? [];
 
-    // универсальная функция выбора данных
-    /**
-     * Универсальная функция для подготовки пропсов для любого блока
-     * @param {object} uses - конфигурация блока (fields, title, icon и др.)
-     * @param {object} item - данные элемента
-     * @param {object} system - системные данные (rating, reviewsCount, lang и т.п.)
-     */
-    function getProps(section, item = {}, system = {}) {
-        const props = {};
-
-        // 1. Копируем все ключи, кроме fields (вдруг будут доп. параметры)
-        for (const key in section) {
-            if (key !== "fields") props[key] = section[key];
+    function getData(section) {
+        // 1. адаптер
+        if (typeof section.adapter === "function") {
+            return section.adapter({ item, system, section });
         }
 
-        // 2. Преобразуем fields в [{ key, value }]
-        if (Array.isArray(section.fields)) {
-            props.fields = section.fields.map((field) => ({
-                key: field,
-                value: item[field] ?? system[field],
-            }));
+        // 2. fields
+        const result = {};
+        if (!section.fields) return result;
+
+        for (const [key, source] of Object.entries(section.fields)) {
+            result[key] = normalizeValue(source, item, lang);
+        }
+        console.log(result);
+
+        return result;
+    }
+
+    function normalizeValue(source, item, lang) {
+        // 1. строка → ключ item
+        if (typeof source === "string") {
+            return item[source] ?? null;
         }
 
-        return props;
+        // 2. локализованный объект { ru, en }
+        if (
+            typeof source === "object" &&
+            source !== null &&
+            !Array.isArray(source) &&
+            lang in source
+        ) {
+            return source[lang] ?? null;
+        }
+
+        return source ?? null;
     }
 </script>
 
@@ -45,12 +69,9 @@
         {#if detailComponents[section.component]}
             <svelte:component
                 this={detailComponents[section.component]}
-                props={getProps(section, item, {
-                    type,
-                    lang,
-                    rating,
-                    reviewsCount,
-                })}
+                data={getData(section, item, lang)}
+                system={{ type }}
+                style={section.style || {}}
             />
         {/if}
     {/each}

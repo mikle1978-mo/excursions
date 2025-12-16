@@ -4,15 +4,16 @@
     import { locale } from "$lib/stores/locale";
     import { reviews_list } from "$lib/i18n/reviews_list";
 
-    export let props;
-    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
+    export let data;
+    export let system;
 
     const slug = data.slug || "";
-    const lang = data.lang || "en";
+    const reviews = data.reviews || "";
+    const lang = system.lang || "en";
     const config = appConfig?.blocks?.reviews;
     let itemSlug = slug;
 
-    let reviews = [];
+    // let reviews = [];
     let showForm = false;
     let formEl;
     let name = "";
@@ -22,20 +23,20 @@
     let error = "";
 
     // Загрузить отзывы по itemSlug при инициализации
-    onMount(async () => {
-        if (itemSlug) {
-            try {
-                const res = await fetch(`/api/reviews/${itemSlug}`);
-                if (res.ok) {
-                    reviews = await res.json();
-                } else {
-                    reviews = [];
-                }
-            } catch {
-                reviews = [];
-            }
-        }
-    });
+    // onMount(async () => {
+    //     if (itemSlug) {
+    //         try {
+    //             const res = await fetch(`/api/reviews/${itemSlug}`);
+    //             if (res.ok) {
+    //                 reviews = await res.json();
+    //             } else {
+    //                 reviews = [];
+    //             }
+    //         } catch {
+    //             reviews = [];
+    //         }
+    //     }
+    // });
 
     async function handleSubmit() {
         if (!name.trim() || !comment.trim()) {
@@ -71,7 +72,7 @@
             alert("Спасибо за отзыв!");
 
             const newReview = result;
-            reviews = [...reviews, newReview];
+            let reviews = [...reviews, newReview];
 
             name = "";
             rating = 5;

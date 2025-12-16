@@ -97,7 +97,9 @@ export async function composeCards({ db, type, lang = "en" }) {
 
         return item;
     });
-
+    console.log("====================================");
+    console.log("yyyyyyyyyyyyyyyy", items);
+    console.log("====================================");
     // ===== ENRICH =====
     return enrichCard(items, lang);
 }

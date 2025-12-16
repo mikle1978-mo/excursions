@@ -1,5 +1,5 @@
 <script>
-    import Card from "$lib/components/cards/Card.svelte";
+    import CardRenderer from "$lib/components/cards/CardRenderer.svelte";
     import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
     import { useServiceFilters } from "$lib/hooks/useServiceFilters.js";
     import { resetFilters, setFilters } from "$lib/stores/filters.js";
@@ -54,7 +54,7 @@
 
         <div class="grid">
             {#each filteredItems as item, i (item.slug)}
-                <Card {item} {type} {lang} loading={i < 5 ? "eager" : "lazy"} />
+                <CardRenderer {item} {type} {lang} />
             {/each}
         </div>
 

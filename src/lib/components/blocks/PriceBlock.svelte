@@ -1,157 +1,53 @@
 <script>
-    import { onMount, onDestroy } from "svelte";
-    import Share from "$lib/components/UI/buttons/Share.svelte";
-    import { formatPrice } from "$lib/utils/priceFormatter.js";
-    import MyButton from "../UI/buttons/MyButton.svelte";
-    import getOldPrice from "$lib/utils/getOldPrice";
+    import { createPriceVM } from "$lib/features/priceBlock/priceBlock.price.vm";
+    import { createTimerVM } from "$lib/features/priceBlock/priceBlock.timer.vm";
+    import { selectedCurrency } from "$lib/stores/currency";
+    import { appConfig } from "$lib/config/app.config";
+    import { formatPrice } from "$lib/utils/priceFormatter";
 
-    export let props;
-    const data = Object.fromEntries(props.fields.map((f) => [f.key, f.value]));
+    export let data;
+    export let style = {};
 
-    const price = data.price;
-    const priceType = data.priceType;
-    const discount = data.discount;
-    const discountEnd = data.discountEnd;
-    const lang = data.lang;
+    const priceVM = createPriceVM(data);
+    const timerVM = createTimerVM(data);
 
-    // export let discountEnd = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000)
-    //     .toISOString()
-    //     .split("T")[0]; // Optional end date for the discount
+    // $: currency = $selectedCurrency;
+    // $: rate = appConfig.services.currency.fallbackRates[currency] ?? 1;
 
-    const priceStore = formatPrice(price);
-    const oldPriceStore = formatPrice(getOldPrice(price, discount));
-    $: isDiscountActive =
-        discount > 0 && Object.values(remaining).some((val) => +val > 0);
-
-    let remaining = {
-        days: "00",
-        hours: "00",
-        minutes: "00",
-        seconds: "00",
-    };
-    let intervalId;
-
-    const keyMap = {
-        days: "day",
-        hours: "hour",
-        minutes: "minute",
-        seconds: "second",
-    };
-
-    // Локализованные единицы времени
-    const timeUnits = {
-        en: { day: "d", hour: "h", minute: "m", second: "s" },
-        ru: { day: "д", hour: "ч", minute: "м", second: "с" },
-        tr: { day: "g", hour: "s", minute: "d", second: "s" },
-    };
-
-    function updateRemaining() {
-        const end = new Date(discountEnd + "T23:59:59").getTime();
-
-        const now = new Date().getTime();
-        let diff = end - now;
-
-        if (diff <= 0) {
-            clearInterval(intervalId);
-            diff = 0;
-        }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((diff / (1000 * 60)) % 60);
-        const seconds = Math.floor((diff / 1000) % 60);
-
-        remaining = {
-            days: String(days).padStart(2, "0"),
-            hours: String(hours).padStart(2, "0"),
-            minutes: String(minutes).padStart(2, "0"),
-            seconds: String(seconds).padStart(2, "0"),
-        };
-    }
-
-    // Переводы надписей на кнопке по типу товара
-    const bookingLabels = {
-        en: {
-            default: "Join now",
-            excursion: "Order",
-            yacht: "All aboard",
-            car: "Pick up?",
-            transfer: "Let’s go!",
-            unavailable: "Unavailable",
-        },
-        ru: {
-            default: "Записаться",
-            excursion: "Заказать",
-            yacht: "На борт!",
-            car: "Забрать?",
-            transfer: "Поехали!",
-            unavailable: "Недоступно",
-        },
-        tr: {
-            default: "Katılmak istiyorum",
-            excursion: " İstiyorum!",
-            yacht: "Gemiye çık!",
-            car: "Alayım mı?",
-            transfer: "Hadi gidelim!",
-            unavailable: "Müsait değil",
-        },
-    };
-
-    const priceTypeLabels = {
-        per_day: { en: "per day", ru: "в день", tr: "günlük" },
-        per_hour: { en: "per hour", ru: "в час", tr: "saatlik" },
-        per_week: { en: "per week", ru: "в неделю", tr: "haftalık" },
-        per_person: { en: "per person", ru: "с человека", tr: "kişi başı" },
-        per_trip: { en: "per trip", ru: "за поездку", tr: "gezi başı" },
-    };
-
-    export const discountEndLabels = {
-        ru: "cрок действия скидки",
-        en: "discount ends",
-        tr: "indirim süresi",
-    };
-
-    function getPriceTypeLabel(type, lang) {
-        return priceTypeLabels[type]?.[lang] || priceTypeLabels[type]?.en || "";
-    }
-
-    onMount(() => {
-        updateRemaining();
-        if (discountEnd) intervalId = setInterval(updateRemaining, 1000);
-    });
-
-    onDestroy(() => {
-        if (intervalId) clearInterval(intervalId);
-    });
+    // $: price = formatPrice(data.basePrice * rate, currency);
+    // $: oldPrice = data.baseOldPrice
+    //     ? formatPrice(data.baseOldPrice * rate, currency)
+    //     : null;
 </script>
 
-<aside class="booking-card">
+<aside class="booking-card" data-variant={style.variant}>
     <div class="price-block">
         <div class="price-row">
-            {#if isDiscountActive}
-                <span class="discount">-{discount}%</span>
-                <span class="old-price">{oldPriceStore}</span>
+            {#if data.isDiscountActive}
+                <span class="discount">-{data.discount}%</span>
+                <span class="old-price">{$priceVM.oldPrice}</span>
             {/if}
 
-            <span class="price">{priceStore}</span>
+            <span class="price">{$priceVM.price}</span>
         </div>
 
-        {#if priceType}
-            <span class="per-person">{getPriceTypeLabel(priceType, lang)}</span>
+        {#if data.priceTypeLabel}
+            <span class="per-person">{data.priceTypeLabel}</span>
         {/if}
 
-        {#if isDiscountActive}
+        {#if timerVM}
             <div class="discount-timer">
-                {#each Object.entries(remaining) as [key, value]}
+                {#each Object.entries($timerVM) as [key, value]}
                     <div class="time-block">
                         <div class="number">{value}</div>
-                        <div class="label">
-                            {timeUnits[lang][keyMap[key]]}
-                        </div>
+                        <div class="label">{key}</div>
                     </div>
                 {/each}
             </div>
-            <span class="discountEndLabel">{discountEndLabels[lang]}</span>
+
+            <span class="discountEndLabel">
+                {data.discountEndLabel}
+            </span>
         {/if}
     </div>
 </aside>

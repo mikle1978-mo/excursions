@@ -8,18 +8,19 @@ export async function GET({ params }) {
     const db = await connectToDatabase();
     const { lang, type } = params;
 
-    const cfg = appConfig.collections[type]?.cacheConfig;
+    const cfg = appConfig?.cache?.[type];
 
-    // 1️⃣ Пробуем достать из кеша
+    // 1️⃣ Чтение из кеша (если ошибка — упадёт)
     if (cfg?.enabled) {
         const cached = await cache.getList(type, { lang });
+
         if (cached) return json(cached);
     }
 
-    // 2️⃣ Получаем из базы через composeCards (он сам строит нужные поля по card.config)
+    // 2️⃣ Чтение из базы
     const items = await composeCards({ db, type, lang });
 
-    // 3️⃣ Сохраняем в кеш
+    // 3️⃣ Запись в кеш (если ошибка — упадёт)
     if (cfg?.enabled) {
         await cache.setList(type, { lang }, items);
     }

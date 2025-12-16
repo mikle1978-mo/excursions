@@ -37,6 +37,8 @@ export const pagesConfig = {
 
 // === Коллекции — только сущности и их свойства
 const collectionsMeta = [
+    { name: "home", label: "Главная", icon: "🗺️" },
+    { name: "about", label: "О нас", icon: "🗺️" },
     { name: "excursions", label: "Экскурсии", icon: "🗺️" },
     { name: "yachts", label: "Яхты", icon: "⛵" },
     { name: "cars", label: "Авто", icon: "🚗" },

@@ -1,14 +1,8 @@
 <script>
     import Modal from "$lib/components/UI/Modal.svelte";
-    import { locale } from "$lib/stores/locale";
-    import { gallery_texts } from "$lib/i18n/gallery";
-    import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
 
-    const defaultImage = `/images/excursions/excursion_default.webp`;
+    export let data;
 
-    export let items = [];
-    export let title = "";
-    const images = items || [];
     let selectedIndex = 0;
     let isModalOpen = false;
 
@@ -21,45 +15,27 @@
         isModalOpen = false;
     };
 
-    const getAltText = (index) =>
-        gallery_texts.photo_alt[$locale]
-            .replace("{title}", title)
-            .replace("{current}", index + 1)
-            .replace("{total}", images.length);
-
-    const getCaption = (index) =>
-        gallery_texts.photo_caption[$locale]
-            .replace("{title}", title)
-            .replace("{current}", index + 1)
-            .replace("{total}", images.length);
-
-    $: thumbs = images.map((img) => getCloudinarySrcset(img.url, [200, 400]));
-
-    $: modalImages = images.map((img) =>
-        getCloudinarySrcset(img.url, [800, 1200, 1600])
-    );
-
     function onImageError(event) {
-        if (event.target.src !== defaultImage) {
-            event.target.src = defaultImage;
+        if (event.target.src !== data.defaultImage) {
+            event.target.src = data.defaultImage;
             event.target.srcset = "";
         }
     }
 </script>
 
 <div class="image-collage">
-    {#each images as img, i}
+    {#each data.images as img, i}
         <button
             type="button"
             class="collage-item"
             onclick={() => openModal(i)}
-            aria-label={gallery_texts.open_gallery[$locale]}
+            aria-label={data.openLabel}
         >
             <img
-                src={thumbs[i].src}
-                srcset={thumbs[i].srcset}
+                src={img.thumb.src}
+                srcset={img.thumb.srcset}
                 sizes="(max-width: 768px) 50vw, 200px"
-                alt={getAltText(i)}
+                alt={img.alt}
                 loading="lazy"
                 decoding="async"
                 onerror={onImageError}
@@ -72,14 +48,12 @@
     <Modal on:close={closeModal}>
         <div class="modal-gallery">
             <img
-                src={modalImages[selectedIndex].src}
-                srcset={modalImages[selectedIndex].srcset}
+                src={data.images[selectedIndex].modal.src}
+                srcset={data.images[selectedIndex].modal.srcset}
                 sizes="(max-width: 768px) 95vw, 1200px"
-                alt={getAltText(selectedIndex)}
-                loading="eager"
-                decoding="async"
+                alt={data.images[selectedIndex].alt}
             />
-            <p class="caption">{getCaption(selectedIndex)}</p>
+            <p class="caption">{data.captions[selectedIndex]}</p>
         </div>
     </Modal>
 {/if}
