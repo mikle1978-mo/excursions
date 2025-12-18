@@ -5,7 +5,7 @@
 
     import { locale as localeStore, setLocale } from "$lib/stores/locale.js";
     import { browser } from "$app/environment";
-    import SeoOrganization from "$lib/components/seo/SeoOrganization.svelte";
+    import SchemaOrganization from "$lib/components/seo/SchemaOrganization.svelte";
     import GoogleTagManager from "$lib/components/seo/GoogleTagManager.svelte";
     import YandexMetrika from "$lib/components/seo/YandexMetrika.svelte";
 
@@ -97,7 +97,7 @@
 </script>
 
 <GoogleTagManager {gtmId} />
-<SeoOrganization />
+<SchemaOrganization />
 
 <svelte:head>
     <meta name="author" content="Kemer.app" />
