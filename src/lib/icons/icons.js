@@ -2,7 +2,7 @@
 
 import IconBookOpen from "$lib/icons/IconBookOpen.svelte";
 import IconBriefcase from "$lib/icons/IconBriefcase.svelte";
-import IconClipBoard from "$lib/icons/IconClipboard.svelte";
+import IconClipBoard from "$lib/icons/IconClipBoard.svelte";
 import IconClock from "$lib/icons/IconClock.svelte";
 import IconCompass from "$lib/icons/IconCompass.svelte";
 import IconCopy from "$lib/icons/IconCopy.svelte";
