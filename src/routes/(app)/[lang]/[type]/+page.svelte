@@ -1,8 +1,8 @@
 <!-- src\routes\(app)\[lang]\[type]\+page.svelte -->
 
 <script>
-    import SeoRenderer from "$lib/components/SEO/SeoRenderer.svelte";
-    import SchemasRenderer from "$lib/components/SEO/SchemasRenderer.svelte";
+    import SeoRenderer from "$lib/components/seo/SeoRenderer.svelte";
+    import SchemasRenderer from "$lib/components/seo/SchemasRenderer.svelte";
     import CardList from "$lib/components/pages/CardList.svelte";
     import FiltersBlock from "$lib/components/blocks/page/FiltersBlock.svelte";
 

@@ -4,14 +4,14 @@
     import { page } from "$app/stores";
     import { goto } from "$app/navigation";
     import Galery from "$lib/components/blocks/GalleryBlock.svelte";
-    import PageSeoHead from "$lib/components/SEO/PageSeoHead.svelte";
-    import BuyMeACoffe from "$lib/components/UI/buttons/BuyMeACoffe.svelte";
+    import PageSeoHead from "$lib/components/seo/PageSeoHead.svelte";
+    import BuyMeACoffe from "$lib/components/ui/buttons/BuyMeACoffe.svelte";
 
-    export let seoText;
+    // export let seoText;
 
-    export let baseUrl;
-    export let baseName;
-    export let urlPath;
+    // export let baseUrl;
+    // export let baseName;
+    // export let urlPath;
 
     const images = [
         { url: "/images/about/about1.webp" },
