@@ -4,7 +4,7 @@
     import { card } from "$lib/i18n/card";
     import { formatPrice } from "$lib/utils/priceFormatter";
     import getOldPrice from "$lib/utils/getOldPrice";
-    import Rating from "../UI/rating/Rating.svelte";
+    import Rating from "../ui/rating/Rating.svelte";
     import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
     import { get } from "svelte/store";
     import { formatDate } from "$lib/utils/dateFormatter";

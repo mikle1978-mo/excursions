@@ -1,5 +1,5 @@
 <script>
-    import RangeSlider from "$lib/components/UI/inputs/sliders/RangeSlider.svelte";
+    import RangeSlider from "$lib/components/ui/inputs/sliders/RangeSlider.svelte";
     import { createEventDispatcher } from "svelte";
     import { locale } from "$lib/stores/locale.js";
 

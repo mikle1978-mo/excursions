@@ -1,12 +1,12 @@
 <script>
-    import TextInput from "$lib/components/UI/inputs/textInput/TextInput.svelte";
-    import TextAreaInput from "$lib/components/UI/inputs/textareaInput/TextAreaInput.svelte";
-    import NumberInput from "$lib/components/UI/inputs/numberInput/NumberInput.svelte";
-    import CheckBoxInput from "$lib/components/UI/inputs/checkboxInput/CheckBoxInput.svelte";
-    import SelectInput from "$lib/components/UI/inputs/selectInput/SelectInput.svelte";
-    import ArrayInput from "$lib/components/UI/inputs/arrayInput/ArrayInput.svelte";
-    import ImageUploader from "$lib/components/UI/inputs/ImageUploader/ImageUploader.svelte";
-    import DateInput from "$lib/components/UI/inputs/dateInput/DateInput.svelte";
+    import TextInput from "$lib/components/ui/inputs/textInput/TextInput.svelte";
+    import TextAreaInput from "$lib/components/ui/inputs/textareaInput/TextAreaInput.svelte";
+    import NumberInput from "$lib/components/ui/inputs/numberInput/NumberInput.svelte";
+    import CheckBoxInput from "$lib/components/ui/inputs/checkboxInput/CheckBoxInput.svelte";
+    import SelectInput from "$lib/components/ui/inputs/selectInput/SelectInput.svelte";
+    import ArrayInput from "$lib/components/ui/inputs/arrayInput/ArrayInput.svelte";
+    import ImageUploader from "$lib/components/ui/inputs/ImageUploader/ImageUploader.svelte";
+    import DateInput from "$lib/components/ui/inputs/dateInput/DateInput.svelte";
 
     export let field;
     export let value;

@@ -2,7 +2,7 @@
     import PrimitiveField from "./PrimitiveField.svelte";
     import ArrayField from "./ArrayField.svelte";
     import ObjectField from "./ObjectField.svelte"; // рекурсивно
-    import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
+    import ErrorMessage from "$lib/components/ui/error/ErrorMessage.svelte";
 
     export let field; // { label, fields: [...] }
     export let value = {}; // bind:value — объект данных

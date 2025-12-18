@@ -1,5 +1,5 @@
 <script>
-    import BuyMeACoffe from "$lib/components/UI/buttons/BuyMeACoffe.svelte";
+    import BuyMeACoffe from "$lib/components/ui/buttons/BuyMeACoffe.svelte";
     // export let data;
     export let system;
 

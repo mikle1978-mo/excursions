@@ -1,8 +1,8 @@
 <script>
-    import Rating from "$lib/components/UI/rating/Rating.svelte";
+    import Rating from "$lib/components/ui/rating/Rating.svelte";
     import IconClock from "$lib/icons/IconClock.svelte";
     import IconGroup from "$lib/icons/IconGroup.svelte";
-    import ShareIcon from "$lib/components/UI/buttons/ShareIcon.svelte";
+    import ShareIcon from "$lib/components/ui/buttons/ShareIcon.svelte";
     import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
 
     export let data;

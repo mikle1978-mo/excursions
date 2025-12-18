@@ -1,5 +1,5 @@
 <script>
-    import Modal from "$lib/components/UI/Modal.svelte";
+    import Modal from "$lib/components/ui/Modal.svelte";
 
     export let data;
 

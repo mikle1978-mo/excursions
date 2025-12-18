@@ -6,7 +6,7 @@
     import IconCompass from "$lib/icons/IconCompass.svelte";
     import IconHelp from "$lib/icons/IconHelp.svelte";
     import IconBookOpen from "$lib/icons/IconBookOpen.svelte";
-    import ClearCacheButton from "$lib/components/UI/buttons/ClearCacheButton.svelte";
+    import ClearCacheButton from "$lib/components/ui/buttons/ClearCacheButton.svelte";
 </script>
 
 <svelte:head>

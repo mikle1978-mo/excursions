@@ -11,8 +11,8 @@ SYSTEM        → контекст
 <script>
     import { detailComponents } from "$lib/components/blocks/page/detailComponents.js";
     import { appConfig } from "$lib/config/app.config";
-    import Modal from "$lib/components/UI/Modal.svelte";
-    import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
+    import Modal from "$lib/components/ui/Modal.svelte";
+    import ShortForm from "$lib/components/ui/forms/shortForm.svelte";
 
     export let type;
     export let lang;

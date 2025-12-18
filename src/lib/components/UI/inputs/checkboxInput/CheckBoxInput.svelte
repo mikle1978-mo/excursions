@@ -1,5 +1,5 @@
 <script>
-    import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
+    import ErrorMessage from "$lib/components/ui/error/ErrorMessage.svelte";
     export let value = false; // привязка снаружи через bind:value
     export let label = "Активна (отображать на сайте)";
     export let field = "";

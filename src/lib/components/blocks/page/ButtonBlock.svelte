@@ -1,6 +1,6 @@
 <script>
     import { formatPrice } from "$lib/utils/priceFormatter.js";
-    import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
+    import MyButton from "$lib/components/ui/buttons/MyButton.svelte";
     import getOldPrice from "$lib/utils/getOldPrice";
     import { appConfig } from "$lib/config/app.config";
 

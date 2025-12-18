@@ -7,15 +7,15 @@
     import GaleryCollage from "$lib/components/layout/GaleryCollage.svelte";
     import BlogContent from "$lib/components/blocks/BlogContent.svelte";
     import Description from "$lib/components/blocks/HtmlBlock.svelte";
-    import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
-    import TheBurger from "$lib/components/UI/buttons/TheBurger.svelte";
+    import TheBreadcrumbs from "$lib/components/ui/breadcrumbs/TheBreadcrumbs.svelte";
+    import TheBurger from "$lib/components/ui/buttons/TheBurger.svelte";
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
-    import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
+    import WhatsApp from "$lib/components/ui/buttons/WhatsApp.svelte";
     import InfoBlockArray from "$lib/components/blocks/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/blocks/MeetingPoint.svelte";
     import MapBlock from "./MapBlock.svelte";
     import { formatDate } from "$lib/utils/dateFormatter";
-    import BuyMeACoffe from "$lib/components/UI/buttons/BuyMeACoffe.svelte";
+    import BuyMeACoffe from "$lib/components/ui/buttons/BuyMeACoffe.svelte";
 
     export let item;
 

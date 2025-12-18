@@ -1,5 +1,5 @@
 <script>
-    import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
+    import MyButton from "$lib/components/ui/buttons/MyButton.svelte";
     import FormField from "$lib/admin/components/FormField.svelte";
     import { goto } from "$app/navigation";
     import { createFormStore, resetForm } from "$lib/stores/universalFormStore";

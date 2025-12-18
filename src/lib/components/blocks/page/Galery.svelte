@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-    import Modal from "$lib/components/UI/Modal.svelte";
+    import Modal from "$lib/components/ui/Modal.svelte";
     import { locale } from "$lib/stores/locale";
     import { gallery_texts } from "$lib/i18n/gallery";
     import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";

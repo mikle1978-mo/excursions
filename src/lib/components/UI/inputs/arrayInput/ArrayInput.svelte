@@ -1,5 +1,5 @@
 <script>
-    import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
+    import ErrorMessage from "$lib/components/ui/error/ErrorMessage.svelte";
     import MyButton from "../../buttons/MyButton.svelte";
     export let value = [];
     export let placeholder = "Введите элементы (каждый с новой строки)";

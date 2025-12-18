@@ -1,5 +1,5 @@
 <script>
-    import Rating from "$lib/components/UI/rating/Rating.svelte";
+    import Rating from "$lib/components/ui/rating/Rating.svelte";
     import { createPriceVM } from "$lib/features/priceBlock/priceBlock.price.vm.js";
     export let data;
     const { price, oldPrice, discount } = data;

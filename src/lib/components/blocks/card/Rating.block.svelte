@@ -1,5 +1,5 @@
 <script>
-    import Rating from "$lib/components/UI/rating/Rating.svelte";
+    import Rating from "$lib/components/ui/rating/Rating.svelte";
     export let data;
     const { value, count } = data;
 </script>

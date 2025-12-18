@@ -2,16 +2,16 @@
     import { appConfig } from "$lib/config/app.config";
     import { onMount } from "svelte";
 
-    import TheBreadcrumbs from "$lib/components/UI/breadcrumbs/TheBreadcrumbs.svelte";
+    import TheBreadcrumbs from "$lib/components/ui/breadcrumbs/TheBreadcrumbs.svelte";
     import HeroBlock from "$lib/components/blocks/HeroBlock.svelte";
     import ReviewsList from "$lib/components/blocks/ReviewsBlock.svelte";
     import BookingCard from "$lib/components/blocks/BookingCard.svelte";
     import ProductDetailsBlock from "$lib/components/blocks/ProductDetailsBlock.svelte";
     import Galery from "$lib/components/layout/Galery.svelte";
-    import Rating from "$lib/components/UI/rating/Rating.svelte";
-    import Modal from "$lib/components/UI/Modal.svelte";
-    import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
-    import Share from "$lib/components/UI/buttons/Share.svelte";
+    import Rating from "$lib/components/ui/rating/Rating.svelte";
+    import Modal from "$lib/components/ui/Modal.svelte";
+    import ShortForm from "$lib/components/ui/forms/shortForm.svelte";
+    import Share from "$lib/components/ui/buttons/Share.svelte";
     import InfoBlockArray from "$lib/components/blocks/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/blocks/MeetingPoint.svelte";
     import AboutBlock from "$lib/components/blocks/AboutBlock.svelte";
@@ -23,13 +23,13 @@
     import IconPlus from "$lib/icons/IconPlus.svelte";
     import IconThumbsUp from "$lib/icons/IconThumbsUp.svelte";
     import IconClipBoard from "$lib/icons/IconClipBoard.svelte";
-    import TheBurger from "$lib/components/UI/buttons/TheBurger.svelte";
+    import TheBurger from "$lib/components/ui/buttons/TheBurger.svelte";
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import GaleryCollage from "$lib/components/layout/GaleryCollage.svelte";
     import Description from "$lib/components/blocks/HtmlBlock.svelte";
     import ButtonBlock from "$lib/components/blocks/ButtonBlock.svelte";
     import PriceBlock from "$lib/components/blocks/PriceBlock.svelte";
-    import WhatsApp from "$lib/components/UI/buttons/WhatsApp.svelte";
+    import WhatsApp from "$lib/components/ui/buttons/WhatsApp.svelte";
     import ScheduleBlock from "$lib/components/blocks/ScheduleBlock.svelte";
     import YouTubeVideo from "$lib/components/blocks/YouTubeBlock.svelte";
     import RelatedSlider from "$lib/components/blocks/RelatedBlock.svelte";

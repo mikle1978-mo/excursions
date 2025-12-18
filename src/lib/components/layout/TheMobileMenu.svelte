@@ -5,8 +5,8 @@
     import TheSocial from "./TheSocial.svelte";
     import Copyright from "./Copyright.svelte";
     import { goto } from "$app/navigation";
-    import CurrensySelector from "$lib/components/UI/buttons/CurrensySelector.svelte";
-    import TheLocaleButton from "$lib/components/UI/buttons/TheLocaleButton.svelte";
+    import CurrensySelector from "$lib/components/ui/buttons/CurrensySelector.svelte";
+    import TheLocaleButton from "$lib/components/ui/buttons/TheLocaleButton.svelte";
 
     const closeMobileMenu = () => mobileMenuOpen.set(false);
     const handleKeydown = (e) =>

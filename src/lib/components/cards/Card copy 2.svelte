@@ -1,6 +1,6 @@
 <script>
     import { CardPriceVM } from "$lib/features/card/product/card.price.vm.js";
-    import Rating from "$lib/components/UI/rating/Rating.svelte";
+    import Rating from "$lib/components/ui/rating/Rating.svelte";
     export let data;
     // export let loading = "lazy";
     console.log("CARD DATA", data);

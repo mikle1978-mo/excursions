@@ -1,8 +1,8 @@
 <script>
     import TheLogo from "./TheLogo.svelte";
-    import Search from "$lib/components/UI/inputs/search/Search.svelte";
-    import FilterButton from "../UI/buttons/FilterButton.svelte";
-    import TheBurger from "../UI/buttons/TheBurger.svelte";
+    import Search from "$lib/components/ui/inputs/search/Search.svelte";
+    import FilterButton from "../ui/buttons/FilterButton.svelte";
+    import TheBurger from "../ui/buttons/TheBurger.svelte";
 
     export let showSearch = false;
     export let showFilter = false;

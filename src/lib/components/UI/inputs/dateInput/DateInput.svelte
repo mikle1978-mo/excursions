@@ -1,7 +1,7 @@
 <!-- 
 src\lib\components\UI\inputs\dateInput\DateInput.svelte -->
 <script>
-    import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
+    import ErrorMessage from "$lib/components/ui/error/ErrorMessage.svelte";
 
     export let value = "";
     export let label = "Дата";

@@ -2,7 +2,7 @@
 <script>
     import { appConfig } from "$lib/config/app.config.js";
     import MainCard from "$lib/components/cards/MainCard.svelte";
-    import SeoRenderer from "$lib/components/SEO/SeoRenderer.svelte";
+    import SeoRenderer from "$lib/components/seo/SeoRenderer.svelte";
     import TheHeader from "$lib/components/layout/TheHeader.svelte";
 
     import { page } from "$app/stores";

@@ -2,8 +2,8 @@
     import PrimitiveField from "./PrimitiveField.svelte";
     import ObjectField from "./ObjectField.svelte";
     import ArrayField from "./ArrayField.svelte"; // рекурсивно (поддержка вложенных массивов)
-    import ErrorMessage from "$lib/components/UI/error/ErrorMessage.svelte";
-    import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
+    import ErrorMessage from "$lib/components/ui/error/ErrorMessage.svelte";
+    import MyButton from "$lib/components/ui/buttons/MyButton.svelte";
 
     export let field = {}; // конфиг поля (type="array" )
     export let value = []; // массив примитивов или объектов

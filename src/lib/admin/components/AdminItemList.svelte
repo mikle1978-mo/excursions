@@ -3,8 +3,8 @@
     import IconEdit from "$lib/icons/IconEdit.svelte";
     import IconCopy from "$lib/icons/IconCopy.svelte";
     import IconDelete from "$lib/icons/IconDelete.svelte";
-    import ExportCSVButton from "$lib/components/UI/buttons/ExportCSVButton.svelte";
-    import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
+    import ExportCSVButton from "$lib/components/ui/buttons/ExportCSVButton.svelte";
+    import MyButton from "$lib/components/ui/buttons/MyButton.svelte";
     import { goto } from "$app/navigation";
     import { appConfig } from "$lib/config/app.config";
     import {
