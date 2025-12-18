@@ -2,8 +2,8 @@
     import { locale } from "$lib/stores/locale.js";
     import { mobileMenuOpen } from "$lib/stores/mobileMenu";
     import { nav_items } from "$lib/i18n/nav_list";
-    import TheSocial from "./TheSocial.svelte";
-    import Copyright from "./Copyright.svelte";
+    import TheSocial from "$lib/components/layout/TheSocial.svelte";
+    import Copyright from "$lib/components/layout/Copyright.svelte";
     import { goto } from "$app/navigation";
     import CurrensySelector from "$lib/components/ui/buttons/CurrensySelector.svelte";
     import TheLocaleButton from "$lib/components/ui/buttons/TheLocaleButton.svelte";
