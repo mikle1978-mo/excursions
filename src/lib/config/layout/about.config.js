@@ -1,6 +1,5 @@
 // src/lib/config/layout/about.config.js
 import { currentYear } from "$lib/constants/date";
-import { de } from "zod/v4/locales";
 
 // src/lib/config/pages/about.config.js
 export const aboutConfig = {
