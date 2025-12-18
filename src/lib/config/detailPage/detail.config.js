@@ -8,15 +8,23 @@ export const detail = {
         sections: [
             {
                 component: "HeroBlock",
-                fields: { h1: "h1", images: "images" },
+                fields: {
+                    title: "title",
+                    images: "images",
+                    subtitle: "subtitle",
+                    rating: "rating",
+                    reviewCount: "reviewsCount",
+                },
+                style: {
+                    variant: "accent",
+                    tone: "light",
+                    align: "left",
+                },
             },
+
             {
-                component: "GaleryCollage",
-                fields: { title: "title", images: "images" },
-            },
-            {
-                component: "Description",
-                fields: { description: "description" },
+                component: "HtmlBlock",
+                fields: { html: "description" },
             },
             {
                 component: "TextBlock",
@@ -59,6 +67,13 @@ export const detail = {
                 },
             },
             {
+                component: "GalleryBlock",
+                adapter: GalleryBlockAdapter,
+                style: {
+                    variant: "normal",
+                },
+            },
+            {
                 component: "ListBlock",
                 fields: {
                     title: { ru: "Почему выбирают нас", en: "Why choose us" },
@@ -90,7 +105,7 @@ export const detail = {
             {
                 component: "HeroBlock",
                 fields: {
-                    title: "title",
+                    h1: "h1",
                     images: "images",
                     subtitle: "subtitle",
                     rating: "rating",
@@ -102,7 +117,6 @@ export const detail = {
                     align: "left",
                 },
             },
-
             {
                 component: "PriceBlock",
                 adapter: PriceBlockAdapter,
@@ -116,7 +130,12 @@ export const detail = {
                     distance: "distance",
                     duration: "duration",
                     groupSize: "groupSize",
-                    stat: "start",
+                    start: "start",
+                    title: {
+                        ru: "Детали",
+                        en: "Details",
+                    },
+                    icon: icons.grid,
                 },
             },
             {
@@ -187,6 +206,15 @@ export const detail = {
                     variant: "normal",
                 },
             },
+            {
+                component: "ButtonBlock",
+                fields: {
+                    active: "active",
+                    type: "type",
+                    label: { ru: "Заказать", en: "Order" },
+                },
+                action: "openBookingModal",
+            },
             { component: "AboutBlock", fields: {} },
             {
                 component: "ListBlock",
@@ -197,16 +225,12 @@ export const detail = {
                 },
             },
             {
-                component: "ButtonBlock",
-                fields: {
-                    active: "active",
-                    type: "type",
-                    label: { ru: "Заказать", en: "Order" },
-                },
-            },
-            {
                 component: "ReviewsBlock",
                 fields: { slug: "slug", reviews: "reviews" },
+            },
+            {
+                component: "CoffeBlock",
+                fields: {},
             },
             { component: "RelatedBlok", fields: ["related"] },
         ],
@@ -218,20 +242,23 @@ export const detail = {
             {
                 component: "HeroBlock",
                 fields: {
-                    title: "title",
+                    h1: "h1",
                     images: "images",
                     subtitle: "subtitle",
                     rating: "rating",
                     reviewCount: "reviewsCount",
                 },
+                style: {
+                    variant: "accent",
+                    tone: "light",
+                    align: "left",
+                },
             },
             {
                 component: "PriceBlock",
-                fields: {
-                    price: "price",
-                    discount: "discount",
-                    priceType: "priceType",
-                    discountEnd: "discountEnd",
+                adapter: PriceBlockAdapter,
+                style: {
+                    variant: "normal",
                 },
             },
             {
@@ -240,11 +267,16 @@ export const detail = {
                     distance: "distance",
                     duration: "duration",
                     groupSize: "groupSize",
-                    stat: "start",
+                    start: "start",
+                    title: {
+                        ru: "Детали",
+                        en: "Details",
+                    },
+                    icon: icons.grid,
                 },
             },
             {
-                component: "Description",
+                component: "HtmlBlock",
                 fields: { html: "description" },
             },
             { component: "ScheduleBlock", fields: { schedule: "schedule" } },
@@ -306,8 +338,20 @@ export const detail = {
                 },
             },
             {
-                component: "GaleryCollage",
-                fields: { title: "title", images: "images" },
+                component: "GalleryBlock",
+                adapter: GalleryBlockAdapter,
+                style: {
+                    variant: "normal",
+                },
+            },
+            {
+                component: "ButtonBlock",
+                fields: {
+                    active: "active",
+                    type: "type",
+                    label: { ru: "Заказать", en: "Order" },
+                },
+                action: "openBookingModal",
             },
             { component: "AboutBlock", fields: {} },
             {
@@ -318,18 +362,13 @@ export const detail = {
                     icon: icons.thumbsUp,
                 },
             },
-
             {
-                component: "ReviewsList",
+                component: "ReviewsBlock",
                 fields: { slug: "slug", reviews: "reviews" },
             },
             {
-                component: "ButtonBlock",
-                fields: {
-                    active: "active",
-                    type: "type",
-                    label: { ru: "Заказать", en: "Order" },
-                },
+                component: "CoffeBlock",
+                fields: {},
             },
         ],
     },
@@ -340,20 +379,23 @@ export const detail = {
             {
                 component: "HeroBlock",
                 fields: {
-                    title: "title",
+                    h1: "h1",
                     images: "images",
                     subtitle: "subtitle",
                     rating: "rating",
                     reviewCount: "reviewsCount",
                 },
+                style: {
+                    variant: "accent",
+                    tone: "light",
+                    align: "left",
+                },
             },
             {
                 component: "PriceBlock",
-                fields: {
-                    price: "price",
-                    discount: "discount",
-                    priceType: "priceType",
-                    discountEnd: "discountEnd",
+                adapter: PriceBlockAdapter,
+                style: {
+                    variant: "normal",
                 },
             },
             {
@@ -362,46 +404,93 @@ export const detail = {
                     distance: "distance",
                     duration: "duration",
                     groupSize: "groupSize",
-                    stat: "start",
+                    start: "start",
+                    title: {
+                        ru: "Детали",
+                        en: "Details",
+                    },
+                    icon: icons.grid,
                 },
             },
             {
-                component: "Description",
-                fields: { description: "description" },
+                component: "HtmlBlock",
+                fields: { html: "description" },
             },
-            { component: "ScheduleBlock", fields: { schedule: "schedule" } },
             {
                 component: "ListBlock",
                 fields: {
-                    items: "whatYouSee",
-                    title: { ru: "Что вы увидите", en: "What you see" },
+                    items: "requiredDocuments",
+                    title: {
+                        ru: "Необходимые документы",
+                        en: "Required documents",
+                    },
                     icon: icons.image,
                 },
             },
             {
                 component: "ListBlock",
                 fields: {
-                    items: "whatToBring",
-                    title: { ru: "Что взять с собой", en: "What to bring" },
+                    items: "rentalConditions",
+                    title: {
+                        ru: "Условия аренды",
+                        en: "Rental conditions",
+                    },
+                    icon: icons.image,
+                },
+            },
+            {
+                component: "TextBlock",
+                fields: {
+                    text: "extraTimePolicy",
+                    title: {
+                        ru: "Политика доп. времени",
+                        en: "Extra time policy",
+                    },
+                    icon: icons.image,
+                },
+            },
+            {
+                component: "TextBlock",
+                fields: {
+                    text: "fuelPolicy",
+                    title: { ru: "Топливная политика", en: "Fuel Policy" },
                     icon: icons.briefCase,
                 },
             },
             {
                 component: "ListBlock",
                 fields: {
-                    items: "includes",
-                    title: { ru: "Что включено", en: "What is included" },
+                    items: "insuranceDescription",
+                    title: {
+                        ru: "Условия страхования",
+                        en: "Insurance conditions",
+                    },
                     icon: icons.gift,
                 },
             },
             {
-                component: "TextBlock",
+                component: "ListBlock",
                 fields: {
-                    text: "meetingPoint",
-                    title: { ru: "Место встречи", en: "Meeting point" },
-                    icon: icons.mapPin,
+                    items: "insuranceExclusions",
+                    title: {
+                        ru: "Исключения по страховке",
+                        en: "Insurance exclusions",
+                    },
+                    icon: icons.gift,
                 },
             },
+            {
+                component: "ListBlock",
+                fields: {
+                    items: "accidentInstructions",
+                    title: {
+                        ru: "Инструкции по аварии",
+                        en: "Accident instructions",
+                    },
+                    icon: icons.gift,
+                },
+            },
+
             {
                 component: "ListBlock",
                 fields: {
@@ -420,16 +509,20 @@ export const detail = {
             },
 
             {
-                component: "YouTubeVideo",
-                fields: {
-                    videoUrl: "videoUrl",
-                    title: "title",
-                    images: "images",
+                component: "GalleryBlock",
+                adapter: GalleryBlockAdapter,
+                style: {
+                    variant: "normal",
                 },
             },
             {
-                component: "GaleryCollage",
-                fields: { title: "title", images: "images" },
+                component: "ButtonBlock",
+                fields: {
+                    active: "active",
+                    type: "type",
+                    label: { ru: "Заказать", en: "Order" },
+                },
+                action: "openBookingModal",
             },
             { component: "AboutBlock", fields: {} },
             {
@@ -440,20 +533,14 @@ export const detail = {
                     icon: icons.thumbsUp,
                 },
             },
-
             {
-                component: "ReviewsList",
+                component: "ReviewsBlock",
                 fields: { slug: "slug", reviews: "reviews" },
             },
             {
-                component: "ButtonBlock",
-                fields: {
-                    active: "active",
-                    type: "type",
-                    label: { ru: "Заказать", en: "Order" },
-                },
+                component: "CoffeBlock",
+                fields: {},
             },
-            { component: "RelatedSlider", fields: ["related"] },
         ],
     },
 
@@ -469,14 +556,17 @@ export const detail = {
                     rating: "rating",
                     reviewCount: "reviewsCount",
                 },
+                style: {
+                    variant: "accent",
+                    tone: "light",
+                    align: "left",
+                },
             },
             {
                 component: "PriceBlock",
-                fields: {
-                    price: "price",
-                    discount: "discount",
-                    priceType: "priceType",
-                    discountEnd: "discountEnd",
+                adapter: PriceBlockAdapter,
+                style: {
+                    variant: "normal",
                 },
             },
             {
@@ -485,74 +575,34 @@ export const detail = {
                     distance: "distance",
                     duration: "duration",
                     groupSize: "groupSize",
-                    stat: "start",
+                    start: "start",
+                    title: {
+                        ru: "Детали",
+                        en: "Details",
+                    },
+                    icon: icons.grid,
                 },
             },
             {
-                component: "Description",
-                fields: { description: "description" },
-            },
-            { component: "ScheduleBlock", fields: { schedule: "schedule" } },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "whatYouSee",
-                    title: { ru: "Что вы увидите", en: "What you see" },
-                    icon: icons.image,
-                },
-            },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "whatToBring",
-                    title: { ru: "Что взять с собой", en: "What to bring" },
-                    icon: icons.briefCase,
-                },
-            },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "includes",
-                    title: { ru: "Что включено", en: "What is included" },
-                    icon: icons.gift,
-                },
-            },
-            {
-                component: "TextBlock",
-                fields: {
-                    text: "meetingPoint",
-                    title: { ru: "Место встречи", en: "Meeting point" },
-                    icon: icons.mapPin,
-                },
-            },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "usp",
-                    title: { ru: "Наши преимущества", en: "Adventeges" },
-                    icon: icons.plus,
-                },
-            },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "guarantees",
-                    title: { ru: "Гарантии", en: "Guarantees" },
-                    icon: icons.clipBoard,
-                },
+                component: "HtmlBlock",
+                fields: { html: "description" },
             },
 
             {
-                component: "YouTubeVideo",
-                fields: {
-                    videoUrl: "videoUrl",
-                    title: "title",
-                    images: "images",
+                component: "GalleryBlock",
+                adapter: GalleryBlockAdapter,
+                style: {
+                    variant: "normal",
                 },
             },
             {
-                component: "GaleryCollage",
-                fields: { title: "title", images: "images" },
+                component: "ButtonBlock",
+                fields: {
+                    active: "active",
+                    type: "type",
+                    label: { ru: "Заказать", en: "Order" },
+                },
+                action: "openBookingModal",
             },
             { component: "AboutBlock", fields: {} },
             {
@@ -563,20 +613,25 @@ export const detail = {
                     icon: icons.thumbsUp,
                 },
             },
-
             {
-                component: "ReviewsList",
+                component: "ListBlock",
+                fields: {
+                    items: "servicesDetails",
+                    title: {
+                        ru: "Условия и детали:",
+                        en: "Terms and details",
+                    },
+                    icon: icons.clipBoard,
+                },
+            },
+            {
+                component: "ReviewsBlock",
                 fields: { slug: "slug", reviews: "reviews" },
             },
             {
-                component: "ButtonBlock",
-                fields: {
-                    active: "active",
-                    type: "type",
-                    label: { ru: "Заказать", en: "Order" },
-                },
+                component: "CoffeBlock",
+                fields: {},
             },
-            { component: "RelatedSlider", fields: ["related"] },
         ],
     },
 
@@ -592,79 +647,16 @@ export const detail = {
                     rating: "rating",
                     reviewCount: "reviewsCount",
                 },
-            },
-            {
-                component: "PriceBlock",
-                fields: {
-                    price: "price",
-                    discount: "discount",
-                    priceType: "priceType",
-                    discountEnd: "discountEnd",
+                style: {
+                    variant: "accent",
+                    tone: "light",
+                    align: "left",
                 },
             },
             {
-                component: "ProductDetailsBlock",
-                fields: {
-                    distance: "distance",
-                    duration: "duration",
-                    groupSize: "groupSize",
-                    stat: "start",
-                },
+                component: "HtmlBlock",
+                fields: { html: "description" },
             },
-            {
-                component: "Description",
-                fields: { description: "description" },
-            },
-            { component: "ScheduleBlock", fields: { schedule: "schedule" } },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "whatYouSee",
-                    title: { ru: "Что вы увидите", en: "What you see" },
-                    icon: icons.image,
-                },
-            },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "whatToBring",
-                    title: { ru: "Что взять с собой", en: "What to bring" },
-                    icon: icons.briefCase,
-                },
-            },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "includes",
-                    title: { ru: "Что включено", en: "What is included" },
-                    icon: icons.gift,
-                },
-            },
-            {
-                component: "TextBlock",
-                fields: {
-                    text: "meetingPoint",
-                    title: { ru: "Место встречи", en: "Meeting point" },
-                    icon: icons.mapPin,
-                },
-            },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "usp",
-                    title: { ru: "Наши преимущества", en: "Adventeges" },
-                    icon: icons.plus,
-                },
-            },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "guarantees",
-                    title: { ru: "Гарантии", en: "Guarantees" },
-                    icon: icons.clipBoard,
-                },
-            },
-
             {
                 component: "YouTubeVideo",
                 fields: {
@@ -674,32 +666,16 @@ export const detail = {
                 },
             },
             {
-                component: "GaleryCollage",
-                fields: { title: "title", images: "images" },
-            },
-            { component: "AboutBlock", fields: {} },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "whyChooseUs",
-                    title: { ru: "Почему выбирают нас", en: "Why choose us" },
-                    icon: icons.thumbsUp,
+                component: "GalleryBlock",
+                adapter: GalleryBlockAdapter,
+                style: {
+                    variant: "normal",
                 },
             },
-
             {
-                component: "ReviewsList",
-                fields: { slug: "slug", reviews: "reviews" },
+                component: "CoffeBlock",
+                fields: {},
             },
-            {
-                component: "ButtonBlock",
-                fields: {
-                    active: "active",
-                    type: "type",
-                    label: { ru: "Заказать", en: "Order" },
-                },
-            },
-            { component: "RelatedSlider", fields: ["related"] },
         ],
     },
 
@@ -715,114 +691,30 @@ export const detail = {
                     rating: "rating",
                     reviewCount: "reviewsCount",
                 },
-            },
-            {
-                component: "PriceBlock",
-                fields: {
-                    price: "price",
-                    discount: "discount",
-                    priceType: "priceType",
-                    discountEnd: "discountEnd",
+                style: {
+                    variant: "accent",
+                    tone: "light",
+                    align: "left",
                 },
             },
             {
-                component: "ProductDetailsBlock",
+                component: "HtmlBlock",
+                fields: { html: "description" },
+            },
+            {
+                component: "ContentBlock",
                 fields: {
-                    distance: "distance",
-                    duration: "duration",
-                    groupSize: "groupSize",
-                    stat: "start",
+                    content: "content",
                 },
             },
             {
-                component: "Description",
-                fields: { description: "description" },
-            },
-            { component: "ScheduleBlock", fields: { schedule: "schedule" } },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "whatYouSee",
-                    title: { ru: "Что вы увидите", en: "What you see" },
-                    icon: icons.image,
-                },
+                component: "HtmlBlock",
+                fields: { html: "author" },
             },
             {
-                component: "ListBlock",
-                fields: {
-                    items: "whatToBring",
-                    title: { ru: "Что взять с собой", en: "What to bring" },
-                    icon: icons.briefCase,
-                },
+                component: "CoffeBlock",
+                fields: {},
             },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "includes",
-                    title: { ru: "Что включено", en: "What is included" },
-                    icon: icons.gift,
-                },
-            },
-            {
-                component: "TextBlock",
-                fields: {
-                    text: "meetingPoint",
-                    title: { ru: "Место встречи", en: "Meeting point" },
-                    icon: icons.mapPin,
-                },
-            },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "usp",
-                    title: { ru: "Наши преимущества", en: "Adventeges" },
-                    icon: icons.plus,
-                },
-            },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "guarantees",
-                    title: { ru: "Гарантии", en: "Guarantees" },
-                    icon: icons.clipBoard,
-                },
-            },
-
-            {
-                component: "YouTubeVideo",
-                fields: {
-                    videoUrl: "videoUrl",
-                    title: "title",
-                    images: "images",
-                },
-            },
-            {
-                component: "GaleryCollage",
-                fields: { title: "title", images: "images" },
-            },
-            { component: "AboutBlock", fields: {} },
-            {
-                component: "ListBlock",
-                fields: {
-                    items: "whyChooseUs",
-                    title: { ru: "Почему выбирают нас", en: "Why choose us" },
-                    icon: icons.thumbsUp,
-                },
-            },
-
-            {
-                component: "ReviewsList",
-                fields: { slug: "slug", reviews: "reviews" },
-            },
-            {
-                component: "ButtonBlock",
-                fields: {
-                    active: "active",
-                    type: "type",
-                    label: { ru: "Заказать", en: "Order" },
-                },
-            },
-            { component: "RelatedSlider", fields: ["related"] },
         ],
     },
 
@@ -838,28 +730,15 @@ export const detail = {
                     rating: "rating",
                     reviewCount: "reviewsCount",
                 },
-            },
-            {
-                component: "PriceBlock",
-                fields: {
-                    price: "price",
-                    discount: "discount",
-                    priceType: "priceType",
-                    discountEnd: "discountEnd",
+                style: {
+                    variant: "accent",
+                    tone: "light",
+                    align: "left",
                 },
             },
             {
-                component: "ProductDetailsBlock",
-                fields: {
-                    distance: "distance",
-                    duration: "duration",
-                    groupSize: "groupSize",
-                    stat: "start",
-                },
-            },
-            {
-                component: "Description",
-                fields: { description: "description" },
+                component: "HtmlBlock",
+                fields: { html: "description" },
             },
             { component: "ScheduleBlock", fields: { schedule: "schedule" } },
             {
@@ -920,8 +799,11 @@ export const detail = {
                 },
             },
             {
-                component: "GaleryCollage",
-                fields: { title: "title", images: "images" },
+                component: "GalleryBlock",
+                adapter: GalleryBlockAdapter,
+                style: {
+                    variant: "normal",
+                },
             },
             { component: "AboutBlock", fields: {} },
             {
@@ -946,6 +828,10 @@ export const detail = {
                 },
             },
             { component: "RelatedSlider", fields: ["related"] },
+            {
+                component: "CoffeBlock",
+                fields: {},
+            },
         ],
     },
 
@@ -961,14 +847,17 @@ export const detail = {
                     rating: "rating",
                     reviewCount: "reviewsCount",
                 },
+                style: {
+                    variant: "accent",
+                    tone: "light",
+                    align: "left",
+                },
             },
             {
                 component: "PriceBlock",
-                fields: {
-                    price: "price",
-                    discount: "discount",
-                    priceType: "priceType",
-                    discountEnd: "discountEnd",
+                adapter: PriceBlockAdapter,
+                style: {
+                    variant: "normal",
                 },
             },
             {
@@ -977,12 +866,17 @@ export const detail = {
                     distance: "distance",
                     duration: "duration",
                     groupSize: "groupSize",
-                    stat: "start",
+                    start: "start",
+                    title: {
+                        ru: "Детали",
+                        en: "Details",
+                    },
+                    icon: icons.grid,
                 },
             },
             {
-                component: "Description",
-                fields: { description: "description" },
+                component: "HtmlBlock",
+                fields: { html: "description" },
             },
             { component: "ScheduleBlock", fields: { schedule: "schedule" } },
             {
@@ -1043,8 +937,11 @@ export const detail = {
                 },
             },
             {
-                component: "GaleryCollage",
-                fields: { title: "title", images: "images" },
+                component: "GalleryBlock",
+                adapter: GalleryBlockAdapter,
+                style: {
+                    variant: "normal",
+                },
             },
             { component: "AboutBlock", fields: {} },
             {
@@ -1067,8 +964,13 @@ export const detail = {
                     type: "type",
                     label: { ru: "Заказать", en: "Order" },
                 },
+                action: "openBookingModal",
             },
             { component: "RelatedSlider", fields: { related: "related" } },
+            {
+                component: "CoffeBlock",
+                fields: {},
+            },
         ],
     },
 };

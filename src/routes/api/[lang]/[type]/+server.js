@@ -1,6 +1,6 @@
 import { json } from "@sveltejs/kit";
 import { cache } from "$lib/server/cache/cache.js";
-import { composeCards } from "$lib/server/services/shared/cards/composeCards.js";
+import { fetchListItems } from "$lib/server/services/shared/cards/fetchListItems.js";
 import { appConfig } from "$lib/config/app.config.js";
 import { connectToDatabase } from "$lib/server/db/mongodb";
 
@@ -18,7 +18,7 @@ export async function GET({ params }) {
     }
 
     // 2️⃣ Чтение из базы
-    const items = await composeCards({ db, type, lang });
+    const items = await fetchListItems({ db, type, lang });
 
     // 3️⃣ Запись в кеш (если ошибка — упадёт)
     if (cfg?.enabled) {

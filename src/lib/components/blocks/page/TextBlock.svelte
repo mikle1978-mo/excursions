@@ -1,93 +1,121 @@
 <script>
     export let data;
-    console.log(data);
+    export let style = {};
 
-    const html = data.html;
+    const text = data.text;
+    const title = data.title;
+    const icon = data.icon;
 </script>
 
-{#if html}
-    <div class="description-block">
-        {@html html}
+{#if text}
+    <div class="info-block">
+        {#if title}
+            <h2 class="title-with-icon" data-variant={style.variant}>
+                {#if icon}
+                    <svelte:component this={icon} class="icon" />
+                {/if}
+                {title}
+            </h2>{/if}
+        <div class="text-block">
+            {text}
+        </div>
     </div>
 {/if}
 
 <style>
-    .description-block {
+    .info-block {
+        align-self: stretch;
+        background: var(--color-bg);
+        padding: var(--space-vertical-sm);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--color-gray-300);
+    }
+    .info-block h2 {
+        font-size: var(--text-lg);
+        margin-bottom: var(--space-vertical-sm);
+        color: var(--color-text);
+    }
+    .title-with-icon {
+        display: flex;
+        gap: var(--space-vertical-sm);
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .text-block {
         color: var(--color-gray-700);
         line-height: 1.6;
         padding: 0;
-        /* margin: 1em 0; */
     }
 
     /* Стили для всего HTML контента внутри блока */
-    .description-block :global(p) {
+    .text-block :global(p) {
         margin-bottom: var(--space-vertical-sm);
         font-size: var(--text-md);
         line-height: 1.6;
     }
 
-    .description-block :global(p:first-letter) {
+    .text-block :global(p:first-letter) {
         color: var(--color-primary);
         font-weight: 700;
     }
 
-    .description-block :global(strong) {
+    .text-block :global(strong) {
         color: var(--color-accent);
         font-weight: 700;
     }
 
-    .description-block :global(em) {
+    .text-block :global(em) {
         font-style: italic;
     }
 
-    .description-block :global(u) {
+    .text-block :global(u) {
         text-decoration: underline;
     }
 
-    .description-block :global(a) {
+    .text-block :global(a) {
         color: var(--color-primary);
         text-decoration: none;
     }
 
-    .description-block :global(a:hover) {
+    .text-block :global(a:hover) {
         text-decoration: underline;
     }
 
-    .description-block :global(ul) {
+    .text-block :global(ul) {
         padding-left: 1.5em;
         list-style: disc;
         margin: 0.5em 0;
     }
 
-    .description-block :global(ol) {
+    .text-block :global(ol) {
         padding-left: 1.5em;
         margin: 0.5em 0;
     }
 
-    .description-block :global(li) {
+    .text-block :global(li) {
         margin-bottom: 0.3em;
         line-height: 1.5;
     }
 
-    .description-block :global(h1) {
+    .text-block :global(h1) {
         font-size: var(--text-xxl);
         font-weight: 700;
         margin: 1em 0 0.5em 0;
     }
 
-    .description-block :global(h2) {
+    .text-block :global(h2) {
         font-size: var(--text-xl);
         font-weight: 600;
         margin: 0.8em 0 0.4em 0;
     }
 
-    .description-block :global(h3) {
+    .text-block :global(h3) {
         font-size: var(--text-lg);
         font-weight: 600;
         margin: 0.6em 0 0.3em 0;
     }
 
-    .description-block :global(blockquote) {
+    .text-block :global(blockquote) {
         border-left: 4px solid var(--color-primary);
         padding-left: 1em;
         margin: 1em 0;
@@ -96,46 +124,49 @@
 
     /* Темная тема */
     @media (prefers-color-scheme: dark) {
-        .description-block {
+        .text-block {
             color: var(--color-gray-300);
         }
 
-        .description-block :global(.dropcap) {
+        .text-block :global(.dropcap) {
             color: var(--color-primary);
         }
 
-        .description-block :global(strong) {
+        .text-block :global(strong) {
             color: var(--color-accent);
         }
     }
 
     /* Адаптивность */
     @media (max-width: 768px) {
-        .description-block :global(p) {
+        .text-block :global(p) {
             font-size: var(--text-sm);
             line-height: 1.5;
         }
 
-        .description-block :global(.dropcap) {
+        .text-block :global(.dropcap) {
             font-size: 2.5em;
         }
 
-        .description-block :global(h1) {
+        .text-block :global(h1) {
             font-size: var(--text-xl);
         }
 
-        .description-block :global(h2) {
+        .text-block :global(h2) {
             font-size: var(--text-lg);
         }
 
-        .description-block :global(h3) {
+        .text-block :global(h3) {
             font-size: var(--text-md);
         }
     }
 
     @media (max-width: 480px) {
-        .description-block {
-            padding: 0 var(--space-vertical-sm);
+        .info-block {
+            margin: 0 var(--space-vertical-sm);
+        }
+        .text-block {
+            padding: 0;
         }
     }
 </style>

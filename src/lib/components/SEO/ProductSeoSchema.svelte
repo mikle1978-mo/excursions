@@ -9,7 +9,7 @@
     export let rating;
     export let reviewCount;
     export let brand = "Kemer.app";
-    export let imageFallback = `${baseUrl}/images/excursions/excursion_default.webp`;
+    export let imageFallback = `${baseUrl}/images/excursions/excursions_default.webp`;
 
     const productUrl =
         baseUrl + getLocalizedPath(locale, `${type}s/${item.slug}`);

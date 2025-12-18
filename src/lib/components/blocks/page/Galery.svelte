@@ -4,7 +4,7 @@
     import { locale } from "$lib/stores/locale";
     import { gallery_texts } from "$lib/i18n/gallery";
     import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
-    const defaultImage = `/images/excursions/excursion_default.webp`;
+    const defaultImage = `/images/excursions/excursions_default.webp`;
 
     export let images = [];
     export let title = "";

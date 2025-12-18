@@ -29,10 +29,3 @@ export function setLocale(lang) {
  * @param {string} path - путь без префикса слэша (например 'cars' или 'excursions')
  * @returns {string} - локализованный URL
  */
-export function getLocalizedPath(locale, path = "") {
-    if (!path) {
-        return locale === "en" ? "" : `/${locale}`;
-    }
-
-    return locale === "en" ? `/${path}` : `/${locale}/${path}`;
-}

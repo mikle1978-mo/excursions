@@ -1,5 +1,5 @@
 <script>
-    import { locale, getLocalizedPath } from "$lib/stores/locale";
+    import { locale } from "$lib/stores/locale";
 
     const content = {
         ru: {
@@ -52,7 +52,7 @@
     <div class="license">
         <img alt="license" src="/images/other/license.webp" />
     </div>
-    <a href={getLocalizedPath($locale, "about")} class="read-more">{t.link}</a>
+    <a href="/{$locale}/about" class="read-more">{t.link}</a>
 </section>
 
 <style>

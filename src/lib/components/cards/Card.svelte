@@ -1,69 +1,34 @@
 <script>
-    import { CardPriceVM } from "$lib/features/card/card.price.vm.js";
-    import Rating from "$lib/components/UI/rating/Rating.svelte";
+    import { cardBlocks } from "$lib/components/blocks/card/cardBlocks.js";
     export let data;
-    // export let loading = "lazy";
-
-    const priceVM = CardPriceVM(data.price);
-
-    function onImageError(e) {
-        if (e.target.src !== data.defaultImage) {
-            e.target.src = data.defaultImage;
-            e.target.srcset = "";
-        }
-    }
 </script>
 
 <div class="card">
-    <a href={data.href} class="card__image-wrapper">
-        <img
-            src={data.image.src}
-            srcset={data.image.srcset}
-            sizes={data.image.sizesAttr}
-            loading={data.image.loading}
-            decoding={data.image.decoding}
-            fetchpriority={data.image.fetchpriority}
-            width={data.image.width}
-            height={data.image.height}
-            alt={data.title}
-            class="card__image"
-        />
-
-        {#each data.badges as badge}
-            <span class={`card__badge ${badge.position}`}>
-                {badge.text}
-            </span>
+    <div class="card__header">
+        {#each data.sections.filter((s) => s.position === "header") as section}
+            <svelte:component
+                this={cardBlocks[section.component]}
+                data={section.data}
+            />
         {/each}
-    </a>
+    </div>
 
     <div class="card__content">
-        <div class="card__header">
-            <h2 class="card__title">
-                <a href={data.href}>{data.title}</a>
-            </h2>
+        {#each data.sections.filter((s) => !s.position || s.position === "content") as section}
+            <svelte:component
+                this={cardBlocks[section.component]}
+                data={section.data}
+            />
+        {/each}
+    </div>
 
-            {#if data.rating}
-                <Rating
-                    rating={data.rating.value}
-                    reviewsCount={data.rating.count}
-                />
-            {/if}
-        </div>
-
-        <div class="card__footer">
-            {#if data.price.value}
-                <div class="card__price">
-                    {#if data.price.old}
-                        <span class="card__old-price"
-                            >{$priceVM.formattedPrice.old}</span
-                        >
-                    {/if}
-                    <span class="card__price-value"
-                        >{$priceVM.formattedPrice.current}</span
-                    >
-                </div>
-            {/if}
-        </div>
+    <div class="card__footer">
+        {#each data.sections.filter((s) => s.position === "footer") as section}
+            <svelte:component
+                this={cardBlocks[section.component]}
+                data={section.data}
+            />
+        {/each}
     </div>
 </div>
 
@@ -72,11 +37,13 @@
         display: flex;
         flex-direction: column;
         background-color: var(--color-bg);
-        border-radius: unset;
+        border-radius: var(--radius-sm);
         overflow: hidden;
         transition: var(--transition-normal);
         height: 100%;
         min-height: 245px;
+        gap: var(--space-vertical-xxs);
+        padding-bottom: var(--space-vertical-xxs);
     }
 
     .card:hover {
@@ -131,9 +98,8 @@
     .card__content {
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
+        padding: 0 var(--space-horizontal-sm);
         gap: 0;
-        padding: var(--space-vertical-md) var(--space-horizontal-md);
         flex-grow: 1;
     }
 
@@ -173,6 +139,7 @@
         display: flex;
         justify-content: flex-end;
         align-items: flex-end;
+        padding: 0 var(--space-horizontal-sm);
     }
 
     .card__details {
@@ -222,20 +189,17 @@
 
     @media (min-width: 480px) {
         .card {
-            border-radius: var(--radius-md);
+            border-radius: var(--radius-sm);
+            padding: 0;
         }
         .card__content {
             gap: var(--space-vertical-xs);
-        }
-        .card__details {
-            display: flex;
+            padding: 0 var(--space-horizontal-sm);
         }
         .card__footer {
-            justify-content: space-between;
+            display: flex;
+            padding: 0 var(--space-horizontal-sm) var(--space-vertical-sm);
         }
-        /* .card__price-type {
-            display: block;
-        } */
     }
     /* 768px — карточка ~237 */
     @media (min-width: 768px) {
@@ -245,9 +209,6 @@
         .card__price-value,
         .card__old-price {
             font-size: calc(var(--text-lg) * 0.88);
-        }
-        .card__content {
-            padding: var(--space-vertical-sm) var(--space-horizontal-sm);
         }
     }
 
@@ -260,10 +221,6 @@
         .card__old-price {
             font-size: calc(var(--text-lg) * 0.92);
         }
-        .card__content {
-            padding: calc(var(--space-vertical-sm) + 0.1rem)
-                calc(var(--space-horizontal-sm) + 0.1rem);
-        }
     }
 
     /* 1200px — карточка ~280 */
@@ -275,9 +232,6 @@
         .card__old-price {
             font-size: calc(var(--text-lg) * 0.88);
         }
-        .card__content {
-            padding: var(--space-vertical-sm) var(--space-horizontal-sm);
-        }
     }
 
     /* 1440px — карточка ~268 */
@@ -288,9 +242,6 @@
         .card__price-value,
         .card__old-price {
             font-size: calc(var(--text-lg) * 0.8);
-        }
-        .card__content {
-            padding: var(--space-vertical-xs) var(--space-horizontal-xs);
         }
     }
 </style>

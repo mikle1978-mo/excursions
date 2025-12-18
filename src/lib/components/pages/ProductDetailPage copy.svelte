@@ -105,7 +105,7 @@
         <main class="product-detail">
             <HeroBlock
                 imageUrl={item.images?.[0]?.url ??
-                    `${baseUrl}/images/${type}s/${type}_default.webp`}
+                    `${baseUrl}/images/${type}/${type}_default.webp`}
                 title={currentTranslation.h1}
                 subtitle={currentTranslation.subtitle}
                 {rating}
@@ -130,7 +130,7 @@
                         videoUrl={item.videoUrl}
                         title={currentTranslation.title}
                         poster={item.images?.[0]?.url ??
-                            `${baseUrl}/images/${type}s/${type}_default.webp`}
+                            `${baseUrl}/images/${type}/${type}_default.webp`}
                     />
                 {/if}
 

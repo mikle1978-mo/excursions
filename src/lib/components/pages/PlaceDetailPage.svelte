@@ -36,7 +36,7 @@
         { label: currentTranslation.title ?? item.slug, href: null },
     ];
 
-    const defaultImage = `/images/places/place_default.webp`;
+    const defaultImage = `/images/places/places_default.webp`;
     $: mainImage = item.images?.[0]?.url ?? defaultImage;
 </script>
 

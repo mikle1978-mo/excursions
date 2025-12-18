@@ -1,3 +1,5 @@
+// src\lib\features\image\image.adapter.js
+
 import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary";
 
 export function ImageAdapter({

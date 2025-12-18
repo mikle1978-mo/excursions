@@ -11,7 +11,7 @@
     export let locale = "ru";
     export let loading = "lazy";
 
-    const defaultImage = `/images/${type}/${type.endsWith("s") ? type.slice(0, -1) : type}_default.webp`;
+    const defaultImage = `/images/${type}/${type}_default.webp`;
 
     let slug = item.slug;
     let title = item.title ?? "";

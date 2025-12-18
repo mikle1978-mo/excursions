@@ -1,9 +1,10 @@
 <script>
-    import { locale, getLocalizedPath } from "$lib/stores/locale.js";
+    import { locale } from "$lib/stores/locale.js";
     import { mobileMenuOpen } from "$lib/stores/mobileMenu";
     import { nav_items } from "$lib/i18n/nav_list";
     import TheSocial from "./TheSocial.svelte";
     import Copyright from "./Copyright.svelte";
+    import { goto } from "$app/navigation";
     import CurrensySelector from "$lib/components/UI/buttons/CurrensySelector.svelte";
     import TheLocaleButton from "$lib/components/UI/buttons/TheLocaleButton.svelte";
 
@@ -22,6 +23,11 @@
 
     // Функция для проверки активной ссылки
     const isValidLink = (link) => link && link.trim() !== "";
+
+    function navigate(link) {
+        goto(`/${$locale}/${link}`);
+        closeMobileMenu();
+    }
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
@@ -49,9 +55,9 @@
             {#each nav_items as item}
                 {#if isValidLink(item.link)}
                     <a
-                        href={getLocalizedPath($locale, item.link)}
+                        href={`/${$locale}/${item.link}`}
                         class="nav-item"
-                        on:click={closeMobileMenu}
+                        on:click|stopPropagation={() => closeMobileMenu()}
                         aria-label={getTitle(item)}
                         rel={item.rel || "noopener"}
                     >
@@ -87,14 +93,15 @@
         overflow: hidden;
         position: fixed;
         top: 0;
-        right: -300px;
+        right: 0;
         width: 280px;
+        transform: translateX(100%);
         z-index: 1000;
         transition: var(--transition-normal);
     }
 
     .sidebar.active {
-        transform: translateX(-300px);
+        transform: translateX(0);
     }
     .buttons {
         display: flex;

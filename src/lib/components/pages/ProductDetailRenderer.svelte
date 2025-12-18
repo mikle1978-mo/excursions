@@ -9,8 +9,10 @@ SYSTEM        → контекст
 -->
 
 <script>
-    import { detailComponents } from "$lib/components/blocks/detailComponents.js";
+    import { detailComponents } from "$lib/components/blocks/page/detailComponents.js";
     import { appConfig } from "$lib/config/app.config";
+    import Modal from "$lib/components/UI/Modal.svelte";
+    import ShortForm from "$lib/components/UI/forms/shortForm.svelte";
 
     export let type;
     export let lang;
@@ -18,10 +20,7 @@ SYSTEM        → контекст
 
     const system = { lang, type };
 
-    console.log("item", item);
-
     const config = appConfig.collections[type]?.detailPage;
-    console.log("config", type, config);
 
     // список секций по типу
     const sections = config?.sections ?? [];
@@ -39,8 +38,6 @@ SYSTEM        → контекст
         for (const [key, source] of Object.entries(section.fields)) {
             result[key] = normalizeValue(source, item, lang);
         }
-        console.log(result);
-
         return result;
     }
 
@@ -62,7 +59,21 @@ SYSTEM        → контекст
 
         return source ?? null;
     }
+
+    let isBookingOpen = false;
+
+    function handleAction(action) {
+        if (action === "openBookingModal") {
+            isBookingOpen = true;
+        }
+    }
 </script>
+
+{#if isBookingOpen}
+    <Modal on:close={() => (isBookingOpen = false)}>
+        <ShortForm slug={item.slug} />
+    </Modal>
+{/if}
 
 <div class="content">
     {#each sections as section}
@@ -70,8 +81,11 @@ SYSTEM        → контекст
             <svelte:component
                 this={detailComponents[section.component]}
                 data={getData(section, item, lang)}
-                system={{ type }}
+                {system}
                 style={section.style || {}}
+                onAction={section.action
+                    ? () => handleAction(section.action)
+                    : undefined}
             />
         {/if}
     {/each}

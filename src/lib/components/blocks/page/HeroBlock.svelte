@@ -1,17 +1,19 @@
 <script>
-    import Rating from "../UI/rating/Rating.svelte";
+    import Rating from "$lib/components/UI/rating/Rating.svelte";
     import IconClock from "$lib/icons/IconClock.svelte";
     import IconGroup from "$lib/icons/IconGroup.svelte";
-    import ShareIcon from "../UI/buttons/ShareIcon.svelte";
+    import ShareIcon from "$lib/components/UI/buttons/ShareIcon.svelte";
     import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
 
     export let data;
     export let system;
 
-    const title = data.title || "";
+    const h1 = data.h1 || "";
     const subtitle = data.subtitle || "";
     const rating = data.rating || null;
-    const reviewsCount = data.reviewsCount || 0;
+    const reviewCount = data.reviewCount || 0;
+
+    console.log("HeroBlock data:", reviewCount);
     const lang = system?.lang;
     const images = data.images || [];
 
@@ -28,7 +30,7 @@
             src={heroImage.src}
             srcset={heroImage.srcset}
             sizes="(max-width: 768px) 100vw, 100vw"
-            alt={title || "cover"}
+            alt={h1 || "cover"}
             decoding="async"
             loading="lazy"
             class="hero-img"
@@ -37,13 +39,13 @@
     <div class="hero-content">
         <div class="top-row">
             {#if rating}
-                <Rating {rating} {reviewsCount} locale={lang} />
+                <Rating {rating} {reviewCount} locale={lang} />
             {/if}
             <ShareIcon />
         </div>
 
-        {#if title}
-            <h1 class="title">{title}</h1>
+        {#if h1}
+            <h1 class="title">{h1}</h1>
         {/if}
 
         {#if subtitle}

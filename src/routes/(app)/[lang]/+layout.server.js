@@ -9,8 +9,6 @@ export async function load({ url }) {
     const lang = segments[0] ?? "";
     const type = segments[1] ?? "";
 
-    console.log("Global layout segment:", lang);
-
     const supported = appConfig.languages.supported;
 
     // Если путь пустой (/) — редиректим на дефолтный язык

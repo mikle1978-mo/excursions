@@ -1,5 +1,6 @@
 <script>
     export let locale;
+
     const text = {
         ru: "Если вам нравится наш проект — нажмите на кнопку и угостите нас кофе ☕",
         en: "If you like our project — click the button and buy us a coffee ☕",

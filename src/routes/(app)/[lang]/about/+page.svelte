@@ -1,10 +1,11 @@
 <!-- src\routes\(app)\[lang]\about\+page.svelte -->
 <script>
-    import AboutPage from "$lib/components/pages/AboutPage.svelte";
+    // import AboutPage from "$lib/components/pages/AboutPage.svelte";
     import { appConfig } from "$lib/config/app.config";
     import SeoRenderer from "$lib/components/SEO/SeoRenderer.svelte";
     import SchemasRenderer from "$lib/components/SEO/SchemasRenderer.svelte";
     import ProductDetailRenderer from "$lib/components/pages/ProductDetailRenderer.svelte";
+    import TheHeader from "$lib/components/layout/TheHeader.svelte";
 
     export let data;
     // безопасный деструктуринг
@@ -18,7 +19,7 @@
 
 <!-- JSON-LD схемы для списка -->
 <SchemasRenderer {type} {lang} {item} />
-
+<TheHeader />
 <ProductDetailRenderer {type} {item} {lang} />
 
 <!-- <AboutPage urlPath="about" /> -->

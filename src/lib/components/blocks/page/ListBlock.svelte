@@ -1,6 +1,5 @@
 <!-- src/lib/components/blocks/ListBlock.svelte -->
 <script>
-    import { appConfig } from "$lib/config/app.config";
     export let data;
     export let style = {};
 
@@ -28,7 +27,8 @@
 
 <style>
     .info-block {
-        width: 100%;
+        align-self: stretch;
+
         background: var(--color-bg);
         padding: var(--space-vertical-sm);
         border-radius: var(--radius-md);
@@ -57,6 +57,11 @@
     @media (prefers-color-scheme: dark) {
         .info-list {
             color: var(--color-gray-300);
+        }
+    }
+    @media (max-width: 480px) {
+        .info-block {
+            margin: 0 var(--space-vertical-sm);
         }
     }
 </style>

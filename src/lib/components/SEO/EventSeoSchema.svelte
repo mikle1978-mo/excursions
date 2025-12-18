@@ -28,7 +28,7 @@
             : "Exact meeting point will be provided after booking.";
 
     export let imageFallback =
-        baseUrl + "/images/excursions/excursion_default.webp";
+        baseUrl + "/images/excursions/excursions_default.webp";
 
     // Helpers: безопасный выбор локализованной строки
     const pickI18n = (field) => {

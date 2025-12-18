@@ -19,9 +19,7 @@ export function buildDiscountTimer(discountEnd) {
 }
 
 export function isDiscountActive(discount, discountEnd) {
-    return (
-        discount > 0 &&
-        discountEnd &&
-        Date.now() < new Date(discountEnd).getTime()
-    );
+    if (!discount || !discountEnd) return false;
+    const end = new Date(discountEnd + "T23:59:59").getTime();
+    return Date.now() < end;
 }

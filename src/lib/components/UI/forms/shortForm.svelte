@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import TGMessage from "$lib/helpers/tgMessage";
     import { goto } from "$app/navigation";
-    import { locale, getLocalizedPath } from "$lib/stores/locale";
+    import { locale } from "$lib/stores/locale";
     import { get } from "svelte/store";
     import { form_list } from "$lib/i18n/form_list";
 
@@ -37,7 +37,7 @@
 
         alert(form_list.alert[$locale]);
         const currentLocale = get(locale);
-        const path = getLocalizedPath($locale, "thanks");
+        const path = `/${currentLocale}/thanks`;
         goto(path);
     };
 </script>

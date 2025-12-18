@@ -1,89 +1,40 @@
+<!-- src\lib\components\pages\CardList.svelte -->
+
 <script>
     import CardRenderer from "$lib/components/cards/CardRenderer.svelte";
-    import SidebarFilters from "$lib/components/filters/SidebarFilters.svelte";
-    import { useServiceFilters } from "$lib/hooks/useServiceFilters.js";
-    import { resetFilters, setFilters } from "$lib/stores/filters.js";
+    import TheHeader from "$lib/components/layout/TheHeader.svelte";
     import { appConfig } from "$lib/config/app.config";
 
     export let type;
-    export let items;
+    export let items = [];
     export let lang;
 
     const config = appConfig.list?.[type] || {};
-
-    let allItems = items || [];
-    let filteredItems = [];
-
-    const { update } = useServiceFilters(allItems, type, (result) => {
-        filteredItems = result;
-    });
-
-    $: if (items) {
-        allItems = items;
-        update();
-    }
-
-    function resetAllFilters() {
-        resetFilters();
-    }
+    const show = !!appConfig.list[type].filters;
 </script>
 
-<main>
-    <div class="main_page">
-        <h1 class="title">
-            {config?.listText?.[lang]?.h1 ?? config?.listText?.en?.h1}
-        </h1>
+<TheHeader showFilter={show} showSearch={show} />
+<main class="main_page">
+    <h1 class="title">
+        {config?.listText?.[lang]?.h1}
+    </h1>
 
-        <div class="description-block">
-            {@html config?.listText?.[lang]?.topText ??
-                config?.listText?.en?.topText}
-        </div>
+    <div class="description-block">
+        {@html config?.listText?.[lang]?.topText}
+    </div>
 
-        {#if config.filters && Object.keys(config.filters).length}
-            <SidebarFilters
-                {type}
-                items={allItems}
-                on:filtersChanged={(e) => setFilters(e.detail)}
-            />
-            <InfoBlock
-                filteredCount={filteredItems.length}
-                onReset={resetAllFilters}
-                {type}
-            />
-        {/if}
+    <div class="grid">
+        {#each items as item (item.slug)}
+            <CardRenderer {item} {type} {lang} />
+        {/each}
+    </div>
 
-        <div class="grid">
-            {#each filteredItems as item, i (item.slug)}
-                <CardRenderer {item} {type} {lang} />
-            {/each}
-        </div>
-
-        <div class="description-block">
-            {@html config?.listText?.[lang]?.bottomText ??
-                config?.listText?.en?.bottomText}
-        </div>
+    <div class="description-block">
+        {@html config?.listText?.[lang]?.bottomText}
     </div>
 </main>
 
 <style>
-    /* .content {
-        position: relative;
-        display: flex;
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 0px;
-        gap: var(--space-vertical-xs);
-        width: 100%;
-        height: 100%;
-        max-height: 100%;
-        overflow: hidden;
-        flex: none;
-        align-self: stretch;
-        flex-grow: 1;
-        border-top: 1px solid var(--color-gray-500);
-        border-bottom: 1px solid var(--color-gray-500);
-    } */
-
     .main_page {
         display: flex;
         flex-direction: column;
@@ -100,7 +51,7 @@
     .grid {
         display: grid;
         grid-template-columns: 1fr;
-        gap: 0;
+        gap: var(--space-vertical-sm);
         width: 100%;
         align-items: center;
     }

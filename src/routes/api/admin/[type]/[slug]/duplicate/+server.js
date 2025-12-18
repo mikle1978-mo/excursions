@@ -3,7 +3,6 @@ import { duplicateItem } from "$lib/server/services/admin/duplicateItem.js";
 
 export async function POST({ params }) {
     const { type, slug } = params;
-    console.log("params", params);
 
     try {
         const newSlug = await duplicateItem(slug, type);

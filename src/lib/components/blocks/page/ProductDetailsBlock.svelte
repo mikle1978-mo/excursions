@@ -6,6 +6,11 @@
     export let system;
     let lang = system?.lang || "en";
 
+    // export let style = {};
+
+    const title = data.title ?? "";
+    const Icon = data.icon ?? null;
+
     function getNested(obj, path) {
         return path.split(".").reduce((o, k) => o?.[k] ?? null, obj);
     }
@@ -37,10 +42,10 @@
 
 <div class="details">
     <h2 class="title-with-icon">
-        {#if config.icon}
-            <svelte:component this={config?.icon} class="icon" />
+        {#if Icon}
+            <svelte:component this={Icon} class="icon" />
         {/if}
-        {config?.title[lang]}:
+        {title}:
     </h2>
     {#each activeFields as key}
         {#if getNested(data, key)}

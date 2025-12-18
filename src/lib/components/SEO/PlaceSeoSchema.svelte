@@ -16,7 +16,7 @@
     const description =
         translation.metaDescription ?? translation.subtitle ?? "";
     const image =
-        item.images?.[0]?.url ?? `${baseUrl}/images/places/place_default.webp`;
+        item.images?.[0]?.url ?? `${baseUrl}/images/places/places_default.webp`;
     const placeUrl = baseUrl + getLocalizedPath(locale, `places/${item.slug}`);
 
     const hasCoordinates = item.lat != null && item.lng != null;

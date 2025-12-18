@@ -12,18 +12,18 @@ export const footerConfig = {
                 en: `Kemer Excursions ${currentYear}`,
             },
             link: "excursions",
-            img: "/images/excursions/excursion_default.webp",
+            img: "/images/excursions/excursions_default.webp",
             set: [
                 {
-                    url: "/images/excursions/excursion_default-400.webp",
+                    url: "/images/excursions/excursions_default-400.webp",
                     width: "400w",
                 },
                 {
-                    url: "/images/excursions/excursion_default-600.webp",
+                    url: "/images/excursions/excursions_default-600.webp",
                     width: "600w",
                 },
                 {
-                    url: "/images/excursions/excursion_default-800.webp",
+                    url: "/images/excursions/excursions_default-800.webp",
                     width: "800w",
                 },
             ],
@@ -34,11 +34,20 @@ export const footerConfig = {
                 en: `Yacht Rent in Kemer ${currentYear}`,
             },
             link: "yachts",
-            img: "/images/yachts/yacht_default.webp",
+            img: "/images/yachts/yachts_default.webp",
             set: [
-                { url: "/images/yachts/yacht_default-400.webp", width: "400w" },
-                { url: "/images/yachts/yacht_default-600.webp", width: "600w" },
-                { url: "/images/yachts/yacht_default-800.webp", width: "800w" },
+                {
+                    url: "/images/yachts/yachts_default-400.webp",
+                    width: "400w",
+                },
+                {
+                    url: "/images/yachts/yachts_default-600.webp",
+                    width: "600w",
+                },
+                {
+                    url: "/images/yachts/yachts_default-800.webp",
+                    width: "800w",
+                },
             ],
         },
         {
@@ -47,11 +56,11 @@ export const footerConfig = {
                 en: `Car Rental in Kemer ${currentYear}`,
             },
             link: "cars",
-            img: "/images/cars/car_default.webp",
+            img: "/images/cars/cars_default.webp",
             set: [
-                { url: "/images/cars/car_default-400.webp", width: "400w" },
-                { url: "/images/cars/car_default-600.webp", width: "600w" },
-                { url: "/images/cars/car_default-800.webp", width: "800w" },
+                { url: "/images/cars/cars_default-400.webp", width: "400w" },
+                { url: "/images/cars/cars_default-600.webp", width: "600w" },
+                { url: "/images/cars/cars_default-800.webp", width: "800w" },
             ],
         },
         {
@@ -60,18 +69,18 @@ export const footerConfig = {
                 en: "Property Rental",
             },
             link: "development",
-            img: "/images/property/property_default.webp",
+            img: "/images/property/properties_default.webp",
             set: [
                 {
-                    url: "/images/property/property_default-400.webp",
+                    url: "/images/property/properties_default-400.webp",
                     width: "400w",
                 },
                 {
-                    url: "/images/property/property_default-600.webp",
+                    url: "/images/property/properties_default-600.webp",
                     width: "600w",
                 },
                 {
-                    url: "/images/property/property_default-800.webp",
+                    url: "/images/property/properties_default-800.webp",
                     width: "800w",
                 },
             ],
@@ -82,18 +91,18 @@ export const footerConfig = {
                 en: "Transfer",
             },
             link: "transfers/aeroport-antalya-mercedes-vito",
-            img: "/images/transfers/transfer_default.webp",
+            img: "/images/transfers/transfers_default.webp",
             set: [
                 {
-                    url: "/images/transfers/transfer_default-400.webp",
+                    url: "/images/transfers/transfers_default-400.webp",
                     width: "400w",
                 },
                 {
-                    url: "/images/transfers/transfer_default-600.webp",
+                    url: "/images/transfers/transfers_default-600.webp",
                     width: "600w",
                 },
                 {
-                    url: "/images/transfers/transfer_default-800.webp",
+                    url: "/images/transfers/transfers_default-800.webp",
                     width: "800w",
                 },
             ],
@@ -104,11 +113,20 @@ export const footerConfig = {
                 en: "Places",
             },
             link: "places",
-            img: "/images/places/place_default.webp",
+            img: "/images/places/places_default.webp",
             set: [
-                { url: "/images/places/place_default-400.webp", width: "400w" },
-                { url: "/images/places/place_default-600.webp", width: "600w" },
-                { url: "/images/places/place_default-800.webp", width: "800w" },
+                {
+                    url: "/images/places/places_default-400.webp",
+                    width: "400w",
+                },
+                {
+                    url: "/images/places/places_default-600.webp",
+                    width: "600w",
+                },
+                {
+                    url: "/images/places/places_default-800.webp",
+                    width: "800w",
+                },
             ],
         },
         {
@@ -117,11 +135,11 @@ export const footerConfig = {
                 en: "News/Events",
             },
             link: "blogs",
-            img: "/images/blogs/blog_default.webp",
+            img: "/images/blogs/blogs_default.webp",
             set: [
-                { url: "/images/blogs/blog_default-400.webp", width: "400w" },
-                { url: "/images/blogs/blog_default-600.webp", width: "600w" },
-                { url: "/images/blogs/blog_default-800.webp", width: "800w" },
+                { url: "/images/blogs/blogs_default-400.webp", width: "400w" },
+                { url: "/images/blogs/blogs_default-600.webp", width: "600w" },
+                { url: "/images/blogs/blogs_default-800.webp", width: "800w" },
             ],
         },
         {

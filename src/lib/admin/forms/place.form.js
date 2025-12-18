@@ -194,7 +194,7 @@ export const placesFormConfig = [
                 folder: "places",
                 default: [
                     {
-                        url: "/images/places/place_default.webp",
+                        url: "/images/places/places_default.webp",
                         public_id: "default",
                     },
                 ],

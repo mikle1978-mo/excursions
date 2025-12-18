@@ -1,20 +1,8 @@
 <script>
     import { locale } from "$lib/stores/locale";
-
-    // Генерируем локализованный путь
-    function getLocalizedPath(currentLocale, path = "") {
-        // Убираем начальные и конечные слэши
-        path = path.replace(/^\/+|\/+$/g, "");
-        if (!path) {
-            return currentLocale === "en" ? "/" : `/${currentLocale}`;
-        }
-        return currentLocale === "en"
-            ? `/${path}`
-            : `/${currentLocale}/${path}`;
-    }
 </script>
 
-<a href={getLocalizedPath($locale)} class="logo" aria-label="go main">
+<a href="/{$locale}" class="logo" aria-label="go main">
     <div class="target">
         <div class="ring ring1"></div>
         <div class="ring ring2"></div>

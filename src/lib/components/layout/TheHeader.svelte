@@ -3,24 +3,21 @@
     import Search from "$lib/components/UI/inputs/search/Search.svelte";
     import FilterButton from "../UI/buttons/FilterButton.svelte";
     import TheBurger from "../UI/buttons/TheBurger.svelte";
-    import { appConfig } from "$lib/config/app.config.js";
 
-    // export let lang;
-    export let type = "";
-
-    const config = appConfig.layout.header;
+    export let showSearch = false;
+    export let showFilter = false;
 </script>
 
 <header class="header">
     <div class="header_row">
         <TheLogo />
 
-        {#if config.showSearchOn.includes(type)}
+        {#if showSearch}
             <Search />
         {/if}
 
         <div class="line_right">
-            {#if config.showFilterOn.includes(type)}
+            {#if showFilter}
                 <FilterButton />
             {/if}
 

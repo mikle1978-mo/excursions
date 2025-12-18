@@ -1,7 +1,7 @@
 <script>
     import IconReview from "$lib/icons/IconReview.svelte";
     export let rating = 0;
-    export let reviewsCount = 0;
+    export let reviewCount = 0;
     // export let locale = "ru";
     // export let tReviews = { ru: "отз.", en: "reviews", tr: "yorum" };
 </script>
@@ -9,7 +9,7 @@
 <div class="rating">
     <span class="stars" style="--rating: {rating || 0}"></span>
     <span class="average">{rating}</span>
-    <span class="count">({reviewsCount} <IconReview />)</span>
+    <span class="count">({reviewCount} <IconReview />)</span>
 </div>
 
 <style>

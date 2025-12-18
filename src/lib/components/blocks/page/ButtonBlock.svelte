@@ -1,17 +1,16 @@
 <script>
     import { formatPrice } from "$lib/utils/priceFormatter.js";
-    import MyButton from "../UI/buttons/MyButton.svelte";
+    import MyButton from "$lib/components/UI/buttons/MyButton.svelte";
     import getOldPrice from "$lib/utils/getOldPrice";
     import { appConfig } from "$lib/config/app.config";
 
     export let data;
     export let system;
+    export let onAction = null;
     const active = data.active || false;
     const lang = system.lang || "en";
     const type = system.type || "excursions";
     const config = appConfig?.blocks?.button;
-
-    export let onBook = () => {};
 
     // Лейблы полностью из конфига
     const labels = appConfig?.blocks?.button?.labels || {};
@@ -26,7 +25,7 @@
 <div class="button-block">
     <MyButton
         id="book-button"
-        onclick={active ? onBook : null}
+        onclick={active && onAction ? onAction : null}
         disabled={!active}
         size="md"
         variant="secondary">{getBookingLabel(lang, type, active)}</MyButton

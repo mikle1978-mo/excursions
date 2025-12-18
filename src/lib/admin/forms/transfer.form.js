@@ -175,7 +175,7 @@ export const transfersFormConfig = [
                 folder: "transfers",
                 default: [
                     {
-                        url: "/images/transfers/transfer_default.webp",
+                        url: "/images/transfers/transfers_default.webp",
                         public_id: "default",
                     },
                 ],

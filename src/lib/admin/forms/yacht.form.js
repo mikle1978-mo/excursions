@@ -291,7 +291,7 @@ export const yachtsFormConfig = [
                 folder: "yachts",
                 default: [
                     {
-                        url: "/images/yachts/yacht_default.webp",
+                        url: "/images/yachts/yachts_default.webp",
                         public_id: "default",
                     },
                 ],

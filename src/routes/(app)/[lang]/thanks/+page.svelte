@@ -1,6 +1,6 @@
 <script>
     import { onMount, onDestroy } from "svelte";
-    import { locale, getLocalizedPath } from "$lib/stores/locale.js";
+    import { locale } from "$lib/stores/locale.js";
     import { thanks_page } from "$lib/i18n/thanks_page";
     import { page } from "$app/stores";
 
@@ -20,7 +20,7 @@
             } else {
                 clearInterval(interval);
                 // Переход на главную
-                window.location.href = getLocalizedPath($locale);
+                window.location.href = `/${$locale}`;
             }
         }, 1000);
     });
@@ -53,7 +53,7 @@
         <p>
             {thanks_page.text[$locale]}
         </p>
-        <a class="button" href={getLocalizedPath($locale)}>
+        <a class="button" href="/{$locale}">
             {thanks_page.back_button[$locale]}</a
         >
         <p

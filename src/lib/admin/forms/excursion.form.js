@@ -296,7 +296,7 @@ export const excursionsFormConfig = [
                 folder: "excursions",
                 default: [
                     {
-                        url: "/images/excursions/excursion_default.webp",
+                        url: "/images/excursions/excursions_default.webp",
                         public_id: "default",
                     },
                 ],

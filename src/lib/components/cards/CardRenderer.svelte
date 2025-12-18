@@ -1,5 +1,6 @@
 <script>
     import Card from "$lib/components/cards/Card.svelte";
+    import { CardAdapter } from "$lib/features/card/card.adapter.js";
     import { appConfig } from "$lib/config/app.config";
 
     export let item;
@@ -7,12 +8,21 @@
     export let lang;
     export let loading = "lazy";
 
-    const config = appConfig.collections[type].cardConfig;
-    const data = config.adapter({
-        item,
-        lang,
+    const cardConfig = appConfig.collections[type].cardConfig;
+
+    const system = {
         type,
-        badgeRules: config.badgeRules,
+        lang,
+        // future:
+        // currency
+        // locale
+        // now
+    };
+
+    const data = CardAdapter({
+        item,
+        config: cardConfig,
+        system,
     });
 </script>
 

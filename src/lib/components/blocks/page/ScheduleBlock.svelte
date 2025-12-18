@@ -27,12 +27,11 @@
 
 <style>
     .info-block {
-        width: 100%;
+        align-self: stretch;
         background: var(--color-bg);
-        padding: 0;
+        padding: var(--space-vertical-sm);
         border-radius: var(--radius-md);
         border: 1px solid var(--color-gray-300);
-        padding: var(--space-vertical-sm);
     }
 
     .title-with-icon {
@@ -49,7 +48,7 @@
         list-style: none;
         margin: 0;
         padding: 0 0 0 var(--space-vertical-sm);
-        border-left: 2px solid var(--color-gray-300);
+        border-right: 2px solid var(--color-gray-300);
     }
 
     .timeline-item {
@@ -81,7 +80,7 @@
     }
     @media (max-width: 480px) {
         .info-block {
-            padding: 0 var(--space-vertical-sm);
+            margin: 0 var(--space-vertical-sm);
         }
     }
 </style>

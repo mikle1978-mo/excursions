@@ -1,5 +1,5 @@
 <script>
-    import { locale, getLocalizedPath } from "$lib/stores/locale.js";
+    import { locale } from "$lib/stores/locale.js";
     import { footer_list } from "$lib/i18n/footer_list";
     import { page } from "$app/stores";
     import { sidebarOpen } from "$lib/stores/sidebar";

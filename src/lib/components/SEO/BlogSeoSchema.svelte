@@ -21,7 +21,7 @@
         translation.description ??
         "";
     const image =
-        item.images?.[0]?.url ?? `${baseUrl}/images/blog/blog_default.webp`;
+        item.images?.[0]?.url ?? `${baseUrl}/images/blogs/blogs_default.webp`;
     const articleUrl = baseUrl + getLocalizedPath(locale, `blog/${item.slug}`);
 
     const datePublished = item.createdAt

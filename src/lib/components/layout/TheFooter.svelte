@@ -1,5 +1,5 @@
 <script>
-    import { locale, getLocalizedPath } from "$lib/stores/locale.js";
+    import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
     import { footer_list } from "$lib/i18n/footer_list";
     import { page } from "$app/stores";
@@ -46,7 +46,7 @@
             class="menu-item {$page.url.pathname === `/${$locale}`
                 ? 'active'
                 : ''}"
-            href={getLocalizedPath($locale)}
+            href="/{$locale}"
             rel={footer_list[0].rel}
             target={footer_list[0].target}
         >
@@ -85,7 +85,7 @@
             `/${$locale}/${footer_list[2].link}`
                 ? 'active'
                 : ''}"
-            href={getLocalizedPath($locale, footer_list[2].link)}
+            href="/{$locale}/{footer_list[2].link}"
             rel={footer_list[2].rel}
             target={footer_list[2].target}
         >

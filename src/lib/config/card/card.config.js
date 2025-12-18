@@ -1,127 +1,245 @@
 // src/lib/config/card/card.config.js
 import { CardAdapter } from "$lib/features/card/card.adapter.js";
+import { badgeRules } from "$lib/config/card/badgeRules.config.js";
+import { ImageBlockAdapter } from "$lib/features/card/sections/image.adapter";
+import { TitleBlockAdapter } from "$lib/features/card/sections/title.adapter";
+import { HeroBlockAdapter } from "$lib/features/card/sections/hero.adapter";
+import { PriceBlockAdapter } from "$lib/features/card/sections/price.adapter";
+import { RatingBlockAdapter } from "$lib/features/card/sections/rating.adapter";
+import { TextBlockAdapter } from "$lib/features/card/sections/text.adapter";
+import { DateBlockAdapter } from "$lib/features/card/sections/date.adapter";
 
 export const card = {
     excursions: {
-        adapter: CardAdapter,
-        fields: [
-            "slug",
-            "title",
-            "price",
-            "discount",
-            "discountEnd",
-            "images",
-            "rating",
-            "reviewsCount",
-            "active",
-        ],
-        translationFields: ["title"],
-        badgeRules: {
-            DISCOUNT: {
-                position: "bottomleft",
-                condition: ({ discount, discountEnd }) =>
-                    discount > 0 &&
-                    (!discountEnd || new Date(discountEnd) > new Date()),
-                label: {
-                    en: "Discount",
-                    ru: "Скидка",
-                },
-                format: ({ discount }) => `-${discount}%`,
-            },
-
-            NEW: {
-                position: "topleft",
-                condition: ({ createdAt }) => {
-                    if (!createdAt) return false;
-                    const now = Date.now();
-                    const created = new Date(createdAt).getTime();
-                    return now - created < 30 * 24 * 60 * 60 * 1000;
-                },
-                label: {
-                    en: "New",
-                    ru: "Новинка",
-                },
-            },
-            POPULAR: {
-                position: "topright",
-                condition: ({ rating, reviewsCount }) =>
-                    rating >= 4.5 && reviewsCount >= 10,
-                label: {
-                    en: "Popular",
-                    ru: "Популярный",
-                },
-            },
-            VIP: {
-                position: "bottomright",
-                condition: ({ price }) => price > 900,
-                label: {
-                    en: "VIP",
-                    ru: "VIP",
-                },
+        overlays: {
+            badges: {
+                rules: badgeRules,
             },
         },
+        sections: [
+            {
+                component: "HeroBlock",
+                adapter: HeroBlockAdapter,
+                fields: ["images", "title"],
+                position: "header",
+            },
+
+            {
+                component: "TitleBlock",
+                adapter: TitleBlockAdapter,
+                fields: ["title"],
+            },
+
+            {
+                component: "RatingBlock",
+                adapter: RatingBlockAdapter,
+                fields: ["rating", "reviewsCount"],
+            },
+
+            {
+                component: "PriceBlock",
+                adapter: PriceBlockAdapter,
+                fields: ["price", "discount", "discountEnd"],
+                position: "footer",
+            },
+        ],
     },
     yachts: {
-        fields: [
-            "slug",
-            "title",
-            "price",
-            "discount",
-            "discountEnd",
-            "images",
-            "rating",
-            "reviewsCount",
-            "active",
+        overlays: {
+            badges: {
+                rules: badgeRules,
+            },
+        },
+        sections: [
+            {
+                component: "HeroBlock",
+                adapter: HeroBlockAdapter,
+                fields: ["images", "title"],
+                position: "header",
+            },
+
+            {
+                component: "TitleBlock",
+                adapter: TitleBlockAdapter,
+                fields: ["title"],
+            },
+
+            {
+                component: "RatingBlock",
+                adapter: RatingBlockAdapter,
+                fields: ["rating", "reviewsCount"],
+            },
+
+            {
+                component: "PriceBlock",
+                adapter: PriceBlockAdapter,
+                fields: ["price", "discount", "discountEnd"],
+                position: "footer",
+            },
         ],
-        translationFields: ["title"],
     },
     cars: {
-        fields: [
-            "slug",
-            "title",
-            "price",
-            "discount",
-            "discountEnd",
-            "images",
-            "rating",
-            "reviewsCount",
-            "active",
+        overlays: {
+            badges: {
+                rules: badgeRules,
+            },
+        },
+        sections: [
+            {
+                component: "HeroBlock",
+                adapter: HeroBlockAdapter,
+                fields: ["images", "title"],
+                position: "header",
+            },
+
+            {
+                component: "TitleBlock",
+                adapter: TitleBlockAdapter,
+                fields: ["title"],
+            },
+
+            {
+                component: "RatingBlock",
+                adapter: RatingBlockAdapter,
+                fields: ["rating", "reviewsCount"],
+            },
+
+            {
+                component: "PriceBlock",
+                adapter: PriceBlockAdapter,
+                fields: ["price", "discount", "discountEnd"],
+                position: "footer",
+            },
         ],
-        translationFields: ["title"],
     },
     transfers: {
-        fields: [
-            "slug",
-            "title",
-            "price",
-            "discount",
-            "discountEnd",
-            "images",
-            "rating",
-            "reviewsCount",
-            "active",
+        overlays: {
+            badges: {
+                rules: badgeRules,
+            },
+        },
+        sections: [
+            {
+                component: "HeroBlock",
+                adapter: HeroBlockAdapter,
+                fields: ["images", "title"],
+                position: "header",
+            },
+
+            {
+                component: "TitleBlock",
+                adapter: TitleBlockAdapter,
+                fields: ["title"],
+            },
+
+            {
+                component: "RatingBlock",
+                adapter: RatingBlockAdapter,
+                fields: ["rating", "reviewsCount"],
+            },
+
+            {
+                component: "PriceBlock",
+                adapter: PriceBlockAdapter,
+                fields: ["price", "discount", "discountEnd"],
+                position: "footer",
+            },
         ],
-        translationFields: ["title"],
     },
     places: {
-        fields: ["slug", "title", "metaDescription", "images", "active"],
-        translationFields: ["title", "metaDescription"],
+        overlays: {
+            badges: {
+                rules: badgeRules,
+            },
+        },
+        sections: [
+            {
+                component: "HeroBlock",
+                adapter: HeroBlockAdapter,
+                fields: ["images", "title"],
+                position: "header",
+            },
+            {
+                component: "TitleBlock",
+                adapter: TitleBlockAdapter,
+                fields: ["title"],
+            },
+            {
+                component: "TextBlock",
+                adapter: TextBlockAdapter,
+                fields: ["subtitle"],
+                source: "subtitle",
+            },
+        ],
     },
     blogs: {
-        fields: [
-            "slug",
-            "title",
-            "metaDescription",
-            "publishDate",
-            "author",
-            "images",
-            "active",
-            "publishDate",
+        overlays: {
+            badges: {
+                rules: badgeRules,
+            },
+        },
+        sections: [
+            {
+                component: "HeroBlock",
+                adapter: HeroBlockAdapter,
+                fields: ["images", "title"],
+                position: "header",
+            },
+
+            {
+                component: "TitleBlock",
+                adapter: TitleBlockAdapter,
+                fields: ["title"],
+                source: "title",
+            },
+            {
+                component: "TextBlock",
+                adapter: TextBlockAdapter,
+                fields: ["subtitle"],
+                source: "subtitle",
+            },
+
+            {
+                component: "DateBlock",
+                adapter: DateBlockAdapter,
+                fields: ["publishDate"],
+                source: "publishDate",
+                position: "footer",
+            },
         ],
-        translationFields: ["title", "metaDescription", "author"],
     },
     faqs: {
-        fields: ["slug", "title", "metaDescription", "images", "active"],
-        translationFields: ["title"],
+        overlays: {
+            badges: {
+                rules: badgeRules,
+            },
+        },
+        sections: [
+            {
+                component: "HeroBlock",
+                adapter: HeroBlockAdapter,
+                fields: ["images", "title"],
+                position: "header",
+            },
+
+            {
+                component: "TitleBlock",
+                adapter: TitleBlockAdapter,
+                fields: ["title"],
+            },
+
+            {
+                component: "RatingBlock",
+                adapter: RatingBlockAdapter,
+                fields: ["rating", "reviewsCount"],
+            },
+
+            {
+                component: "PriceBlock",
+                adapter: PriceBlockAdapter,
+                fields: ["price", "discount", "discountEnd"],
+                position: "footer",
+            },
+        ],
     },
 };

@@ -35,6 +35,7 @@ export const carsFormConfig = [
                 label: "Подзаголовок",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -371,6 +372,7 @@ export const carsFormConfig = [
                 label: "Meta Description",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -383,6 +385,7 @@ export const carsFormConfig = [
                 label: "Ключевые слова",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),
@@ -402,7 +405,7 @@ export const carsFormConfig = [
                 folder: "cars",
                 default: [
                     {
-                        url: "/images/cars/car_default.webp",
+                        url: "/images/cars/cars_default.webp",
                         public_id: "default",
                     },
                 ],
@@ -412,6 +415,7 @@ export const carsFormConfig = [
                 label: "Теги",
                 type: "object",
                 default: {},
+                localized: true,
                 fields: SUPPORTED_LANGUAGES.map((lang) => ({
                     name: lang,
                     label: lang.toUpperCase(),

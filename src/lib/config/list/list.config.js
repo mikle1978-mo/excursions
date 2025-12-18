@@ -10,6 +10,20 @@ import {
 
 export const list = {
     excursions: {
+        query: {
+            fields: [
+                "slug",
+                "price",
+                "discount",
+                "discountEnd",
+                "images",
+                "rating",
+                "reviewsCount",
+                "active",
+            ],
+            translationFields: ["title"],
+            withReviews: true,
+        },
         listText: excursions_LIST_TEXT,
         schemas: [],
         filters: {},
@@ -18,6 +32,20 @@ export const list = {
         },
     },
     yachts: {
+        query: {
+            fields: [
+                "slug",
+                "price",
+                "discount",
+                "discountEnd",
+                "images",
+                "rating",
+                "reviewsCount",
+                "active",
+            ],
+            translationFields: ["title"],
+            withReviews: true,
+        },
         listText: yachts_LIST_TEXT,
         schemas: [],
         filters: {},
@@ -26,6 +54,20 @@ export const list = {
         },
     },
     cars: {
+        query: {
+            fields: [
+                "slug",
+                "price",
+                "discount",
+                "discountEnd",
+                "images",
+                "rating",
+                "reviewsCount",
+                "active",
+            ],
+            translationFields: ["title"],
+            withReviews: true,
+        },
         listText: cars_LIST_TEXT,
         schemas: [],
         filters: {},
@@ -34,6 +76,20 @@ export const list = {
         },
     },
     transfers: {
+        query: {
+            fields: [
+                "slug",
+                "price",
+                "discount",
+                "discountEnd",
+                "images",
+                "rating",
+                "reviewsCount",
+                "active",
+            ],
+            translationFields: ["title"],
+            withReviews: true,
+        },
         listText: transfers_LIST_TEXT,
         schemas: [],
         filters: {},
@@ -42,18 +98,50 @@ export const list = {
         },
     },
     places: {
+        query: {
+            fields: ["slug", "title", "subtitle", "images", "active"],
+            translationFields: ["title", "subtitle"],
+            withReviews: true,
+        },
         listText: places_LIST_TEXT,
         schemas: [],
         filters: {},
         sortOptions: { createdAt: -1 },
     },
     blogs: {
+        query: {
+            fields: [
+                "slug",
+                "title",
+                "subtitle",
+                "author",
+                "publishDate",
+                "images",
+                "active",
+            ],
+            translationFields: ["title", "subtitle", "author"],
+            withReviews: true,
+        },
         listText: blogs_LIST_TEXT,
         schemas: [],
-        filters: {},
+
         sortOptions: { publishDate: -1 },
     },
     faqs: {
+        query: {
+            fields: [
+                "slug",
+                "price",
+                "discount",
+                "discountEnd",
+                "images",
+                "rating",
+                "reviewsCount",
+                "active",
+            ],
+            translationFields: ["title"],
+            withReviews: true,
+        },
         listText: blogs_LIST_TEXT,
         schemas: [],
         filters: {},

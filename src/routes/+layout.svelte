@@ -59,7 +59,6 @@
         // Существующий код
         const unsubscribe = localeStore.subscribe((value) => {
             document.documentElement.lang = value;
-            console.log("Set lang:", value);
         });
 
         // 👇 Добавляем метрику

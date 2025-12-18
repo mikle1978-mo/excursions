@@ -1,5 +1,5 @@
 <script>
-    import { locale, getLocalizedPath } from "$lib/stores/locale.js";
+    import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
     import { card } from "$lib/i18n/card";
     import { formatPrice } from "$lib/utils/priceFormatter";
@@ -14,7 +14,7 @@
     let imageSrcset = { src: image, srcset: "" };
 
     export let loading = "lazy";
-    const defaultImage = `/images/${type}/${type.endsWith("s") ? type.slice(0, -1) : type}_default.webp`;
+    const defaultImage = `/images/${type}/${type}_default.webp`;
 
     $: slug = item.slug;
     $: title = item.title ?? "";
@@ -70,10 +70,7 @@
 </script>
 
 <div class="card">
-    <a
-        href={getLocalizedPath($locale, `${type}/${slug}`)}
-        class="card__image-wrapper"
-    >
+    <a href="/{$locale}/{type}/{slug}" class="card__image-wrapper">
         <img
             src={imageSrcset.src}
             srcset={imageSrcset.srcset}
@@ -113,9 +110,8 @@
     <div class="card__content">
         <div class="card__header">
             <h2 class="card__title">
-                <a href={getLocalizedPath($locale, `${type}/${slug}`)}
-                    >{title}</a
-                > <span class="card__detail-top">{description} </span>
+                <a href="/{$locale}/{type}/{slug}">{title}</a>
+                <span class="card__detail-top">{description} </span>
             </h2>
         </div>
 

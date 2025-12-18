@@ -15,7 +15,7 @@
     let imageSrcset = { src: image, srcset: "" };
 
     export let loading = "lazy";
-    const defaultImage = `/images/${type}/${type.endsWith("s") ? type.slice(0, -1) : type}_default.webp`;
+    const defaultImage = `/images/${type}/${type}_default.webp`;
 
     $: slug = item.slug;
     $: title = item.title ?? "";
