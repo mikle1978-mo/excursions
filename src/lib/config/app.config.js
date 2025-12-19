@@ -15,6 +15,7 @@ import { homeConfig } from "$lib/config/layout/home.config.js";
 import { footerConfig } from "$lib/config/layout/footer.config.js";
 import { headerConfig } from "$lib/config/layout/header.config.js";
 import { aboutConfig } from "$lib/config/layout/about.config.js";
+import { entryConfig } from "$lib/config/layout/entry.config.js";
 
 import { currencyConfig } from "$lib/config/services/currency.config.js";
 
@@ -31,6 +32,7 @@ const layoutConfig = {
 
 // === Page-specific конфиги (поведение конкретных страниц)
 export const pagesConfig = {
+    entry: entryConfig,
     home: homeConfig,
     about: aboutConfig,
 };

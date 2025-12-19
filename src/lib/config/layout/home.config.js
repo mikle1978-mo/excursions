@@ -73,8 +73,8 @@ export const homeConfig = {
     ],
     seo: {
         title: {
-            ru: "Отдых в Кемере — экскурсии, аренда яхт и авто, трансфер",
-            en: "Kemer Vacation — Tours, Yacht & Car Rentals, Transfers",
+            ru: `Отдых в Кемере ${currentYear}: экскурсии, аренда яхт и авто, трансфер`,
+            en: `Kemer Vacation ${currentYear}: Tours, Yacht & Car Rentals, Transfers`,
         },
         description: {
             ru: "Все для комфортного отдыха в Кемере: экскурсии, аренда яхт и автомобилей, трансферы.",
