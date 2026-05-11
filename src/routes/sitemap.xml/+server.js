@@ -8,7 +8,7 @@ import {
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5173";
 
 const makePath = (lang, segment = "", slug = "") => {
-    const prefix = lang === "en" ? "" : `/${lang}`;
+    const prefix = `/${lang}`;
     const path = [segment, slug].filter(Boolean).join("/");
     return path
         ? `${VITE_BASE_URL}${prefix}/${path}`
@@ -30,7 +30,7 @@ export async function GET() {
     const blogs = allSlugs.filter((i) => i.type === "blog");
 
     const today = formatDate(new Date());
-    const HOMEPAGE_LASTMOD = "2025-11-02";
+    const GATAWAY_LASTMOD = "2025-11-02";
 
     const getListLastmod = (items) => {
         if (!items.length) return today;
@@ -38,19 +38,19 @@ export async function GET() {
             i.updatedAt
                 ? new Date(i.updatedAt).getTime()
                 : i.createdAt
-                ? new Date(i.createdAt).getTime()
-                : i._id
-                ? new ObjectId(i._id).getTimestamp().getTime()
-                : 0
+                  ? new Date(i.createdAt).getTime()
+                  : i._id
+                    ? new ObjectId(i._id).getTimestamp().getTime()
+                    : 0,
         );
         return formatDate(new Date(Math.max(...timestamps)));
     };
 
     // Главная страница
-    const homepageEntries = `
+    const gatewayEntries = `
   <url>
     <loc>${VITE_BASE_URL}/</loc>
-    <lastmod>${HOMEPAGE_LASTMOD}</lastmod>
+    <lastmod>${GATAWAY_LASTMOD}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
@@ -58,22 +58,33 @@ export async function GET() {
       (lang) => `
   <url>
     <loc>${makePath(lang)}</loc>
-    <lastmod>${HOMEPAGE_LASTMOD}</lastmod>
+    <lastmod>${GATAWAY_LASTMOD}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>`
+  </url>`,
   ).join("")}
 `;
+
+    const localeHomeEntries = SUPPORTED_LANGUAGES.map(
+        (lang) => `
+<url>
+    <loc>${VITE_BASE_URL}/${lang}/</loc>
+    <lastmod>${GATAWAY_LASTMOD}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+</url>
+`,
+    ).join("");
 
     // Страница "О нас"
     const aboutEntries = SUPPORTED_LANGUAGES.map(
         (lang) => `
   <url>
     <loc>${makePath(lang, "about")}</loc>
-    <lastmod>${HOMEPAGE_LASTMOD}</lastmod>
+    <lastmod>${GATAWAY_LASTMOD}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
-  </url>`
+  </url>`,
     ).join("");
 
     // Страницы списков (например, /excursions)
@@ -86,7 +97,7 @@ export async function GET() {
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-  </url>`
+  </url>`,
         ).join("");
     };
 
@@ -102,7 +113,7 @@ export async function GET() {
                 } else if (item._id) {
                     try {
                         lastmod = formatDate(
-                            new ObjectId(item._id).getTimestamp()
+                            new ObjectId(item._id).getTimestamp(),
                         );
                     } catch (e) {
                         lastmod = today;
@@ -118,7 +129,7 @@ export async function GET() {
     <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
-  </url>`
+  </url>`,
                 ).join("");
             })
             .join("");
@@ -127,7 +138,8 @@ export async function GET() {
 <urlset
   xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
 >
-${homepageEntries}
+${gatewayEntries}
+${localeHomeEntries}
 ${aboutEntries}
 ${listEntries("excursions", excursions)}
 ${listEntries("yachts", yachts)}

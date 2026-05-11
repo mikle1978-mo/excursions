@@ -84,22 +84,27 @@ src/
 
 ```js
 export function mergeWithDefaults(schemaDefaults, dbData = {}) {
-  if (Array.isArray(schemaDefaults)) return dbData || [];
+    if (Array.isArray(schemaDefaults)) return dbData || [];
 
-  const merged = { ...schemaDefaults };
-  for (const key in schemaDefaults) {
-    const val = dbData?.[key];
-    if (val === undefined || val === null) continue;
+    const merged = { ...schemaDefaults };
+    for (const key in schemaDefaults) {
+        const val = dbData?.[key];
+        if (val === undefined || val === null) continue;
 
-    if (Array.isArray(val) && Array.isArray(schemaDefaults[key])) {
-      merged[key] = val.map((v, i) => mergeWithDefaults(schemaDefaults[key][0], v));
-    } else if (typeof val === 'object' && typeof schemaDefaults[key] === 'object') {
-      merged[key] = mergeWithDefaults(schemaDefaults[key], val);
-    } else {
-      merged[key] = val;
+        if (Array.isArray(val) && Array.isArray(schemaDefaults[key])) {
+            merged[key] = val.map((v, i) =>
+                mergeWithDefaults(schemaDefaults[key][0], v)
+            );
+        } else if (
+            typeof val === "object" &&
+            typeof schemaDefaults[key] === "object"
+        ) {
+            merged[key] = mergeWithDefaults(schemaDefaults[key], val);
+        } else {
+            merged[key] = val;
+        }
     }
-  }
-  return merged;
+    return merged;
 }
 ```
 
@@ -117,4 +122,4 @@ export function mergeWithDefaults(schemaDefaults, dbData = {}) {
 
 ---
 
-Эта документация описывает текущую архитектуру и рекомендации по рабо
+Эта документация описывает текущую архитектуру и рекомендации по работе с апи
