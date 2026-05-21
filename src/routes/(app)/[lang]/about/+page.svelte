@@ -1,6 +1,5 @@
 <!-- src\routes\(app)\[lang]\about\+page.svelte -->
 <script>
-    // import AboutPage from "$lib/components/pages/AboutPage.svelte";
     import { appConfig } from "$lib/config/app.config";
     import SeoRenderer from "$lib/components/seo/SeoRenderer.svelte";
     import SchemasRenderer from "$lib/components/seo/SchemasRenderer.svelte";
@@ -9,7 +8,9 @@
 
     export let data;
     // безопасный деструктуринг
-    const { type, lang, items } = data ?? {};
+    let { type, lang, items } = data ?? {};
+
+    type = "about";
 
     const item = appConfig.pages.about[lang]; // конфиг страницы About
 </script>
@@ -21,5 +22,3 @@
 <SchemasRenderer {type} {lang} {item} />
 <TheHeader />
 <ProductDetailRenderer {type} {item} {lang} />
-
-<!-- <AboutPage urlPath="about" /> -->

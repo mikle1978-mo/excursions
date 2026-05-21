@@ -13,7 +13,7 @@
     import InfoBlockArray from "$lib/components/blocks/InfoBlockArray.svelte";
     import InfoBlockString from "$lib/components/blocks/MeetingPoint.svelte";
     import MapBlock from "../blocks/MapBlock.svelte";
-    import BuyMeACoffe from "$lib/components/ui/buttons/BuyMeACoffe.svelte";
+    import CoffeBlock from "../blocks/page/CoffeBlock.svelte";
 
     export let item;
     export let locale;
@@ -111,7 +111,7 @@
                     title={currentTranslation.title}
                 />
             {/if}
-            <BuyMeACoffe locale={effectiveLocale} />
+            <CoffeBlock system={{ lang: effectiveLocale }} />
         </section>
     </main>
 </div>

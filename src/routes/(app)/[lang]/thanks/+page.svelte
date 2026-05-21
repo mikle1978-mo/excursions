@@ -46,7 +46,7 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
 </svelte:head>
-
+<p>{" "}</p>
 <main>
     <div class="thankyou-box">
         <h1>{thanks_page.title[$locale]}</h1>

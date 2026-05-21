@@ -97,6 +97,10 @@ export const detail = {
                     icon: icons.clipBoard,
                 },
             },
+            {
+                component: "CoffeBlock",
+                fields: {},
+            },
         ],
     },
     // ===== EXCURSIONS =====

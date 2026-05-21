@@ -1,11 +1,32 @@
 <script>
-    import { onMount } from "svelte";
-    import { page } from "$app/stores";
-    export let error;
-    export let status;
-    console.log("Custom error page", { status, error });
+    import { page } from "$app/state";
+    import { onMount, onDestroy } from "svelte";
 
-    // Локализация для 404 — можно вынести в отдельный файл, как у тебя thanks_page
+    let { error, status } = $props();
+    console.log("==============error, status======================");
+    console.log(error, status);
+    console.log("==============error, status======================");
+
+    const lang = $derived(page.params.lang ?? "en");
+
+    let countdown = $state(10);
+    let interval;
+
+    onMount(() => {
+        interval = setInterval(() => {
+            if (countdown > 0) {
+                countdown -= 1;
+            } else {
+                clearInterval(interval);
+                window.location.href = `/${page.params.lang ?? "en"}`;
+            }
+        }, 1000);
+    });
+
+    onDestroy(() => {
+        clearInterval(interval);
+    });
+
     const error_404 = {
         title: {
             ru: "404 Страница не найдена",
@@ -28,29 +49,6 @@
             en: "seconds",
         },
     };
-
-    let countdown = 10;
-    let interval;
-
-    const { params } = $page;
-    const lang = params.lang ?? "en";
-
-    onMount(() => {
-        interval = setInterval(() => {
-            if (countdown > 0) {
-                countdown -= 1;
-            } else {
-                clearInterval(interval);
-                window.location.href = `/`;
-            }
-        }, 1000);
-    });
-
-    // Очистка таймера при размонтировании
-    import { onDestroy } from "svelte";
-    onDestroy(() => {
-        clearInterval(interval);
-    });
 </script>
 
 <svelte:head>
