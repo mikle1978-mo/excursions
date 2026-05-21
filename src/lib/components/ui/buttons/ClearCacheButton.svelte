@@ -1,4 +1,6 @@
 <script>
+    import IconClock from "$lib/icons/IconClock.svelte";
+
     let loading = false;
 
     async function clearCache() {
@@ -36,5 +38,28 @@
     disabled={loading}
     class="px-3 py-2 bg-red-500 text-white rounded hover:bg-red-600 disabled:opacity-40"
 >
+    <IconClock />
     {loading ? "Очищается..." : "Очистить кеш"}
 </button>
+
+<style>
+    button {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: var(--space-horizontal-sm);
+        font-size: var(--text-md);
+        padding: var(--space-vertical-sm) var(--space-horizontal-sm);
+        background-color: var(--color-accent);
+        color: var(--color-light);
+        border: none;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-md);
+        text-align: center;
+        transition: background-color var(--transition-fast);
+    }
+
+    button:hover {
+        background-color: var(--color-primary-hover);
+    }
+</style>
