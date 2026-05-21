@@ -82,7 +82,7 @@
 
 {#if isModalOpen}
     <Modal on:close={closeModal}>
-        <ShortForm slug={item.slug} />
+        <ShortForm slug={item.slug} price={item.price} />
     </Modal>
 {/if}
 

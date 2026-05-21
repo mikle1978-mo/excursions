@@ -7,6 +7,7 @@
     import IconHelp from "$lib/icons/IconHelp.svelte";
     import IconBookOpen from "$lib/icons/IconBookOpen.svelte";
     import ClearCacheButton from "$lib/components/ui/buttons/ClearCacheButton.svelte";
+    import IconHome from "$lib/icons/IconHome.svelte";
 </script>
 
 <svelte:head>
@@ -18,6 +19,7 @@
 <main class="admin-dashboard">
     <h1 class="admin-title">Админка</h1>
     <nav class="admin-links">
+        <a href="/" class="admin-link"><IconHome />На главную</a>
         <a href="/admin/excursions" class="admin-link"
             ><IconSunrise />Управление экскурсиями</a
         >

@@ -7,6 +7,7 @@
     import { form_list } from "$lib/i18n/form_list";
 
     export let slug;
+    export let price = null;
     let currentUrl = "";
     let showDetails = false;
     let min = 6;
@@ -29,6 +30,7 @@
             date: formData.get("date") || null,
             persons: formData.get("persons") || null,
             comment: formData.get("comment") || null,
+            price_$: price || null,
             slug,
             url: currentUrl,
         };

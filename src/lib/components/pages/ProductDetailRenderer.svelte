@@ -71,7 +71,7 @@ SYSTEM        → контекст
 
 {#if isBookingOpen}
     <Modal on:close={() => (isBookingOpen = false)}>
-        <ShortForm slug={item.slug} />
+        <ShortForm slug={item.slug} price={item.price} />
     </Modal>
 {/if}
 
