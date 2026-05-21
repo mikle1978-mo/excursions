@@ -4,11 +4,13 @@ User-agent: *
 Disallow: /admin/
 Disallow: /api/
 
-
-
 Disallow: /thanks
 Disallow: /error
 Disallow: /development
+
+Disallow: /en/thanks
+Disallow: /en/error
+Disallow: /en/development
 
 Disallow: /ru/thanks
 Disallow: /ru/error

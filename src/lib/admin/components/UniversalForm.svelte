@@ -77,9 +77,6 @@
         resetForm(form, merged, type, slug);
     }
 
-    // $: currentForm = $form;
-    $: console.log("Current Form Data:", $form);
-
     async function validateCurrentStep() {
         errors = {};
         generalError = "";
@@ -87,7 +84,7 @@
         if (!currentStepObj) return true;
 
         const baseNames = Array.from(
-            new Set(currentStepObj.fields.map((f) => f.name.split(".")[0]))
+            new Set(currentStepObj.fields.map((f) => f.name.split(".")[0])),
         );
         const dataToValidate = {};
         for (const key of baseNames) {
@@ -100,8 +97,8 @@
                     ? schema
                           .pick(
                               Object.fromEntries(
-                                  baseNames.map((k) => [k, true])
-                              )
+                                  baseNames.map((k) => [k, true]),
+                              ),
                           )
                           .partial()
                     : schema;

@@ -13,14 +13,13 @@
     const rating = data.rating || null;
     const reviewCount = data.reviewCount || 0;
 
-    console.log("HeroBlock data:", reviewCount);
     const lang = system?.lang;
     const images = data.images || [];
 
     // Для HeroBlock вычисляем srcset
     let heroImage = getCloudinarySrcset(
         images[0].url,
-        [400, 800, 1200, 1600, 1920]
+        [400, 800, 1200, 1600, 1920],
     );
 </script>
 

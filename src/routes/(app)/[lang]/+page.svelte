@@ -9,6 +9,7 @@
     import { fly, slide } from "svelte/transition";
     export let data;
 
+
     const { lang } = data ?? {};
 
     const homeConfig = appConfig.pages.home;

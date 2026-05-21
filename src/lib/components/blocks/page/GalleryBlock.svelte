@@ -2,10 +2,8 @@
     import Modal from "$lib/components/ui/Modal.svelte";
 
     export let data;
-
     let selectedIndex = 0;
     let isModalOpen = false;
-
     const openModal = (index) => {
         selectedIndex = index;
         isModalOpen = true;
@@ -44,16 +42,17 @@
     {/each}
 </div>
 
-{#if isModalOpen}
+{#if isModalOpen && data?.images?.[selectedIndex]}
+    {@const img = data?.images?.[selectedIndex]}
     <Modal on:close={closeModal}>
         <div class="modal-gallery">
             <img
-                src={data.images[selectedIndex].modal.src}
-                srcset={data.images[selectedIndex].modal.srcset}
+                src={img.modal.src}
+                srcset={img.modal.srcset}
+                alt={img.alt}
                 sizes="(max-width: 768px) 95vw, 1200px"
-                alt={data.images[selectedIndex].alt}
             />
-            <p class="caption">{data.captions[selectedIndex]}</p>
+            <p class="caption">{img.caption}</p>
         </div>
     </Modal>
 {/if}

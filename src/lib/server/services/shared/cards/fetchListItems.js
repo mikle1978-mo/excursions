@@ -106,7 +106,7 @@ export async function fetchListItems({ db, type, lang = "en" }) {
     if (!collectionCfg) throw new Error(`Unknown collection type: ${type}`);
 
     const listCfg = appConfig.list[type];
-    console.log("Collection Config listCfg:", listCfg);
+
     if (!listCfg?.query)
         throw new Error(`Missing list.query config for ${type}`);
 
@@ -175,7 +175,7 @@ export async function fetchListItems({ db, type, lang = "en" }) {
                     reviewsCount: r.reviewsCount,
                     rating: Math.round(r.rating * 10) / 10,
                 },
-            ])
+            ]),
         );
 
         items = items.map((i) => ({

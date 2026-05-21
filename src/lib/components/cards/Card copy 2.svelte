@@ -3,7 +3,6 @@
     import Rating from "$lib/components/ui/rating/Rating.svelte";
     export let data;
     // export let loading = "lazy";
-    console.log("CARD DATA", data);
 
     const priceVM = CardPriceVM(data.price);
     function onImageError(e) {
