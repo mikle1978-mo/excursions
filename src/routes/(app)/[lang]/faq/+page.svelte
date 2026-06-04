@@ -1,21 +1,21 @@
 <script>
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import { faq_list } from "$lib/i18n/faq_list.js";
-    import { locale } from "$lib/stores/locale.js";
     export let data;
+    let lang = data.lang;
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
 </script>
 
 <svelte:head>
-    <title>{`${faq_list.meta_title[$locale]} | ${baseName}`}</title>
+    <title>{`${faq_list.meta_title[lang]} | ${baseName}`}</title>
 </svelte:head>
 
 <main class="faq-page">
     <TheMobileMenu />
     <h1 class="faq-title">
-        {@html faq_list.title[$locale]}
+        {@html faq_list.title[lang]}
     </h1>
 
     <div class="faq-list">
