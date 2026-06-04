@@ -13,7 +13,6 @@ export function buildItemListSchema(context) {
                 position: index + 1,
                 item: {
                     "@id": url,
-                    name: item.title?.[lang] ?? item.title,
                 },
             };
         }),
