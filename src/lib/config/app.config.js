@@ -4,6 +4,7 @@ import * as schemas from "$lib/schemas";
 import * as forms from "$lib/admin/forms";
 import { card } from "$lib/config/card/card.config";
 import { seo } from "$lib/config/seo/seo.config";
+import { seoSchemas } from "$lib/config/seo/seoSchemas.config";
 import { list } from "$lib/config/list/list.config";
 import { detail } from "$lib/config/detailPage/detail.config";
 import { blocksConfig } from "$lib/config/blocks/blocks.config.js";
@@ -61,7 +62,7 @@ export const collectionsConfig = Object.fromEntries(
             cardConfig: card[name], // карточка коллекции
             detailPage: detail[name],
         },
-    ])
+    ]),
 );
 
 // === Главный конфиг приложения
@@ -74,6 +75,7 @@ export const appConfig = {
         currency: currencyConfig,
     },
     seo, // глобальный SEO конфиг
+    seoSchemas: seoSchemas, // схемы для SEO
     cache, // глобальный кеш конфиг
     list, // списки для фронта
     listAdmin, // списки для админки

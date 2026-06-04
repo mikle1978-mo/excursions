@@ -1,8 +1,8 @@
 <script>
-    import { locale } from "$lib/stores/locale";
+    export let lang;
 </script>
 
-<a href="/{$locale}" class="logo" aria-label="go main">
+<a href="/{lang}" class="logo" aria-label="go main">
     <div class="target">
         <div class="ring ring1"></div>
         <div class="ring ring2"></div>

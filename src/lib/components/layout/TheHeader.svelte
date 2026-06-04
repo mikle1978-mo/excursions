@@ -6,11 +6,13 @@
 
     export let showSearch = false;
     export let showFilter = false;
+    export let lang;
+   
 </script>
 
 <header class="header">
     <div class="header_row">
-        <TheLogo />
+        <TheLogo {lang} />
 
         {#if showSearch}
             <Search />
@@ -21,7 +23,7 @@
                 <FilterButton />
             {/if}
 
-            <TheBurger />
+            <TheBurger {lang} />
         </div>
     </div>
 </header>

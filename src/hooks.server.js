@@ -26,6 +26,13 @@ export async function handle({ event, resolve }) {
             throw redirect(303, "/login");
         }
     }
+    if (event.url.pathname.startsWith("/api")) {
+        return resolve(event);
+    }
+
+    if (event.url.pathname.startsWith("/.well-known")) {
+        return new Response(null, { status: 204 });
+    }
 
     // Прогрев MongoDB при первом запросе
     if (!warmedUp) {
@@ -35,17 +42,41 @@ export async function handle({ event, resolve }) {
     }
 
     // 🌐 Определяем язык страницы (универсально)
-    const pathname = event.url.pathname;
-    const foundLang = SUPPORTED_LANGUAGES.find(
-        (lang) => pathname === `/${lang}` || pathname.startsWith(`/${lang}/`)
-    );
-    const lang = foundLang || "en"; // "en" — язык по умолчанию
+    const cookieLang = event.cookies.get("lang");
 
-    // САМЫЙ ВАЖНЫЙ МОМЕНТ
+    const headerLangRaw = event.request.headers.get("accept-language");
+
+    const headerLang = headerLangRaw?.split(",")[0]?.split("-")[0];
+
+    const urlLang = SUPPORTED_LANGUAGES.find(
+        (lang) =>
+            event.url.pathname === `/${lang}` ||
+            event.url.pathname.startsWith(`/${lang}/`),
+    );
+
+    let lang;
+
+    // URL главный
+    if (urlLang) {
+        lang = urlLang;
+    }
+
+    // иначе fallback
+    else {
+        lang =
+            cookieLang ||
+            (SUPPORTED_LANGUAGES.includes(headerLang) ? headerLang : "en");
+    }
+
     event.locals.lang = lang;
 
     // 💰 Получаем валюты и кладём в locals
-    event.locals.exchangeRates = await getExchangeRates();
+
+    // event.locals.exchangeRates = await getExchangeRates();
+
+    const res = await getExchangeRates();
+    console.log(res.source);
+    event.locals.exchangeRates = res.data;
 
     return resolve(event, {
         transformPageChunk: ({ html }) => html.replace("%lang%", lang),

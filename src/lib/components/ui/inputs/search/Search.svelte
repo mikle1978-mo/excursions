@@ -1,7 +1,8 @@
 <script>
     import { searchQuery } from "$lib/stores/searchQuery.js";
-    import { locale } from "$lib/stores/locale";
     import { onMount, tick } from "svelte";
+
+    export let lang;
 
     const labels = {
         placeholder: { en: "Search...", ru: "Поиск..." },
@@ -37,7 +38,6 @@
 
     onMount(() => {
         isMounted = true;
-        locale.subscribe((v) => ($locale = v));
     });
 </script>
 
@@ -51,7 +51,7 @@
             <button
                 type="button"
                 class="search-button"
-                aria-label={labels.submit[$locale] || labels.submit.en}
+                aria-label={labels.submit[lang] || labels.submit.en}
                 on:click={toggleSearch}
             >
                 <svg
@@ -85,17 +85,15 @@
                 on:focus={() => (isFocused = true)}
                 on:blur={() => (isFocused = false)}
                 on:input={handleInput}
-                placeholder={labels.placeholder[$locale] ||
-                    labels.placeholder.en}
-                aria-label={labels.placeholder[$locale] ||
-                    labels.placeholder.en}
+                placeholder={labels.placeholder[lang] || labels.placeholder.en}
+                aria-label={labels.placeholder[lang] || labels.placeholder.en}
             />
 
             <button
                 type="button"
                 class="clear-btn {query ? 'visible' : ''}"
                 on:click={clearInput}
-                aria-label={labels.clear[$locale] || labels.clear.en}
+                aria-label={labels.clear[lang] || labels.clear.en}
             >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                     <path

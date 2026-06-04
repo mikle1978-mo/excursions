@@ -13,7 +13,7 @@ function flattenFields(steps) {
 
 function isLocalizedField(name, steps) {
     return steps.some((step) =>
-        step.fields.some((field) => field.name === name && field.localized)
+        step.fields.some((field) => field.name === name && field.localized),
     );
 }
 
@@ -58,7 +58,7 @@ export async function createItemInDB(data, collectionName, steps) {
 
     // Локализованные поля
     const localizedFields = allFields.filter((f) =>
-        isLocalizedField(f.name, steps)
+        isLocalizedField(f.name, steps),
     );
 
     const translations = SUPPORTED_LANGUAGES.map((lang) => {
@@ -114,7 +114,10 @@ export async function getFullItemFromDB(slug, collectionName, lang = "en") {
 
     // Основной документ
     const item = await db.collection(collectionName).findOne({ slug });
-    if (!item) return null;
+    if (!item) {
+        console.log("❌ NOT FOUND:", { slug, collectionName, lang });
+        return null;
+    }
 
     // Один перевод для нужного языка
     const translation = await db
@@ -139,7 +142,7 @@ export async function getFullItemFromDB(slug, collectionName, lang = "en") {
             ? Math.round(
                   (reviews.reduce((sum, r) => sum + (r.rating || 0), 0) /
                       reviewsCount) *
-                      10
+                      10,
               ) / 10
             : null;
 
@@ -186,7 +189,7 @@ export async function getFullItemCached(slug, collectionName, lang = null) {
             } catch (err) {
                 console.warn(
                     `[Cache] Невалидный JSON в кеше: ${cacheKey}, сбросим`,
-                    err
+                    err,
                 );
                 await redis.del(cacheKey); // удаляем мусор
             }
@@ -236,7 +239,7 @@ export async function updateItemInDB(slug, data, collectionName, steps) {
     const allFields = flattenFields(steps);
 
     const localizedFields = allFields.filter((f) =>
-        isLocalizedField(f.name, steps)
+        isLocalizedField(f.name, steps),
     );
 
     // Основной документ (без локализованных полей)
@@ -256,7 +259,7 @@ export async function updateItemInDB(slug, data, collectionName, steps) {
                 ...mainDoc,
                 updatedAt: new Date(),
             },
-        }
+        },
     );
 
     // Обновляем переводы

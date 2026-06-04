@@ -1,7 +1,8 @@
 <script>
     import { onMount, onDestroy } from "svelte";
-    import { locale } from "$lib/stores/locale.js";
     import { development_page } from "$lib/i18n/development_page";
+    export let data;
+    const lang = data.lang;
 
     // По желанию — автопереход через 10 секунд
     let countdown = 10;
@@ -14,7 +15,7 @@
             } else {
                 clearInterval(interval);
                 // Переход на главную
-                window.location.href = `/${$locale}`;
+                window.location.href = `/${lang}`;
             }
         }, 1000);
     });
@@ -26,27 +27,27 @@
 </script>
 
 <svelte:head>
-    <title>{development_page.title[$locale]}</title>
+    <title>{development_page.title[lang]}</title>
     <meta name="description" content="Страница в разработке" />
     <meta name="robots" content="noindex, nofollow" />
 </svelte:head>
 
 <main>
     <div class="thankyou-box">
-        <h1>{development_page.title[$locale]}</h1>
+        <h1>{development_page.title[lang]}</h1>
         <p>
-            {development_page.text[$locale]}
+            {development_page.text[lang]}
         </p>
-        <a class="button" href="/{$locale}">
-            {development_page.back_button[$locale]}</a
+        <a class="button" href="/{lang}">
+            {development_page.back_button[lang]}</a
         >
         <p
             style="margin-top: var(--space-vertical-sm); font-size: var(--text-sm); color: var(--color-gray-700);"
         >
-            {development_page.redirect_note[$locale]} <br />{countdown}
+            {development_page.redirect_note[lang]} <br />{countdown}
             {countdown === 1
-                ? development_page.seconds[$locale]
-                : development_page.seconds[$locale]}
+                ? development_page.seconds[lang]
+                : development_page.seconds[lang]}
         </p>
     </div>
 </main>

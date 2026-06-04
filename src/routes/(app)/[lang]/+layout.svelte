@@ -5,13 +5,17 @@
     import TheFooter from "$lib/components/layout/TheFooter.svelte";
     import TheMobileMenu from "$lib/components/layout/TheMobileMenu.svelte";
     import WhatsApp from "$lib/components/ui/buttons/WhatsApp.svelte";
+
+    export let data;
+
+    const { lang } = data;
 </script>
 
 <div class="container">
     <div class="page">
-        <!-- <TheHeader /> -->
+        <TheHeader {lang} />
         <slot />
         <WhatsApp />
-        <TheMobileMenu />
+        <TheMobileMenu {lang} />
     </div>
 </div>

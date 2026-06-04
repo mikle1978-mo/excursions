@@ -2,9 +2,11 @@
     import { onMount } from "svelte";
     import TGMessage from "$lib/helpers/tgMessage";
     import { goto } from "$app/navigation";
-    import { locale } from "$lib/stores/locale";
+
     import { get } from "svelte/store";
     import { form_list } from "$lib/i18n/form_list";
+
+    export let lang;
 
     export let slug;
     export let price = null;
@@ -37,30 +39,30 @@
 
         TGMessage(data);
 
-        alert(form_list.alert[$locale]);
-        const currentLocale = get(locale);
+        alert(form_list.alert[lang]);
+        const currentLocale = lang;
         const path = `/${currentLocale}/thanks`;
         goto(path);
     };
 </script>
 
 <form class="form-request" on:submit={handleSubmit} id="shortForm">
-    <h2 class="form-title">{form_list.title[$locale]}</h2>
+    <h2 class="form-title">{form_list.title[lang]}</h2>
 
     <label class="form-label">
-        <span>{form_list.form_name[$locale]}</span>
+        <span>{form_list.form_name[lang]}</span>
         <input
             id="name"
             type="text"
             name="name"
             required
             class="form-input"
-            placeholder={form_list.name_placeholder[$locale]}
+            placeholder={form_list.name_placeholder[lang]}
         />
     </label>
 
     <label class="form-label">
-        <span>{form_list.form_phone[$locale]}</span>
+        <span>{form_list.form_phone[lang]}</span>
         <input
             id="phone"
             type="tel"
@@ -75,12 +77,12 @@
 
     <div class="form-details {showDetails ? 'form-details--visible' : ''}">
         <label class="form-label">
-            <span>{form_list.form_date[$locale]}</span>
+            <span>{form_list.form_date[lang]}</span>
             <input id="date" type="date" name="date" class="form-input" />
         </label>
 
         <label class="form-label">
-            <span>{form_list.form_persons[$locale]}</span>
+            <span>{form_list.form_persons[lang]}</span>
             <input
                 id="persons"
                 type="number"
@@ -92,12 +94,12 @@
         </label>
 
         <label class="form-label">
-            <span>{form_list.form_comment[$locale]}</span>
+            <span>{form_list.form_comment[lang]}</span>
             <textarea
                 id="comment"
                 name="comment"
                 class="form-input"
-                placeholder={form_list.comment_placeholder[$locale]}
+                placeholder={form_list.comment_placeholder[lang]}
             ></textarea>
         </label>
     </div>
@@ -106,7 +108,7 @@
     <input type="hidden" name="url" value={currentUrl} id="url" />
 
     <button type="submit" class="form-button">
-        {form_list.submit[$locale]}
+        {form_list.submit[lang]}
     </button>
 
     {#if !showDetails}
@@ -115,7 +117,7 @@
             class="form-button form-button-secondary"
             on:click={() => (showDetails = true)}
         >
-            {form_list.add_details[$locale]}
+            {form_list.add_details[lang]}
         </button>
     {/if}
 </form>

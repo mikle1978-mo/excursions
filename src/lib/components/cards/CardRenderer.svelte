@@ -13,10 +13,6 @@
     const system = {
         type,
         lang,
-        // future:
-        // currency
-        // locale
-        // now
     };
 
     const data = CardAdapter({

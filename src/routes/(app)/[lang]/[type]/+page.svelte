@@ -1,13 +1,14 @@
 <!-- src\routes\(app)\[lang]\[type]\+page.svelte -->
 
 <script>
-    import SchemasRenderer from "$lib/components/seo/SchemasRenderer.svelte";
+    import SchemasListRenderer from "$lib/components/seo/SchemasListRenderer.svelte";
     import CardList from "$lib/components/pages/CardList.svelte";
     import FiltersBlock from "$lib/components/blocks/page/FiltersBlock.svelte";
     import SeoRenderer from "$lib/components/seo/SeoRenderer.svelte";
 
     export let data;
     // безопасный деструктуринг
+
     const { type, lang, items } = data ?? {};
 </script>
 
@@ -15,7 +16,7 @@
 <SeoRenderer {type} {lang} />
 
 <!-- JSON-LD схемы для списка -->
-<SchemasRenderer {type} {lang} {items} />
+<SchemasListRenderer {type} {lang} {items} />
 
 <!-- Блок фильтров, если они есть -->
 <FiltersBlock {type} {lang} {items} />

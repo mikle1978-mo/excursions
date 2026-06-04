@@ -124,7 +124,7 @@ export const list = {
         },
         listText: blogs_LIST_TEXT,
         schemas: [],
-
+        filters: {},
         sortOptions: { publishDate: -1 },
     },
     faqs: {

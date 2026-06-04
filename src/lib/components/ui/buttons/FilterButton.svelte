@@ -1,7 +1,6 @@
 <script>
-    import { locale } from "$lib/stores/locale.js";
     import { footer_list } from "$lib/i18n/footer_list";
-    import { page } from "$app/stores";
+
     import { sidebarOpen } from "$lib/stores/sidebar";
     import IconFilter from "$lib/icons/IconFilter.svelte";
 </script>

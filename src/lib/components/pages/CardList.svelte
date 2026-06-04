@@ -13,7 +13,6 @@
     const show = !!appConfig.list[type].filters;
 </script>
 
-<TheHeader showFilter={show} showSearch={show} />
 <main class="main_page">
     <h1 class="title">
         {config?.listText?.[lang]?.h1}

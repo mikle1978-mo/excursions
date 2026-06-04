@@ -40,7 +40,7 @@
             {#if rating}
                 <Rating {rating} {reviewCount} locale={lang} />
             {/if}
-            <ShareIcon />
+            <ShareIcon {lang} />
         </div>
 
         {#if h1}

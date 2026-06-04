@@ -3,14 +3,10 @@
     import { appConfig } from "$lib/config/app.config.js";
     import MainCard from "$lib/components/cards/MainCard.svelte";
     import SeoRenderer from "$lib/components/seo/SeoRenderer.svelte";
-    import TheHeader from "$lib/components/layout/TheHeader.svelte";
-
-    import { page } from "$app/stores";
     import { fly, slide } from "svelte/transition";
+
     export let data;
-
-
-    const { lang } = data ?? {};
+    const lang = data.lang;
 
     const homeConfig = appConfig.pages.home;
     const type = "home";
@@ -27,7 +23,7 @@
         crossorigin="anonymous"
     ></script>
 </svelte:head>
-<TheHeader />
+
 <div class="content">
     <main>
         <div class="main_page">

@@ -1,11 +1,12 @@
 <script>
-    import { locale } from "$lib/stores/locale.js";
     import { onMount } from "svelte";
     import { footer_list } from "$lib/i18n/footer_list";
-    import { page } from "$app/stores";
+    import { page } from "$app/state";
     import { sidebarOpen } from "$lib/stores/sidebar";
     import { mobileMenuOpen } from "$lib/stores/mobileMenu";
     import { NON_EN_LANGUAGES } from "$lib/constants/supportedLanguages";
+
+    export let lang;
 
     let isMounted = false;
     const listPages = ["excursions", "cars", "yachts", "transfers"];
@@ -43,10 +44,10 @@
 {#if isMounted}
     <footer>
         <a
-            class="menu-item {$page.url.pathname === `/${$locale}`
+            class="menu-item {$page.url.pathname === `/${lang}`
                 ? 'active'
                 : ''}"
-            href="/{$locale}"
+            href={`/${lang}`}
             rel={footer_list[0].rel}
             target={footer_list[0].target}
         >
@@ -69,23 +70,23 @@
                     />
                 </svg>
             </div>
-            <span>{footer_list[0].title[$locale]}</span>
+            <span>{footer_list[0].title[lang]}</span>
         </a>
         {#if showButton}
             <button class="menu-item" on:click={() => sidebarOpen.set(true)}>
                 <div class="icon-wrapper">
                     <svelte:component this={footer_list[1].icon} />
                 </div>
-                <span>{footer_list[1].title[$locale]}</span>
+                <span>{footer_list[1].title[lang]}</span>
             </button>
         {/if}
 
         <a
             class="menu-item {$page.url.pathname ===
-            `/${$locale}/${footer_list[2].link}`
+            `/${lang}/${footer_list[2].link}`
                 ? 'active'
                 : ''}"
-            href="/{$locale}/{footer_list[2].link}"
+            href="/{lang}/{footer_list[2].link}"
             rel={footer_list[2].rel}
             target={footer_list[2].target}
         >
@@ -122,7 +123,7 @@
                     />
                 </svg>
             </div>
-            <span>{footer_list[2].title[$locale]}</span>
+            <span>{footer_list[2].title[lang]}</span>
         </a>
 
         <button class="menu-item" on:click={() => mobileMenuOpen.set(true)}>
@@ -165,7 +166,7 @@
                     />
                 </svg>
             </div>
-            <span>{footer_list[3].title[$locale]}</span>
+            <span>{footer_list[3].title[lang]}</span>
         </button>
     </footer>
 {:else}

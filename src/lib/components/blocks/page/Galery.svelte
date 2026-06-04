@@ -1,13 +1,14 @@
 <script>
     import { onMount } from "svelte";
     import Modal from "$lib/components/ui/Modal.svelte";
-    import { locale } from "$lib/stores/locale";
     import { gallery_texts } from "$lib/i18n/gallery";
     import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
     const defaultImage = `/images/excursions/excursions_default.webp`;
 
     export let images = [];
     export let title = "";
+    export let data;
+    const lang = data.lang;
 
     let selectedIndex = 0;
     let isModalOpen = false;
@@ -26,39 +27,39 @@
 
     // Функция для генерации alt-текста
     const getAltText = (index) => {
-        return gallery_texts.photo_alt[$locale]
+        return gallery_texts.photo_alt[lang]
             .replace("{title}", title)
             .replace("{current}", index + 1)
             .replace("{total}", images.length);
     };
 
     const getCaption = (index) => {
-        return gallery_texts.photo_caption[$locale]
+        return gallery_texts.photo_caption[lang]
             .replace("{title}", title)
             .replace("{current}", index + 1)
             .replace("{total}", images.length);
     };
     // Функция для aria-label кнопок выбора изображения
     const getSelectImageLabel = (index) => {
-        return gallery_texts.select_image[$locale].replace("{num}", index + 1);
+        return gallery_texts.select_image[lang].replace("{num}", index + 1);
     };
 
     // Для главного изображения вычисляем src и srcset
     $: mainSrcset = images[selectedIndex]
         ? getCloudinarySrcset(
               images[selectedIndex].url,
-              [200, 400, 600, 800, 980]
+              [200, 400, 600, 800, 980],
           )
         : { src: "", srcset: "" };
 
     // Массив с src и srcset для всех миниатюр
     $: thumbs = images.map((img) =>
-        getCloudinarySrcset(img.url, [100, 150, 200])
+        getCloudinarySrcset(img.url, [100, 150, 200]),
     );
 
     // Вычисляем src и srcset для модальных изображений (например, более большие размеры)
     $: modalImages = images.map((img) =>
-        getCloudinarySrcset(img.url, [600, 900, 1200, 1600])
+        getCloudinarySrcset(img.url, [600, 900, 1200, 1600]),
     );
 
     function onImageError(event) {
@@ -76,7 +77,7 @@
         type="button"
         class="main-image"
         onclick={openModal}
-        aria-label={gallery_texts.open_gallery[$locale]}
+        aria-label={gallery_texts.open_gallery[lang]}
     >
         <img
             src={mainSrcset.src}
@@ -84,7 +85,7 @@
             sizes="(max-width: 768px) 100vw, 50vw"
             alt={title
                 ? getAltText(selectedIndex)
-                : gallery_texts.default_alt[$locale]}
+                : gallery_texts.default_alt[lang]}
             decoding="async"
             width="600"
             height="337"

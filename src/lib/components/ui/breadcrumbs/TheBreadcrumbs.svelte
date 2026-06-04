@@ -1,3 +1,5 @@
+<!-- src\lib\components\ui\breadcrumbs\TheBreadcrumbs.svelte -->
+
 <script>
     export let items = [];
 </script>

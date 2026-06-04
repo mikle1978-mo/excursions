@@ -8,7 +8,7 @@ export async function load({ params }) {
     const dataCached = await getFullItemCached(slug, type, lang);
 
     if (!dataCached) {
-        throw error(404, `${type} 444 not found"`);
+        throw error(404, `${type} 404 not found`);
     }
 
     let data = { ...dataCached, type, lang };

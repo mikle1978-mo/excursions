@@ -1,10 +1,9 @@
 <script>
     import { onMount, onDestroy } from "svelte";
-    import { locale } from "$lib/stores/locale.js";
     import { thanks_page } from "$lib/i18n/thanks_page";
-    import { page } from "$app/stores";
 
-    let lang = $page.params.lang;
+    export let data;
+    const lang = data.lang;
 
     const baseUrl = import.meta.env.VITE_BASE_URL;
     const baseName = import.meta.env.VITE_BASE_NAME;
@@ -20,7 +19,7 @@
             } else {
                 clearInterval(interval);
                 // Переход на главную
-                window.location.href = `/${$locale}`;
+                window.location.href = `/${$lang}`;
             }
         }, 1000);
     });
@@ -46,23 +45,21 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.json" />
 </svelte:head>
-<p>{" "}</p>
+
 <main>
     <div class="thankyou-box">
-        <h1>{thanks_page.title[$locale]}</h1>
+        <h1>{thanks_page.title[lang]}</h1>
         <p>
-            {thanks_page.text[$locale]}
+            {thanks_page.text[lang]}
         </p>
-        <a class="button" href="/{$locale}">
-            {thanks_page.back_button[$locale]}</a
-        >
+        <a class="button" href="/{lang}"> {thanks_page.back_button[lang]}</a>
         <p
             style="margin-top: var(--space-vertical-sm); font-size: var(--text-sm); color: var(--color-gray-700);"
         >
-            {thanks_page.redirect_note[$locale]} <br />{countdown}
+            {thanks_page.redirect_note[lang]} <br />{countdown}
             {countdown === 1
-                ? thanks_page.seconds[$locale]
-                : thanks_page.seconds[$locale]}
+                ? thanks_page.seconds[lang]
+                : thanks_page.seconds[lang]}
         </p>
     </div>
 </main>

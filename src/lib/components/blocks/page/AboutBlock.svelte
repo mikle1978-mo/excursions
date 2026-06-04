@@ -1,5 +1,7 @@
 <script>
-    import { locale } from "$lib/stores/locale";
+    export let system;
+
+    const lang = system.lang;
 
     const content = {
         ru: {
@@ -40,7 +42,7 @@
         },
     };
 
-    const t = content[$locale] || content["en"];
+    const t = content[lang] || content["en"];
 </script>
 
 <section class="about-service">
@@ -52,7 +54,7 @@
     <div class="license">
         <img alt="license" src="/images/other/license.webp" />
     </div>
-    <a href="/{$locale}/about" class="read-more">{t.link}</a>
+    <a href={`/${lang}/about`} class="read-more">{t.link}</a>
 </section>
 
 <style>

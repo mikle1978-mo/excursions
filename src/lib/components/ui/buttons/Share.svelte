@@ -1,7 +1,9 @@
 <script>
-    import { locale } from "$lib/stores/locale";
     import { get } from "svelte/store";
     import MyButton from "./MyButton.svelte";
+
+    export let lang;
+
     const translate = {
         ru: "Поделиться",
         en: "Share",
@@ -22,7 +24,7 @@
     };
 
     const handleShare = async () => {
-        const currentLocale = get(locale);
+        const currentLocale = lang;
         const url = window.location.href;
         const title = document.title;
 
@@ -50,7 +52,7 @@
     id="share-button"
     onclick={handleShare}
     aria-label="share"
-    title={alerts.share[$locale] || alerts.share.en}
+    title={alerts.share[lang] || alerts.share.en}
     variant="outline"
 >
     <svg
@@ -83,7 +85,7 @@
             stroke-linejoin="round"
         />
     </svg>&nbsp
-    <span>{translate[$locale]}</span></MyButton
+    <span>{translate[lang]}</span></MyButton
 >
 
 <style>

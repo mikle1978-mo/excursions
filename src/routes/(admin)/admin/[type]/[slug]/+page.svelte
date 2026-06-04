@@ -2,7 +2,7 @@
 
 <script>
     import UniversalForm from "$lib/admin/components/UniversalForm.svelte";
-    import { page } from "$app/stores";
+    import { page } from "$app/state";
 
     $: type = $page.params.type;
     $: slug = $page.params.slug;

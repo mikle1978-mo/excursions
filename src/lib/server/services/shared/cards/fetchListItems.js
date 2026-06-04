@@ -103,7 +103,16 @@ import { appConfig } from "$lib/config/app.config.js";
 export async function fetchListItems({ db, type, lang = "en" }) {
     const collectionCfg = appConfig.collections[type];
 
-    if (!collectionCfg) throw new Error(`Unknown collection type: ${type}`);
+    // if (!collectionCfg) throw new Error(`Unknown collection type: ${type}`);
+    // if (!collectionCfg) {
+    //     return [];
+    // }
+    // if (!collectionCfg) {
+    //     return { error: `Unknown collection type: ${type}`, items: [] };
+    // }
+    if (!collectionCfg) {
+        return null;
+    }
 
     const listCfg = appConfig.list[type];
 

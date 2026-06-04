@@ -1,9 +1,6 @@
 import { GET as getSlugs } from "../api/sitemap/+server.js";
 import { ObjectId } from "mongodb"; // для извлечения времени из _id
-import {
-    NON_EN_LANGUAGES,
-    SUPPORTED_LANGUAGES,
-} from "$lib/constants/supportedLanguages.js";
+import { SUPPORTED_LANGUAGES } from "$lib/constants/supportedLanguages.js";
 
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5173";
 
@@ -53,22 +50,12 @@ export async function GET() {
     <lastmod>${GATAWAY_LASTMOD}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-  </url>
-  ${NON_EN_LANGUAGES.map(
-      (lang) => `
-  <url>
-    <loc>${makePath(lang)}</loc>
-    <lastmod>${GATAWAY_LASTMOD}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>`,
-  ).join("")}
-`;
+  </url>`;
 
     const localeHomeEntries = SUPPORTED_LANGUAGES.map(
         (lang) => `
 <url>
-    <loc>${VITE_BASE_URL}/${lang}/</loc>
+    <loc>${VITE_BASE_URL}/${lang}</loc>
     <lastmod>${GATAWAY_LASTMOD}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>

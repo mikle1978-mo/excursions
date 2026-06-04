@@ -3,82 +3,81 @@ import { appConfig } from "$lib/config/app.config.js";
 
 const currencyConfig = appConfig.services.currency;
 
+let memoryCache = null;
+let memoryCacheTime = 0;
+
+const MEMORY_TTL = 60 * 1000; // 1 минута
+
 export async function getExchangeRates() {
-    console.log("=== getExchangeRates START ===");
+    console.log("💱 Получение курсов валют...");
+    const now = Date.now();
+
+    // ❌ сервис выключен
+    if (!currencyConfig.enabled) {
+        return {
+            data: currencyConfig.fallbackRates,
+            source: "fallback-disabled",
+        };
+    }
+
+    // ⚡ 1. MEMORY CACHE (самый быстрый)
+    if (memoryCache && now - memoryCacheTime < MEMORY_TTL) {
+        return { data: memoryCache, source: "memory" };
+    }
+
     const cacheKey = currencyConfig.cacheKey;
 
-    if (!currencyConfig.enabled) {
-        console.log("Currency service disabled, returning fallback rates");
-        return currencyConfig.fallbackRates;
-    }
-
-    // Проверяем кеш
+    // ⚡ 2. REDIS CACHE
     try {
         const cached = await redis.get(cacheKey);
-        console.log("Raw cached value from Redis:", cached);
 
         if (cached) {
-            const ttl = await redis.ttl(cacheKey);
-            console.log("Cached TTL left (sec):", ttl);
+            const parsed =
+                typeof cached === "string" ? JSON.parse(cached) : cached;
 
-            if (ttl > 0) {
-                try {
-                    const parsed =
-                        typeof cached === "string"
-                            ? JSON.parse(cached)
-                            : cached;
+            // обновляем memory cache
+            memoryCache = parsed;
+            memoryCacheTime = now;
 
-                    console.log("Using cached rates:", parsed);
-                    return parsed;
-                } catch (err) {
-                    console.warn(
-                        "Cached value is invalid JSON, ignoring cache:",
-                        err
-                    );
-                }
-            } else {
-                console.log("Cached value expired, fetching new rates");
-            }
-        } else {
-            console.log("No cached value found, will fetch from API");
+            return { data: parsed, source: "redis" };
         }
     } catch (err) {
-        console.warn("Redis get error, ignoring cache:", err);
+        console.warn("Redis error:", err);
     }
 
-    // Запрос к API
+    // 🌐 3. API FETCH
     try {
-        console.log("Fetching rates from API");
         const response = await fetch(currencyConfig.apiUrl);
 
         if (!response.ok) {
-            throw new Error("Exchange API returned status " + response.status);
+            throw new Error("API error " + response.status);
         }
 
         const data = await response.json();
-        console.log("Raw data from API:");
 
         const allRates = data.conversion_rates || currencyConfig.fallbackRates;
+
         const filteredRates = {};
         for (const cur of currencyConfig.target) {
             filteredRates[cur] =
                 allRates[cur] ?? currencyConfig.fallbackRates[cur];
         }
-        console.log("Filtered rates:", filteredRates);
 
-        // Сохраняем в Redis с TTL
-        try {
-            await redis.set(cacheKey, JSON.stringify(filteredRates), {
-                ex: currencyConfig.ttl,
-            });
-            console.log("Rates saved to Redis with TTL:", currencyConfig.ttl);
-        } catch (err) {
-            console.warn("Redis set error:", err);
-        }
+        // 💾 save to Redis
+        await redis.set(cacheKey, JSON.stringify(filteredRates), {
+            ex: currencyConfig.ttl,
+        });
 
-        return filteredRates;
+        // ⚡ save to memory
+        memoryCache = filteredRates;
+        memoryCacheTime = now;
+
+        return { data: filteredRates, source: "api" };
     } catch (err) {
-        console.warn("Error fetching rates, using fallback:", err);
-        return currencyConfig.fallbackRates;
+        console.warn("API error, fallback used:", err);
+        return {
+            data: currencyConfig.fallbackRates,
+            source: "fallback-api-error",
+        };
     }
 }

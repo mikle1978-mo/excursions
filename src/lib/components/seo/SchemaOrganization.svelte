@@ -1,5 +1,5 @@
 <script>
-    import { locale } from "$lib/stores/locale";
+    export let lang = "en";
     export let name = "Kemer.app";
     export let url = "https://kemer.app";
     export let logo = "https://kemer.app/icon-192.png";
@@ -16,7 +16,7 @@
         tr: "Kemer'de konforlu ve unutulmaz bir tatil için ihtiyacınız olan her şey: turlar, yat ve araç kiralama, transferler ve emlak. Kolay rezervasyon, yorumlar ve çok dilli destek.",
     };
 
-    const description = descriptions[locale] || descriptions.ru;
+    const description = descriptions[lang] || descriptions.ru;
 
     const organizationSchema = {
         "@context": "https://schema.org",

@@ -1,103 +1,167 @@
+<!-- src\routes\+error.svelte -->
+
 <script>
     import { page } from "$app/state";
-    import { onMount, onDestroy } from "svelte";
+    import { goto } from "$app/navigation";
+    import { onMount } from "svelte";
 
-    let { error, status } = $props();
-    console.log("==============error, status======================");
-    console.log(error, status);
-    console.log("==============error, status======================");
+    export let data;
 
-    const lang = $derived(page.params.lang ?? "en");
+    console.log("PAGE STATUS:", page.status);
+    console.log("PAGE ERROR:", page.error);
 
-    let countdown = $state(10);
-    let interval;
+    const lang = data?.lang ?? "ru";
 
-    onMount(() => {
-        interval = setInterval(() => {
-            if (countdown > 0) {
-                countdown -= 1;
-            } else {
-                clearInterval(interval);
-                window.location.href = `/${page.params.lang ?? "en"}`;
-            }
-        }, 1000);
-    });
+    let countdown = 10;
 
-    onDestroy(() => {
-        clearInterval(interval);
-    });
-
-    const error_404 = {
+    const content = {
         title: {
             ru: "404 Страница не найдена",
             en: "404 Page Not Found",
         },
+
         text: {
             ru: "К сожалению, такая страница отсутствует.",
             en: "Sorry, the page you are looking for does not exist.",
         },
-        back_button: {
+
+        button: {
             ru: "На главную",
             en: "Go Home",
         },
-        redirect_note: {
-            ru: "Вы будете перенаправлены на главную через",
-            en: "You will be redirected to the homepage in",
+
+        redirect: {
+            ru: "Перенаправление через",
+            en: "Redirecting in",
         },
+
         seconds: {
             ru: "секунд",
             en: "seconds",
         },
     };
+
+    onMount(() => {
+        const interval = setInterval(() => {
+            if (countdown > 0) {
+                countdown--;
+                return;
+            }
+
+            clearInterval(interval);
+            goto(`/${lang}`);
+        }, 1000);
+
+        return () => clearInterval(interval);
+    });
 </script>
 
 <svelte:head>
-    <title
-        >{error_404.title[lang] ?? error_404.title.en} | {import.meta.env
-            .VITE_BASE_NAME}</title
-    >
-    <meta
-        name="description"
-        content={error_404.text[lang] ?? error_404.text.en}
-    />
-    <meta name="robots" content="noindex, nofollow" />
+    <title>
+        {content.title[lang]} | {import.meta.env.VITE_BASE_NAME}
+    </title>
+
+    <meta name="description" content={content.text[lang]} />
+
+    <meta name="robots" content="noindex" />
 </svelte:head>
 
-<main>
+<main class="wrapper">
     <div class="error-box">
-        <h1>{error_404.title[lang] ?? error_404.title.en}</h1>
-        <p>{error_404.text[lang] ?? error_404.text.en}</p>
-        <a class="button" href="/{lang}"
-            >{error_404.back_button[lang] ?? error_404.back_button.en}</a
-        >
-        <p
-            style="margin-top: var(--space-vertical-sm); font-size: var(--text-sm); color: var(--color-gray-700);"
-        >
-            {error_404.redirect_note[lang] ?? error_404.redirect_note.en} <br />
+        <h1>{content.title[lang]}</h1>
+
+        <p>{content.text[lang]}</p>
+
+        <a class="button" href={`/${lang}`}>
+            {content.button[lang]}
+        </a>
+
+        <p class="redirect-text">
+            {content.redirect[lang]}
+
+            <br />
+
             {countdown}
-            {error_404.seconds[lang] ?? error_404.seconds.en}
+            {content.seconds[lang]}
         </p>
     </div>
+    <pre>
+{JSON.stringify(
+            {
+                message: page.error?.message,
+                stack: page.error?.stack,
+                status: page.status,
+            },
+            null,
+            2,
+        )}
+</pre>
 </main>
 
 <style>
+    .wrapper {
+        min-height: 100vh;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 24px;
+    }
+
     .error-box {
-        margin: auto;
-        background-color: var(--color-bg);
-        border-radius: var(--radius-lg);
-        padding: var(--space-vertical-lg) var(--space-horizontal-lg);
-        max-width: 500px;
         width: 100%;
+        max-width: 500px;
+
+        padding: 40px;
+
         text-align: center;
-        box-shadow: var(--shadow-lg);
-        opacity: 0;
-        animation: fadeIn 0.5s forwards;
+
+        border-radius: var(--radius-lg);
+
+        background: var(--color-bg);
+
         color: var(--color-text);
+
+        box-shadow: var(--shadow-lg);
+
+        opacity: 0;
+
+        animation: fadeIn 0.3s ease forwards;
+    }
+
+    h1 {
+        margin-bottom: 16px;
+    }
+
+    p {
+        margin-bottom: 16px;
+    }
+
+    .button {
+        display: inline-block;
+
+        margin-top: 8px;
+    }
+
+    .redirect-text {
+        margin-top: 20px;
+
+        font-size: var(--text-sm);
+
+        color: var(--color-gray-700);
     }
 
     @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
         to {
             opacity: 1;
+            transform: translateY(0);
         }
     }
 </style>

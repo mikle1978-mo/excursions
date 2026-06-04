@@ -1,7 +1,6 @@
 <script>
     import { appConfig } from "$lib/config/app.config";
     import { onMount, tick } from "svelte";
-    import { locale } from "$lib/stores/locale";
     import { reviews_list } from "$lib/i18n/reviews_list";
 
     export let data;
@@ -100,7 +99,7 @@
 </script>
 
 <section class="reviews-section">
-    <h2 class="section-title">{reviews_list.title[$locale]}</h2>
+    <h2 class="section-title">{reviews_list.title[lang]}</h2>
 
     {#if reviews.length > 0}
         <ul class="review-list">
@@ -111,25 +110,22 @@
                         <span class="review-rating">{review.rating}★</span>
                     </div>
                     <p class="review-date">
-                        {new Date(review.createdAt).toLocaleDateString(
-                            $locale,
-                            {
-                                day: "2-digit",
-                                month: "long",
-                                year: "numeric",
-                            }
-                        )}
+                        {new Date(review.createdAt).toLocaleDateString(lang, {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                        })}
                     </p>
                     <p class="review-comment">{review.comment}</p>
                 </li>
             {/each}
         </ul>
     {:else}
-        <p class="no-reviews">{reviews_list.no_reviews[$locale]}</p>
+        <p class="no-reviews">{reviews_list.no_reviews[lang]}</p>
     {/if}
 
     <button class="add-review-btn" on:click={toggleForm}>
-        {showForm ? reviews_list.cancel[$locale] : reviews_list.take[$locale]}
+        {showForm ? reviews_list.cancel[lang] : reviews_list.take[lang]}
     </button>
 
     {#if showForm}
@@ -139,12 +135,12 @@
             bind:this={formEl}
         >
             <label class="form-label">
-                {reviews_list.form_name[$locale]}
+                {reviews_list.form_name[lang]}
                 <input
                     id="name"
                     type="text"
                     bind:value={name}
-                    placeholder={reviews_list.name_placeholder[$locale]}
+                    placeholder={reviews_list.name_placeholder[lang]}
                     required
                     class="form-input"
                 />
@@ -152,7 +148,7 @@
 
             <div>
                 <label class="form-label" for="rating"
-                    >{reviews_list.rating[$locale]}</label
+                    >{reviews_list.rating[lang]}</label
                 >
                 <div
                     class="stars"
@@ -176,10 +172,10 @@
             </div>
 
             <label class="form-label">
-                {reviews_list.comment[$locale]}
+                {reviews_list.comment[lang]}
                 <textarea
                     bind:value={comment}
-                    placeholder={reviews_list.comment_placeholder[$locale]}
+                    placeholder={reviews_list.comment_placeholder[lang]}
                     rows="4"
                     required
                     class="form-textarea"
@@ -195,7 +191,7 @@
                 {#if isSubmitting}
                     <span class="loader"></span>
                 {/if}
-                {reviews_list.submit[$locale]}</button
+                {reviews_list.submit[lang]}</button
             >
         </form>
     {/if}

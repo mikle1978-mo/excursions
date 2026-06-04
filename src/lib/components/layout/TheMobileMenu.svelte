@@ -1,5 +1,6 @@
 <script>
-    import { locale } from "$lib/stores/locale.js";
+    // import { locale } from "$lib/stores/locale.js";
+
     import { mobileMenuOpen } from "$lib/stores/mobileMenu";
     import { nav_items } from "$lib/i18n/nav_list";
     import TheSocial from "$lib/components/layout/TheSocial.svelte";
@@ -7,6 +8,8 @@
     import { goto } from "$app/navigation";
     import CurrensySelector from "$lib/components/ui/buttons/CurrensySelector.svelte";
     import TheLocaleButton from "$lib/components/ui/buttons/TheLocaleButton.svelte";
+
+    export let lang;
 
     const closeMobileMenu = () => mobileMenuOpen.set(false);
     const handleKeydown = (e) =>
@@ -18,14 +21,14 @@
     // Функция для безопасного получения локализованного заголовка
     const getTitle = (item) => {
         if (!item || !item.title) return "";
-        return item.title[$locale] || item.title.en || "";
+        return item.title[lang] || item.title.en || "";
     };
 
     // Функция для проверки активной ссылки
     const isValidLink = (link) => link && link.trim() !== "";
 
     function navigate(link) {
-        goto(`/${$locale}/${link}`);
+        goto(`/${lang}/${link}`);
         closeMobileMenu();
     }
 </script>
@@ -44,10 +47,10 @@
 <aside class="sidebar" class:active={$mobileMenuOpen}>
     <div class="sidebar-content">
         <div>
-            <span class="sidebar-title">{labels.menu[$locale]}</span>
+            <span class="sidebar-title">{labels.menu[lang]}</span>
             <div class="buttons">
                 <CurrensySelector />
-                <TheLocaleButton />
+                <TheLocaleButton {lang} />
             </div>
         </div>
 
@@ -55,7 +58,7 @@
             {#each nav_items as item}
                 {#if isValidLink(item.link)}
                     <a
-                        href={`/${$locale}/${item.link}`}
+                        href={`/${lang}/${item.link}`}
                         class="nav-item"
                         on:click|stopPropagation={() => closeMobileMenu()}
                         aria-label={getTitle(item)}

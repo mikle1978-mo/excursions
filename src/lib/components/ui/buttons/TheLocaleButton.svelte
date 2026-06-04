@@ -1,46 +1,31 @@
 <script>
-    import { locale, setLocale } from "$lib/stores/locale.js";
-    import { get } from "svelte/store";
-    import { page } from "$app/stores";
     import { fly } from "svelte/transition";
+    import { mobileMenuOpen } from "$lib/stores/mobileMenu";
     import {
         SUPPORTED_LANGUAGES,
         LANG_META,
     } from "$lib/constants/supportedLanguages";
+    import { setLocaleInPath } from "$lib/i18n/locale";
+
+    export let lang;
 
     let isOpen = false;
 
-    const changeLanguage = (lang) => {
-        const currentLocale = get(locale);
-        if (lang === currentLocale) {
+    const changeLanguage = async (newLang) => {
+        if (newLang === lang) {
             isOpen = false;
             return;
         }
-
-        const currentPath = get(page).url.pathname;
-        let segments = currentPath.split("/").filter(Boolean);
-
-        // Не трогаем admin и api
-        if (segments[0] === "admin" || segments[0] === "api") {
-            setLocale(lang);
-            isOpen = false;
-            return;
-        }
-
-        // если первый сегмент — язык, заменяем
-        if (SUPPORTED_LANGUAGES.includes(segments[0])) {
-            segments[0] = lang;
-        } else {
-            segments.unshift(lang);
-        }
-
-        const newPath = "/" + segments.join("/");
-
-        setLocale(lang);
-        // ❗ НЕ goto — он делает SPA
-        window.location.assign(newPath);
 
         isOpen = false;
+
+        const newPath = setLocaleInPath(window.location.pathname, newLang);
+
+        document.cookie = `lang=${newLang}; path=/; max-age=31536000`;
+
+        mobileMenuOpen.set(false);
+
+        window.location.href = newPath;
     };
 
     const toggleDropdown = () => (isOpen = !isOpen);
@@ -52,17 +37,17 @@
         onclick={toggleDropdown}
         aria-expanded={isOpen}
     >
-        <span>{$locale.toUpperCase()}</span>
+        <span>{lang.toUpperCase()}</span>
     </button>
 
     {#if isOpen}
         <div class="locale-dropdown" transition:fly={{ y: 10, duration: 200 }}>
-            {#each SUPPORTED_LANGUAGES as lang}
+            {#each SUPPORTED_LANGUAGES as itemLang}
                 <button
-                    class="locale-option {$locale === lang ? 'selected' : ''}"
-                    onclick={() => changeLanguage(lang)}
+                    class="locale-option {lang === itemLang ? 'selected' : ''}"
+                    onclick={() => changeLanguage(itemLang)}
                 >
-                    <span>{LANG_META[lang].flag} </span>
+                    <span>{LANG_META[itemLang].flag} </span>
                 </button>
             {/each}
         </div>

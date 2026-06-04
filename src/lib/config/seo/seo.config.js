@@ -1,4 +1,4 @@
-// $lib/constants/pageDetailsConfig.js
+// src\lib\config\seo\seo.config.js
 
 import {
     excursions_page,

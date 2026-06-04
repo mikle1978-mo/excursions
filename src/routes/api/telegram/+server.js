@@ -1,7 +1,6 @@
 import { CHAT_ID, URI_API_TG } from "$env/static/private";
 
 export async function POST({ request }) {
-    console.log("Handler called", CHAT_ID, URI_API_TG);
     const data = await request.json();
 
     if (typeof data !== "object" || data === null) {
@@ -30,7 +29,6 @@ export async function POST({ request }) {
         });
 
         const json = await response.json();
-        console.log("Telegram response:", json);
 
         if (!response.ok) {
             return new Response(
@@ -38,7 +36,7 @@ export async function POST({ request }) {
                     error: `Telegram API error: ${response.status}`,
                     details: json,
                 }),
-                { status: 500 }
+                { status: 500 },
             );
         }
 
@@ -47,7 +45,7 @@ export async function POST({ request }) {
         console.error("Fetch error:", error);
         return new Response(
             JSON.stringify({ error: "Fetch error", details: error.message }),
-            { status: 500 }
+            { status: 500 },
         );
     }
 }

@@ -5,27 +5,21 @@
 
     export let type;
     export let lang;
-    export let item = null;
-    export let rating;
-    export let reviewCount;
-    const mode = "item";
-    const url = `${baseUrl}/${lang}/${type}/${item.slug}`;
+    export let items = null;
+    const mode = "list";
+    const url = `${baseUrl}/${lang}/${type}`;
 
     const page = {
         id: url,
-        webpage: `${baseUrl}/${lang}/${type}/${item.slug}#webpage`,
-        product: `${baseUrl}/${lang}/${type}/${item.slug}#product`,
-        event: `${baseUrl}/${lang}/${type}/${item.slug}#event`,
+        webpage: `${baseUrl}/${lang}/${type}#webpage`,
     };
     const seo = appConfig.seo[type][lang][mode];
     const context = {
         type,
-        mode,
         lang,
+        mode,
         baseUrl,
-        item,
-        rating,
-        reviewCount,
+        items,
         page,
         seo,
     };
