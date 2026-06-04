@@ -5,6 +5,8 @@ export async function load({ params }) {
     const item = await getAdminItem(params.type, params.slug);
 
     return {
+        type: params.type,
+        slug: params.slug,
         itemData: {
             type: params.type,
             item,

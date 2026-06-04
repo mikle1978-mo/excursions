@@ -1,8 +1,8 @@
 <script>
     import UniversalForm from "$lib/admin/components/UniversalForm.svelte";
-    import { page } from "$app/state";
+    export let data;
 
-    $: type = $page.params.type;
+    const { type } = data;
     const mode = "create";
 </script>
 

@@ -2,13 +2,18 @@
 
 <script>
     import UniversalForm from "$lib/admin/components/UniversalForm.svelte";
-    import { page } from "$app/state";
+    // import { page } from "$app/state";
 
-    $: type = $page.params.type;
-    $: slug = $page.params.slug;
+    // $: type = $page.params.type;
+    // $: slug = $page.params.slug;
     export let data;
 
-    const { item } = data.itemData;
+    const { itemData, type, slug } = data;
+    console.log("=============data=======================");
+    console.log(data);
+    console.log("====================================");
+
+    const { item } = itemData;
     let isLoading = true;
     let error = "";
 
