@@ -1,7 +1,7 @@
 export function buildEventSchema({ item, baseUrl, lang, type }) {
     const startDate = new Date();
     startDate.setDate(startDate.getDate() + 3);
-    startDate.setMinutes(0, 0, 0);
+    startDate.setHours(14, 0, 0, 0);
 
     const endDate = new Date(startDate);
     endDate.setHours(endDate.getHours() + 5);
@@ -12,7 +12,7 @@ export function buildEventSchema({ item, baseUrl, lang, type }) {
         "@context": "https://schema.org",
         "@type": "Event",
 
-        "@id": url,
+        "@id": url + "#event",
         name: item.title,
 
         startDate: startDate.toISOString(),
@@ -23,7 +23,6 @@ export function buildEventSchema({ item, baseUrl, lang, type }) {
         location: {
             "@type": "Place",
             name: item.location?.name || "Antalya",
-            address: item.location?.address || "Kemer, Antalya, Turkey",
         },
 
         image: item.images?.[0],

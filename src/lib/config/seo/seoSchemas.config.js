@@ -128,128 +128,52 @@ export const seoSchemas = {
             buildItemListSchema(context),
         ],
     },
-    // excursions: {
-    //     item: ({ item, baseUrl, lang }) => ({
-    //         "@context": "https://schema.org",
-    //         "@graph": [
-    //             {
-    //                 "@type": "Product",
-    //                 name: item.title?.[lang] ?? item.title,
-    //                 image: item.images?.[0]?.url,
-    //                 description: item.metaDescription,
-    //                 offers: {
-    //                     "@type": "Offer",
-    //                     price: item.price,
-    //                     priceCurrency: "USD",
-    //                     availability: item.active
-    //                         ? "https://schema.org/InStock"
-    //                         : "https://schema.org/OutOfStock",
-    //                 },
-    //             },
-    //             {
-    //                 "@type": "Event",
-    //                 name: item.title?.[lang] ?? item.title,
-    //                 startDate: item.startDate,
-    //                 endDate: item.endDate,
-    //                 eventAttendanceMode:
-    //                     "https://schema.org/OfflineEventAttendanceMode",
-    //                 eventStatus: "https://schema.org/EventScheduled",
-    //                 location: {
-    //                     "@type": "Place",
-    //                     name: "Kemer",
-    //                 },
-    //             },
-    //         ],
-    //     }),
-
-    //     list: ({ items, baseUrl, lang }) => ({
-    //         "@context": "https://schema.org",
-    //         "@type": "CollectionPage",
-    //         itemListElement: items.map((i, idx) => ({
-    //             "@type": "ListItem",
-    //             position: idx + 1,
-    //             url: `${baseUrl}/excursions/${i.slug}`,
-    //             name: i.title?.[lang] ?? i.title,
-    //         })),
-    //     }),
-    // },
 
     // =========================
     // CARS
     // =========================
     cars: {
-        item: ({ item, baseUrl, lang }) => ({
-            "@context": "https://schema.org",
-            "@type": "Product",
-            name: item.title?.[lang] ?? item.title,
-            image: item.images?.[0]?.url,
-            offers: {
-                "@type": "Offer",
-                price: item.price,
-                priceCurrency: "USD",
-            },
-        }),
-        list: ({ items, baseUrl, lang }) => ({
-            "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            name: "Cars",
-            itemListElement: items.map((i, idx) => ({
-                "@type": "ListItem",
-                position: idx + 1,
-                url: `${baseUrl}/cars/${i.slug}`,
-                name: i.title?.[lang] ?? i.title,
-            })),
-        }),
+        item: (context) => [
+            buildProductSchema(context),
+            buildBreadcrumbSchema(context),
+            buildItemWebPageSchema(context),
+        ],
+        list: (context) => [
+            buildBreadcrumbSchema(context),
+            buildListWebPageSchema(context),
+            buildItemListSchema(context),
+        ],
     },
 
     // =========================
     // YACHTS
     // =========================
     yachts: {
-        item: ({ item, baseUrl, lang }) => ({
-            "@context": "https://schema.org",
-            "@type": "Product",
-            name: item.title?.[lang] ?? item.title,
-            image: item.images?.[0]?.url,
-            offers: {
-                "@type": "Offer",
-                price: item.price,
-                priceCurrency: "USD",
-            },
-        }),
-        list: ({ items, baseUrl, lang }) => ({
-            "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            name: "Yachts",
-            itemListElement: items.map((i, idx) => ({
-                "@type": "ListItem",
-                position: idx + 1,
-                url: `${baseUrl}/yachts/${i.slug}`,
-                name: i.title?.[lang] ?? i.title,
-            })),
-        }),
+        item: (context) => [
+            buildProductSchema(context),
+            buildBreadcrumbSchema(context),
+            buildItemWebPageSchema(context),
+        ],
+        list: (context) => [
+            buildBreadcrumbSchema(context),
+            buildListWebPageSchema(context),
+            buildItemListSchema(context),
+        ],
     },
 
     // =========================
     // TRANSFERS
     // =========================
     transfers: {
-        item: ({ item, baseUrl, lang }) => ({
-            "@context": "https://schema.org",
-            "@type": "Service",
-            name: item.title?.[lang] ?? item.title,
-            description: item.metaDescription,
-        }),
-        list: ({ items, baseUrl, lang }) => ({
-            "@context": "https://schema.org",
-            "@type": "CollectionPage",
-            name: "Transfers",
-            itemListElement: items.map((i, idx) => ({
-                "@type": "ListItem",
-                position: idx + 1,
-                url: `${baseUrl}/transfers/${i.slug}`,
-                name: i.title?.[lang] ?? i.title,
-            })),
-        }),
+        item: (context) => [
+            buildProductSchema(context),
+            buildBreadcrumbSchema(context),
+            buildItemWebPageSchema(context),
+        ],
+        list: (context) => [
+            buildBreadcrumbSchema(context),
+            buildListWebPageSchema(context),
+            buildItemListSchema(context),
+        ],
     },
 };
