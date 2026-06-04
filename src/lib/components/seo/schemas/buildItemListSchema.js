@@ -22,3 +22,26 @@ export function buildItemListSchema(context) {
         }),
     };
 }
+
+function getEntityType(type) {
+    switch (type) {
+        case "excursions":
+            return "Event";
+
+        case "cars":
+        case "yachts":
+            return "Product";
+
+        case "transfers":
+            return "Service";
+
+        case "places":
+            return "Place";
+
+        case "blogs":
+            return "Article";
+
+        default:
+            return "Thing";
+    }
+}
