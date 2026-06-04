@@ -22,7 +22,8 @@ export function buildEventSchema({ item, baseUrl, lang, type }) {
 
         location: {
             "@type": "Place",
-            name: item.location?.name || "Antalya",
+            name: "Kemer, Antalya",
+            address: "Antalya, Turkey",
         },
 
         image: item.images?.[0],
