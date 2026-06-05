@@ -1,3 +1,4 @@
+// src\lib\features\priceBlock\priceBlock.adapter.js
 import {
     buildDiscountTimer,
     isDiscountActive,
@@ -17,6 +18,14 @@ export function PriceBlockAdapter({ item, system }) {
     const discountEnd = item.discountEnd;
 
     const active = isDiscountActive(discount, discountEnd);
+
+    console.log("DISCOUNT CHECK", {
+        discount,
+        discountType: typeof discount,
+        discountEnd,
+        parsed: new Date(discountEnd + "T23:59:59").getTime(),
+        now: Date.now(),
+    });
 
     return {
         basePrice: price,

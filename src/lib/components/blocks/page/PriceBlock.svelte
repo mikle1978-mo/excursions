@@ -6,6 +6,8 @@
     import { formatPrice } from "$lib/utils/priceFormatter";
 
     export let data;
+    console.log("=================33333===================");
+    console.log(data);
     export let style = {};
 
     const priceVM = createPriceVM(data);

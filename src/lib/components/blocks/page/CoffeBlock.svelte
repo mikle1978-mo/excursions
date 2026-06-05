@@ -18,4 +18,9 @@
         border-radius: var(--radius-md);
         border: 1px solid var(--color-gray-300);
     }
+    @media (max-width: 480px) {
+        .coffe-content {
+            margin: 0 var(--space-vertical-sm);
+        }
+    }
 </style>

@@ -110,7 +110,7 @@
     }
     @media (max-width: 480px) {
         .image-collage {
-            padding: 0 var(--space-vertical-sm);
+            margin: 0 var(--space-vertical-sm);
         }
     }
 </style>

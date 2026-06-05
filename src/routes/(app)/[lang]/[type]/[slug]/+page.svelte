@@ -8,6 +8,9 @@
     export let data;
     // const { item, type, lang } = data;
     const { item, relatedItems, type, lang } = data;
+    console.log("====================================");
+    console.log(data);
+    console.log("====================================");
 </script>
 
 <!-- SEO для страницы -->
