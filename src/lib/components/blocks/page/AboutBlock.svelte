@@ -116,4 +116,9 @@
             border-radius: var(--radius-sm);
         }
     }
+    @media (max-width: 480px) {
+        .about-service {
+            margin: 0 var(--space-vertical-sm);
+        }
+    }
 </style>

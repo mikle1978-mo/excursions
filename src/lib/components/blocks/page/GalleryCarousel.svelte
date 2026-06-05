@@ -16,12 +16,14 @@
     // let loading = true;
 </script>
 
-<div class="image-gallery">
-    {#each relatedItems as item (item.slug)}
-        <div class="carousel-item">
-            <CardRenderer {item} {type} {lang} />
-        </div>
-    {/each}
+<div class="carousel-window">
+    <div class="image-gallery">
+        {#each relatedItems as item (item.slug)}
+            <div class="carousel-item">
+                <CardRenderer {item} {type} {lang} />
+            </div>
+        {/each}
+    </div>
 </div>
 
 <!-- {#if loading}
@@ -31,6 +33,16 @@
 {/if} -->
 
 <style>
+    .carousel-window {
+        /* max-width: 1200px; */
+        margin: 0 auto;
+        width: 100%;
+        padding: var(--space-vertical-sm);
+        background: var(--color-bg);
+
+        border: 1px solid var(--color-gray-300);
+        border-radius: var(--radius-lg);
+    }
     .image-gallery {
         width: 100%;
         min-width: 0;
@@ -51,6 +63,16 @@
         border: 1px solid var(--color-gray-300);
         border-radius: var(--radius-md);
 
+        align-items: stretch;
+        min-height: 370px;
+        width: 100%;
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        display: flex;
+        gap: 16px;
+
+        scroll-snap-type: x mandatory;
         align-items: stretch;
         min-height: 370px;
     }
@@ -81,9 +103,15 @@
         background: var(--color-primary);
         border-radius: 4px;
     }
-    @media (max-width: 480px) {
+    /* @media (max-width: 480px) {
         .image-gallery {
+            padding: 0 var(--space-vertical-sm);
+        }
+    } */
+    @media (max-width: 480px) {
+        .carousel-window {
             margin: 0 var(--space-vertical-sm);
+            width: calc(100% - 2 * var(--space-vertical-sm));
         }
     }
 </style>
