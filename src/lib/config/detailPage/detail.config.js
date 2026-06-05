@@ -237,6 +237,13 @@ export const detail = {
                 fields: {},
             },
             { component: "RelatedBlok", fields: ["related"] },
+            {
+                component: "GalleryCarousel",
+                fields: { slug: "slug", lang: "lang" },
+                style: {
+                    variant: "normal",
+                },
+            },
         ],
     },
 

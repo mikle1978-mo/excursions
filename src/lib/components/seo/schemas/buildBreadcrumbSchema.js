@@ -29,7 +29,7 @@ export function buildBreadcrumbSchema(context) {
             href: `/${lang}/${type}/${item.slug}`,
         });
     }
-    console.log("Breadcrumbs:", breadcrumbs);
+
     return {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",

@@ -17,6 +17,7 @@ import HeroBlock from "$lib/components/blocks/page/HeroBlock.svelte";
 import AboutBlock from "$lib/components/blocks/page/AboutBlock.svelte";
 import ButtonBlock from "$lib/components/blocks/page/ButtonBlock.svelte";
 import CoffeBlock from "$lib/components/blocks/page/CoffeBlock.svelte";
+import GalleryCarousel from "$lib/components/blocks/page/GalleryCarousel.svelte";
 // ==================
 // TEXT CONTENT
 // ==================
@@ -56,6 +57,7 @@ export const detailComponents = {
     AboutBlock,
     ButtonBlock,
     CoffeBlock,
+    GalleryCarousel,
 
     // text
     TextBlock,

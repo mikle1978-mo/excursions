@@ -17,8 +17,9 @@ SYSTEM        → контекст
     export let type;
     export let lang;
     export let item;
+    export let relatedItems = [];
 
-    const system = { lang, type };
+    const system = { lang, type, relatedItems };
 
     const config = appConfig.collections[type]?.detailPage;
 

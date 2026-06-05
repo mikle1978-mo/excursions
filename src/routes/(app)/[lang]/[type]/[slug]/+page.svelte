@@ -6,7 +6,8 @@
     import ProductDetailRenderer from "$lib/components/pages/ProductDetailRenderer.svelte";
 
     export let data;
-    const { item, type, lang } = data;
+    // const { item, type, lang } = data;
+    const { item, relatedItems, type, lang } = data;
 </script>
 
 <!-- SEO для страницы -->
@@ -15,4 +16,4 @@
 <!-- JSON-LD схемы для страницы -->
 <SchemasRenderer {type} {lang} {item} />
 
-<ProductDetailRenderer {type} {item} {lang} />
+<ProductDetailRenderer {type} {item} {lang} {relatedItems} />

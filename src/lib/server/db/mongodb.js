@@ -74,7 +74,7 @@ export async function connectToDatabase(databaseName = "tours") {
         } catch (retryError) {
             console.error(
                 "Не удалось восстановить подключение к MongoDB:",
-                retryError
+                retryError,
             );
             throw new Error("Не удалось подключиться к базе данных");
         }

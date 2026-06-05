@@ -9,9 +9,6 @@
     export let data;
 
     const { itemData, type, slug } = data;
-    console.log("=============data=======================");
-    console.log(data);
-    console.log("====================================");
 
     const { item } = itemData;
     let isLoading = true;

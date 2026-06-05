@@ -205,7 +205,7 @@
         align-items: center;
         gap: var(--space-vertical-md);
         padding-bottom: var(--space-vertical-md);
-        width: 100%;
+        /* width: 100%; */
     }
 
     .section-title {
@@ -338,5 +338,10 @@
 
     .submit-btn:hover {
         background: var(--color-primary-hover);
+    }
+    @media (max-width: 480px) {
+        .reviews-section {
+            margin: 0 var(--space-vertical-sm);
+        }
     }
 </style>

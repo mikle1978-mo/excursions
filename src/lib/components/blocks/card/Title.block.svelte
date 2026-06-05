@@ -5,7 +5,9 @@
 </script>
 
 <h2 class="card__title">
-    <a href={context.href} class="card__title-link">{title}</a>
+    <a href={context.href} class="card__title-link" data-sveltekit-reload
+        >{title}</a
+    >
 </h2>
 
 <style>

@@ -4,7 +4,7 @@
     const { section, context, overlays } = data;
 </script>
 
-<a href={context.href} class="card__image-wrapper">
+<a href={context.href} data-sveltekit-reload>
     <img
         src={section.image.src}
         srcset={section.image.srcset}
