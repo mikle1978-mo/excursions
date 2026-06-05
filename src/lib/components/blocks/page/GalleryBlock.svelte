@@ -108,9 +108,9 @@
         font-size: var(--text-sm);
         color: var(--color-text);
     }
-    @media (max-width: 480px) {
+    /* @media (max-width: 480px) {
         .image-collage {
             margin: 0 var(--space-vertical-sm);
         }
-    }
+    } */
 </style>

@@ -55,7 +55,7 @@
         display: flex;
         gap: 16px;
 
-        padding: 16px;
+        /* padding: 16px; */
 
         scroll-snap-type: x mandatory;
 
