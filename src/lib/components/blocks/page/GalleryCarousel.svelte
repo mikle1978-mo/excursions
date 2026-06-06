@@ -64,17 +64,8 @@
         border-radius: var(--radius-md);
 
         align-items: stretch;
-        min-height: 370px;
-        width: 100%;
-        overflow-x: auto;
-        overflow-y: hidden;
 
-        display: flex;
-        gap: 16px;
-
-        scroll-snap-type: x mandatory;
-        align-items: stretch;
-        min-height: 370px;
+        /* min-height: 370px; */
     }
 
     /* ВАЖНО: теперь управляем через wrapper */
