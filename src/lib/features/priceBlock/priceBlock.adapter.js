@@ -11,6 +11,7 @@ import getOldPrice from "$lib/utils/getOldPrice";
 
 // priceBlock.adapter.js
 export function PriceBlockAdapter({ item, system }) {
+    console.log("ADAPTER", item.discountEnd, typeof item.discountEnd);
     const { lang } = system;
 
     const price = item.price;
@@ -19,13 +20,13 @@ export function PriceBlockAdapter({ item, system }) {
 
     const active = isDiscountActive(discount, discountEnd);
 
-    // console.log("DISCOUNT CHECK", {
-    //     discount,
-    //     discountType: typeof discount,
-    //     discountEnd,
-    //     parsed: new Date(discountEnd + "T23:59:59").getTime(),
-    //     now: Date.now(),
-    // });
+    console.log("DISCOUNT CHECK", {
+        discount,
+        discountType: typeof discount,
+        discountEnd,
+        parsed: new Date(discountEnd).getTime(),
+        now: Date.now(),
+    });
 
     return {
         basePrice: price,

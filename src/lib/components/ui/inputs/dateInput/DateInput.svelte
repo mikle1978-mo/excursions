@@ -7,6 +7,12 @@ src\lib\components\UI\inputs\dateInput\DateInput.svelte -->
     export let label = "Дата";
     export let field = "";
     export let errors = {};
+    console.log("DateInput init", { value, label, field, errors });
+
+    function toInputDate(val) {
+        if (!val) return "";
+        return new Date(val).toISOString().split("T")[0];
+    }
 
     // Если не передали value → пустая строка (без дефолтной даты)
     if (value === undefined || value === null) {
@@ -17,7 +23,11 @@ src\lib\components\UI\inputs\dateInput\DateInput.svelte -->
 <div class="label">
     <slot>{label}</slot>
     <div class="date-input">
-        <input type="date" bind:value />
+        <input
+            type="date"
+            value={toInputDate(value)}
+            on:input={(e) => (value = e.target.value)}
+        />
     </div>
 </div>
 <ErrorMessage {field} {errors} />

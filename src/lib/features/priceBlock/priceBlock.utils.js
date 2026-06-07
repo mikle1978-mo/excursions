@@ -1,7 +1,7 @@
 // src/lib/features/priceBlock/priceBlock.utils.js
 
 export function buildDiscountTimer(discountEnd) {
-    const end = new Date(discountEnd + "T23:59:59").getTime();
+    const end = new Date(discountEnd).getTime();
     const now = Date.now();
     let diff = Math.max(end - now, 0);
 
@@ -20,6 +20,6 @@ export function buildDiscountTimer(discountEnd) {
 
 export function isDiscountActive(discount, discountEnd) {
     if (!discount || !discountEnd) return false;
-    const end = new Date(discountEnd + "T23:59:59").getTime();
+    const end = new Date(discountEnd).getTime();
     return Date.now() < end;
 }

@@ -129,7 +129,7 @@
         isLoading = true;
         errors = {};
         generalError = "";
-
+        console.log("FORM BEFORE SUBMIT", $form);
         try {
             const validData = schema.parse($form);
 
@@ -142,7 +142,7 @@
                 alert("Изменения сохранены");
                 resetForm(form, initializeForm(), type, slug);
             }
-
+            console.log("🟢 VALID DATA AFTER ZOD:", structuredClone(validData));
             goto(redirectTo);
         } catch (err) {
             const issues = err.errors ?? err.issues ?? [];
