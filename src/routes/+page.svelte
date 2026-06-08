@@ -11,6 +11,7 @@
 <svelte:head>
     <title>{entryConfig.seo.title[lang]}</title>
     <meta name="description" content={entryConfig.seo.description[lang]} />
+    <link rel="canonical" href="https://kemer.app" />
 </svelte:head>
 
 <section class="entry">

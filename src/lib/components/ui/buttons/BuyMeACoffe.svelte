@@ -11,7 +11,11 @@
 <div class="buy-me-a-coffee">
     <div class="text">{text[locale]}</div>
     <div style="text-align: center;">
-        <a href="https://www.buymeacoffee.com/kemer.app" target="_blank">
+        <a
+            href="https://www.buymeacoffee.com/kemer.app"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+        >
             <img
                 src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"
                 alt="Buy Me A Coffee"

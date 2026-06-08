@@ -6,7 +6,7 @@
         href="tg://resolve?domain=kemerapp"
         class="link"
         aria-label="telegram"
-        rel="nofollow"
+        rel="nofollow noopener noreferrer"
         target="_blank"
         ><svg
             class="icon"
@@ -26,7 +26,7 @@
         href="https://www.instagram.com/kemer.app"
         class="link"
         aria-label="instagram"
-        rel="nofollow"
+        rel="nofollow noopener noreferrer"
         target="_blank"
         ><svg
             class="icon"
@@ -46,7 +46,7 @@
         href="https://www.facebook.com/profile.php?id=61578033954306"
         class="link"
         aria-label="facebook"
-        rel="nofollow"
+        rel="nofollow noopener noreferrer"
         target="_blank"
     >
         <svg
