@@ -7,9 +7,6 @@
 
     export let data;
 
-    console.log("PAGE STATUS:", page.status);
-    console.log("PAGE ERROR:", page.error);
-
     const lang = data?.lang ?? "ru";
 
     let countdown = 10;
