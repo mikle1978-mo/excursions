@@ -49,6 +49,7 @@
     <TheMobileMenu />
     <main class="place-detail">
         <HeroBlock
+            h1={currentTranslation.h1 ?? currentTranslation.title}
             imageUrl={mainImage}
             title={currentTranslation.h1 ?? currentTranslation.title}
             subtitle={currentTranslation.subtitle}

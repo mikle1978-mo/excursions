@@ -6,6 +6,9 @@
     import { getCloudinarySrcset } from "$lib/helpers/optimizeCloudinary.js";
 
     export let data;
+
+    console.log("[thjfhjshk", data);
+
     export let system;
 
     const h1 = data.h1 || "";

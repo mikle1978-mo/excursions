@@ -8,11 +8,6 @@
     export let data;
     // const { item, type, lang } = data;
     const { item, relatedItems, type, lang } = data;
-    console.log("====================================");
-    console.log(data);
-    console.log("====================================");
-
-    console.log("FROM DB/API:", item.discountEnd);
 </script>
 
 <!-- SEO для страницы -->
