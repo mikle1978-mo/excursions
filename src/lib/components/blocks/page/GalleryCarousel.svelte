@@ -17,6 +17,7 @@
 </script>
 
 <div class="carousel-window">
+    <h2 class="title">{data?.title}</h2>
     <div class="image-gallery">
         {#each relatedItems as item (item.slug)}
             <div class="carousel-item">
@@ -33,6 +34,11 @@
 {/if} -->
 
 <style>
+    h2 {
+        font-size: var(--text-lg);
+        margin-bottom: var(--space-vertical-sm);
+        color: var(--color-text);
+    }
     .carousel-window {
         /* max-width: 1200px; */
         margin: 0 auto;
