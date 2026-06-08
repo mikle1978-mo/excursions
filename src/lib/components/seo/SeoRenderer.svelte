@@ -48,6 +48,8 @@
         ? `${baseUrl}/${lang}/${type}/${item.slug}`
         : `${baseUrl}/${lang}/${type}`;
 
+    console.log("canonical url", canonical);
+
     // используем локали из конфигов
     const langMeta = appConfig.languages?.meta?.[lang] ?? { locale: "en-US" };
     const ogLocale = langMeta.locale.replace("-", "_"); // для OpenGraph: en-US → en_US

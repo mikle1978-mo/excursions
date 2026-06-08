@@ -4,7 +4,7 @@ import { currentYear } from "$lib/constants/date";
 // src/lib/config/pages/about.config.js
 export const aboutConfig = {
     ru: {
-        slug: "about",
+        // slug: "about",
         title: "О нас",
         description: `Узнайте больше о команде Kemer.app, нашей миссии и партнёрах. Мы помогаем туристам находить лучшие экскурсии, трансферы и аренду в Кемере с 2016 по ${currentYear} года.`,
         h1: "О нас — Kemer.app",
@@ -44,7 +44,7 @@ export const aboutConfig = {
     },
 
     en: {
-        slug: "about",
+        // slug: "about",
         title: "About us — Kemer.app",
         description: `Learn more about the Kemer.app team, our mission, and partners. We help travelers find the best excursions, transfers, and rentals in Kemer since 2016 to ${currentYear}.`,
         h1: "About us — Kemer.app",
@@ -92,7 +92,7 @@ export const aboutConfig = {
     },
 
     tr: {
-        slug: "about",
+        // slug: "about",
         title: "Hakkımızda — Kemer.app",
         h1: "Hakkımızda — Kemer.app",
         images: [
