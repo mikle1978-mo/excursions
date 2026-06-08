@@ -44,9 +44,12 @@
     //         ""
     //     );
 
-    const canonical = item?.slug
-        ? `${baseUrl}/${lang}/${type}/${item.slug}`
-        : `${baseUrl}/${lang}/${type}`;
+    const canonical =
+        type === "home"
+            ? `${baseUrl}/${lang}`
+            : item?.slug
+              ? `${baseUrl}/${lang}/${type}/${item.slug}`
+              : `${baseUrl}/${lang}/${type}`;
 
     console.log("canonical url", canonical);
 

@@ -9,6 +9,7 @@ export const detail = {
             {
                 component: "HeroBlock",
                 fields: {
+                    h1: "h1",
                     title: "title",
                     images: "images",
                     subtitle: "subtitle",
@@ -110,6 +111,7 @@ export const detail = {
                 component: "HeroBlock",
                 fields: {
                     h1: "h1",
+                    title: "title",
                     images: "images",
                     subtitle: "subtitle",
                     rating: "rating",
