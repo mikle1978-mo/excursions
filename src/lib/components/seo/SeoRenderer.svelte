@@ -38,11 +38,15 @@
 
     // canonical (делаем универсально)
 
-    const canonical =
-        `${baseUrl}/${lang}${type === "home" ? "" : "/" + type}${item?.slug ? "/" + item.slug : ""}`.replace(
-            /\/+$/,
-            ""
-        );
+    // const canonical =
+    //     `${baseUrl}/${lang}${type === "home" ? "" : "/" + type}${item?.slug ? "/" + item.slug : ""}`.replace(
+    //         /\/+$/,
+    //         ""
+    //     );
+
+    const canonical = item?.slug
+        ? `${baseUrl}/${lang}/${type}/${item.slug}`
+        : `${baseUrl}/${lang}/${type}`;
 
     // используем локали из конфигов
     const langMeta = appConfig.languages?.meta?.[lang] ?? { locale: "en-US" };
