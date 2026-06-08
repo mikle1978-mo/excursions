@@ -19,7 +19,12 @@ export function ImageAdapter({
         loading,
         sizesAttr: "(max-width: 480px) 100vw, (max-width: 768px) 50vw, 33vw",
         decoding: "async",
-        fetchpriority: loading === "eager" ? "high" : "auto",
+        fetchpriority:
+            loading === "eager"
+                ? "high"
+                : loading === "preload"
+                  ? "high"
+                  : "auto",
         width: "600",
         height: "338",
         alt: `Image of ${type}`,

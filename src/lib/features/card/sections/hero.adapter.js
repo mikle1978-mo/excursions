@@ -7,6 +7,7 @@ export function HeroBlockAdapter({ item, system, overlays, section }) {
             image: ImageAdapter({
                 image: item.images[0].url,
                 type: system.type,
+                loading: "preload", // 🔥 ВОТ ЭТО ВАЖНО
                 defaultImage: `/images/${system.type}/${system.type}_default.webp`,
             }),
             title: item.title || "",

@@ -1,3 +1,5 @@
+<!-- src\lib\components\cards\CardRenderer.svelte -->
+
 <script>
     import Card from "$lib/components/cards/Card.svelte";
     import { CardAdapter } from "$lib/features/card/card.adapter.js";
