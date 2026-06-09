@@ -1,3 +1,5 @@
+<!-- src\lib\components\seo\SchemasRenderer.svelte -->
+
 <script>
     import { appConfig } from "$lib/config/app.config";
 

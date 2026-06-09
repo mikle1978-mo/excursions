@@ -71,14 +71,14 @@
     <meta name="b4d2ca1f28ced862e56d30dc82da7cd4" content="" />
     <!-- for miralink verification -->
     <!-- for travelpayouts verification -->
-    <script data-noptimize="1" data-cfasync="false" data-wpfc-render="false">
+    <!-- <script data-noptimize="1" data-cfasync="false" data-wpfc-render="false">
         (function () {
             var script = document.createElement("script");
             script.async = 1;
             script.src = "https://emrld.cc/NDcxNDIz.js?t=471423";
             document.head.appendChild(script);
         })();
-    </script>
+    </script> -->
     <!-- for travelpayouts verification -->
 </svelte:head>
 

@@ -6,12 +6,21 @@ export function buildItemWebPageSchema({
     page,
     seo,
 }) {
+    const title = seo?.title?.replace(
+        "{{title}}",
+        item.title?.[lang] ?? item.title,
+    );
+    const description = seo?.description?.replace(
+        "{{metaDescription}}",
+        item.metaDescription?.[lang] ?? item.metaDescription,
+    );
+
     return {
         "@type": "WebPage",
         "@id": page.webpage,
         url: `${baseUrl}/${lang}/${type}/${item.slug}`,
-        name: seo?.title,
-        description: seo?.description,
+        name: title,
+        description: description,
         inLanguage: lang,
         mainEntity: {
             "@id": page.product,
