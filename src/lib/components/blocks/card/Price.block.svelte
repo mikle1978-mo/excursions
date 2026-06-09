@@ -34,8 +34,8 @@
 
     .card__old-price {
         text-decoration: line-through;
-        font-weight: 500;
-        font-size: var(--text-lg);
+        font-weight: 400;
+        font-size: var(--text-md);
         color: var(--color-gray-600);
     }
 </style>
