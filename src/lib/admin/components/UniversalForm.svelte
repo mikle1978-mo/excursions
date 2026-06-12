@@ -190,7 +190,7 @@
                 title: $form.title,
                 description: $form.description,
                 image: $form.image,
-                url: `https://kemer.app/blogs/${$form.slug || slug}`,
+                url: `https://kemer.app/en/blogs/${$form.slug || slug}`,
                 url_ru: `https://kemer.app/ru/blogs/${$form.slug || slug}`,
             }),
         });

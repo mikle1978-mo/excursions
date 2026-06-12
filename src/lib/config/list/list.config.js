@@ -6,6 +6,7 @@ import {
     cars_LIST_TEXT,
     transfers_LIST_TEXT,
     blogs_LIST_TEXT,
+    faqs_LIST_TEXT,
 } from "$lib/i18n/LIST_TEXTS.js";
 
 export const list = {
@@ -17,6 +18,7 @@ export const list = {
                 "discount",
                 "discountEnd",
                 "images",
+                "duration",
                 "rating",
                 "reviewsCount",
                 "active",
@@ -26,9 +28,31 @@ export const list = {
         },
         listText: excursions_LIST_TEXT,
         schemas: [],
-        filters: {},
-        sortOptions: {
-            default: null, // random selection
+        toolbar: {
+            search: true,
+            sort: ["price", "rating", "duration"],
+            defaultSort: { field: "rating", dir: "desc" },
+            showFiltersButton: true,
+            searchFields: ["title"],
+        },
+        filters: {
+            price: {
+                field: "price",
+                type: "range",
+                enabled: true,
+            },
+
+            duration: {
+                field: "duration",
+                type: "range",
+                enabled: true,
+            },
+
+            rating: {
+                field: "rating",
+                type: "min",
+                enabled: true,
+            },
         },
     },
     yachts: {
@@ -39,6 +63,7 @@ export const list = {
                 "discount",
                 "discountEnd",
                 "images",
+                "duration",
                 "rating",
                 "reviewsCount",
                 "active",
@@ -48,9 +73,32 @@ export const list = {
         },
         listText: yachts_LIST_TEXT,
         schemas: [],
-        filters: {},
-        sortOptions: {
-            default: null, // random selection
+        toolbar: {
+            search: true,
+            sort: ["price", "rating", "duration"],
+            defaultSort: { field: "rating", dir: "desc" },
+            showFiltersButton: true,
+            searchFields: ["title"],
+        },
+
+        filters: {
+            price: {
+                field: "price",
+                type: "range",
+                enabled: true,
+            },
+
+            duration: {
+                field: "duration",
+                type: "range",
+                enabled: true,
+            },
+
+            rating: {
+                field: "rating",
+                type: "min",
+                enabled: true,
+            },
         },
     },
     cars: {
@@ -61,6 +109,7 @@ export const list = {
                 "discount",
                 "discountEnd",
                 "images",
+                "duration",
                 "rating",
                 "reviewsCount",
                 "active",
@@ -70,9 +119,32 @@ export const list = {
         },
         listText: cars_LIST_TEXT,
         schemas: [],
-        filters: {},
-        sortOptions: {
-            default: null, // random selection
+        toolbar: {
+            search: true,
+            sort: ["price", "rating", "duration"],
+            defaultSort: { field: "rating", dir: "desc" },
+            showFiltersButton: true,
+            searchFields: ["title"],
+        },
+
+        filters: {
+            price: {
+                field: "price",
+                type: "range",
+                enabled: true,
+            },
+
+            duration: {
+                field: "duration",
+                type: "range",
+                enabled: true,
+            },
+
+            rating: {
+                field: "rating",
+                type: "min",
+                enabled: true,
+            },
         },
     },
     transfers: {
@@ -83,6 +155,7 @@ export const list = {
                 "discount",
                 "discountEnd",
                 "images",
+                "duration",
                 "rating",
                 "reviewsCount",
                 "active",
@@ -92,9 +165,30 @@ export const list = {
         },
         listText: transfers_LIST_TEXT,
         schemas: [],
-        filters: {},
-        sortOptions: {
-            default: null, // random selection
+        toolbar: {
+            search: true,
+            sort: ["price", "rating", "duration"],
+            defaultSort: { field: "rating", dir: "desc" },
+            showFiltersButton: true,
+            searchFields: ["title"],
+        },
+
+        filters: {
+            price: {
+                field: "price",
+                type: "range",
+                enabled: true,
+            },
+            duration: {
+                field: "duration",
+                type: "range",
+                enabled: true,
+            },
+            rating: {
+                field: "rating",
+                type: "min",
+                enabled: true,
+            },
         },
     },
     places: {
@@ -105,8 +199,18 @@ export const list = {
         },
         listText: places_LIST_TEXT,
         schemas: [],
-        filters: {},
-        sortOptions: { createdAt: -1 },
+        toolbar: {
+            search: true,
+            sort: ["publishDate"],
+            defaultSort: { field: "publishDate", dir: "desc" },
+            showFiltersButton: false,
+            searchFields: ["title", "subtitle"],
+        },
+        filters: {
+            price: {},
+            duration: {},
+            rating: {},
+        },
     },
     blogs: {
         query: {
@@ -124,8 +228,18 @@ export const list = {
         },
         listText: blogs_LIST_TEXT,
         schemas: [],
-        filters: {},
-        sortOptions: { publishDate: -1 },
+        toolbar: {
+            search: true,
+            sort: ["publishDate"],
+            defaultSort: { field: "publishDate", dir: "desc" },
+            showFiltersButton: false,
+            searchFields: ["title", "author"],
+        },
+        filters: {
+            price: {},
+            duration: {},
+            rating: {},
+        },
     },
     faqs: {
         query: {
@@ -142,9 +256,19 @@ export const list = {
             translationFields: ["title"],
             withReviews: true,
         },
-        listText: blogs_LIST_TEXT,
+        listText: faqs_LIST_TEXT,
         schemas: [],
-        filters: {},
-        sortOptions: { createdAt: -1 },
+        toolbar: {
+            search: true,
+            sort: [],
+            defaultSort: {},
+            showFiltersButton: false,
+            searchFields: ["title", "description"],
+        },
+        filters: {
+            price: {},
+            duration: {},
+            rating: {},
+        },
     },
 };

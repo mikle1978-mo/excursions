@@ -1,3 +1,5 @@
+<!-- src\lib\components\blocks\card\Hero.block.svelte -->
+
 <script>
     export let data;
 

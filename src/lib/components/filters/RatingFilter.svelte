@@ -1,23 +1,24 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import { locale } from "$lib/stores/locale";
-    export let minRating = 0;
+    import { filterState } from "$lib/stores/filterState";
+
+    export let lang = "en";
+
+    $: minRating = $filterState.rating ?? 0;
 
     const dispatch = createEventDispatcher();
 
     function setRating(rating) {
-        dispatch("change", rating);
+        dispatch("change", rating === minRating ? 0 : rating);
     }
+
     const labels = {
-        rating: {
-            en: "by rating",
-            ru: "по рейтингу",
-        },
+        rating: { en: "by rating", ru: "по рейтингу" },
     };
 </script>
 
 <div class="filter-group">
-    <span class="filter-title">{labels.rating[$locale]}</span>
+    <span class="filter-title">{labels.rating[lang]}</span>
     <div class="rating-stars">
         {#each [1, 2, 3, 4, 5] as star}
             <button

@@ -8,6 +8,8 @@
     export let data;
     // const { item, type, lang } = data;
     const { item, relatedItems, type, lang } = data;
+
+    console.log("2133442", item);
 </script>
 
 <!-- SEO для страницы -->

@@ -3,6 +3,7 @@ import { cache } from "$lib/server/cache/cache.js";
 import { fetchListItems } from "$lib/server/services/shared/cards/fetchListItems.js";
 import { appConfig } from "$lib/config/app.config.js";
 import { connectToDatabase } from "$lib/server/db/mongodb";
+import { applySort } from "$lib/utils/sortEngine";
 
 export async function GET({ params }) {
     const db = await connectToDatabase();
@@ -21,9 +22,12 @@ export async function GET({ params }) {
     const items = await fetchListItems({ db, type, lang });
 
     // 3️⃣ Запись в кеш (если ошибка — упадёт)
+    const defaultSort = appConfig.list[type]?.toolbar?.defaultSort;
+    const sortedItems = defaultSort ? applySort(items, defaultSort) : items;
+
     if (cfg?.enabled) {
-        await cache.setList(type, { lang }, items);
+        await cache.setList(type, { lang }, sortedItems); // ← сортированные
     }
 
-    return json(items);
+    return json(sortedItems);
 }

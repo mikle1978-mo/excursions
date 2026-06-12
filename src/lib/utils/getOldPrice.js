@@ -6,5 +6,7 @@
  */
 export default function getOldPrice(currentPrice, discount) {
     if (!currentPrice || !discount) return currentPrice;
-    return Math.round(currentPrice / (1 - discount / 100));
+
+    const oldPrice = currentPrice / (1 - discount / 100);
+    return Math.ceil(oldPrice / 5) * 5;
 }

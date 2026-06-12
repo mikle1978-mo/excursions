@@ -47,7 +47,7 @@
         on:submit|preventDefault={handleInput}
         class="search-form"
     >
-        <div class="search-container {expanded ? 'expanded' : ''}">
+        <div class="search-container {expanded ? 'expanded' : 'expanded'}">
             <button
                 type="button"
                 class="search-button"
@@ -136,7 +136,7 @@
     .search-container.expanded {
         width: 100%;
         border-radius: var(--radius-full);
-        border-color: var(--color-primary);
+        border-color: var(--color-gray-500);
     }
 
     .search-button {
@@ -149,6 +149,9 @@
         border: none;
         cursor: pointer;
         color: var(--color-gray-500);
+    }
+    .search-container:hover {
+        border-color: var(--color-primary);
     }
 
     input {

@@ -130,3 +130,20 @@ export const blogs_LIST_TEXT = {
         <p>Şehrin hayatına yakın olun, yeni yerler keşfedin, yerel kültürü deneyimleyin ve Kemer'deki zamanınızı en güncel bilgilerle planlayın.</p>`,
     },
 };
+export const faqs_LIST_TEXT = {
+    ru: {
+        h1: `Часто задаваемые вопросы`,
+        topText: `<p>Здесь вы найдете ответы на самые распространенные вопросы о наших услугах и предложениях.</p>`,
+        bottomText: `<p>Если вы не нашли ответ на свой вопрос, свяжитесь с нами, и мы с радостью поможем!</p>`,
+    },
+    en: {
+        h1: `Frequently Asked Questions`,
+        topText: `<p>Here you will find answers to the most common questions about our services and offers.</p>`,
+        bottomText: `<p>If you haven't found the answer to your question, feel free to contact us, and we will be happy to help!</p>`,
+    },
+    tr: {
+        h1: `Sıkça Sorulan Sorular`,
+        topText: `<p>Burada hizmetlerimiz ve tekliflerimizle ilgili en yaygın soruların cevaplarını bulacaksınız.</p>`,
+        bottomText: `<p>Questions that are not answered can be asked directly to our team, and we will be happy to assist!</p>`,
+    },
+};

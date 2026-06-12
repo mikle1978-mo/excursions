@@ -392,7 +392,14 @@ export const detail = {
             },
             {
                 component: "GalleryCarousel",
-                fields: { slug: "slug", lang: "lang" },
+                fields: {
+                    slug: "slug",
+                    lang: "lang",
+                    title: {
+                        ru: "Может понравиться ↔︎ ",
+                        en: "You might like ↔︎",
+                    },
+                },
                 style: {
                     variant: "normal",
                 },
@@ -570,7 +577,14 @@ export const detail = {
             },
             {
                 component: "GalleryCarousel",
-                fields: { slug: "slug", lang: "lang" },
+                fields: {
+                    slug: "slug",
+                    lang: "lang",
+                    title: {
+                        ru: "Может понравиться ↔︎ ",
+                        en: "You might like ↔︎",
+                    },
+                },
                 style: {
                     variant: "normal",
                 },
@@ -669,7 +683,14 @@ export const detail = {
             },
             {
                 component: "GalleryCarousel",
-                fields: { slug: "slug", lang: "lang" },
+                fields: {
+                    slug: "slug",
+                    lang: "lang",
+                    title: {
+                        ru: "Может понравиться ↔︎ ",
+                        en: "You might like ↔︎",
+                    },
+                },
                 style: {
                     variant: "normal",
                 },
@@ -721,7 +742,14 @@ export const detail = {
             },
             {
                 component: "GalleryCarousel",
-                fields: { slug: "slug", lang: "lang" },
+                fields: {
+                    slug: "slug",
+                    lang: "lang",
+                    title: {
+                        ru: "Может понравиться ↔︎ ",
+                        en: "You might like ↔︎",
+                    },
+                },
                 style: {
                     variant: "normal",
                 },
@@ -768,7 +796,14 @@ export const detail = {
             },
             {
                 component: "GalleryCarousel",
-                fields: { slug: "slug", lang: "lang" },
+                fields: {
+                    slug: "slug",
+                    lang: "lang",
+                    title: {
+                        ru: "Может понравиться ↔︎ ",
+                        en: "You might like ↔︎",
+                    },
+                },
                 style: {
                     variant: "normal",
                 },
@@ -892,7 +927,14 @@ export const detail = {
             },
             {
                 component: "GalleryCarousel",
-                fields: { slug: "slug", lang: "lang" },
+                fields: {
+                    slug: "slug",
+                    lang: "lang",
+                    title: {
+                        ru: "Может понравиться ↔︎ ",
+                        en: "You might like ↔︎",
+                    },
+                },
                 style: {
                     variant: "normal",
                 },
@@ -1038,7 +1080,14 @@ export const detail = {
             },
             {
                 component: "GalleryCarousel",
-                fields: { slug: "slug", lang: "lang" },
+                fields: {
+                    slug: "slug",
+                    lang: "lang",
+                    title: {
+                        ru: "Может понравиться ↔︎ ",
+                        en: "You might like ↔︎",
+                    },
+                },
                 style: {
                     variant: "normal",
                 },

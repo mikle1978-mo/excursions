@@ -72,7 +72,9 @@ export async function handle({ event, resolve }) {
 
     // 💰 Получаем валюты и кладём в locals
 
-    // event.locals.exchangeRates = await getExchangeRates();
+    const cookieCurrency = event.cookies.get("currency");
+
+    event.locals.currency = cookieCurrency || "USD";
 
     const res = await getExchangeRates();
     console.log(res.source);

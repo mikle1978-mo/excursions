@@ -1,121 +1,55 @@
 <script>
-    import { filters } from "$lib/stores/filters.js";
-    import { FILTER_CONFIG } from "$lib/constants/filtersConfig.js";
+    import { appConfig } from "$lib/config/app.config";
+    import { filterState } from "$lib/stores/filterState";
     import { sidebarOpen } from "$lib/stores/sidebar.js";
     import { selectedCurrency } from "$lib/stores/currency.js";
-    import { createEventDispatcher } from "svelte";
 
     import PriceFilter from "$lib/components/filters/PriceFilter.svelte";
     import DurationFilter from "$lib/components/filters/DurationFilter.svelte";
     import RatingFilter from "$lib/components/filters/RatingFilter.svelte";
 
+    import { onMount } from "svelte";
+
     export let type = "excursions";
     export let items = [];
+    export let lang;
 
-    const dispatch = createEventDispatcher();
+    export let rates;
+
+    $: filtersConfig = appConfig.list[type].filters;
+    $: state = $filterState;
 
     $: currentCurrency = $selectedCurrency;
     $: currentRate = currentCurrency || 1;
 
-    $: priceRange = computePriceRange();
-    $: durationRange = computeDurationRange();
+    const components = {
+        price: PriceFilter,
+        duration: DurationFilter,
+        rating: RatingFilter,
+    };
 
-    function computePriceRange() {
-        if (!items.length) return [0, 0];
-        const prices = items.map((i) => i.priceUSD || i.price || 0);
-        return [Math.min(...prices), Math.max(...prices)];
-    }
-
-    function computeDurationRange() {
-        if (!items.length) return null;
-        const durations = items.map((i) => i.duration || 0);
-        return [Math.min(...durations), Math.max(...durations)];
-    }
-
-    function handlePriceChange(e) {
-        filters.update((f) => ({
-            ...f,
-            priceRange: e.detail.map((p) => p / currentRate),
+    function setFilter(key, value) {
+        filterState.update((s) => ({
+            ...s,
+            [key]: value,
         }));
     }
 
-    function handleDurationChange(e) {
-        filters.update((f) => ({
-            ...f,
-            durationRange: e.detail,
-        }));
-    }
-
-    function handleRatingChange(e) {
-        filters.update((f) => ({
-            ...f,
-            minRating: e.detail,
-        }));
+    function getFilterKeys() {
+        return Object.keys(filtersConfig).filter(
+            (key) => filtersConfig[key]?.enabled,
+        );
     }
 
     function resetAllFilters() {
-        filters.set({
-            priceRange: null,
-            durationRange: null,
-            minRating: 0,
-            sort: null,
-        });
+        filterState.set({});
     }
 
     const closeSidebar = () => sidebarOpen.set(false);
 
-    function hasFilter(name) {
-        return FILTER_CONFIG[name]?.includes(type);
-    }
-
-    const FILTERS = [
-        {
-            name: "price",
-            condition: () => priceRange[0] !== priceRange[1],
-            component: PriceFilter,
-            props: () => {
-                const range = $filters.priceRange ?? [
-                    priceRange[0],
-                    priceRange[1],
-                ];
-                return {
-                    currency: currentCurrency,
-                    minPrice: priceRange[0] * currentRate,
-                    maxPrice: priceRange[1] * currentRate,
-                    currentRange: [
-                        range[0] * currentRate,
-                        range[1] * currentRate,
-                    ],
-                };
-            },
-        },
-        {
-            name: "duration",
-            condition: () =>
-                durationRange && durationRange[0] !== durationRange[1],
-            component: DurationFilter,
-            props: () => {
-                const range = $filters.durationRange ?? [
-                    durationRange[0],
-                    durationRange[1],
-                ];
-                return {
-                    durations: durationRange,
-                    currentRange: [range[0], range[1]],
-                };
-            },
-        },
-        {
-            name: "rating",
-            condition: () => true,
-            component: RatingFilter,
-            props: () => {
-                return {
-                    minRating: $filters.minRating,
-                };
-            },
-        },
-    ];
+    onMount(() => {
+        filterState.set({});
+    });
 </script>
 
 <svelte:window
@@ -134,19 +68,15 @@
     <div class="sidebar-content">
         <span class="sidebar-title">Фильтры</span>
         <div class="filters">
-            {#each FILTERS as filter (filter.name)}
-                {#if hasFilter(filter.name) && filter.condition()}
-                    <svelte:component
-                        this={filter.component}
-                        {...filter.props()}
-                        on:change={(e) => {
-                            if (filter.name === "price") handlePriceChange(e);
-                            if (filter.name === "duration")
-                                handleDurationChange(e);
-                            if (filter.name === "rating") handleRatingChange(e);
-                        }}
-                    />
-                {/if}
+            {#each getFilterKeys() as key}
+                <svelte:component
+                    this={components[key]}
+                    {items}
+                    {rates}
+                    {lang}
+                    value={state[key]}
+                    on:change={(e) => setFilter(key, e.detail)}
+                />
             {/each}
         </div>
 

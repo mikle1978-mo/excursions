@@ -1,10 +1,22 @@
 <script>
     import RangeSlider from "$lib/components/ui/inputs/sliders/RangeSlider.svelte";
-    import { locale } from "$lib/stores/locale.js";
+    // import { locale } from "$lib/stores/locale.js";
     import { createEventDispatcher } from "svelte";
+    import { filterState } from "$lib/stores/filterState";
 
-    export let durations = [];
-    export let currentRange = [];
+    export let lang = "en";
+
+    export let items = [];
+
+    $: durations = items
+        .map((i) => Number(i.duration || 0))
+        .filter((d) => d > 0);
+    $: minDuration = durations.length ? Math.min(...durations) : 0;
+    $: maxDuration = durations.length ? Math.max(...durations) : 0;
+    $: currentRange = [
+        $filterState.duration?.[0] ?? minDuration,
+        $filterState.duration?.[1] ?? maxDuration,
+    ];
 
     const dispatch = createEventDispatcher();
     const labels = {
@@ -19,22 +31,16 @@
     };
 
     function formatDuration(value) {
-        return `${value} ${labels.time[$locale]}`;
+        return `${value} ${labels.time[lang]}`;
     }
-
-    $: minDuration = Math.min(...durations);
-    $: maxDuration = Math.max(...durations);
-    $: initialRange = currentRange.length
-        ? currentRange
-        : [minDuration, maxDuration];
 </script>
 
 <div class="filter-group">
-    <span class="filter-title">{labels.duration[$locale]}</span>
+    <span class="filter-title">{labels.duration[lang]}</span>
     <RangeSlider
         min={minDuration}
         max={maxDuration}
-        values={initialRange}
+        values={currentRange}
         format={formatDuration}
         on:change={(e) => dispatch("change", e.detail)}
     />

@@ -1,28 +1,14 @@
 <script>
     import TheLogo from "$lib/components/layout/TheLogo.svelte";
-    import Search from "$lib/components/ui/inputs/search/Search.svelte";
-    import FilterButton from "$lib/components/ui/buttons/FilterButton.svelte";
     import TheBurger from "$lib/components/ui/buttons/TheBurger.svelte";
 
-    export let showSearch = false;
-    export let showFilter = false;
     export let lang;
-   
 </script>
 
 <header class="header">
     <div class="header_row">
         <TheLogo {lang} />
-
-        {#if showSearch}
-            <Search />
-        {/if}
-
         <div class="line_right">
-            {#if showFilter}
-                <FilterButton />
-            {/if}
-
             <TheBurger {lang} />
         </div>
     </div>

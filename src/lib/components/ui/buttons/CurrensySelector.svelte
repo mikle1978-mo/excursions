@@ -1,6 +1,5 @@
 <script>
     import { selectedCurrency, setCurrency } from "$lib/stores/currency";
-    import { get } from "svelte/store";
     import { fly } from "svelte/transition";
 
     const currencies = [
@@ -10,15 +9,9 @@
         { value: "TRY", label: "₺" },
     ];
 
-    let currentCurrency = get(selectedCurrency);
     let isOpen = false;
 
-    selectedCurrency.subscribe((val) => {
-        currentCurrency = val;
-    });
-
     const changeCurrency = (currency) => {
-        currentCurrency = currency;
         setCurrency(currency);
         isOpen = false;
     };
@@ -28,6 +21,37 @@
     };
 </script>
 
+<!-- <div class="currency-container">
+    <button
+        class="currency-button {isOpen ? 'open' : ''}"
+        onclick={toggleDropdown}
+    >
+        <span>
+            {#each currencies.filter((c) => c.value === $selectedCurrency) as c}
+                {c.label}
+            {/each}
+        </span>
+    </button>
+
+    {#if isOpen}
+        <div
+            class="currency-dropdown"
+            transition:fly={{ y: 10, duration: 200 }}
+        >
+            {#each currencies as currency}
+                <button
+                    class="currency-option {$selectedCurrency === currency.value
+                        ? 'selected'
+                        : ''}"
+                    onclick={() => changeCurrency(currency.value)}
+                >
+                    <span>{currency.label}</span>
+                </button>
+            {/each}
+        </div>
+    {/if}
+</div> -->
+
 <div class="currency-container">
     <button
         class="currency-button {isOpen ? 'open' : ''}"
@@ -35,7 +59,7 @@
         aria-label="Выбрать валюту"
         aria-expanded={isOpen}
     >
-        {#each currencies.filter((c) => c.value === currentCurrency) as c}
+        {#each currencies.filter((c) => c.value === $selectedCurrency) as c}
             <span>{c.label}</span>
         {/each}
     </button>
@@ -47,7 +71,7 @@
         >
             {#each currencies as currency}
                 <button
-                    class="currency-option {currentCurrency === currency.value
+                    class="currency-option {$selectedCurrency === currency.value
                         ? 'selected'
                         : ''}"
                     onclick={() => changeCurrency(currency.value)}

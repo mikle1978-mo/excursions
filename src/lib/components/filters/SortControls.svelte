@@ -1,173 +1,231 @@
 <script>
     import { sortStore } from "$lib/stores/sortStore.js";
-    import { locale } from "$lib/stores/locale";
-    import { onDestroy } from "svelte";
-    import { SORT_OPTIONS } from "$lib/constants/filtersConfig";
+    import { list } from "$lib/config/list/list.config.js";
 
     export let type = "";
+    export let lang = "en";
 
-    let selectedSort = null;
+    let isOpen = false;
 
-    const unsubscribeSort = sortStore.subscribe(
-        (value) => (selectedSort = value)
-    );
-    const unsubscribeLocale = locale.subscribe((value) => ($locale = value));
+    $: currentSort = $sortStore;
 
     const translations = {
         ru: {
-            noSort: "Без сортировки",
+            noSort: "Cортировка",
+
             priceAsc: "Цена ↑",
             priceDesc: "Цена ↓",
+
             ratingAsc: "Рейтинг ↑",
             ratingDesc: "Рейтинг ↓",
+
             durationAsc: "Длительность ↑",
             durationDesc: "Длительность ↓",
+
+            publishDateAsc: "Старые сначала",
+            publishDateDesc: "Новые сначала",
         },
+
         en: {
-            noSort: "No sort",
+            noSort: "Sort",
+
             priceAsc: "Price ↑",
             priceDesc: "Price ↓",
+
             ratingAsc: "Rating ↑",
             ratingDesc: "Rating ↓",
+
             durationAsc: "Duration ↑",
             durationDesc: "Duration ↓",
+
+            publishDateAsc: "Oldest first",
+            publishDateDesc: "Newest first",
         },
+
         tr: {
-            noSort: "Sıralama yok",
+            noSort: "Sıralama",
+
             priceAsc: "Fiyat ↑",
             priceDesc: "Fiyat ↓",
+
             ratingAsc: "Puan ↑",
             ratingDesc: "Puan ↓",
+
             durationAsc: "Süre ↑",
             durationDesc: "Süre ↓",
+
+            publishDateAsc: "Eskiler önce",
+            publishDateDesc: "Yeniler önce",
         },
     };
 
-    function handleChange(event) {
-        sortStore.set(event.target.value || null);
+    const options = [
+        { value: null, labelKey: "noSort" },
+
+        { value: "priceAsc", labelKey: "priceAsc", group: "price" },
+        { value: "priceDesc", labelKey: "priceDesc", group: "price" },
+
+        { value: "ratingAsc", labelKey: "ratingAsc", group: "rating" },
+        { value: "ratingDesc", labelKey: "ratingDesc", group: "rating" },
+
+        { value: "durationAsc", labelKey: "durationAsc", group: "duration" },
+        { value: "durationDesc", labelKey: "durationDesc", group: "duration" },
+
+        {
+            value: "publishDateAsc",
+            labelKey: "publishDateAsc",
+            group: "publishDate",
+        },
+        {
+            value: "publishDateDesc",
+            labelKey: "publishDateDesc",
+            group: "publishDate",
+        },
+    ];
+
+    function toggle() {
+        isOpen = !isOpen;
     }
 
-    function hasSortOption(groupName) {
-        return SORT_OPTIONS[groupName]?.includes(type);
+    function setSort(value) {
+        if (!value) {
+            sortStore.set(null);
+            isOpen = false;
+            return;
+        }
+
+        const dir = value.endsWith("Asc") ? "asc" : "desc";
+
+        const field = value.replace("Asc", "").replace("Desc", "");
+
+        sortStore.set({
+            field,
+            dir,
+        });
+
+        isOpen = false;
     }
 
-    onDestroy(() => {
-        unsubscribeSort();
-        unsubscribeLocale();
-    });
+    function getAvailableGroups() {
+        return list?.[type]?.toolbar?.sort ?? [];
+    }
+
+    function isAllowed(opt) {
+        if (!opt.group) return true;
+
+        return getAvailableGroups().includes(opt.group);
+    }
+    function getLabel(sort) {
+        const s = sort ?? list?.[type]?.toolbar?.defaultSort ?? null;
+        if (!s) return translations[lang]?.noSort;
+
+        const value = s.field + (s.dir === "asc" ? "Asc" : "Desc");
+        const option = options.find((o) => o.value === value);
+        return translations[lang]?.[option?.labelKey] ?? translations.en.noSort;
+    }
+
+    function isSelected(value) {
+        const s = currentSort ?? list?.[type]?.toolbar?.defaultSort ?? null;
+        if (!s || !value) return false;
+        return value === `${s.field}${s.dir === "asc" ? "Asc" : "Desc"}`;
+    }
 </script>
 
 <div class="sort-container">
-    <div class="sort-controls">
-        <div class="select-wrapper">
-            <select
-                id="sort-select"
-                on:change={handleChange}
-                bind:value={selectedSort}
-            >
-                <option value={null}>
-                    {translations[$locale]?.noSort ?? translations.en.noSort}
-                </option>
+    <button class="sort-button {isOpen ? 'open' : ''}" on:click={toggle}>
+        {getLabel(currentSort)}
+    </button>
 
-                {#if hasSortOption("price")}
-                    <option value="priceAsc">
-                        {translations[$locale]?.priceAsc ??
-                            translations.en.priceAsc}
-                    </option>
-                    <option value="priceDesc">
-                        {translations[$locale]?.priceDesc ??
-                            translations.en.priceDesc}
-                    </option>
+    {#if isOpen}
+        <div class="sort-dropdown">
+            {#each options as opt}
+                {#if isAllowed(opt)}
+                    <button
+                        class="sort-option {isSelected(opt.value)
+                            ? 'selected'
+                            : ''}"
+                        on:click={() => setSort(opt.value)}
+                    >
+                        {translations[lang]?.[opt.labelKey] ??
+                            translations.en[opt.labelKey]}
+                    </button>
                 {/if}
-
-                {#if hasSortOption("rating")}
-                    <option value="ratingDesc">
-                        {translations[$locale]?.ratingDesc ??
-                            translations.en.ratingDesc}
-                    </option>
-                    <option value="ratingAsc">
-                        {translations[$locale]?.ratingAsc ??
-                            translations.en.ratingAsc}
-                    </option>
-                {/if}
-
-                {#if hasSortOption("duration")}
-                    <option value="durationAsc">
-                        {translations[$locale]?.durationAsc ??
-                            translations.en.durationAsc}
-                    </option>
-                    <option value="durationDesc">
-                        {translations[$locale]?.durationDesc ??
-                            translations.en.durationDesc}
-                    </option>
-                {/if}
-            </select>
-            <span class="custom-arrow">▼</span>
+            {/each}
         </div>
-    </div>
+    {/if}
 </div>
 
 <style>
     .sort-container {
-        display: flex;
-        justify-content: flex-end; /* блок сортировки справа */
+        position: relative;
         width: 100%;
+        height: 32px;
     }
 
-    .sort-controls {
+    .sort-button {
+        width: 100%;
+        height: 32px;
+
         display: flex;
         align-items: center;
-        gap: 0.5rem;
-        background: var(--color-bg, #f9f9f9);
-        border-radius: var(--radius-md, 6px);
-        padding: 0.3rem 0.5rem;
-        max-width: 400px;
-        width: 100%;
-    }
+        justify-content: center;
 
-    .select-wrapper {
-        position: relative;
-        flex-grow: 1;
-    }
-
-    .select-wrapper select {
-        width: 100%;
-        padding: 0.3rem 1.5rem 0.3rem 0.5rem; /* справа место для стрелки */
-        border: 1px solid var(--color-gray-400, #ccc);
-        border-radius: var(--radius-md, 6px);
-        font-size: var(--text-xs, 0.875rem);
-        font-family: inherit;
-        color: var(--color-text, #333);
-        appearance: none;
         background: var(--color-bg);
+        border: 2px solid var(--color-gray-500);
+        border-radius: var(--radius-full);
+
         cursor: pointer;
-    }
-    .select-wrapper select option {
-        width: 100%;
-        padding: 0.3rem 1.5rem 0.3rem 0.5rem; /* справа место для стрелки */
-        border: 1px solid var(--color-gray-400, #ccc);
-        border-radius: var(--radius-md, 6px);
-        font-size: var(--text-sm, 0.875rem);
-        font-family: inherit;
-        color: var(--color-text, #333);
-        appearance: none;
-        background: var(--color-bg);
-        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: var(--text-xs);
+        color: var(--color-text);
     }
 
-    .select-wrapper .custom-arrow {
+    .sort-button:hover,
+    .sort-button.open {
+        border-color: var(--color-primary);
+    }
+
+    .sort-dropdown {
+        width: 100%;
         position: absolute;
-        right: 0.5rem;
-        top: 50%;
-        transform: translateY(-50%);
-        pointer-events: none;
-        font-size: 0.75rem;
-        color: var(--color-gray-600);
+        top: calc(100% + 6px);
+        left: 50%;
+        transform: translateX(-50%);
+
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+
+        padding: 4px;
+        background: var(--color-bg);
+        border: 1px solid var(--color-gray-300);
+        border-radius: var(--radius-sm);
+
+        box-shadow: var(--shadow-md);
+        z-index: 20;
+        min-width: 140px;
     }
 
-    .select-wrapper select:focus {
-        outline: none;
-        border-color: var(--color-primary, #4ac97e);
-        box-shadow: 0 0 3px var(--color-primary, #4ac97e);
+    .sort-option {
+        padding: 6px 10px;
+
+        display: flex;
+        justify-content: center;
+
+        border-radius: var(--radius-full);
+        border: 1px solid var(--color-gray-300);
+        background: var(--color-bg);
+
+        cursor: pointer;
+        font-size: var(--text-xs);
+        color: var(--color-text);
+        transition: all 0.2s ease;
+    }
+
+    .sort-option:hover,
+    .sort-option.selected {
+        background: var(--color-primary);
+        color: white;
+        border-color: var(--color-primary);
     }
 </style>

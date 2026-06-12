@@ -1,19 +1,52 @@
 <!-- src\lib\components\pages\CardList.svelte -->
-
 <script>
     import CardRenderer from "$lib/components/cards/CardRenderer.svelte";
-    import TheHeader from "$lib/components/layout/TheHeader.svelte";
+    import ListControls from "$lib/components/blocks/page/ListControls.svelte";
     import { appConfig } from "$lib/config/app.config";
+    import { sortStore, resetSort } from "$lib/stores/sortStore.js";
+    import { filterState } from "$lib/stores/filterState";
+    import { searchQuery } from "$lib/stores/searchQuery.js";
+
+    import { applyFilters } from "$lib/utils/filterEngine";
+    import { applySearch } from "$lib/utils/searchEngine";
+    import { applySort } from "$lib/utils/sortEngine";
+    import { onDestroy } from "svelte";
 
     export let type;
     export let items = [];
     export let lang;
 
-    const config = appConfig.list?.[type] || {};
-    const show = !!appConfig.list[type].filters;
+    $: config = appConfig.list[type];
+
+    // Инициализируй дефолт синхронно при первом получении конфига
+    $: if ($sortStore === null && config?.toolbar?.defaultSort) {
+        sortStore.set(config.toolbar.defaultSort);
+    }
+
+    $: filtersConfig = config.filters || {};
+    $: searchFields = config?.toolbar?.searchFields || [];
+
+    // STORE
+    $: state = $filterState;
+    $: query = $searchQuery;
+    $: sort = $sortStore;
+
+    // PIPELINE (ВЕСЬ ФИЛЬТР ЗДЕСЬ)
+    $: processed = applySort(
+        applySearch(
+            applyFilters(items, filtersConfig, state),
+            query,
+            searchFields,
+        ),
+        sort,
+    );
+
+    onDestroy(() => sortStore.set(null));
 </script>
 
 <main class="main_page">
+    <ListControls {type} {lang} {items} />
+
     <h1 class="title">
         {config?.listText?.[lang]?.h1}
     </h1>
@@ -23,7 +56,7 @@
     </div>
 
     <div class="grid">
-        {#each items as item (item.slug)}
+        {#each processed as item (item.slug)}
             <CardRenderer {item} {type} {lang} />
         {/each}
     </div>
@@ -35,6 +68,7 @@
 
 <style>
     .main_page {
+        position: relative;
         display: flex;
         flex-direction: column;
         gap: var(--space-vertical-md);
