@@ -158,6 +158,7 @@
         width: 0;
         border: none;
         outline: none;
+        font-size: 16px;
         background: transparent;
         flex: 1;
         opacity: 0;
