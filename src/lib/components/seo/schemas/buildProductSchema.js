@@ -1,12 +1,4 @@
-export function buildProductSchema({
-    item,
-    baseUrl,
-    lang,
-    type,
-    page,
-    rating,
-    reviewCount,
-}) {
+export function buildProductSchema({ item, baseUrl, lang, type, page }) {
     const typeMap = {
         excursions: "TouristTrip",
         yachts: "BoatRental",
@@ -56,15 +48,34 @@ export function buildProductSchema({
             "@id": page.webpage,
         },
 
-        ...(typeof rating === "number" &&
-        typeof reviewCount === "number" &&
-        reviewCount > 0
+        ...(typeof item.rating === "number" &&
+        typeof item.reviewsCount === "number" &&
+        item.reviewsCount > 0
             ? {
                   aggregateRating: {
                       "@type": "AggregateRating",
-                      ratingValue: rating,
-                      reviewCount: reviewCount,
+                      ratingValue: item.rating,
+                      reviewCount: item.reviewsCount,
                   },
+              }
+            : {}),
+
+        ...(item.reviews?.length
+            ? {
+                  review: item.reviews.map((review) => ({
+                      "@type": "Review",
+                      author: {
+                          "@type": "Person",
+                          name: review.name,
+                      },
+                      reviewRating: {
+                          "@type": "Rating",
+                          ratingValue: review.rating,
+                          bestRating: "5",
+                      },
+                      reviewBody: review.comment,
+                      datePublished: review.createdAt,
+                  })),
               }
             : {}),
     };
