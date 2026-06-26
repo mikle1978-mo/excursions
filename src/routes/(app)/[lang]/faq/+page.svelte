@@ -13,7 +13,7 @@
 </svelte:head>
 
 <main class="faq-page">
-    <TheMobileMenu />
+    <TheMobileMenu {lang} />
     <h1 class="faq-title">
         {@html faq_list.title[lang]}
     </h1>
