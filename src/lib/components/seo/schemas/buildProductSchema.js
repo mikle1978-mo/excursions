@@ -44,10 +44,6 @@ export function buildProductSchema({ item, baseUrl, lang, type, page }) {
             priceValidUntil: `${new Date().getFullYear()}-12-31`,
         },
 
-        isPartOf: {
-            "@id": page.webpage,
-        },
-
         ...(typeof item.rating === "number" &&
         typeof item.reviewsCount === "number" &&
         item.reviewsCount > 0

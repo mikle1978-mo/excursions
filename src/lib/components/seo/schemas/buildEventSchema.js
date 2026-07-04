@@ -26,7 +26,9 @@ export function buildEventSchema({ item, baseUrl, lang, type }) {
             address: "Antalya, Turkey",
         },
 
-        image: item.images?.[0],
+        image: item.images?.length
+            ? item.images.map((i) => i.url).filter(Boolean)
+            : "https://kemer.app/images/excursions/excursions_default.webp",
 
         description: item.description || item.title,
 
