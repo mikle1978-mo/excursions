@@ -23,6 +23,14 @@
 
     <!-- CONTENT -->
     <main class="content">
+        <h2>Choose Your Language</h2>
+        <div class="language-buttons">
+            {#each languages as button}
+                <a href={button.href} class="lang-btn">
+                    {button.label}
+                </a>
+            {/each}
+        </div>
         {#each content[lang] as block}
             {#if block.type === "text"}
                 <p class="text">{block.value}</p>
@@ -36,13 +44,6 @@
                 </ul>
             {/if}
         {/each}
-        <div class="language-buttons">
-            {#each languages as button}
-                <a href={button.href} class="lang-btn">
-                    {button.label}
-                </a>
-            {/each}
-        </div>
     </main>
 
     <!-- FOOTER -->

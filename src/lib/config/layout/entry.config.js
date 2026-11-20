@@ -88,10 +88,6 @@ export const entryConfig = {
                     "Transparent conditions and honest information",
                 ],
             },
-            {
-                type: "h2",
-                value: "Choose Your Language",
-            },
         ],
     },
 
