@@ -20,7 +20,7 @@ export async function GET({ params }) {
     const typeParam = params.type;
 
     const config = Object.values(collectionsConfig).find(
-        (c) => c.collectionName === typeParam
+        (c) => c.collectionName === typeParam,
     );
 
     if (!config)
@@ -38,7 +38,7 @@ export async function GET({ params }) {
         const itemWithTranslations = mergeWithTranslations(
             result.item,
             result.translation,
-            schemaFields
+            schemaFields,
         );
 
         // 2️⃣ Применяем mergeWithSchema
@@ -71,7 +71,7 @@ export async function PUT({ request, params }) {
         console.error(`Ошибка при обновлении ${type}:`, err);
         return json(
             { error: err.message || "Ошибка сервера" },
-            { status: 500 }
+            { status: 500 },
         );
     }
 }

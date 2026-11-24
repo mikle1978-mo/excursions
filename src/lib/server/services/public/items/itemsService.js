@@ -128,7 +128,7 @@ export async function getFullItemFromDB(slug, collectionName, lang = "en") {
     const reviews = await db
         .collection("reviews")
         .find({ itemSlug: slug })
-        .sort({ date: -1 })
+        .sort({ createdAt: -1 })
         .toArray();
 
     const safeReviews = reviews.map((r) => ({

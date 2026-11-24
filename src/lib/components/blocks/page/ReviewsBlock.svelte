@@ -7,9 +7,10 @@
     export let system;
 
     const slug = data.slug || "";
-    const reviews = data.reviews || "";
+    let reviews = data.reviews || [];
     const lang = system.lang || "en";
     const config = appConfig?.blocks?.reviews;
+
     let itemSlug = slug;
 
     // let reviews = [];
@@ -71,7 +72,9 @@
             alert("Спасибо за отзыв!");
 
             const newReview = result;
-            let reviews = [...reviews, newReview];
+            // let reviews = [...reviews, newReview];
+
+            reviews = [newReview, ...reviews];
 
             name = "";
             rating = 5;
@@ -178,8 +181,7 @@
                     placeholder={reviews_list.comment_placeholder[lang]}
                     rows="4"
                     required
-                    class="form-textarea"
-                ></textarea>
+                    class="form-textarea"></textarea>
             </label>
 
             <button
